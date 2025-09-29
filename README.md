@@ -1,6 +1,6 @@
 # TFG-Chatbot
 
-[![state: empty](https://img.shields.io/badge/state-empty-lightgrey)](README.md) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![GitHub](https://img.shields.io/badge/GitHub-Repo-black?logo=github&logoColor=white)](https://github.com/usuario/TFG-Chatbot)
+[![state: empty](https://img.shields.io/badge/state-empty-lightgrey)](README.md) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![GitHub](https://img.shields.io/badge/GitHub-Repo-black?logo=github&logoColor=white)](https://github.com/GabrielFranciscoSM/TFG-Chatbot?tab=readme-ov-file)
 
 ## Resumen
 

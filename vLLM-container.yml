@@ -55,9 +55,12 @@ services:
         - 8000:8000
     image: docker.io/vllm/vllm-openai:latest
     command: >
-      --model /models/TinyLlama--TinyLlama-1.1B-Chat-v1.0
+      --model /models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit
       --max-num-seqs 8
       --max-model-len 1000
-      --gpu-memory-utilization 0.7
+      --gpu-memory-utilization 0.9
       --port 8000
-#     --quantization awq_marlin
+      --tool-call-parser mistral 
+      --chat-template /models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit/tool_chat_template_mistral_parallel.jinja
+      --enable-auto-tool-choice
+      --quantization bitsandbytes

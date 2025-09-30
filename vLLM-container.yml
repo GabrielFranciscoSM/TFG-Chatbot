@@ -21,7 +21,7 @@ services:
     command: >
       --model /models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit
       --max-num-seqs 8
-      --max-model-len 1000
+      --max-model-len 4096
       --gpu-memory-utilization 0.9
       --port 8000
       --tool-call-parser mistral 

@@ -1,3 +1,6 @@
 langchain-openai
+langchain-community
+langchain-core
 langgraph
-dotenv
+python-dotenv
+duckduckgo-search

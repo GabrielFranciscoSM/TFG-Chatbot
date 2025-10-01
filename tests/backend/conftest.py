@@ -1,7 +1,6 @@
 import os
 import sys
 import pytest
-from unittest.mock import Mock, patch
 from langchain_core.messages import AIMessage
 
 # Get the absolute path of the project root
@@ -21,10 +20,20 @@ def backend_path():
     return os.path.join(ROOT_DIR, "backend")
 
 @pytest.fixture
-def mock_chat_openai():
-    with patch('backend.logic.graph.ChatOpenAI') as mock:
-        # Configure the mock to return a predictable response
-        mock_instance = Mock()
-        mock_instance.invoke.return_value = AIMessage(content="Test response")
-        mock.return_value = mock_instance
-        yield mock
+def mock_llm_response():
+    """Create a proper AIMessage for mocking."""
+    return AIMessage(content="Test response")
+
+@pytest.fixture
+def mock_llm_with_tools():
+    """Create an AIMessage with tool calls."""
+    return AIMessage(
+        content="",
+        tool_calls=[
+            {
+                "name": "web_search",
+                "args": {"query": "test query"},
+                "id": "call_123"
+            }
+        ]
+    )

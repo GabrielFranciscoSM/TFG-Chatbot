@@ -16,15 +16,15 @@ services:
     environment:
         HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
     ports:
-        - 8000:8000
+        - ${VLLM_MAIN_PORT}:${VLLM_MAIN_PORT}
     image: docker.io/vllm/vllm-openai:latest
     command: >
-      --model /models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit
+      --model ${MODEL_PATH}
       --max-num-seqs 8
       --max-model-len 4096
       --gpu-memory-utilization 0.9
-      --port 8000
+      --port ${VLLM_MAIN_PORT}
       --tool-call-parser mistral 
-      --chat-template /models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit/tool_chat_template_mistral_parallel.jinja
+      --chat-template ${MODEL_PATH}/tool_chat_template_mistral_parallel.jinja
       --enable-auto-tool-choice
       --quantization bitsandbytes

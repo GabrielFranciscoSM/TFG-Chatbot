@@ -4,7 +4,6 @@ from backend.logic.graph import build_graph, think
 from unittest.mock import MagicMock, patch
 from backend.logic.graph import build_graph
 
-
 def test_build_graph():
     """Test that the graph builds without errors."""
     graph = build_graph()
@@ -33,20 +32,18 @@ def test_think_node(mock_openai, mock_llm_response):
     assert result["messages"][0].content == "Test response"
 
 @patch('backend.logic.graph.ChatOpenAI')
-def test_graph_execution(mock_openai, mock_llm_response):
+def test_graph_execution(mock_openai,graph,graph_config, mock_llm_response):
     """Test that the graph executes successfully."""
     # Configure the mock to return our AIMessage
     mock_instance = MagicMock()
     mock_instance.bind_tools.return_value.invoke.return_value = mock_llm_response
     mock_openai.return_value = mock_instance
-    
-    # Build graph
-    graph = build_graph()
-    
+        
     # Execute graph
-    result = graph.invoke({
-        "messages": [HumanMessage(content="Hello")]
-    })
+    result = graph.invoke(
+        {"messages": [HumanMessage(content="Hello")]},
+        config=graph_config
+        )
     
     # Verify result
     assert "messages" in result
@@ -55,7 +52,7 @@ def test_graph_execution(mock_openai, mock_llm_response):
     assert isinstance(result["messages"][-1], AIMessage)
 
 @patch('backend.logic.graph.ChatOpenAI')
-def test_graph_with_tool_calls(mock_openai, mock_llm_with_tools, mock_llm_response):
+def test_graph_with_tool_calls(mock_openai,graph,graph_config, mock_llm_with_tools, mock_llm_response):
     """Test graph execution when tools are called."""
     # Configure mock to first return tool call, then final response
     mock_instance = MagicMock()
@@ -63,15 +60,15 @@ def test_graph_with_tool_calls(mock_openai, mock_llm_with_tools, mock_llm_respon
     mock_bound.invoke.side_effect = [mock_llm_with_tools, mock_llm_response]
     mock_instance.bind_tools.return_value = mock_bound
     mock_openai.return_value = mock_instance
-    
-    # Build graph
-    graph = build_graph()
-    
+            
     # Execute graph with a query that should trigger tools
-    result = graph.invoke({
-        "messages": [HumanMessage(content="Search for Python tutorials")]
-    })
+    result = graph.invoke(
+        {"messages": [HumanMessage(content="Search for Python tutorials")]},
+        config=graph_config
+    )
     
     # Verify result
     assert "messages" in result
     assert len(result["messages"]) >= 2
+
+

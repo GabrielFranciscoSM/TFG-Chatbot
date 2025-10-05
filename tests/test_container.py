@@ -1,16 +1,12 @@
 import pytest
 import requests
 import testinfra
+import os
+from dotenv import load_dotenv
 
-API_URL = "http://localhost:8000"
-MAIN_VLLM_IMAGE = "docker.io/vllm/vllm-openai:latest"
-MAIN_VLLM_MODEL_NAME = "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"
-
-@pytest.mark.podman_container(image=MAIN_VLLM_IMAGE, ports={"8000/tcp": 8000})
-def test_container_running_and_port_open(host):
-    # Verifica que el puerto 8000 está abierto
-    socket = host.socket("tcp://0.0.0.0:8000")
-    assert socket.is_listening
+load_dotenv()
+API_URL = "http://localhost:" + os.getenv("VLLM_MAIN_PORT","8000")
+MAIN_VLLM_MODEL_NAME = os.getenv("MODEL_PATH","/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit") 
 
 
 def test_health_endpoint():

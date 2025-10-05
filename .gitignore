@@ -211,4 +211,5 @@ models/
 
 # TFG
 
-figures/
+figures
+storage

@@ -5,5 +5,5 @@ langgraph
 python-dotenv
 duckduckgo-search
 langgraph-checkpoint-sqlite
-
+fastapi
   

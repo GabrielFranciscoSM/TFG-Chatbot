@@ -30,5 +30,8 @@ services:
       --chat-template ${MODEL_PATH}/tool_chat_template_mistral_parallel.jinja
       --enable-auto-tool-choice
       --quantization bitsandbytes
+      --tokenizer_mode mistral \
+      --load_format mistral \
+      --config_format mistral
 volumes:
   mongodb_data:

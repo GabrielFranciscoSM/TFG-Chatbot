@@ -1,12 +1,12 @@
 import pytest
 from langchain_core.messages import HumanMessage, AIMessage
-from backend.logic.graph import build_graph, think
+from backend.logic.graph import GraphAgent
 from unittest.mock import MagicMock, patch
-from backend.logic.graph import build_graph
 
 def test_build_graph():
     """Test that the graph builds without errors."""
-    graph = build_graph()
+    agent = GraphAgent()
+    graph = agent.build_graph()
     assert graph is not None
 
 @patch('backend.logic.graph.ChatOpenAI')
@@ -17,13 +17,16 @@ def test_think_node(mock_openai, mock_llm_response):
     mock_instance.bind_tools.return_value.invoke.return_value = mock_llm_response
     mock_openai.return_value = mock_instance
     
+    # Create agent instance
+    agent = GraphAgent()
+    
     # Create initial state
     state = {
         "messages": [HumanMessage(content="Hello")]
     }
     
     # Call think node
-    result = think(state)
+    result = agent.think(state)
     
     # Verify the result
     assert "messages" in result
@@ -32,7 +35,7 @@ def test_think_node(mock_openai, mock_llm_response):
     assert result["messages"][0].content == "Test response"
 
 @patch('backend.logic.graph.ChatOpenAI')
-def test_graph_execution(mock_openai,graph,graph_config, mock_llm_response):
+def test_graph_execution(mock_openai, graph, graph_config, mock_llm_response):
     """Test that the graph executes successfully."""
     # Configure the mock to return our AIMessage
     mock_instance = MagicMock()
@@ -52,7 +55,7 @@ def test_graph_execution(mock_openai,graph,graph_config, mock_llm_response):
     assert isinstance(result["messages"][-1], AIMessage)
 
 @patch('backend.logic.graph.ChatOpenAI')
-def test_graph_with_tool_calls(mock_openai,graph,graph_config, mock_llm_with_tools, mock_llm_response):
+def test_graph_with_tool_calls(mock_openai, graph, graph_config, mock_llm_with_tools, mock_llm_response):
     """Test graph execution when tools are called."""
     # Configure mock to first return tool call, then final response
     mock_instance = MagicMock()
@@ -70,5 +73,24 @@ def test_graph_with_tool_calls(mock_openai,graph,graph_config, mock_llm_with_too
     # Verify result
     assert "messages" in result
     assert len(result["messages"]) >= 2
+
+@patch('backend.logic.graph.ChatOpenAI')
+def test_call_agent_method(mock_openai, mock_llm_response):
+    """Test the call_agent convenience method."""
+    # Configure the mock to return our AIMessage
+    mock_instance = MagicMock()
+    mock_instance.bind_tools.return_value.invoke.return_value = mock_llm_response
+    mock_openai.return_value = mock_instance
+    
+    # Create agent instance
+    agent = GraphAgent()
+    
+    # Call agent with query and id
+    result = agent.call_agent(query="Hello, how are you?", id="test-user-123")
+    
+    # Verify result
+    assert "messages" in result
+    assert len(result["messages"]) >= 2  # At least input + output
+    assert isinstance(result["messages"][-1], AIMessage)
 
 

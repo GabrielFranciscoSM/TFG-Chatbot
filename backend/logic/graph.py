@@ -12,75 +12,130 @@ import sqlite3
 # --- CONFIGURACIÓN ---
 load_dotenv()
 
-VLLM_URL = "http://localhost:" + os.getenv("VLLM_MAIN_PORT", "8000") + "/v1"
-VLLM_MODEL_NAME = os.getenv("MODEL_DIR", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit")
 
-# --- LÓGICA DEL GRAFO ---
+class GraphAgent:
+    """Clase que encapsula la construcción del grafo y la llamada al agente.
+
+    Mantiene la API existente a nivel de módulo (think, should_continue, build_graph)
+    y añade un método `call_agent(query, id)` para invocar el agente desde fuera.
+    """
+
+    def __init__(self, *, vllm_port: str | None = None, model_dir: str | None = None,
+                 openai_api_key: str = "EMPTY", temperature: float = 0.0):
+        # Lectura de configuración desde entorno si no se pasan parámetros
+        vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
+        self.vllm_url = "http://localhost:" + vllm_port + "/v1"
+        self.model_name = model_dir or os.getenv(
+            "MODEL_DIR", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"
+        )
+        self.openai_api_key = openai_api_key
+        self.temperature = temperature
+
+        # Cache interno del grafo compilado
+        self._graph = None
+
+    def think(self, state: MessagesState):
+        """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
+        tools = get_tools()
+        system_message = SystemMessage(content=SYSTEM_PROMPT)
+
+        messages = state["messages"]
+        # Check if there's already a system message
+        if not messages or not isinstance(messages[0], SystemMessage):
+            messages = [system_message] + messages
+
+        llm = ChatOpenAI(
+            model=self.model_name,
+            openai_api_key=self.openai_api_key,
+            openai_api_base=self.vllm_url,
+            temperature=self.temperature,
+        ).bind_tools(tools)
+
+        response = llm.invoke(state["messages"])
+
+        return {"messages": [response]}
+
+    def should_continue(self, state: MessagesState):
+        """Decide si el agente debe continuar o terminar."""
+        messages = state["messages"]
+        last_message = messages[-1]
+
+        # Si el último mensaje tiene tool_calls, continuar a las herramientas
+        if hasattr(last_message, "tool_calls") and last_message.tool_calls:
+            return "tools"
+        # Si no, terminar
+        return END
+
+    def build_graph(self):
+        """Construye y compila el grafo del agente y lo cachea en self._graph."""
+        tools = get_tools()
+
+        graph_builder = StateGraph(MessagesState)
+
+        # Agregar nodos
+        graph_builder.add_node("agent", self.think)
+        graph_builder.add_node("tools", ToolNode(tools))
+
+        # Definir el punto de entrada
+        graph_builder.set_entry_point("agent")
+
+        # Agregar aristas condicionales
+        graph_builder.add_conditional_edges(
+            "agent",
+            self.should_continue,
+            {"tools": "tools", END: END},
+        )
+
+        # Add edge from tools back to agent
+        graph_builder.add_edge("tools", "agent")
+
+        # Preparar persistencia
+        storage_dir = os.path.join(os.path.dirname(__file__), "storage")
+        os.makedirs(storage_dir, exist_ok=True)
+        checkpoint_path = os.path.join(storage_dir, "checkpoints.db")
+        conn = sqlite3.connect(checkpoint_path, check_same_thread=False)
+        memory = SqliteSaver(conn)
+
+        self._graph = graph_builder.compile(checkpointer=memory)
+        return self._graph
+
+    def call_agent(self, query: str, id: str):
+        """Llama al agente compilado con una consulta sencilla.
+
+        Args:
+            query: texto de la consulta del usuario
+            id: identificador (por ahora se usa como thread_id en la configuración)
+
+        Returns:
+            El resultado de invocar el grafo compilado (dict con 'messages').
+        """
+        # Compilar grafo si es necesario
+        if self._graph is None:
+            self.build_graph()
+
+        # Importar aquí para evitar importaciones no usadas si no se llama
+        from langchain_core.messages import HumanMessage
+
+        state = {"messages": [HumanMessage(content=query)]}
+        config = {"configurable": {"thread_id": id}}
+
+        return self._graph.invoke(state, config=config)
+
+
+# Exportar una instancia por defecto para llamadas rápidas desde el módulo
+_DEFAULT_AGENT = GraphAgent()
+
 
 def think(state: MessagesState):
-    """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
-    tools = get_tools()
-    
-    system_message = SystemMessage(content=SYSTEM_PROMPT)
+    """Compatibilidad: wrapper que usa la instancia por defecto."""
+    return _DEFAULT_AGENT.think(state)
 
-    messages = state["messages"]
-    # Check if there's already a system message
-    if not messages or not isinstance(messages[0],SystemMessage):
-        messages = [system_message] + messages
-
-    llm = ChatOpenAI(
-        model=VLLM_MODEL_NAME, 
-        openai_api_key="EMPTY", 
-        openai_api_base=VLLM_URL, 
-        temperature=0
-    ).bind_tools(tools)
-    
-    response = llm.invoke(state["messages"])
-
-    return {"messages": [response]}
 
 def should_continue(state: MessagesState):
-    """Decide si el agente debe continuar o terminar."""
-    messages = state["messages"]
-    last_message = messages[-1]
-    
-    # Si el último mensaje tiene tool_calls, continuar a las herramientas
-    if hasattr(last_message, "tool_calls") and last_message.tool_calls:
-        return "tools"
-    # Si no, terminar
-    return END
+    """Compatibilidad: wrapper que usa la instancia por defecto."""
+    return _DEFAULT_AGENT.should_continue(state)
 
-# --- CONSTRUCCIÓN DEL GRAFO ---
 
 def build_graph():
-    """Construye y compila el grafo del agente."""
-    tools = get_tools()
-
-    graph_builder = StateGraph(MessagesState)
-        
-    # Agregar nodos
-    graph_builder.add_node("agent", think)
-    graph_builder.add_node("tools", ToolNode(tools))
-        
-    # Definir el punto de entrada
-    graph_builder.set_entry_point("agent")
-        
-    # Agregar aristas condicionales
-    graph_builder.add_conditional_edges(
-        "agent",
-        should_continue,
-        {
-            "tools": "tools",
-            END: END
-        }
-    )
-    
-    # Add edge from tools back to agent
-    graph_builder.add_edge("tools", "agent")
-
-    storage_dir = os.path.join(os.path.realpath(__file__), "..", "storage")
-    checkpoint_path = os.path.join(storage_dir, "checkpoints.db")
-    conn = sqlite3.connect(checkpoint_path, check_same_thread=False)
-    memory = SqliteSaver(conn)
-
-    return graph_builder.compile(checkpointer=memory)
+    """Construye y retorna el grafo compilado (compatibilidad con API previa)."""
+    return _DEFAULT_AGENT.build_graph()

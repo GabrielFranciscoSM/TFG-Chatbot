@@ -4,7 +4,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END, MessagesState
 from langgraph.prebuilt import ToolNode
 from .tools import get_tools
-from .prompts import SYSTEM_PROMPT
+from .prompts import SYSTEM_PROMPT, SYSTEM_PROMPT_SMOLLM2
 from langchain_core.messages import SystemMessage
 from langgraph.checkpoint.sqlite import SqliteSaver
 import sqlite3
@@ -26,7 +26,7 @@ class GraphAgent:
         vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
         self.vllm_url = "http://localhost:" + vllm_port + "/v1"
         self.model_name = model_dir or os.getenv(
-            "MODEL_DIR", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"
+            "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
         )
         self.openai_api_key = openai_api_key
         self.temperature = temperature
@@ -37,21 +37,30 @@ class GraphAgent:
     def think(self, state: MessagesState):
         """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
         tools = get_tools()
-        system_message = SystemMessage(content=SYSTEM_PROMPT)
+        system_message = SystemMessage(content=SYSTEM_PROMPT_SMOLLM2)
 
         messages = state["messages"]
         # Check if there's already a system message
         if not messages or not isinstance(messages[0], SystemMessage):
             messages = [system_message] + messages
 
+        print("messages:", messages)
+
+        print(self.model_name, self.vllm_url)
         llm = ChatOpenAI(
             model=self.model_name,
             openai_api_key=self.openai_api_key,
             openai_api_base=self.vllm_url,
             temperature=self.temperature,
         ).bind_tools(tools)
+    
 
-        response = llm.invoke(state["messages"])
+        final_messages = ""
+
+        for message in state["messages"]:
+            final_messages += message.content + "\n"
+
+        response = llm.invoke(final_messages)
 
         return {"messages": [response]}
 
@@ -120,22 +129,3 @@ class GraphAgent:
         config = {"configurable": {"thread_id": id}}
 
         return self._graph.invoke(state, config=config)
-
-
-# Exportar una instancia por defecto para llamadas rápidas desde el módulo
-_DEFAULT_AGENT = GraphAgent()
-
-
-def think(state: MessagesState):
-    """Compatibilidad: wrapper que usa la instancia por defecto."""
-    return _DEFAULT_AGENT.think(state)
-
-
-def should_continue(state: MessagesState):
-    """Compatibilidad: wrapper que usa la instancia por defecto."""
-    return _DEFAULT_AGENT.should_continue(state)
-
-
-def build_graph():
-    """Construye y retorna el grafo compilado (compatibilidad con API previa)."""
-    return _DEFAULT_AGENT.build_graph()

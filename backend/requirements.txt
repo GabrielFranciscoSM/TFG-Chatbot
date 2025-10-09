@@ -4,6 +4,7 @@ langchain-core
 langgraph
 python-dotenv
 duckduckgo-search
+ddgs
 langgraph-checkpoint-sqlite
 fastapi
   

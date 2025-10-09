@@ -1,3 +1,3 @@
-from .logic.graph import GraphAgent, build_graph
+from .logic.graph import GraphAgent
 
-__all__ = ['GraphAgent', 'build_graph']
+__all__ = ['GraphAgent']

@@ -15,23 +15,21 @@ services:
     volumes:
         - "./models:/models"
     env_file:
-      - .env 
+      - .env
     environment:
         HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
     ports:
         - ${VLLM_MAIN_PORT}:${VLLM_MAIN_PORT}
     command: >
       --model ${MODEL_PATH}
-      --max-num-seqs 8
-      --max-model-len 4096
-      --gpu-memory-utilization 0.9
+      --max-num-seqs 4
+      --max-model-len 2048
+      --gpu-memory-utilization 0.8
       --port ${VLLM_MAIN_PORT}
-      --tool-call-parser mistral 
-      --chat-template ${MODEL_PATH}/tool_chat_template_mistral_parallel.jinja
+      --tool-call-parser hermes
       --enable-auto-tool-choice
-      --quantization bitsandbytes
-      --tokenizer_mode mistral \
-      --load_format mistral \
-      --config_format mistral
+#      --enable-tool-calls
+      
+
 volumes:
   mongodb_data:

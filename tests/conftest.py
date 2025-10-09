@@ -4,6 +4,8 @@ import pytest
 import uuid
 from langchain_core.messages import AIMessage
 from backend.logic.graph import GraphAgent
+from fastapi.testclient import TestClient
+from backend.api import app
 
 # Get the absolute path of the project root
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
@@ -50,3 +52,13 @@ def graph():
 def graph_config():
     """Fixture que proporciona la configuración necesaria para el checkpointer."""
     return {"configurable": {"thread_id": f"test-{uuid.uuid4()}"}}
+
+@pytest.fixture(scope="session")
+def api_client():
+    """Fixture que proporciona un cliente de pruebas para la API de FastAPI."""
+    return TestClient(app)
+
+@pytest.fixture
+def session_id():
+    """Fixture que proporciona un ID de sesión único para cada test."""
+    return f"test-session-{uuid.uuid4()}"

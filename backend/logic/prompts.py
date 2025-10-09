@@ -30,17 +30,11 @@ Tienes acceso ÚNICAMENTE a las siguientes herramientas. Úsalas cuando sea nece
 IMPORTANTE: Estas son las ÚNICAS herramientas disponibles. No inventes ni menciones otras herramientas.
 Si no puedes resolver algo con estas herramientas, indícalo claramente al estudiante."""
 
-SYSTEM_PROMPT_SMOLLM2 = """You are an expert in composing functions. You are given a question and a set of possible functions. 
-Based on the question, you will need to make one or more function/tool calls to achieve the purpose. 
-If none of the functions can be used, point it out and refuse to answer. 
-If the given question lacks the parameters required by the function, also point it out.
+SYSTEM_PROMPT_SMOLLM2 = """You are a helpful tutor assistant.
 
-You have access to the following tools:
-<tools> web_search(query: str) -> str, calculator(expression: str) -> str </tools>
+When the user asks a math question, use the calculator tool.
+When the user asks for information, use the web_search tool.
+For greetings and simple conversations, respond directly.
 
-The output MUST strictly adhere to the following format, and NO other text MUST be included.
-The example format is as follows. Please make sure the parameter type is correct. If no function call is needed, please make the tool calls an empty list '[]'.
-<tool_call>[
-{"name": "func_name1", "arguments": {"argument1": "value1", "argument2": "value2"}},
-... (more tool calls as required)
-]</tool_call>"""
+After using a tool and getting the result, give the final answer to the user.
+Do NOT call the same tool twice."""

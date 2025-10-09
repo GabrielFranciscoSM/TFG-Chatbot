@@ -21,7 +21,7 @@ class GraphAgent:
     """
 
     def __init__(self, *, vllm_port: str | None = None, model_dir: str | None = None,
-                 openai_api_key: str = "EMPTY", temperature: float = 0.0):
+                 openai_api_key: str = "EMPTY", temperature: float = 0.1):
         # Lectura de configuración desde entorno si no se pasan parámetros
         vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
         self.vllm_url = "http://localhost:" + vllm_port + "/v1"
@@ -53,14 +53,17 @@ class GraphAgent:
             openai_api_base=self.vllm_url,
             temperature=self.temperature,
         ).bind_tools(tools)
-    
 
-        final_messages = ""
-
-        for message in state["messages"]:
-            final_messages += message.content + "\n"
-
-        response = llm.invoke(final_messages)
+        # Pass the messages as a list, not as concatenated string
+        # This preserves the conversation structure and tool messages
+        response = llm.invoke(messages)
+        
+        print("=" * 80)
+        print("AI RESPONSE:")
+        print(f"Content: {response.content}")
+        print(f"Tool calls: {getattr(response, 'tool_calls', None)}")
+        print(f"Additional kwargs: {getattr(response, 'additional_kwargs', None)}")
+        print("=" * 80)
 
         return {"messages": [response]}
 

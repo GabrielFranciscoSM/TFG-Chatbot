@@ -3,6 +3,7 @@ import sys
 import pytest
 import uuid
 from langchain_core.messages import AIMessage
+from backend.logic.graph import GraphAgent
 from fastapi.testclient import TestClient
 from backend.api import app
 
@@ -16,6 +17,11 @@ sys.path.insert(0, ROOT_DIR)
 def root_path():
     """Fixture to provide the root path of the project."""
     return ROOT_DIR
+
+@pytest.fixture(scope="session")
+def backend_path():
+    """Fixture to provide the backend directory path."""
+    return os.path.join(ROOT_DIR, "backend")
 
 @pytest.fixture
 def mock_llm_response():

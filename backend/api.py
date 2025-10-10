@@ -1,6 +1,6 @@
 from fastapi import FastAPI, status
-from models import ChatRequest, MessageResponse
-from logic.graph import GraphAgent
+from backend.models import ChatRequest, MessageResponse
+from backend.logic.graph import GraphAgent
 
 # Define version directly or import it properly
 backend_version = "0.1.0"

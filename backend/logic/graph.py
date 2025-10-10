@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END, MessagesState
 from langgraph.prebuilt import ToolNode
-from logic.tools import get_tools
-from logic.prompts import SYSTEM_PROMPT, SYSTEM_PROMPT_SMOLLM2
+from backend.logic.tools import get_tools
+from backend.logic.prompts import SYSTEM_PROMPT, SYSTEM_PROMPT_SMOLLM2
 from langchain_core.messages import SystemMessage
 from langgraph.checkpoint.sqlite import SqliteSaver
 import sqlite3

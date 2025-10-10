@@ -6,7 +6,7 @@
 
 Proyecto para el Trabajo de Fin de Grado (TFG) que investiga y desarrolla un agente de IA tipo chatbot orientado a entornos educativos. El objetivo es combinar los beneficios de los LLM con directrices pedagógicas que reduzcan alucinaciones y favorezcan el aprendizaje del estudiante. El repositorio está en una fase inicial (prácticamente vacío) y actúa como contenedor del TFG: documentación, experimentos y código.
 
-## Table of Contents
+## Tabla de contenidos
 
 - [TFG-Chatbot](#tfg-chatbot)
   - [Resumen](#resumen)
@@ -48,23 +48,79 @@ Actualmente este repositorio está en una fase inicial: no hay código ni modelo
 ## Tecnologías (planificadas)
 
 - Lenguaje: Python (versión mínima recomendada: 3.10)
-- Modelos/Frameworks: Transformers (Hugging Face), LangChain o similar (según necesidades), herramientas de evaluación (nltk, sacrebleu) y librerías para despliegue (FastAPI, Streamlit o similar)
+- Modelos/Frameworks: LangChain y langgraph o similares (según necesidades), herramientas de evaluación (nltk, lanfuse) y librerías para despliegue (FastAPI, Streamlit o similar)
 - Experimentos y notebooks: Jupyter / Colab
 
-## Instalación mínima (proyecto vacío)
+## Instalación
 
 1. Clonar el repositorio.
 2. Crear un entorno virtual (venv/conda) y activar.
-3. Añadir dependencias en `requirements.txt` en futuras fases.
+3. Instalar las dependencias del proyecto.
 
-Ejemplo (básico):
+Ejemplo:
 
-- Crear entorno (recomendado): `python -m venv .venv && source .venv/bin/activate`
-- Instalar dependencias cuando estén definidas: `pip install -r requirements.txt`
+```bash
+# Clonar el repositorio
+git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
+cd TFG-Chatbot
 
-## Quick start (demo/ejecución)
+# Crear entorno virtual (recomendado)
+python -m venv .venv
+source .venv/bin/activate  # En Windows: .venv\Scripts\activate
 
-Este proyecto aún no contiene una demo ejecutable. En próximas versiones se añadirá una sección con ejemplos de uso, scripts para lanzar el servidor y capturas de conversaciones.
+# Instalar dependencias
+pip install -r requirements.txt
+pip install -r backend/requirements.txt
+```
+
+## Quick start
+
+### Ejecutar la API del backend
+
+Para iniciar el servidor FastAPI del chatbot:
+
+**Opción 1: Usando el script de inicio**
+```bash
+bash scripts/run_fastAPI.sh
+```
+
+**Opción 2: Usando uvicorn directamente**
+```bash
+uvicorn backend.api:app --reload --host 0.0.0.0 --port 8080
+```
+
+La API estará disponible en `http://localhost:8080`
+
+### Endpoints disponibles
+
+- **Documentación interactiva (Swagger)**: `http://localhost:8080/docs`
+- **Documentación alternativa (ReDoc)**: `http://localhost:8080/redoc`
+
+### Ejemplos de uso
+
+**1. Health check**
+```bash
+curl http://localhost:8080/health
+```
+
+Respuesta:
+```json
+{"message": "Hello World"}
+```
+
+**2. Enviar un mensaje al chatbot**
+```bash
+curl -X POST "http://localhost:8080/chat" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "¿Qué es la inteligencia artificial?",
+    "id": "session-123"
+  }'
+```
+
+
+> **Nota**: El parámetro `id` permite mantener conversaciones persistentes. Usa el mismo ID para continuar una conversación anterior.
+
 
 ## Arquitectura (plan)
 
@@ -81,14 +137,14 @@ Este proyecto aún no contiene una demo ejecutable. En próximas versiones se a�
 
 ## Roadmap / Milestones
 
-- Milestone 1: API de un agente React básico para un chatbot
-- Milestone 2: Agente con herramientas específicas
-- Milestone 3: Autenticación de usuarios
-- Milestone 4: Interfaz Educativa
-- Milestone 5: Logs y Monitorización
-- Milestone 6: Métricas y Dashboard
-- Milestone 7: Chatbot con herramientas avanzadas
-- Milestone 8: Evaluación y documentación
+- [x] Milestone 1: API de un agente React básico para un chatbot
+- [ ] Milestone 2: Agente con herramientas específicas
+- [ ] Milestone 3: Autenticación de usuarios
+- [ ] Milestone 4: Interfaz Educativa
+- [ ] Milestone 5: Logs y Monitorización
+- [ ] Milestone 6: Métricas y Dashboard
+- [ ] Milestone 7: Chatbot con herramientas avanzadas
+- [ ] Milestone 8: Evaluación y documentación
 
 ## Cómo contribuir
 
@@ -103,7 +159,7 @@ Este repositorio incluye un fichero `LICENSE`. Revisa ese fichero para conocer l
 ## Contacto
 
 Autor: Gabriel Francisco Sánchez Muñoz
-Tutor / Afiliación: (añadir nombre del tutor y la afiliación de la universidad)
+Tutores: Pablo García Sánchez y Nuria Rico Castro.
 
 ## Agradecimientos
 

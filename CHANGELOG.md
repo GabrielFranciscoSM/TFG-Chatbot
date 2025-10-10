@@ -13,5 +13,8 @@ El formato del documento se basa en [keep a changelog](https://keepachangelog.co
 
 ### Added
 
-- Centralized backend version in `backend.__version__`.
-- FastAPI metadata now reads `version` from the package (`backend.api` uses it).
+- FastAPI-based backend API (`backend/api.py`) con endpoints `/`, `/health` and `/chat`.
+- `GraphAgent`: agente de IA en el backend responsable de la lógica conversacional y manejo de diálogos (implementado en `logic/graph.py`).
+- Pruebas: conjunto de tests unitarios y de integración para la API y la lógica del agente (carpeta `tests/`, incluyendo tests de integración para el backend).
+- Infraestrutura: Docker compose con vLLM para inferencia del modelo Qwen2.5-1.5b-instruct
+

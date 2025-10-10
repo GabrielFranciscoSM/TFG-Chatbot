@@ -7,4 +7,4 @@ duckduckgo-search
 ddgs
 langgraph-checkpoint-sqlite
 fastapi
-  
+uvicorn[standard]

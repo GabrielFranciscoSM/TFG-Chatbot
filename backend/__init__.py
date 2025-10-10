@@ -1,5 +1,5 @@
 """Backend package exports and metadata."""
-from .logic.graph import GraphAgent
+from logic.graph import GraphAgent
 
 __all__ = ['GraphAgent']
 

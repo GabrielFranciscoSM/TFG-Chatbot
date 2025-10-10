@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END, MessagesState
 from langgraph.prebuilt import ToolNode
-from .tools import get_tools
-from .prompts import SYSTEM_PROMPT, SYSTEM_PROMPT_SMOLLM2
+from logic.tools import get_tools
+from logic.prompts import SYSTEM_PROMPT, SYSTEM_PROMPT_SMOLLM2
 from langchain_core.messages import SystemMessage
 from langgraph.checkpoint.sqlite import SqliteSaver
 import sqlite3
@@ -24,7 +24,9 @@ class GraphAgent:
                  openai_api_key: str = "EMPTY", temperature: float = 0.1):
         # Lectura de configuración desde entorno si no se pasan parámetros
         vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
-        self.vllm_url = "http://localhost:" + vllm_port + "/v1"
+        # Use vllm-openai service name from docker-compose for container communication
+        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
+        self.vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
         self.model_name = model_dir or os.getenv(
             "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
         )

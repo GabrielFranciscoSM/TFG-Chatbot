@@ -1,7 +1,9 @@
 from fastapi import FastAPI, status
-from .models import ChatRequest, MessageResponse
-from .logic import GraphAgent
-from . import __version__ as backend_version
+from models import ChatRequest, MessageResponse
+from logic.graph import GraphAgent
+
+# Define version directly or import it properly
+backend_version = "0.1.0"
 
 app = FastAPI(
     title="TFG Chatbot API",
@@ -14,23 +16,43 @@ app = FastAPI(
 @app.get(
     "/", 
     tags=["General"],
-    summary="Root endpoint",
-    description="Welcome endpoint that returns a simple greeting message",
-    response_model=MessageResponse,
+    summary="API Information",
+    description="Returns information about the TFG Chatbot API including version, available endpoints, and documentation links",
     status_code=status.HTTP_200_OK,
     responses={
         200: {
-            "description": "Successful response",
+            "description": "Successful response with API information",
             "content": {
                 "application/json": {
-                    "example": {"message": "Hello World"}
+                    "example": {
+                        "name": "TFG Chatbot API",
+                        "version": "0.1.0",
+                        "description": "API for interacting with an intelligent chatbot powered by GraphAgent",
+                        "endpoints": {
+                            "health": "/health",
+                            "chat": "/chat",
+                            "docs": "/docs",
+                            "redoc": "/redoc"
+                        }
+                    }
                 }
             }
         }
     }
 )
 async def root():
-    return {"message": "Hello World"}
+    return {
+        "name": "TFG Chatbot API",
+        "version": backend_version,
+        "description": "API for interacting with an intelligent chatbot powered by GraphAgent",
+        "status": "running",
+        "endpoints": {
+            "health": "/health - Health check endpoint",
+            "chat": "/chat - Send messages to the chatbot",
+            "docs": "/docs - Interactive API documentation (Swagger UI)",
+            "redoc": "/redoc - Alternative API documentation (ReDoc)"
+        }
+    }
 
 
 @app.get(

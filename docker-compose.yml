@@ -19,7 +19,7 @@ services:
     environment:
         HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
     ports:
-        - ${VLLM_MAIN_PORT}:${VLLM_MAIN_PORT}
+        - 8000:8000
     command: >
       --model ${MODEL_PATH}
       --max-num-seqs 4
@@ -28,7 +28,22 @@ services:
       --port ${VLLM_MAIN_PORT}
       --tool-call-parser hermes
       --enable-auto-tool-choice
-#      --enable-tool-calls
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: tfg-backend
+    env_file:
+      - .env
+    environment:
+      VLLM_HOST: vllm-openai
+    ports:
+      - "8080:8080"
+    depends_on:
+      - vllm-openai
+    restart: unless-stopped
       
 
 volumes:

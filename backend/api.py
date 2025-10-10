@@ -1,14 +1,22 @@
+""" Backend module for TFG-Chatbot
+
+This module implements the logicfor the AI agent, including:
+- Agent Graph
+- Tools
+- Prompts
+
+"""
+
+__version__ = "0.1.0"
+
 from fastapi import FastAPI, status
 from backend.models import ChatRequest, MessageResponse
 from backend.logic.graph import GraphAgent
 
-# Define version directly or import it properly
-backend_version = "0.1.0"
-
 app = FastAPI(
     title="TFG Chatbot API",
     description="API for interacting with an intelligent chatbot powered by GraphAgent",
-    version=backend_version,
+    version=__version__,
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -43,7 +51,7 @@ app = FastAPI(
 async def root():
     return {
         "name": "TFG Chatbot API",
-        "version": backend_version,
+        "version": __version__,
         "description": "API for interacting with an intelligent chatbot powered by GraphAgent",
         "status": "running",
         "endpoints": {

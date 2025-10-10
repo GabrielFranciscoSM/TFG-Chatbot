@@ -1,11 +1,12 @@
 from fastapi import FastAPI, status
 from .models import ChatRequest, MessageResponse
 from .logic import GraphAgent
+from . import __version__ as backend_version
 
 app = FastAPI(
     title="TFG Chatbot API",
     description="API for interacting with an intelligent chatbot powered by GraphAgent",
-    version="0.0.1",
+    version=backend_version,
     docs_url="/docs",
     redoc_url="/redoc"
 )

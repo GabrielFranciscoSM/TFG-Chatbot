@@ -21,7 +21,7 @@ def web_search(query: str) -> str:
 
 
 @tool(args_schema=CalculatorInput)
-def calculator(expression: str) -> str:
+def calculator(expresion: str) -> str:
     """
     Evaluate a mathematical expression.
     """
@@ -31,7 +31,7 @@ def calculator(expression: str) -> str:
             "abs": abs, "round": round, "min": min, "max": max,
             "sum": sum, "pow": pow, "len": len
         }
-        result = eval(expression, {"__builtins__": {}}, allowed_names)
+        result = eval(expresion, {"__builtins__": {}}, allowed_names)
         return str(result)
     except Exception as e:
         return f"Error evaluating expression: {str(e)}"

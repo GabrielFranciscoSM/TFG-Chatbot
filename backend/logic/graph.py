@@ -10,7 +10,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from backend.logic.tools import get_tools
-from backend.logic.prompts import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_SMOLLM2_v2
+from backend.logic.prompts import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
 
 import sqlite3
 
@@ -40,7 +40,7 @@ class GraphAgent:
     def think(self, state: MessagesState):
         """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
         tools = get_tools()
-        system_message = SystemMessage(content=SYSTEM_PROMPT_SMOLLM2)
+        system_message = SystemMessage(content=SYSTEM_PROMPT_V2)
 
         messages = state["messages"]
         if not messages or not isinstance(messages[0], SystemMessage):
@@ -63,8 +63,7 @@ class GraphAgent:
         last_message = messages[-1]
 
         # Si el último mensaje tiene tool_calls, continuar a las herramientas
-        #if hasattr(last_message, "tool_calls") and last_message.tool_calls:
-        if isinstance(last_message,ToolMessage) and last_message.tool_calls:
+        if hasattr(last_message, "tool_calls") and last_message.tool_calls:
             return "tools"
         else:
             return END

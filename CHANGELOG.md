@@ -9,6 +9,22 @@ El formato del documento se basa en [keep a changelog](https://keepachangelog.co
 
 - Nothing yet.
 
+## [0.1.1] - 2025-10-11
+
+### Changed
+
+- Modified test configuration and structure
+- Updated Docker configuration
+
+### Added
+
+- New infrastructure tests
+- Integration test configuration
+
+### Removed
+
+- Removed container tests (replaced with infrastructure tests)
+
 ## [0.1.0] - 2025-10-10
 
 ### Added

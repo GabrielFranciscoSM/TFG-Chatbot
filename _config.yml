@@ -1,0 +1,23 @@
+# Jekyll configuration
+title: TFG Chatbot
+description: Chatbot project documentation
+baseurl: "/TFG-Chatbot"
+url: "https://GabrielFranciscoSM.github.io"
+
+# Theme
+theme: minima
+
+# Exclude files from processing
+exclude:
+  - backend/
+  - scripts/
+  - tests/
+  - models/
+  - local/
+  - devLog/
+  - docker-compose.yml
+  - Dockerfile
+  - requirements.txt
+  - pytest.ini
+  - "*.pyc"
+  - __pycache__/

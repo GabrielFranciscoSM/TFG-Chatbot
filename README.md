@@ -1,5 +1,3 @@
-# TFG-Chatbot
-
 [![state: en desarrollo](https://img.shields.io/badge/state-en%20desarrollo-yellow)](README.md) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![GitHub](https://img.shields.io/badge/GitHub-Repo-black?logo=github&logoColor=white)](https://github.com/GabrielFranciscoSM/TFG-Chatbot?tab=readme-ov-file) [![Release](https://img.shields.io/github/v/tag/GabrielFranciscoSM/TFG-Chatbot?sort=semver)](https://github.com/GabrielFranciscoSM/TFG-Chatbot/releases) [![Web](https://img.shields.io/badge/Web-GitHub%20Pages-blue?logo=github)](https://gabrielfranciscosm.github.io/TFG-Chatbot/)
 
 ## Resumen

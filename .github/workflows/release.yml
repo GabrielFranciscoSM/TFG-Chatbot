@@ -8,6 +8,8 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -18,17 +20,12 @@ jobs:
           TAG=${GITHUB_REF##*/}
           # extract the section for the tag from CHANGELOG.md if present
           awk -v tag="${TAG#v}" 'BEGIN{RS="\n## ";found=0}{if($0 ~ ("^" tag "\\]")){print "## " $0;found=1}} END{if(found==0) print "Release " tag}' CHANGELOG.md > release_notes.txt || echo "Release ${TAG#v}" > release_notes.txt
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          cat release_notes.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          body: ${{ steps.release_notes.outputs.notes }}
-          draft: false
-          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=${{ github.ref_name }}
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes-file release_notes.txt

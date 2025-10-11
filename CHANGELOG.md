@@ -9,6 +9,19 @@ El formato del documento se basa en [keep a changelog](https://keepachangelog.co
 
 - Nothing yet.
 
+## [0.1.2] - 2025-10-11
+
+### Added
+
+- GitHub Pages website con tema Just the Docs
+- Workflow de Jekyll para generación automática de la web
+- Badge en README enlazando a la página web del proyecto
+
+### Changed
+
+- Actualizado estado del proyecto de "empty" a "en desarrollo" en badges
+- Configuración Jekyll optimizada para evitar duplicación de títulos
+
 ## [0.1.1] - 2025-10-11
 
 ### Changed

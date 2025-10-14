@@ -12,6 +12,7 @@ Documentación de la planificación de cada sprint del proyecto TFG-Chatbot.
 ## Sprints Planificados
 
 - [Sprint 1](sprintPlanning_1.md) - Chatbot Básico ReAct (29 Sep - 10 Oct 2025)
+- [Sprint 2](sprintPlanning_2.md) - Agente con Herramientas Educativas Específicas (14 Oct - 28 Oct 2025)
 
 ---
 

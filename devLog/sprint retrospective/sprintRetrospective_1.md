@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Sprint 1
-parent: Sprint Reviews
+parent: Sprint Retrospectives
 grand_parent: DevLog
 ---
 

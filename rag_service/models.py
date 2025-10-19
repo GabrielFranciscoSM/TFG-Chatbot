@@ -1,7 +1,7 @@
 """Data models for RAG service."""
 
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 
 
@@ -12,8 +12,8 @@ class HealthCheckResponse(BaseModel):
     collection: dict | None = Field(None, description="Collection information from vector store")
     message: str | None = Field(None, description="Additional message about the health status")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "status": "healthy",
                 "qdrant_connected": True,
@@ -26,6 +26,7 @@ class HealthCheckResponse(BaseModel):
                 "message": "API is healthy and running"
             }
         }
+    )
 
 class DocumentMetadata(BaseModel):
     """Metadata schema for indexed documents."""
@@ -41,8 +42,8 @@ class DocumentMetadata(BaseModel):
     licencia: Optional[str] = Field(None, description="Document license, e.g., 'CC-BY', 'MIT', etc.")
 
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "asignatura": "Lógica Difusa",
                 "tipo_documento": "apuntes",
@@ -54,6 +55,7 @@ class DocumentMetadata(BaseModel):
                 "chunk_id": 0
             }
         }
+    )
 
 
 class Document(BaseModel):
@@ -141,15 +143,10 @@ class UploadFileMetadata(DocumentMetadata):
     auto_index: bool = Field(default=True, description="Automatically index after upload")
 
 class MessageResponse(BaseModel):
-    message: str = Field(
-        ..., 
-        description="Response message from the API",
-        example="Hello World"
-    )
-    
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "message": "Hello World"
-            }
+    message: str = Field(..., description="Response message from the API")
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {"message": "Hello World"}
         }
+    )

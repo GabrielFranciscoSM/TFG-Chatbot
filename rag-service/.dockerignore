@@ -26,3 +26,7 @@ README.md
 docs/
 tests/
 example_usage.py
+documents/*.pdf
+documents/*.docx
+documents/*.txt
+!documents/README.md

@@ -1,0 +1,13 @@
+name: 🐞 Reportar un bug
+description: Reporta un error o comportamiento inesperado.
+title: "[BUG] <Descripción corta>"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del problema
+      description: Explica qué está pasando y qué esperabas que pasara.
+      placeholder: "El botón 'Guardar' no funciona al hacer clic."
+    validations:
+      required: true

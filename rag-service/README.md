@@ -1,4 +1,10 @@
-# RAG Service
+# RAG - 🔍 **Búsqueda semántica** usando embeddings de Ollama (nomic-embed-text)
+- 📊 **Base de datos vectorial** Qdrant con persistencia
+- 🏷️ **Filtrado por metadata** (asignatura, tipo de documento, etc.)
+- ✂️ **Chunking automático** de documentos largos con overlap inteligente
+- 📁 **Carga de archivos** desde disco (TXT, PDF, DOCX, Markdown)
+- 🚀 **API REST** con FastAPI
+- 🐳 **Dockerizado** para fácil despliegue
 
 Servicio de Retrieval-Augmented Generation para el chatbot educativo.
 
@@ -8,7 +14,8 @@ Servicio de Retrieval-Augmented Generation para el chatbot educativo.
 - 📊 **Base de datos vectorial** Qdrant con persistencia
 - 🏷️ **Filtrado por metadata** (asignatura, tipo de documento, etc.)
 - ✂️ **Chunking automático** de documentos largos con overlap inteligente
-- 🚀 **API REST** con FastAPI
+- � **Carga de archivos** desde disco (TXT, PDF, DOCX)
+- �🚀 **API REST** con FastAPI
 - 🐳 **Dockerizado** para fácil despliegue
 
 ## Arquitectura
@@ -22,10 +29,12 @@ rag-service/
 ├── embeddings.py            # Servicio de embeddings (Ollama)
 ├── vector_store.py          # Operaciones con Qdrant
 ├── document_processor.py    # Chunking de documentos
+├── file_loader.py           # Carga de archivos (TXT, PDF, DOCX)
 ├── example_usage.py         # Ejemplos de uso
 ├── requirements.txt         # Dependencias Python
 ├── Dockerfile              # Imagen Docker
 ├── .env.example            # Ejemplo de configuración
+├── documents/              # Directorio para documentos a procesar
 ├── docs/
 │   └── CHUNKING.md         # Documentación sobre chunking
 └── tests/                  # Tests unitarios
@@ -111,8 +120,51 @@ print(response.json())
 - `GET /` - Información del servicio
 - `GET /health` - Health check
 - `POST /search` - Búsqueda semántica
-- `POST /index` - Indexar documentos
+- `POST /index` - Indexar documentos directamente
+- `GET /files` - Listar archivos disponibles en el directorio de documentos
+- `GET /files/{filename}` - Información de un archivo específico
+- `POST /load-file` - Cargar e indexar un archivo desde el directorio de documentos
 - `GET /collection/info` - Información de la colección
+
+### Cargar archivos desde disco
+
+```python
+import requests
+
+# Listar archivos disponibles
+response = requests.get("http://localhost:8081/files")
+print(response.json())
+
+# Cargar e indexar un archivo
+load_request = {
+    "filename": "tema1-conjuntos-difusos.pdf",
+    "metadata": {
+        "asignatura": "Lógica Difusa",
+        "tipo_documento": "apuntes",
+        "fecha": "2025-10-17",
+        "tema": "Conjuntos difusos",
+        "fuente": "PRADO UGR",
+        "idioma": "es"
+    }
+}
+
+response = requests.post(
+    "http://localhost:8081/load-file",
+    json=load_request
+)
+print(response.json())
+# Output: {"filename": "tema1-conjuntos-difusos.pdf", "doc_id": "tema1-conjuntos-difusos", "indexed_count": 5}
+```
+
+### Copiar archivos al contenedor Docker
+
+```bash
+# Copiar un archivo al volumen del contenedor
+docker cp mi_documento.pdf rag-service:/app/documents/
+
+# Listar archivos en el contenedor
+docker exec rag-service ls -la /app/documents/
+```
 
 ## Configuración
 
@@ -129,6 +181,7 @@ Variables de entorno principales:
 | `RAG_SIMILARITY_THRESHOLD` | Umbral de similitud | `0.7` |
 | `CHUNK_SIZE` | Tamaño de chunks (caracteres) | `1000` |
 | `CHUNK_OVERLAP` | Overlap entre chunks | `200` |
+| `DOCUMENTS_PATH` | Ruta de documentos | `/app/documents` |
 
 ## Modelo de Metadata
 

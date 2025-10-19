@@ -5,6 +5,28 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 
+class HealthCheckResponse(BaseModel):
+    """Response model for health check endpoint."""
+    status: str = Field(..., description="Health status of the API, e.g., 'healthy' or 'unhealthy'")
+    qdrant_connected: bool = Field(..., description="Whether Qdrant vector store is connected")
+    collection: dict | None = Field(None, description="Collection information from vector store")
+    message: str | None = Field(None, description="Additional message about the health status")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status": "healthy",
+                "qdrant_connected": True,
+                "collection": {
+                    "name": "academic_documents",
+                    "vectors_count": 0,
+                    "points_count": 52,
+                    "status": "green"
+                },
+                "message": "API is healthy and running"
+            }
+        }
+
 class DocumentMetadata(BaseModel):
     """Metadata schema for indexed documents."""
     
@@ -16,7 +38,9 @@ class DocumentMetadata(BaseModel):
     fuente: str = Field(default="PRADO UGR", description="Source: 'PRADO UGR', 'Wikipedia', etc.")
     idioma: str = Field(default="es", description="Language code: 'es' or 'en'")
     chunk_id: Optional[int] = Field(None, description="Chunk ID within the document")
-    
+    licencia: Optional[str] = Field(None, description="Document license, e.g., 'CC-BY', 'MIT', etc.")
+
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -26,6 +50,7 @@ class DocumentMetadata(BaseModel):
                 "tema": "Conjuntos difusos",
                 "fuente": "PRADO UGR",
                 "idioma": "es",
+                "licencia": "CC-BY",
                 "chunk_id": 0
             }
         }
@@ -71,3 +96,60 @@ class IndexResponse(BaseModel):
     indexed_count: int = Field(..., description="Number of documents indexed")
     collection_name: str = Field(..., description="Qdrant collection name")
     timestamp: datetime = Field(default_factory=datetime.now, description="Indexing timestamp")
+
+
+class LoadFileRequest(BaseModel):
+    """Request to load a file from the documents directory."""
+    
+    filename: str = Field(..., description="Name of the file to load")
+    metadata: DocumentMetadata = Field(..., description="Metadata for the document")
+
+
+class LoadFileResponse(BaseModel):
+    """Response after loading a file."""
+    
+    filename: str = Field(..., description="Name of the loaded file")
+    doc_id: str = Field(..., description="Document ID")
+    indexed_count: int = Field(..., description="Number of chunks indexed")
+    timestamp: datetime = Field(default_factory=datetime.now, description="Load timestamp")
+
+
+class FileListResponse(BaseModel):
+    """Response with list of files."""
+    
+    files: List[str] = Field(..., description="List of available files")
+    total_files: int = Field(..., description="Total number of files")
+
+
+class SubjectListResponse(BaseModel):
+    """Response with list of subjects."""
+    
+    subjects: List[str] = Field(..., description="List of available subjects")
+    total_subjects: int = Field(..., description="Total number of subjects")
+
+
+class DocumentTypesResponse(BaseModel):
+    """Response with list of document types for a subject."""
+    
+    asignatura: str = Field(..., description="Subject name")
+    document_types: List[str] = Field(..., description="List of document types")
+    total_types: int = Field(..., description="Total number of document types")
+
+
+class UploadFileMetadata(DocumentMetadata):
+    """Metadata for file upload, inherits from DocumentMetadata."""
+    auto_index: bool = Field(default=True, description="Automatically index after upload")
+
+class MessageResponse(BaseModel):
+    message: str = Field(
+        ..., 
+        description="Response message from the API",
+        example="Hello World"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "message": "Hello World"
+            }
+        }

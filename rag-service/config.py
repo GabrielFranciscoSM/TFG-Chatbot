@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     api_host: str = os.getenv("RAG_API_HOST", "0.0.0.0")
     api_port: int = int(os.getenv("RAG_API_PORT", "8081"))
     
+    # Documents storage
+    documents_path: str = os.getenv("DOCUMENTS_PATH", "/app/documents")
+    
     class Config:
         env_file = ".env"
         case_sensitive = False

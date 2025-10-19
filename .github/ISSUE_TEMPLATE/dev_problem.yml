@@ -1,0 +1,13 @@
+name: 🧠 Problema en el desarrollo
+description: Usa esta plantilla para reportar bloqueos, dudas técnicas o dificultades encontradas durante el desarrollo.
+title: "[DEV PROBLEM] <Título del problema>"
+labels: ["help wanted"]
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del problema
+      description: Describe el subproblema asociado a la HU que se está resolviendo.
+      placeholder: "Cómo identificar un libro de forma única"
+    validations:
+      required: true

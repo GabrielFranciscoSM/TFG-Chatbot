@@ -1,159 +1,125 @@
-# RAG - 🔍 **Búsqueda semántica** usando embeddings de Ollama (nomic-embed-text)
-- 📊 **Base de datos vectorial** Qdrant con persistencia
-- 🏷️ **Filtrado por metadata** (asignatura, tipo de documento, etc.)
-- ✂️ **Chunking automático** de documentos largos con overlap inteligente
-- 📁 **Carga de archivos** desde disco (TXT, PDF, DOCX, Markdown)
-- 🚀 **API REST** con FastAPI
-- 🐳 **Dockerizado** para fácil despliegue
+# RAG Service — Búsqueda semántica
 
-Servicio de Retrieval-Augmented Generation para el chatbot educativo.
+RAG service implements retrieval-augmented search for the educational chatbot.
+It provides:
 
-## Características
-
-- 🔍 **Búsqueda semántica** usando embeddings de Ollama (nomic-embed-text)
-- 📊 **Base de datos vectorial** Qdrant con persistencia
-- 🏷️ **Filtrado por metadata** (asignatura, tipo de documento, etc.)
-- ✂️ **Chunking automático** de documentos largos con overlap inteligente
-- � **Carga de archivos** desde disco (TXT, PDF, DOCX)
-- �🚀 **API REST** con FastAPI
-- 🐳 **Dockerizado** para fácil despliegue
+- Semantic search using Ollama embeddings (nomic-embed-text)
+- Qdrant as a vector database with metadata filtering
+- Automatic chunking of long documents
+- File ingestion (txt, pdf, markdown, docx) and upload endpoint
+- FastAPI REST interface and Docker support
 
 ## Arquitectura
 
 ```
-rag-service/
+rag_service/
 ├── __init__.py              # Inicialización del paquete
-├── api.py                   # FastAPI application
-├── config.py                # Configuración y settings
-├── models.py                # Modelos Pydantic
-├── embeddings.py            # Servicio de embeddings (Ollama)
-├── vector_store.py          # Operaciones con Qdrant
-├── document_processor.py    # Chunking de documentos
-├── file_loader.py           # Carga de archivos (TXT, PDF, DOCX)
-├── example_usage.py         # Ejemplos de uso
-├── requirements.txt         # Dependencias Python
-├── Dockerfile              # Imagen Docker
-├── .env.example            # Ejemplo de configuración
-├── documents/              # Directorio para documentos a procesar
-├── docs/
-│   └── CHUNKING.md         # Documentación sobre chunking
-└── tests/                  # Tests unitarios
+├── api.py                   # FastAPI application (routes registration)
+├── config.py                # Settings and configuration
+├── models.py                # Pydantic models
+├── embeddings/              # Embeddings & vector store services
+│   ├── __init__.py
+│   ├── embeddings.py
+│   └── store.py
+├── routes/                  # FastAPI route handlers
+│   ├── __init__.py
+│   ├── general.py
+│   ├── files.py
+│   ├── search_index.py
+│   └── subjects.py
+├── documents/               # Document processing utilities and loaders
+│   ├── __init__.py
+│   ├── document_processor.py
+│   ├── file_loader.py
+│   └── file_utils.py
+├── requirements.txt         # Python dependencies
+├── Dockerfile               # Docker image for rag_service
+├── .env.example             # Example environment variables
+├── upload_example.py        # Example script to upload documents
+├── docs/                    # Human-facing documentation (markdown)
+└── tests/                   # Unit and integration tests
 ```
 
 ## Instalación
 
-### Con Docker (recomendado)
+### Con Docker Compose (recomendado para desarrollo)
+
+Run Qdrant, Ollama and rag-service together using the top-level compose file:
 
 ```bash
-# Desde el directorio raíz del proyecto
-docker-compose up qdrant ollama rag-service
+# From repository root
+docker-compose up --build qdrant ollama rag-service
 ```
 
-### Desarrollo local
+### Desarrollo local (sin Docker)
 
 ```bash
-cd rag-service
+cd rag_service
 
-# Crear entorno virtual
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-
-# Instalar dependencias
+# Create a virtualenv and install deps
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 
-# Copiar configuración
+# Copy example env and run
 cp .env.example .env
-
-# Ejecutar API
-python -m uvicorn api:app --reload --port 8081
+python -m uvicorn rag_service.api:app --reload --port 8081
 ```
 
-## Uso
+## Uso básico
 
-### Indexar documentos
+Indexar documentos (API):
 
 ```python
 import requests
 
-documents = [
-    {
-        "content": "Un conjunto difuso es una generalización de un conjunto clásico...",
-        "metadata": {
-            "asignatura": "Lógica Difusa",
-            "tipo_documento": "apuntes",
-            "fecha": "2025-10-14",
-            "tema": "Conjuntos difusos",
-            "fuente": "PRADO UGR",
-            "idioma": "es"
-        }
+documents = [{
+    "content": "Ejemplo...",
+    "metadata": {
+        "asignatura": "Lógica Difusa",
+        "tipo_documento": "apuntes",
+        "fecha": "2025-10-14",
     }
-]
+}]
 
-response = requests.post(
-    "http://localhost:8081/index",
-    json=documents
-)
-print(response.json())
+resp = requests.post("http://localhost:8081/index", json=documents)
+print(resp.json())
 ```
 
-### Búsqueda semántica
+Search example:
 
 ```python
 import requests
 
-query = {
-    "query": "¿Qué es un conjunto difuso?",
-    "asignatura": "Lógica Difusa",
-    "tipo_documento": "apuntes",
-    "top_k": 5
-}
-
-response = requests.post(
-    "http://localhost:8081/search",
-    json=query
-)
-print(response.json())
+q = {"query": "¿Qué es un conjunto difuso?", "top_k": 5}
+resp = requests.post("http://localhost:8081/search", json=q)
+print(resp.json())
 ```
 
 ### Endpoints disponibles
 
-- `GET /` - Información del servicio
-- `GET /health` - Health check
-- `POST /search` - Búsqueda semántica
-- `POST /index` - Indexar documentos directamente
-- `GET /files` - Listar archivos disponibles en el directorio de documentos
-- `GET /files/{filename}` - Información de un archivo específico
-- `POST /load-file` - Cargar e indexar un archivo desde el directorio de documentos
-- `GET /collection/info` - Información de la colección
+- `GET /` - Service info
+- `GET /health` - Health check (includes Qdrant connectivity)
+- `POST /search` - Semantic search
+- `POST /index` - Index documents (bulk)
+- `GET /files` - List files in `DOCUMENTS_PATH` (optional filters)
+- `GET /files/{filename}` - File info
+- `POST /load-file` - Load + index file from `DOCUMENTS_PATH`
+- `POST /upload` - Upload file and optionally auto-index
+- `GET /collection/info` - Qdrant collection info
 
-### Cargar archivos desde disco
+### Upload and load file
 
-```python
-import requests
+List files:
 
-# Listar archivos disponibles
-response = requests.get("http://localhost:8081/files")
-print(response.json())
+```bash
+curl http://localhost:8081/files
+```
 
-# Cargar e indexar un archivo
-load_request = {
-    "filename": "tema1-conjuntos-difusos.pdf",
-    "metadata": {
-        "asignatura": "Lógica Difusa",
-        "tipo_documento": "apuntes",
-        "fecha": "2025-10-17",
-        "tema": "Conjuntos difusos",
-        "fuente": "PRADO UGR",
-        "idioma": "es"
-    }
-}
+Load a file (already present in `DOCUMENTS_PATH`):
 
-response = requests.post(
-    "http://localhost:8081/load-file",
-    json=load_request
-)
-print(response.json())
-# Output: {"filename": "tema1-conjuntos-difusos.pdf", "doc_id": "tema1-conjuntos-difusos", "indexed_count": 5}
+```bash
+curl -X POST http://localhost:8081/load-file -H "Content-Type: application/json" -d '{"filename":"tema1.pdf","metadata":{"asignatura":"Lógica Difusa","tipo_documento":"apuntes","fecha":"2025-10-17"}}'
 ```
 
 ### Copiar archivos al contenedor Docker
@@ -168,7 +134,7 @@ docker exec rag-service ls -la /app/documents/
 
 ## Configuración
 
-Variables de entorno principales:
+Principales variables de entorno (ver `rag_service/config.py`):
 
 | Variable | Descripción | Default |
 |----------|-------------|---------|
@@ -201,46 +167,43 @@ Cada documento indexado debe incluir:
 
 ## Testing
 
-```bash
-# Ejecutar tests
-pytest tests/
+Run unit tests for the RAG service:
 
-# Con coverage
-pytest tests/ --cov=rag_service
+```bash
+pytest rag_service/tests
 ```
+
+For integration tests, see `rag_service/docs/INTEGRATION_TESTS.md`.
 
 ## Desarrollo
 
-### Añadir nuevas funcionalidades
+When developing, update models in `rag_service/models.py`, add logic to `rag_service/embeddings` or `rag_service/embeddings/store.py` and add tests under `rag_service/tests/`.
 
-1. Modifica los modelos en `models.py`
-2. Implementa la lógica en `vector_store.py` o `embeddings.py`
-3. Añade endpoints en `api.py`
-4. Actualiza tests en `tests/`
-
-### Logs
-
-Los logs se configuran automáticamente en `api.py`. Para desarrollo:
+Enable debug logs:
 
 ```python
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-## Próximos pasos
+## Roadmap
 
-- [ ] Implementar chunking semántico avanzado
-- [ ] Añadir soporte para PDFs y DOCX
-- [ ] Implementar caché de embeddings
-- [ ] Añadir métricas y monitoring
-- [ ] Implementar rate limiting
-- [ ] Añadir autenticación
-- [ ] Tests de integración completos
+- Implementar chunking semántico avanzado
+- Añadir soporte para PDFs y DOCX (if not already wired)
+- Implementar caché de embeddings
+- Añadir métricas y monitoring
+- Implementar rate limiting and authentication
+- Complete integration test suite (see docs)
 
-## Documentación Adicional
+## Documentación adicional
 
-- **[Chunking de Documentos](docs/CHUNKING.md)** - Guía completa sobre chunking
-- **[Ejemplos de Uso](example_usage.py)** - Ejemplos prácticos
+- **Chunking de Documentos:** `rag_service/docs/CHUNKING.md`
+- **API Reference:** `rag_service/docs/API.md`
+- **CI Guide:** `rag_service/docs/CI.md`
+- **Integration Tests:** `rag_service/docs/INTEGRATION_TESTS.md`
+- **Deployment:** `rag_service/docs/DEPLOYMENT.md`
+
+See `devLog/notas/Project_docs_plan.md` for the broader documentation roadmap.
 
 ## Referencias
 

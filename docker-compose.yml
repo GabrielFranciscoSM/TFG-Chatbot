@@ -43,7 +43,7 @@ services:
       - "8080:8080"
     depends_on:
       - vllm-openai
-      - rag-service
+      - rag_service
     restart: unless-stopped
 
   # Qdrant Vector Database
@@ -68,9 +68,9 @@ services:
     restart: unless-stopped
 
   # RAG Service
-  rag-service:
+  rag_service:
     build:
-      context: ./rag-service
+      context: ./rag_service
       dockerfile: Dockerfile
     container_name: rag-service
     env_file:

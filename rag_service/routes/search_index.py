@@ -3,9 +3,9 @@
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 import logging
-from rag_service.models import QueryRequest, QueryResponse, Document, IndexResponse
-from rag_service.vector_store import get_vector_store
-from rag_service.config import settings
+from ..models import QueryRequest, QueryResponse, Document, IndexResponse
+from ..embeddings.store import get_vector_store
+from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -15,18 +15,10 @@ router = APIRouter()
     "/search",
     tags=["Search"],
     summary="Semantic search",
-    description="Performs a semantic search over indexed documents using the provided query and optional filters.",
     response_model=QueryResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "Query response with search results"},
-        500: {"description": "Search failed"}
-    }
 )
 async def search(request: QueryRequest):
-    """
-    Semantic search endpoint.
-    """
     try:
         vector_store = get_vector_store()
         filters = {}
@@ -56,18 +48,10 @@ async def search(request: QueryRequest):
     "/index",
     tags=["Indexing"],
     summary="Index documents",
-    description="Indexes a list of documents into the vector store for future semantic search.",
     response_model=IndexResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "Index response with count of indexed documents"},
-        500: {"description": "Indexing failed"}
-    }
 )
 async def index_documents(documents: List[Document]):
-    """
-    Index documents endpoint.
-    """
     try:
         vector_store = get_vector_store()
         indexed_count = vector_store.index_documents(documents)
@@ -86,15 +70,9 @@ async def index_documents(documents: List[Document]):
     "/collection/info",
     tags=["Collection"],
     summary="Get collection information",
-    description="Returns metadata and statistics about the current vector store collection.",
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "Collection information and statistics"},
-        500: {"description": "Failed to get collection info"}
-    }
 )
 async def get_collection_info():
-    """Get collection information."""
     try:
         vector_store = get_vector_store()
         return vector_store.get_collection_info()

@@ -4,12 +4,12 @@ from fastapi import APIRouter, HTTPException, status, UploadFile, File, Form
 from typing import Optional
 import json
 import logging
-from rag_service.models import (
+from ..models import (
     FileListResponse, LoadFileRequest, LoadFileResponse, DocumentMetadata, UploadFileMetadata
 )
-from rag_service.file_utils import list_files as ls_files, get_file_info as file_info
-from rag_service.file_loader import get_file_loader
-from rag_service.vector_store import get_vector_store
+from ..documents.file_utils import list_files as ls_files, get_file_info as file_info
+from ..documents.file_loader import get_file_loader
+from ..embeddings.store import get_vector_store
 
 logger = logging.getLogger(__name__)
 
@@ -22,10 +22,6 @@ router = APIRouter()
     description="Lists all available files in the documents directory, with optional filtering by subject (asignatura) and document type (tipo_documento).",
     response_model=FileListResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "List of files and total count"},
-        500: {"description": "Failed to list files"}
-    }
 )
 async def list_files(
     asignatura: Optional[str] = None,
@@ -48,13 +44,7 @@ async def list_files(
     "/files/{filename:path}",
     tags=["Files"],
     summary="Get file information",
-    description="Retrieves metadata and details about a specific file by filename.",
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "File information and metadata"},
-        404: {"description": "File not found"},
-        500: {"description": "Failed to get file info"}
-    }
 )
 async def get_file_info(filename: str):
     try:
@@ -75,15 +65,8 @@ async def get_file_info(filename: str):
     "/load-file",
     tags=["Files"],
     summary="Load and index file",
-    description="Loads a file from the documents directory and indexes it in the vector store.",
     response_model=LoadFileResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "Indexing information and document ID"},
-        404: {"description": "File not found"},
-        400: {"description": "Invalid request"},
-        500: {"description": "Failed to load file"}
-    }
 )
 async def load_file(request: LoadFileRequest):
     try:
@@ -117,14 +100,8 @@ async def load_file(request: LoadFileRequest):
     "/upload",
     tags=["Files"],
     summary="Upload and index file",
-    description="Uploads a file via HTTP multipart/form-data and optionally indexes it in the vector store. Accepts file and metadata as form data. Recommended for external services to upload documents.",
     response_model=LoadFileResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "Indexing information and document ID"},
-        400: {"description": "Invalid metadata JSON format or unsupported file type"},
-        500: {"description": "Failed to upload file"}
-    }
 )
 async def upload_file(
     file: UploadFile = File(...),
@@ -147,7 +124,7 @@ async def upload_file(
             asignatura=upload_metadata.asignatura,
             tipo_documento=upload_metadata.tipo_documento
         )
-        logger.info(f"File uploaded: {saved_path}")
+        logger.info(f"File saved: {saved_path}")
         indexed_count = 0
         if upload_metadata.auto_index:
             doc_metadata = DocumentMetadata(

@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, HTTPException, status
 import logging
-from rag_service.models import SubjectListResponse, DocumentTypesResponse
-from rag_service.file_utils import list_subjects, list_document_types
+from ..models import SubjectListResponse, DocumentTypesResponse
+from ..documents.file_utils import list_subjects as ls_subjects, list_document_types as ls_document_types
 
 logger = logging.getLogger(__name__)
 
@@ -13,17 +13,12 @@ router = APIRouter()
     "/subjects",
     tags=["Subjects"],
     summary="List subjects",
-    description="Lists all available subjects (asignaturas) found in the documents directory.",
     response_model=SubjectListResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "List of subject names and total count"},
-        500: {"description": "Failed to list subjects"}
-    }
 )
 async def list_subjects():
     try:
-        subjects = list_subjects()
+        subjects = ls_subjects()
         return SubjectListResponse(
             subjects=subjects,
             total_subjects=len(subjects),
@@ -39,17 +34,12 @@ async def list_subjects():
     "/subjects/{asignatura}/types",
     tags=["Subjects"],
     summary="List document types for subject",
-    description="Lists all document types for a given subject (asignatura).",
     response_model=DocumentTypesResponse,
     status_code=status.HTTP_200_OK,
-    responses={
-        200: {"description": "List of document types and total count"},
-        500: {"description": "Failed to list document types"}
-    }
 )
 async def list_document_types(asignatura: str):
     try:
-        doc_types = list_document_types(asignatura)
+        doc_types = ls_document_types(asignatura)
         return DocumentTypesResponse(
             asignatura=asignatura,
             document_types=doc_types,

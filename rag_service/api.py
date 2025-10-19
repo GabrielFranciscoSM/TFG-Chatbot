@@ -2,21 +2,20 @@
 
 __version__ = "0.1.0"
 
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from rag_service.config import settings
+from .config import settings
 
-from rag_service.routes.general import router as general_router
-from rag_service.routes.search_index import router as search_index_router
-from rag_service.routes.files import router as files_router
-from rag_service.routes.subjects import router as subjects_router
+from .routes.general import router as general_router
+from .routes.search_index import router as search_index_router
+from .routes.files import router as files_router
+from .routes.subjects import router as subjects_router
 
 # Create FastAPI app
 app = FastAPI(
     title="RAG Service",
     description="Retrieval-Augmented Generation service for educational chatbot",
-    version="0.1.0",
+    version=__version__,
 )
 
 # Add CORS middleware
@@ -37,9 +36,8 @@ app.include_router(subjects_router)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "api:app",
+        "rag_service.api:app",
         host=settings.api_host,
         port=settings.api_port,
         reload=True,
     )
-

@@ -4,7 +4,7 @@ from langchain_ollama import OllamaEmbeddings
 from typing import List
 import logging
 
-from rag_service.config import settings
+from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -27,12 +27,6 @@ class EmbeddingService:
     def embed_query(self, text: str) -> List[float]:
         """
         Generate embedding for a single query text.
-        
-        Args:
-            text: Text to embed
-            
-        Returns:
-            List of floats representing the embedding vector
         """
         try:
             embedding = self.embeddings.embed_query(text)
@@ -45,12 +39,6 @@ class EmbeddingService:
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         """
         Generate embeddings for multiple documents.
-        
-        Args:
-            texts: List of texts to embed
-            
-        Returns:
-            List of embedding vectors
         """
         try:
             embeddings = self.embeddings.embed_documents(texts)
@@ -63,9 +51,6 @@ class EmbeddingService:
     def get_embedding_dimension(self) -> int:
         """
         Get the dimension of the embedding vectors.
-        
-        Returns:
-            Embedding dimension
         """
         return settings.embedding_dimension
 
@@ -77,9 +62,6 @@ _embedding_service: EmbeddingService | None = None
 def get_embedding_service() -> EmbeddingService:
     """
     Get or create the global embedding service instance.
-    
-    Returns:
-        EmbeddingService instance
     """
     global _embedding_service
     if _embedding_service is None:

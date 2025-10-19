@@ -2,6 +2,7 @@
 
 import os
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
 
 class Settings(BaseSettings):
@@ -33,9 +34,12 @@ class Settings(BaseSettings):
     # Documents storage
     documents_path: str = os.getenv("DOCUMENTS_PATH", "/app/documents")
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    # In pydantic v2 use `model_config` to set env_file and extra behaviour.
+    model_config = ConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        extra="ignore",  # ignore unrelated environment variables
+    )
 
 
 settings = Settings()

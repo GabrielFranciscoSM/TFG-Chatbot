@@ -45,10 +45,13 @@ exclude:
   - tests/
   - models/
   - local/
+  - rag_service/
   - devLog/notas/
   - docker-compose.yml
   - Dockerfile
-  - requirements.txt
+  - pyproject.toml
   - pytest.ini
   - "*.pyc"
   - __pycache__/
+  - docs/ADR/adr-template.md
+  - docs/notas/

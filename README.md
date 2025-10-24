@@ -68,9 +68,11 @@ cd TFG-Chatbot
 python -m venv .venv
 source .venv/bin/activate  # En Windows: .venv\Scripts\activate
 
-# Instalar dependencias
-pip install -r requirements.txt
-pip install -r backend/requirements.txt
+# Instalar dependencias del backend y del servicio RAG desde sus pyproject.toml
+# (pip will build and install the packages and their declared dependencies)
+pip install --upgrade pip setuptools wheel
+pip install ./backend
+pip install ./rag_service
 ```
 
 ## Quick start

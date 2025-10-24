@@ -141,8 +141,9 @@ Examples:
         print()
         print("Install it with:")
         print("  pip install huggingface_hub")
-        print("Or:")
-        print("  pip install -r requirements.txt")
+        print()
+        print("Or install project dependencies (declared in pyproject.toml):")
+        print("  pip install ./")
         sys.exit(1)
     
     # Determine output directory

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tfg-chatbot"
+version = "0.1.4"
+description = "TFG Chatbot project"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [ { name = "Gabriel Francisco" } ]
+dependencies = [
+  "huggingface-hub>=0.18.0",
+  "safetensors",
+  "accelerate",
+  "requests"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4.2",
+  "testinfra>=6.0.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*", "models/*"]

@@ -32,7 +32,7 @@ rag_service/
 │   ├── document_processor.py
 │   ├── file_loader.py
 │   └── file_utils.py
-├── requirements.txt         # Python dependencies
+├── pyproject.toml          # Project metadata & dependencies
 ├── Dockerfile               # Docker image for rag_service
 ├── .env.example             # Example environment variables
 ├── upload_example.py        # Example script to upload documents
@@ -51,15 +51,16 @@ Run Qdrant, Ollama and rag-service together using the top-level compose file:
 docker-compose up --build qdrant ollama rag-service
 ```
 
-### Desarrollo local (sin Docker)
+# Desarrollo local (sin Docker)
 
 ```bash
 cd rag_service
 
-# Create a virtualenv and install deps
+# Create a virtualenv and install deps from pyproject.toml
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --upgrade pip setuptools wheel
+pip install ./rag_service
 
 # Copy example env and run
 cp .env.example .env

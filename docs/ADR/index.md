@@ -1,5 +1,4 @@
 ---
----
 layout: default
 title: Architecture Decision Records (ADRs)
 parent: DevLog

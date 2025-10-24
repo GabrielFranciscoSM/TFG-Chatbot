@@ -45,6 +45,7 @@ exclude:
   - tests/
   - models/
   - local/
+  - rag_service/
   - devLog/notas/
   - docker-compose.yml
   - Dockerfile

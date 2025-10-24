@@ -1,5 +1,5 @@
 import pytest
-from backend.logic import tools
+from backend.logic.tools.tools import tools
 
 def test_calculator_simple_expressions():
     assert tools.calculator.invoke("2 + 2") == "4"

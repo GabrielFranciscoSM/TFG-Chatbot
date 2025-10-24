@@ -24,7 +24,7 @@ services:
       --model ${MODEL_PATH}
       --max-num-seqs 4
       --max-model-len 2048
-      --gpu-memory-utilization 0.8
+      --gpu-memory-utilization 0.6
       --port ${VLLM_MAIN_PORT}
       --tool-call-parser hermes
       --enable-auto-tool-choice

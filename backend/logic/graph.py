@@ -9,7 +9,7 @@ from langgraph.graph import StateGraph, END, MessagesState
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-from backend.logic.tools import get_tools
+from backend.logic.tools.tools import get_tools
 from backend.logic.prompts import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
 
 import sqlite3

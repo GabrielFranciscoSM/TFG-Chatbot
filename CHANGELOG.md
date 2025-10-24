@@ -9,6 +9,20 @@ El formato del documento se basa en [keep a changelog](https://keepachangelog.co
 
 - Nothing yet.
 
+## [0.1.3] - 2025-10-24
+
+### Added
+
+- ADR system: Architecture Decision Records under `docs/ADR` with a template, README and index page.
+- Initial ADRs (0001–0009) documenting major decisions: FastAPI, LangChain/LangGraph, Podman, SQLite (graph memory), Pydantic, pytest, vLLM, Ollama (embeddings/RAG), Qdrant (vector store).
+- `scripts/new_adr.sh` helper: creates numbered ADRs and now auto-writes `parent: Architecture Decision Records` and a `nav_order` value.
+- `docs/ADR/adr-template.md` updated with navigation metadata notes.
+
+### Changed
+
+- Jekyll integration: ADR index page added so ADRs appear under DevLog → Architecture Decision Records in the site navigation; ADR pages include `parent` and `nav_order` front-matter.
+- Documentation and navigation updated to reflect ADR listings.
+
 ## [0.1.2] - 2025-10-11
 
 ### Added

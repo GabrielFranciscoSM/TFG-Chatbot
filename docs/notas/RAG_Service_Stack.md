@@ -108,14 +108,13 @@ podman exec -it ollama-service ollama pull nomic-embed-text
 - ✅ **Metadata filtering** - soporte directo para filtros
 - ✅ **Ecosistema maduro** - muchos ejemplos y documentación
 
-#### Dependencias necesarias:
-```python
-# requirements.txt para rag-service
-langchain==0.3.0
-langchain-qdrant==0.2.0
-langchain-ollama==0.2.0
-langchain-core==0.3.0
-qdrant-client==1.11.0
+#### Dependencias necesarias (declaradas en `rag_service/pyproject.toml`):
+
+Las dependencias del `rag_service` están declaradas en `rag_service/pyproject.toml`. Ejemplo de instalación local:
+
+```bash
+pip install --upgrade pip setuptools wheel
+pip install ./rag_service
 ```
 
 **Links**:
@@ -195,7 +194,7 @@ Cada documento indexado tendrá la siguiente metadata:
 ### Fase 1: Setup Básico
 - [ ] Actualizar `docker-compose.yml` con Qdrant y Ollama
 - [ ] Crear estructura de carpetas `rag-service/`
-- [ ] Configurar requirements.txt
+- [ ] Configurar `pyproject.toml`
 
 ### Fase 2: Implementación Core
 - [ ] Implementar cliente Qdrant con LangChain

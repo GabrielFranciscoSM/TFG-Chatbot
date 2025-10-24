@@ -1,8 +1,0 @@
-huggingface-hub>=0.18.0
-safetensors
-accelerate
-
-# Tests
-pytest      >= 8.4.2
-requests    
-testinfra   >= 6.0.0

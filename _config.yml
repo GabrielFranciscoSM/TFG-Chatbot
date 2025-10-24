@@ -49,7 +49,7 @@ exclude:
   - devLog/notas/
   - docker-compose.yml
   - Dockerfile
-  - requirements.txt
+  - pyproject.toml
   - pytest.ini
   - "*.pyc"
   - __pycache__/

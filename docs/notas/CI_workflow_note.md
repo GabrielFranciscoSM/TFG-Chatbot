@@ -35,7 +35,7 @@ Concrete steps (unit-tests)
 --------------------------
 - Checkout code
 - Set up Python (3.11)
-- Install dependencies from `rag_service/requirements.txt`
+- Install dependencies from `rag_service/pyproject.toml` (e.g. `pip install ./rag_service`)
 - Run tests: `pytest -q rag_service/tests --maxfail=1 -q`
 - Upload coverage and test results as artifacts (optional)
 

@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 import sys
 
-SEMVER_RE = re.compile(r'(?m)^(version\s*=\s*")(?P<maj>\d+)\.(?P<min>\d+)\.(?P<patch>\d+)(")')
+SEMVER_RE = re.compile(r'(?m)^\s*(version\s*=\s*")(?P<maj>\d+)\.(?P<min>\d+)\.(?P<patch>\d+)(?P<quote>")')
 
 
 def parse_args():
@@ -42,7 +42,9 @@ def find_version(text: str):
 
 def replace_version(text: str, new_version: str) -> str:
     def repl(m):
-        return f"{m.group(1)}{new_version}{m.group(4)}"
+        # m.group(1) is the prefix up to the opening quote (including it),
+        # use the named 'quote' group to preserve the original quote char.
+        return f"{m.group(1)}{new_version}{m.group('quote')}"
     new_text, n = SEMVER_RE.subn(repl, text, count=1)
     if n == 0:
         raise RuntimeError("Could not find a version line to replace in pyproject.toml")

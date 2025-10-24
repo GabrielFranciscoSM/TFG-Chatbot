@@ -12,8 +12,9 @@ Usage: $(basename "$0") [--part patch|minor|major] [--version X.Y.Z] [--push] [-
 Defaults: --part patch
 
 Options:
-  --part    Which part to bump (patch,minior,major)
+  --part    Which part to bump (patch,minor,major)
   --version Set an explicit version (overrides --part)
+  -m, --message  Summary for the release commit (used in commit message)
   --push    Push commit and tag to remote
   --allow-dirty Allow running even if working tree has uncommitted changes
 
@@ -27,6 +28,7 @@ PART="patch"
 EXPLICIT_VERSION=""
 PUSH=false
 ALLOW_DIRTY=false
+COMMIT_SUMMARY=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -34,6 +36,8 @@ while [[ $# -gt 0 ]]; do
       PART="$2"; shift 2;;
     --version)
       EXPLICIT_VERSION="$2"; shift 2;;
+      -m|--message)
+        COMMIT_SUMMARY="$2"; shift 2;;
     --push)
       PUSH=true; shift;;
     --allow-dirty)
@@ -76,8 +80,11 @@ if git -C "$ROOT_DIR" diff --staged --quiet; then
   echo "No staged changes to commit. Exiting." >&2
   exit 5
 fi
+if [[ -z "$COMMIT_SUMMARY" ]]; then
+  COMMIT_SUMMARY="Bump version to v$NEW_VERSION"
+fi
 
-git -C "$ROOT_DIR" commit -m "Bump version to v$NEW_VERSION"
+git -C "$ROOT_DIR" commit -m "chore(release): $COMMIT_SUMMARY"
 git -C "$ROOT_DIR" tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
 
 if [[ "$PUSH" == "true" ]]; then

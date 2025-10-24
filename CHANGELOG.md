@@ -7,7 +7,15 @@ El formato del documento se basa en [keep a changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
-- Nothing yet.
+## [0.1.4] - 2025-10-24
+
+### Fixed
+
+- Fixed Google Pages.
+
+### Changed
+
+- Updated dependency files from `requirements.txt` to `pyproject.toml` and `uv.lock`.
 
 ## [0.1.3] - 2025-10-24
 

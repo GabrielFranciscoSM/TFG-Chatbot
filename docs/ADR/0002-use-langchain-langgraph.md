@@ -3,6 +3,7 @@ adr: 0002
 title: "Use LangChain / LangGraph for orchestration of LLM+tool flows"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 2
 ---

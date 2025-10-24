@@ -3,6 +3,7 @@ adr: 0005
 title: "Use Pydantic for data models and validation"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 5
 ---

@@ -3,6 +3,7 @@ adr: 0004
 title: "Use SQLite for graph memory storage"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 4
 ---

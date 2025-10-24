@@ -3,6 +3,7 @@ adr: 0009
 title: "Use Qdrant for vector storage and similarity search"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 9
 ---

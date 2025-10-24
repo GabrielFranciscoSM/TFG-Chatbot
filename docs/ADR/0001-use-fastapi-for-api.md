@@ -1,8 +1,7 @@
 ---
-adr: 0001
+layout: default
 title: "Use FastAPI for the project API"
 date: 2025-10-24
-status: Accepted
 parent: Architecture Decision Records
 nav_order: 1
 ---

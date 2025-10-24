@@ -3,6 +3,7 @@ adr: 0007
 title: "Use vLLM for high-throughput, low-latency inference where applicable"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 7
 ---

@@ -3,6 +3,7 @@ adr: 0003
 title: "Use Podman for containerization in development/CI"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 3
 ---

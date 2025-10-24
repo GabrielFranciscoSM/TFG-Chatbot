@@ -2,7 +2,7 @@
 layout: default
 title: Architecture Decision Records (ADRs)
 parent: DevLog
-nav_order: 1
+nav_order: 4
 has_children: true
 ---
 

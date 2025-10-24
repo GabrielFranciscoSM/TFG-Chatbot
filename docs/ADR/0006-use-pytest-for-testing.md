@@ -3,6 +3,7 @@ adr: 0006
 title: "Use pytest for testing"
 date: 2025-10-24
 status: Accepted
+layout: default
 parent: Architecture Decision Records
 nav_order: 6
 ---

@@ -52,3 +52,4 @@ exclude:
   - pytest.ini
   - "*.pyc"
   - __pycache__/
+  - docs/ADR/adr-template.md

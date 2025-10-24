@@ -24,6 +24,15 @@ else
 fi
 NUM=$(printf "%04d" "$NEXT")
 
+# Compute next nav_order by scanning existing ADR files that start with 4-digit prefix
+EXISTING_NAVS=$(grep -h "^nav_order:" "$ADR_DIR"/[0-9][0-9][0-9][0-9]-*.md 2>/dev/null | awk '{print $2}' || true)
+if [ -z "$EXISTING_NAVS" ]; then
+  NEXT_NAV=1
+else
+  MAX_NAV=$(echo "$EXISTING_NAVS" | sort -n | tail -n1)
+  NEXT_NAV=$((MAX_NAV + 1))
+fi
+
 SLUG=$(echo "$TITLE" | iconv -c -t ascii//TRANSLIT | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g')
 FILE="$ADR_DIR/${NUM}-${SLUG}.md"
 
@@ -38,6 +47,8 @@ adr: $NUM
 title: "$TITLE"
 date: $(date +%F)
 status: Proposed
+parent: Architecture Decision Records
+nav_order: $NEXT_NAV
 ---
 
 # ${NUM} - $TITLE
@@ -71,5 +82,3 @@ EOF
 
 echo "Created $FILE"
 
-# Open in editor
-${EDITOR:-vi} "$FILE"

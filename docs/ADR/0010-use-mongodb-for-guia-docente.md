@@ -14,7 +14,7 @@ Accepted
 
 ## Context
 
-The project includes an agent tool that scrapes or ingests "guía docente" documents and produces structured JSON output. This JSON is semi-structured: the top-level shape is stable (metadata, sections, textual fields), but fields and nested structures vary between guides and across institutions.
+The project includes an agent tool that reads "guía docente" documents and gives a contextualized answer to the user. This JSON is semi-structured: the top-level shape is stable (metadata, sections, textual fields), but fields and nested structures vary between guides.
 
 We need a persistence layer that supports:
 
@@ -28,7 +28,7 @@ We need a persistence layer that supports:
 
 We will use MongoDB as the primary persistent store for the "guía docente" JSON documents.
 
-Full documents (the agent output) will be stored as BSON/JSON documents in a dedicated collection. Important metadata fields will be stored as top-level indexed fields to enable fast lookups. We will keep the original JSON intact for reproducibility and add a small metadata wrapper (ingest timestamp, source, version, checksum).
+Full documents (the agent input) will be stored as BSON/JSON documents in a dedicated collection. Important metadata fields will be stored as top-level indexed fields to enable fast lookups.
 
 ## Rationale
 
@@ -49,7 +49,6 @@ Pros:
 Cons / Trade-offs:
 
 - Operational overhead: running and operating MongoDB (backups, monitoring) adds maintenance compared to file-based storage.
-- Consistency model: MongoDB is eventually consistent across distributed replicas unless configured differently; design must account for write/replica lag where relevant.
 - If complex relational queries across many documents are required later, joins and relational semantics are less convenient than a relational DB.
 
 ## Alternatives considered

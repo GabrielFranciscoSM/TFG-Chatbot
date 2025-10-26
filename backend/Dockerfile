@@ -10,7 +10,7 @@ COPY backend backend/
 # Upgrade pip/build tools and install the backend package so pip reads
 # dependencies from backend/pyproject.toml
 RUN pip install --upgrade pip setuptools wheel && \
-	pip install --no-cache-dir ./backend
+	pip install ./backend
 
 # Exponer el puerto en el que correrá la API (puedes cambiarlo según necesites)
 EXPOSE 8080

@@ -12,6 +12,11 @@ __version__ = "0.1.0"
 from fastapi import FastAPI, status
 from backend.models import ChatRequest, MessageResponse
 from backend.logic.graph import GraphAgent
+from backend.models import ScrapeRequest, ScrapeResponse
+from backend.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
+from backend.db.mongo import MongoDBClient
+from backend.models import SubjectItem, SubjectsListResponse
+from fastapi import HTTPException
 
 app = FastAPI(
     title="TFG Chatbot API",
@@ -102,5 +107,42 @@ async def health():
 )
 async def chat(chat_request: ChatRequest):
     agente = GraphAgent()
-    respuesta = agente.call_agent(query=chat_request.query,id=chat_request.id)
+    respuesta = agente.call_agent(query=chat_request.query, id=chat_request.id, asignatura=chat_request.asignatura)
     return respuesta
+
+
+
+@app.post(
+    "/scrape_guia",
+    tags=["Tools"],
+    summary="Scrape a guia_docente HTML and index it into MongoDB",
+    response_model=ScrapeResponse,
+)
+async def scrape_guia(req: ScrapeRequest):
+    """Parse provided HTML with the scraper and upsert the result into MongoDB.
+
+    The stored document will include a `subject` top-level key (taken from `asignatura` or `subject_override`).
+    """
+    scraper = UGRTeachingGuideScraper(req.html_content, url=req.url or "")
+    data = scraper.parse()
+
+    if req.subject_override:
+        data["asignatura"] = req.subject_override
+
+    client = MongoDBClient()
+    try:
+        client.connect()
+        # Prepare document and ensure subject key
+        subject = data.get("asignatura")
+        if not subject:
+            raise ValueError("No subject found in parsed guia; provide subject_override or ensure 'asignatura' is present in the HTML")
+
+        doc = data.copy()
+        doc["subject"] = subject
+
+        res = client.upsert("guias", {"subject": subject}, doc)
+        return ScrapeResponse(status="ok", subject=subject, upserted_id=res.get("upserted_id"), detail=res)
+    except Exception as e:
+        return ScrapeResponse(status="error", subject=data.get("asignatura"), detail={"error": str(e)})
+    finally:
+        client.close()

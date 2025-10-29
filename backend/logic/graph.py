@@ -6,10 +6,16 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
 from langgraph.graph import StateGraph, END, MessagesState
+from typing import TypedDict, Optional
+
+
+class SubjectState(MessagesState):
+    """Graph state that includes the conversation messages and the selected asignatura."""
+    asignatura: Optional[str]
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-from backend.logic.tools import get_tools
+from backend.logic.tools.tools import get_tools
 from backend.logic.prompts import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
 
 import sqlite3
@@ -37,7 +43,7 @@ class GraphAgent:
         # Cache interno del grafo compilado
         self._graph = None
 
-    def think(self, state: MessagesState):
+    def think(self, state: SubjectState):
         """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
         tools = get_tools()
         system_message = SystemMessage(content=SYSTEM_PROMPT_V2)
@@ -57,7 +63,7 @@ class GraphAgent:
 
         return {"messages": [response]}
 
-    def should_continue(self, state: MessagesState):
+    def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""
         messages = state["messages"]
         last_message = messages[-1]
@@ -72,7 +78,8 @@ class GraphAgent:
         """Construye y compila el grafo del agente y lo cachea en self._graph."""
         tools = get_tools()
 
-        graph_builder = StateGraph(MessagesState)
+        # Use the SubjectState so tools can inject 'asignatura' into tool args
+        graph_builder = StateGraph(SubjectState)
 
         # Agregar nodos
         graph_builder.add_node("agent", self.think)
@@ -99,7 +106,7 @@ class GraphAgent:
         self._graph = graph_builder.compile(checkpointer=memory)
         return self._graph
 
-    def call_agent(self, query: str, id: str):
+    def call_agent(self, query: str, id: str, asignatura: str | None = None):
         """Llama al agente compilado con una consulta sencilla.
 
         Args:
@@ -113,7 +120,7 @@ class GraphAgent:
         if self._graph is None:
             self.build_graph()
 
-        state = {"messages": [HumanMessage(content=query)]}
-        config = {"configurable": {"thread_id": id}}
+        state = {"messages": [HumanMessage(content=query)], "asignatura": asignatura}
+        config = {"configurable": {"thread_id": id, "asignatura": asignatura}}
 
         return self._graph.invoke(state, config=config)

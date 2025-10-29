@@ -4,7 +4,7 @@ from typing import List, Optional
 import logging
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-from ..models import Document
+from rag_service.models import Document
 
 logger = logging.getLogger(__name__)
 

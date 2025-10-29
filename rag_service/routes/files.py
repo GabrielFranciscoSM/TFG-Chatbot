@@ -4,12 +4,12 @@ from fastapi import APIRouter, HTTPException, status, UploadFile, File, Form
 from typing import Optional
 import json
 import logging
-from ..models import (
+from rag_service.models import (
     FileListResponse, LoadFileRequest, LoadFileResponse, DocumentMetadata, UploadFileMetadata
 )
-from ..documents.file_utils import list_files as ls_files, get_file_info as file_info
-from ..documents.file_loader import get_file_loader
-from ..embeddings.store import get_vector_store
+from rag_service.documents.file_utils import list_files as ls_files, get_file_info as file_info
+from rag_service.documents.file_loader import get_file_loader
+from rag_service.embeddings.store import get_vector_store
 
 logger = logging.getLogger(__name__)
 

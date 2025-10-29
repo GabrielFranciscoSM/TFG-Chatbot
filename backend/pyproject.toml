@@ -13,11 +13,13 @@ dependencies = [
   "langchain-core",
   "langgraph",
   "python-dotenv",
+  "pymongo",
   "duckduckgo-search",
   "ddgs",
   "langgraph-checkpoint-sqlite",
   "fastapi",
-  "uvicorn[standard]"
+  "uvicorn[standard]",
+  "beautifulsoup4>=4.12.2"
 ]
 
 [project.optional-dependencies]

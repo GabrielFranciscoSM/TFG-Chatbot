@@ -34,6 +34,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
     container_name: tfg-backend
     env_file:
       - .env
@@ -109,8 +111,10 @@ services:
   # RAG Service
   rag_service:
     build:
-      context: ./rag_service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: rag_service/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
     container_name: rag-service
     env_file:
       - .env

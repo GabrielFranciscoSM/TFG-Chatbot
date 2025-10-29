@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import List, Optional
 import logging
 
-from ..config import settings
-from ..models import Document, DocumentMetadata
+from rag_service.config import settings
+from rag_service.models import Document, DocumentMetadata
 
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ from langchain_ollama import OllamaEmbeddings
 from typing import List
 import logging
 
-from ..config import settings
+from rag_service.config import settings
 
 logger = logging.getLogger(__name__)
 

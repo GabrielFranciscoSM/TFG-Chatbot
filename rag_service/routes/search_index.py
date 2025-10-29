@@ -3,9 +3,9 @@
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 import logging
-from ..models import QueryRequest, QueryResponse, Document, IndexResponse
-from ..embeddings.store import get_vector_store
-from ..config import settings
+from rag_service.models import QueryRequest, QueryResponse, Document, IndexResponse
+from rag_service.embeddings.store import get_vector_store
+from rag_service.config import settings
 
 logger = logging.getLogger(__name__)
 

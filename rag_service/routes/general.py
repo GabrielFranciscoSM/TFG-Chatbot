@@ -1,10 +1,10 @@
 """General endpoints: root and health check."""
 
 from fastapi import APIRouter, status
-from ..models import HealthCheckResponse
-from ..embeddings.store import get_vector_store
+from rag_service.models import HealthCheckResponse
+from rag_service.embeddings.store import get_vector_store
 import logging
-from ..config import settings
+from rag_service.config import settings
 
 logger = logging.getLogger(__name__)
 

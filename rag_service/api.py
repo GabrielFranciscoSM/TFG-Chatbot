@@ -4,12 +4,12 @@ __version__ = "0.1.0"
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .config import settings
+from rag_service.config import settings
 
-from .routes.general import router as general_router
-from .routes.search_index import router as search_index_router
-from .routes.files import router as files_router
-from .routes.subjects import router as subjects_router
+from rag_service.routes.general import router as general_router
+from rag_service.routes.search_index import router as search_index_router
+from rag_service.routes.files import router as files_router
+from rag_service.routes.subjects import router as subjects_router
 
 # Create FastAPI app
 app = FastAPI(

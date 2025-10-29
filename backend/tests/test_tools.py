@@ -76,4 +76,4 @@ def test_get_guia_no_subject_returns_message(monkeypatch, dummy_mongo_client_cla
 
     result = tools.get_guia.invoke({})
     assert isinstance(result, str)
-    assert "No asignatura provided" in result
+    assert "No guia found for subject" in result

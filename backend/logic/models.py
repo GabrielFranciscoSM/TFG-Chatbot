@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Annotated
 from typing import Optional
 from langgraph.prebuilt import InjectedState
+from langchain.tools import ToolRuntime
 
 class WebSearchInput(BaseModel):
     """Input for the Web search tool"""
@@ -69,9 +70,36 @@ class SubjectLookupInput(BaseModel):
         ),
     )
 
-    asignatura_state: Annotated[Optional[str], InjectedState("asignatura")] = Field(
+    asignatura: Optional[str] = Field(
         None,
         description=(
-            "The current subject (asignatura) from the agent's state."
+            "The current subject (asignatura) for which to retrieve the guia document. If unknown, the tool will read it from the agent's injected state."
         ),
     )
+
+
+class RagQueryInput(BaseModel):
+    """Input model for querying the RAG service.
+
+    The agent can pass a free-text `query` and optional filters like
+    `asignatura` and `tipo_documento`. `top_k` can be used to limit
+    number of results returned by the RAG service.
+    """
+    query: str = Field(..., description="Search query for the RAG service")
+    asignatura: Optional[str] = Field(None, description="Optional subject filter")
+    tipo_documento: Optional[str] = Field(None, description="Optional document type filter")
+    top_k: Optional[int] = Field(None, description="Optional number of results to return")
+
+
+class DocumentMetadata(BaseModel):
+    """Metadata for a document to be indexed in the RAG service."""
+    content: str = Field(..., description="Content of the document")
+    tipo_documento: str = Field(..., description="Type of the document (e.g., lecture notes, exam)")
+    asignatura: str = Field(..., description="Subject associated with the document")
+    fecha: str = Field(..., description="Date of the document (YYYY-MM-DD)")
+    tema: Optional[str] = Field(None, description="Topic of the document")
+    autor: str = Field(..., description="Author of the document")
+    fuente: Optional[str] = Field(None, description="Source of the document")
+    idioma: str = Field(..., description="Language of the document (e.g., 'es' for Spanish)")
+    chunk_id: Optional[int] = Field(None, description="Chunk ID if the document is part of a larger text")
+    licencia: Optional[str] = Field(None, description="License of the document")

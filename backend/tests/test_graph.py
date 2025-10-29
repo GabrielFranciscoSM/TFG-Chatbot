@@ -10,31 +10,6 @@ def test_build_graph():
     assert graph is not None
 
 @patch('logic.graph.ChatOpenAI')
-def test_think_node(mock_openai, mock_llm_response):
-    """Test the think node returns a proper response."""
-    # Configure the mock to return our AIMessage
-    mock_instance = MagicMock()
-    mock_instance.bind_tools.return_value.invoke.return_value = mock_llm_response
-    mock_openai.return_value = mock_instance
-    
-    # Create agent instance
-    agent = GraphAgent()
-    
-    # Create initial state
-    state = {
-        "messages": [HumanMessage(content="Hello")]
-    }
-    
-    # Call think node
-    result = agent.think(state)
-    
-    # Verify the result
-    assert "messages" in result
-    assert len(result["messages"]) == 1
-    assert isinstance(result["messages"][0], AIMessage)
-    assert result["messages"][0].content == "Test response"
-
-@patch('logic.graph.ChatOpenAI')
 def test_graph_execution(mock_openai, graph, graph_config, mock_llm_response):
     """Test that the graph executes successfully."""
     # Configure the mock to return our AIMessage

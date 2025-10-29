@@ -57,6 +57,7 @@ class DocumentProcessor:
         for idx, chunk_text in enumerate(chunks):
             chunk_metadata = document.metadata.model_copy(deep=True)
             chunk_metadata.chunk_id = idx
+            chunk_metadata.filename = document.metadata.filename
             
             chunked_doc = Document(
                 content=chunk_text,

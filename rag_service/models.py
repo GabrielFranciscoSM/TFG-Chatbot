@@ -31,6 +31,7 @@ class HealthCheckResponse(BaseModel):
 class DocumentMetadata(BaseModel):
     """Metadata schema for indexed documents."""
     
+    filename: Optional[str] = Field(None, description="Original file name of the document")
     asignatura: str = Field(..., description="Subject name, e.g., 'Lógica Difusa'")
     tipo_documento: str = Field(..., description="Document type: 'apuntes', 'ejercicios', 'examen', etc.")
     fecha: str = Field(..., description="Date in ISO format: YYYY-MM-DD")

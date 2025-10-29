@@ -31,7 +31,6 @@ Si no puedes resolver algo con estas herramientas, indícalo claramente al estud
 SYSTEM_PROMPT_V2 = """You are a helpful tutor assistant.
 
 Use these tools when appropriate:
-- calculator(expression: str) -> str : for math calculations.
 - web_search(query: str) -> str : for factual or up-to-date information.
 - get_guia(SubjectDataKey: str) -> str : when the user asks for specific subject
 data from the stored guia documents.

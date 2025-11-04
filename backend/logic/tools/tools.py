@@ -199,9 +199,13 @@ def rag_search(
     except requests.exceptions.RequestException as e:
         logger.exception("Error contacting RAG service")
         return {"ok": False, "error": f"Error contacting RAG service: {str(e)}"}
+    except requests.exceptions.Timeout as e:
+        return {"ok": False, "error": f"RAG service timeout: {str(e)}"}
+    except requests.exceptions.ConnectionError as e:
+        return {"ok": False, "error": f"Cannot connect to RAG service: {str(e)}"}
     except Exception as e:
-        logger.exception("Unexpected error in rag_search tool")
-        return {"ok": False, "error": f"Unexpected error in rag_search tool: {str(e)}"}
+        logger.exception("Unexpected error in rag_search")
+        return {"ok": False, "error": f"Unexpected error: {str(e)}"}
 
 
 AVAILABLE_TOOLS.append(rag_search)

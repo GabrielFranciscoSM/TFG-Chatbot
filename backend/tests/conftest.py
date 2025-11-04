@@ -62,3 +62,26 @@ def api_client():
 def session_id():
     """Fixture que proporciona un ID de sesión único para cada test."""
     return f"test-session-{uuid.uuid4()}"
+
+
+@pytest.fixture
+def dummy_mongo_client_class():
+    """Provide a DummyMongoClient class for tests to monkeypatch MongoDBClient."""
+    class DummyMongoClient:
+        def __init__(self, doc=None):
+            self._doc = doc
+
+        def connect(self):
+            return None
+
+        def close(self):
+            return None
+
+        def find_by_subject(self, collection, subject):
+            if not self._doc:
+                return None
+            if subject == self._doc.get("asignatura"):
+                return self._doc
+            return None
+
+    return DummyMongoClient

@@ -5,10 +5,10 @@ import logging
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue
 
-from ..config import settings
-from .embeddings import get_embedding_service
-from ..models import Document, SearchResult
-from ..documents.document_processor import get_document_processor
+from rag_service.config import settings
+from rag_service.embeddings import get_embedding_service
+from rag_service.models import Document, SearchResult
+from rag_service.documents.document_processor import get_document_processor
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +97,7 @@ class VectorStoreService:
         self,
         query: str,
         top_k: int = 5,
-        score_threshold: float = 0.7,
+        score_threshold: float = 0.5,
         filters: Optional[Dict[str, str]] = None,
     ) -> List[SearchResult]:
         try:

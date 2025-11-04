@@ -3,9 +3,9 @@
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 import logging
-from ..models import QueryRequest, QueryResponse, Document, IndexResponse
-from ..embeddings.store import get_vector_store
-from ..config import settings
+from rag_service.models import QueryRequest, QueryResponse, Document, IndexResponse
+from rag_service.embeddings.store import get_vector_store
+from rag_service.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -26,10 +26,30 @@ async def search(request: QueryRequest):
             filters["asignatura"] = request.asignatura
         if request.tipo_documento:
             filters["tipo_documento"] = request.tipo_documento
+        # Determine top_k and score_threshold explicitly and log them for debugging.
+        top_k = request.top_k or settings.top_k_results
+        # Use explicit None check so a provided 0.0 is respected if set intentionally.
+        score_threshold = (
+            request.similarity_threshold
+            if request.similarity_threshold is not None
+            else settings.similarity_threshold
+        )
+
+        logger.info(
+            "Search called: query=%r, top_k=%s, request.similarity_threshold=%s, "
+            "settings.similarity_threshold=%s, using_score_threshold=%s, filters=%s",
+            request.query,
+            top_k,
+            request.similarity_threshold,
+            settings.similarity_threshold,
+            score_threshold,
+            filters,
+        )
+
         results = vector_store.search(
             query=request.query,
-            top_k=request.top_k or settings.top_k_results,
-            score_threshold=request.similarity_threshold or settings.similarity_threshold,
+            top_k=top_k,
+            score_threshold=score_threshold,
             filters=filters if filters else None,
         )
         return QueryResponse(

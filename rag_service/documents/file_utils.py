@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import List, Optional
 import logging
-from ..config import settings
+from rag_service.config import settings
 
 logger = logging.getLogger(__name__)
 

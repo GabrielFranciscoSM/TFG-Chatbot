@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, HTTPException, status
 import logging
-from ..models import SubjectListResponse, DocumentTypesResponse
-from ..documents.file_utils import list_subjects as ls_subjects, list_document_types as ls_document_types
+from rag_service.models import SubjectListResponse, DocumentTypesResponse
+from rag_service.documents.file_utils import list_subjects as ls_subjects, list_document_types as ls_document_types
 
 logger = logging.getLogger(__name__)
 

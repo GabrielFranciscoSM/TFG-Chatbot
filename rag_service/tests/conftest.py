@@ -11,6 +11,40 @@ from rag_service.api import app
 from rag_service import config
 
 
+@pytest.fixture(autouse=True)
+def reset_singletons():
+    """Reset all singleton instances before each test."""
+    # Reset vector store singleton
+    try:
+        from rag_service.embeddings import store
+        store._vector_store = None
+    except Exception:
+        pass
+    
+    # Reset embedding service singleton
+    try:
+        from rag_service.embeddings import embeddings
+        embeddings._embedding_service = None
+    except Exception:
+        pass
+    
+    # Reset document processor singleton
+    try:
+        from rag_service.documents import document_processor
+        document_processor._document_processor = None
+    except Exception:
+        pass
+    
+    # Reset file loader singleton
+    try:
+        from rag_service.documents import file_loader
+        file_loader._file_loader = None
+    except Exception:
+        pass
+    
+    yield
+
+
 @pytest.fixture
 def tmp_documents_dir(tmp_path, monkeypatch):
     """Fixture that points the service to a temporary documents directory and
@@ -27,14 +61,6 @@ def tmp_documents_dir(tmp_path, monkeypatch):
         file_utils.documents_path = tmp_path
     except Exception:
         # best-effort; tests will still use tmp_path directly when needed
-        pass
-
-    # Reset singleton _file_loader in file_loader module if present
-    try:
-        from rag_service.documents import file_loader
-
-        file_loader._file_loader = None
-    except Exception:
         pass
 
     return tmp_path

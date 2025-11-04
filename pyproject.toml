@@ -10,16 +10,17 @@ readme = "README.md"
 license = { file = "LICENSE" }
 authors = [ { name = "Gabriel Francisco" } ]
 dependencies = [
-  "huggingface-hub>=0.18.0",
-  "safetensors",
-  "accelerate",
-  "requests"
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.4.2",
-  "testinfra>=6.0.0"
+  "testinfra>=6.0.0",
+  "qdrant-client>=1.15.1",
+  "huggingface-hub>=0.18.0",
+  "safetensors",
+  "accelerate",
+  "requests"
 ]
 
 [tool.setuptools.packages.find]

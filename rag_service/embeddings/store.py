@@ -97,7 +97,7 @@ class VectorStoreService:
         self,
         query: str,
         top_k: int = 5,
-        score_threshold: float = 0.7,
+        score_threshold: float = 0.5,
         filters: Optional[Dict[str, str]] = None,
     ) -> List[SearchResult]:
         try:

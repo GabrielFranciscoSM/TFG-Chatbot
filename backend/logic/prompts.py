@@ -41,6 +41,10 @@ data from the stored guia documents.
     bibliografía.bibliografía_fundamental, bibliografía.bibliografía_complementaria,
     evaluación.evaluación_ordinaria, evaluación.evaluación_extraordinaria,
     evaluación.evaluación_única_final.
+- rag_search(query: str, asignatura: str, tipo_documento: str, top_k: int = 5) -> str :
+    Use to retrieve relevant passages from the project's stored documents/vector
+    index (RAG). Prefer rag_search for domain- or course-specific materials; use
+    web_search for general/up-to-date external facts. 
 
 After calling a tool and receiving its result, present the final answer to the
 user in the language of the user's request. Do NOT call the same tool twice.

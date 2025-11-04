@@ -73,9 +73,9 @@ class QueryRequest(BaseModel):
     query: str = Field(..., description="Search query")
     asignatura: Optional[str] = Field(None, description="Filter by subject")
     tipo_documento: Optional[str] = Field(None, description="Filter by document type")
-    top_k: Optional[int] = Field(5, description="Number of results to return")
-    similarity_threshold: Optional[float] = Field(0.7, description="Minimum similarity score")
-    
+    top_k: Optional[int] = Field(None, description="Number of results to return")
+    similarity_threshold: Optional[float] = Field(None, description="Minimum similarity score")
+
 
 class SearchResult(BaseModel):
     """Single search result."""

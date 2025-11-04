@@ -28,6 +28,7 @@ services:
       --port ${VLLM_MAIN_PORT}
       --tool-call-parser hermes
       --enable-auto-tool-choice
+      --swap-space 3
     restart: unless-stopped
 
   backend:

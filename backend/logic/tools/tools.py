@@ -2,7 +2,7 @@
 Contains various tools that can be used by the agent to perform actions.
 """
 
-from langchain.tools import tool, ToolRuntime
+from langchain.tools import tool
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from backend.logic.models import WebSearchInput, CalculatorInput, GetSubjectDataInput, SubjectDataKey
@@ -13,7 +13,9 @@ from typing import Annotated, Optional
 import json
 import requests
 from typing import Dict, Any
+import logging
 
+logger = logging.getLogger(__name__)
 @tool(args_schema=WebSearchInput)
 def web_search(query: str) -> str:
     """
@@ -116,6 +118,8 @@ def rag_search(
       {"ok": False, "error": "..."}
     """
     try:
+        logger.debug("rag_search called with query=%s, asignatura=%s, tipo_documento=%s, top_k=%s",
+                     query, asignatura, tipo_documento, top_k)
         url = f"{backend_settings.rag_service_url.rstrip('/')}/search"
         payload: Dict[str, Any] = {"query": query}
         if asignatura:
@@ -125,19 +129,24 @@ def rag_search(
         if top_k:
             payload["top_k"] = top_k
 
+        logger.debug("Posting to RAG service url=%s payload=%s", url, payload)
+
         resp = requests.post(url, json=payload, timeout=6)
         resp.raise_for_status()
         data = resp.json()
+        logger.debug("RAG service returned data: %s", data)
 
         # Normalize the provider response into a compact `results` list of
         # {content, metadata, score} entries. Many RAG services return a
         # 'results' list already; if not, try to map commonly used keys.
         raw_results = data.get("results") if isinstance(data, dict) else None
+        logger.debug("raw_results type=%s", type(raw_results))
         normalized = []
         if raw_results and isinstance(raw_results, list):
             for r in raw_results:
                 # r might be a dict with content/metadata/score or other shape
                 if isinstance(r, dict):
+                    logger.debug("Processing raw result keys=%s", list(r.keys()))
                     # Prefer explicit fields used by our RAG service
                     content = r.get("content") or r.get("text") or r.get("snippet") or r.get("payload")
 
@@ -162,6 +171,14 @@ def rag_search(
                         # Some stores return distance where smaller is better; keep raw value
                         score = r.get("distance")
 
+                    # Truncate content for logs if it's large
+                    try:
+                        content_snip = content[:200] if isinstance(content, str) else str(content)
+                    except Exception:
+                        content_snip = str(content)
+                    logger.debug("Normalized result content=%s score=%s metadata_keys=%s",
+                                 content_snip, score, list(metadata.keys()) if isinstance(metadata, dict) else None)
+
                     normalized.append({"content": content, "metadata": metadata, "score": score})
                 else:
                     normalized.append({"content": str(r), "metadata": {}, "score": None})
@@ -172,6 +189,7 @@ def rag_search(
             else:
                 normalized.append({"content": str(data), "metadata": {}, "score": None})
 
+        logger.debug("Returning %d normalized results", len(normalized))
         return {
             "ok": True,
             "query": data.get("query") if isinstance(data, dict) else query,
@@ -179,8 +197,10 @@ def rag_search(
             "results": normalized,
         }
     except requests.exceptions.RequestException as e:
+        logger.exception("Error contacting RAG service")
         return {"ok": False, "error": f"Error contacting RAG service: {str(e)}"}
     except Exception as e:
+        logger.exception("Unexpected error in rag_search tool")
         return {"ok": False, "error": f"Unexpected error in rag_search tool: {str(e)}"}
 
 

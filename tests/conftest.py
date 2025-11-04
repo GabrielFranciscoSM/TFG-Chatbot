@@ -51,6 +51,12 @@ def api_base_url():
     # Se puede configurar mediante variable de entorno
     return os.getenv("API_BASE_URL", "http://localhost:8080")
 
+@pytest.fixture(scope="session")
+def rag_base_url():
+    """Fixture que proporciona la URL base del servicio RAG."""
+    # Se puede configurar mediante variable de entorno
+    return os.getenv("RAG_BASE_URL", "http://localhost:8081")
+
 @pytest.fixture
 def session_id():
     """Fixture que proporciona un ID de sesión único para cada test."""

@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     # RAG parameters
     embedding_dimension: int = 768  # nomic-embed-text dimension
     top_k_results: int = int(os.getenv("RAG_TOP_K", "5"))
-    similarity_threshold: float = float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.7"))
+    similarity_threshold: float = float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.5"))
     
     # Chunking parameters
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "1000"))

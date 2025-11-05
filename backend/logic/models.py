@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, Field
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, List
 from typing import Optional
 from langgraph.prebuilt import InjectedState
 from langchain.tools import ToolRuntime
@@ -103,3 +103,18 @@ class DocumentMetadata(BaseModel):
     idioma: str = Field(..., description="Language of the document (e.g., 'es' for Spanish)")
     chunk_id: Optional[int] = Field(None, description="Chunk ID if the document is part of a larger text")
     licencia: Optional[str] = Field(None, description="License of the document")
+
+class Question(BaseModel):
+    """Model representing a question."""
+    question_text: str = Field(..., description="The text of the question")
+    difficulty: Optional[str] = Field(None, description="Difficulty level of the question (e.g., easy, medium, hard)")
+
+class Answer(BaseModel):
+    """Model representing an answer to a question."""
+    answer_text: str = Field(..., description="The text of the answer")
+    is_correct: bool = Field(..., description="Whether the answer is correct")
+
+class MultipleChoiceTest(BaseModel):
+    """Model representing a multiple-choice test."""
+    question: Question = Field(..., description="The question being asked")
+    options: List[Answer] = Field(..., description="The answer options for the question")

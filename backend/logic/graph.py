@@ -7,6 +7,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
 from langgraph.graph import StateGraph, END, MessagesState
 from typing import TypedDict, Optional, List, Dict, Any
+from langgraph.types import interrupt
 
 
 class SubjectState(MessagesState):
@@ -162,6 +163,62 @@ class GraphAgent:
         )
 
         return {"messages": [tool_message]}
+
+    # PARA REVISAR
+    def test_session_wrapper(self, state: SubjectState):
+        """Wrapper node that invokes the test subgraph.
+        
+        This node:
+        1. Extracts tool call args from parent state
+        2. Transforms to subgraph state
+        3. Invokes subgraph
+        4. Transforms result back to parent state
+        """
+        from langchain_core.messages import ToolMessage, AIMessage
+        
+        # Extract tool call info
+        last_message = state["messages"][-1]
+        tool_calls = getattr(last_message, "tool_calls", [])
+        if not tool_calls:
+            return state
+        
+        args = tool_calls[0]["args"]
+        tool_call_id = tool_calls[0]["id"]
+        
+        # Transform to subgraph state
+        subgraph_input = {
+            "topic": args["topic"],
+            "num_questions": args.get("num_questions", 5),
+            "difficulty": args.get("difficulty"),
+            "questions": [],
+            "current_question_index": 0,
+            "user_answers": [],
+            "feedback_history": [],
+            "scores": [],
+            "messages": []
+        }
+        
+        # Get or build subgraph
+        if not hasattr(self, '_test_subgraph'):
+            self._test_subgraph = self.build_test_subgraph()
+        
+        # Invoke subgraph with SAME config (thread_id)!
+        # This allows interrupts to propagate correctly
+        config = {"configurable": {"thread_id": state.get("thread_id", "default")}}
+        subgraph_result = self._test_subgraph.invoke(subgraph_input, config=config)
+        
+        # Transform back: extract messages from subgraph
+        subgraph_messages = subgraph_result.get("messages", [])
+        
+        # Add tool completion message + subgraph messages
+        parent_messages = [
+            ToolMessage(
+                content="Test session initiated",
+                tool_call_id=tool_call_id
+            )
+        ] + subgraph_messages
+        
+        return {"messages": parent_messages}
 
     def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""

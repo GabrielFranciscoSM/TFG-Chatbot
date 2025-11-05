@@ -5,7 +5,7 @@ Contains various tools that can be used by the agent to perform actions.
 from langchain.tools import tool
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
-from backend.logic.models import WebSearchInput, CalculatorInput, GetSubjectDataInput, SubjectDataKey
+from backend.logic.models import MultipleChoiceTest, TestGenerationInput, WebSearchInput, CalculatorInput, GetSubjectDataInput, SubjectDataKey
 from backend.logic.models import SubjectLookupInput, RagQueryInput
 from backend.config import settings as backend_settings
 from backend.db.mongo import MongoDBClient
@@ -34,8 +34,8 @@ AVAILABLE_TOOLS = [web_search]
 
 @tool(args_schema=SubjectLookupInput)
 def get_guia(
-    key: SubjectDataKey = None,
     asignatura: str = None,
+    key: SubjectDataKey = None,
 ) -> str:
     """Retrieve a stored guia document for the agent's current `asignatura` state.
 
@@ -207,9 +207,104 @@ def rag_search(
         logger.exception("Unexpected error in rag_search")
         return {"ok": False, "error": f"Unexpected error: {str(e)}"}
 
-
 AVAILABLE_TOOLS.append(rag_search)
 
+
+@tool(args_schema=TestGenerationInput)
+def generate_test(topic: str, num_questions: int, difficulty: str = None) -> list:
+    """Generate review questions on a given topic.
+    
+    Creates thought-provoking questions for an informal review session.
+    Questions are designed to encourage reflection and understanding.
+    
+    Args:
+        topic: The subject matter for the questions
+        num_questions: Number of questions to generate (1-10)
+        difficulty: Optional difficulty level (easy, medium, hard)
+        
+    Returns:
+        List of MultipleChoiceTest objects with generated questions
+    """
+    from langchain_openai import ChatOpenAI
+    from backend.logic.prompts import TEST_GENERATION_PROMPT
+    from backend.logic.models import Question, Answer
+    import os
+    
+    try:
+        # Initialize LLM
+        vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
+        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
+        vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
+        model_name = os.getenv("MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct")
+        
+        llm = ChatOpenAI(
+            model=model_name,
+            openai_api_key="EMPTY",
+            openai_api_base=vllm_url,
+            temperature=0.7,
+        )
+        
+        # Build prompt
+        prompt = TEST_GENERATION_PROMPT.format(
+            topic=topic,
+            num_questions=num_questions,
+            difficulty=difficulty or "medium"
+        )
+        
+        # Generate questions
+        response = llm.invoke(prompt)
+        response_text = response.content if hasattr(response, 'content') else str(response)
+        
+        # Parse JSON response
+        import re
+        # Try to extract JSON array from response
+        json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
+        if json_match:
+            questions_data = json.loads(json_match.group())
+        else:
+            # Fallback: create simple questions
+            logger.warning(f"Could not parse LLM response for test generation. Response: {response_text[:200]}")
+            questions_data = [
+                {
+                    "question_text": f"Pregunta {i+1} sobre {topic}",
+                    "difficulty": difficulty or "medium"
+                }
+                for i in range(num_questions)
+            ]
+        
+        # Convert to MultipleChoiceTest objects
+        tests = []
+        for q_data in questions_data[:num_questions]:
+            question = Question(
+                question_text=q_data.get("question_text", "Pregunta sin texto"),
+                difficulty=q_data.get("difficulty", difficulty or "medium")
+            )
+            
+            # For open-ended review questions, we don't provide multiple choice options
+            # The student provides free-text answers
+            test = MultipleChoiceTest(
+                question=question,
+                options=[]  # Empty options for free-form answers
+            )
+            tests.append(test)
+        
+        logger.info(f"Generated {len(tests)} questions for topic: {topic}")
+        return tests
+        
+    except Exception as e:
+        logger.exception(f"Error generating test: {str(e)}")
+        # Return a fallback question
+        return [
+            MultipleChoiceTest(
+                question=Question(
+                    question_text=f"¿Qué has aprendido sobre {topic}?",
+                    difficulty="medium"
+                ),
+                options=[]
+            )
+        ]
+
+AVAILABLE_TOOLS.append(generate_test)
 
 def get_tools():
     """

@@ -78,3 +78,51 @@ CONTEXT:
 Current subject: {asignatura}
 
 Begin each response by determining which tool(s) would best answer the user's question."""
+
+
+# === Test Session Prompts ===
+
+TEST_GENERATION_PROMPT = """You are an expert educator creating review questions for students.
+
+Topic: {topic}
+Number of questions: {num_questions}
+Difficulty level: {difficulty}
+
+Generate {num_questions} thoughtful review questions about {topic}. These are for informal review, not a formal exam.
+
+Requirements:
+- Questions should encourage reflection and understanding
+- Use clear, accessible language in Spanish
+- Cover different aspects of the topic
+- Each question should have a clear, verifiable answer
+- Make questions progressively more challenging
+
+Return ONLY a JSON array of questions in this exact format:
+[
+  {{
+    "question_text": "¿Cuál es...?",
+    "difficulty": "easy"
+  }},
+  ...
+]"""
+
+
+TEST_EVALUATION_PROMPT = """You are evaluating a student's answer in a friendly review session.
+
+Topic: {topic}
+Question: {question_text}
+Student's Answer: {user_answer}
+{correct_answer_hint}
+
+Evaluate the student's understanding and provide encouraging feedback.
+
+Format your response EXACTLY as:
+CORRECT: YES/NO
+FEEDBACK: [2-3 sentences of constructive, friendly feedback in Spanish]
+
+Guidelines:
+- Be encouraging and supportive
+- If incorrect, gently explain why and guide toward understanding
+- If correct, reinforce their understanding with additional context
+- Keep feedback brief but meaningful
+- Write in Spanish"""

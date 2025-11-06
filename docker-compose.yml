@@ -14,10 +14,12 @@ services:
                 - gpu
     volumes:
         - "./models:/models"
+        - "vllm_cache:/root/.cache/vllm"
     env_file:
       - .env
     environment:
         HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
+        TORCH_CUDA_ARCH_LIST: "8.9"
     ports:
         - 8000:8000
     command: >
@@ -137,3 +139,4 @@ volumes:
   qdrant_storage:
   ollama_models:
   rag_documents:
+  vllm_cache:

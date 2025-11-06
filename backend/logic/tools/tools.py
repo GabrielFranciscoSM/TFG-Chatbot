@@ -5,11 +5,10 @@ Contains various tools that can be used by the agent to perform actions.
 from langchain.tools import tool
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
-from backend.logic.models import MultipleChoiceTest, TestGenerationInput, WebSearchInput, CalculatorInput, GetSubjectDataInput, SubjectDataKey
+from backend.logic.models import MultipleChoiceTest, TestGenerationInput, WebSearchInput, SubjectDataKey
 from backend.logic.models import SubjectLookupInput, RagQueryInput
 from backend.config import settings as backend_settings
 from backend.db.mongo import MongoDBClient
-from typing import Annotated, Optional
 import json
 import requests
 from typing import Dict, Any

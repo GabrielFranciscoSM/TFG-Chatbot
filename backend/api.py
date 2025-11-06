@@ -10,7 +10,7 @@ This module implements the logicfor the AI agent, including:
 __version__ = "0.1.0"
 
 from fastapi import FastAPI, status
-from backend.models import ChatRequest, MessageResponse
+from backend.models import ChatRequest, MessageResponse, ChatResponse, ResumeRequest, InterruptInfo
 from backend.logic.graph import GraphAgent
 from backend.models import ScrapeRequest, ScrapeResponse
 from backend.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
@@ -25,6 +25,12 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+# Create a single GraphAgent instance for the whole process. Reusing the
+# same compiled graph/checkpointer across requests avoids resume problems
+# that happen when different GraphAgent instances (and compiled graphs)
+# are created per-request.
+agente = GraphAgent()
 
 @app.get(
     "/", 
@@ -94,11 +100,12 @@ async def health():
     "/chat", 
     tags=["Chatbot"],
     summary="Chat with the bot",
-    description="Send a message to the chatbot and receive an intelligent response powered by GraphAgent",
+    description="Send a message to the chatbot and receive an intelligent response powered by GraphAgent. May return an interrupt if the bot is waiting for user input (e.g., during a test session).",
+    response_model=ChatResponse,
     status_code=status.HTTP_200_OK,
     responses={
         200: {
-            "description": "Successful chatbot response",
+            "description": "Successful chatbot response. Check 'interrupted' field to see if waiting for user input.",
         },
         422: {
             "description": "Validation error - invalid request format"
@@ -106,9 +113,66 @@ async def health():
     }
 )
 async def chat(chat_request: ChatRequest):
-    agente = GraphAgent()
-    respuesta = agente.call_agent(query=chat_request.query, id=chat_request.id, asignatura=chat_request.asignatura)
-    return respuesta
+    respuesta = agente.call_agent(
+        query=chat_request.query,
+        id=chat_request.id,
+        asignatura=chat_request.asignatura,
+    )
+    
+    # Check for interrupt
+    if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
+        interrupt_data = respuesta["__interrupt__"][0].value
+        
+        return ChatResponse(
+            messages=respuesta.get("messages", []),
+            interrupted=True,
+            interrupt_info=InterruptInfo(**interrupt_data)
+        )
+    
+    # Normal response without interruption
+    return ChatResponse(
+        messages=respuesta.get("messages", []),
+        interrupted=False
+    )
+
+
+@app.post(
+    "/resume_chat",
+    tags=["Chatbot"],
+    summary="Resume an interrupted test session",
+    description="Resume a test session that was interrupted waiting for user input. Provide the user's answer to continue.",
+    response_model=ChatResponse,
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "description": "Successful resume. May return another interrupt if there are more questions.",
+        },
+        422: {
+            "description": "Validation error - invalid request format"
+        }
+    }
+)
+async def resume_chat(resume_request: ResumeRequest):
+    respuesta = agente.call_agent_resume(
+        id=resume_request.id,
+        resume_value=resume_request.user_response,
+    )
+    
+    # Check if there's another interrupt (next question)
+    if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
+        interrupt_data = respuesta["__interrupt__"][0].value
+        
+        return ChatResponse(
+            messages=respuesta.get("messages", []),
+            interrupted=True,
+            interrupt_info=InterruptInfo(**interrupt_data)
+        )
+    
+    # Test completed or normal flow
+    return ChatResponse(
+        messages=respuesta.get("messages", []),
+        interrupted=False
+    )
 
 
 

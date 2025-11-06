@@ -76,3 +76,93 @@ class SubjectItem(BaseModel):
 
 class SubjectsListResponse(BaseModel):
     subjects: list[SubjectItem]
+
+
+# === Test Session Models ===
+
+class ResumeRequest(BaseModel):
+    """Request to resume an interrupted test session."""
+    id: str = Field(
+        ...,
+        description="Thread ID of the interrupted conversation",
+        example="user-session-123"
+    )
+    user_response: str = Field(
+        ...,
+        description="User's answer to the current question",
+        example="Un bucle for se utiliza para iterar sobre secuencias"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": "session-abc-123",
+                "user_response": "Un bucle for se utiliza para iterar sobre secuencias de elementos"
+            }
+        }
+
+
+class InterruptInfo(BaseModel):
+    """Information about an interrupted test session."""
+    action: str = Field(
+        ...,
+        description="Type of action that caused the interrupt",
+        example="answer_question"
+    )
+    question_num: int = Field(
+        ...,
+        description="Current question number (1-indexed)",
+        example=1
+    )
+    total_questions: int = Field(
+        ...,
+        description="Total number of questions in the test",
+        example=5
+    )
+    question_text: str = Field(
+        ...,
+        description="Text of the current question",
+        example="¿Qué es un bucle for en Python?"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "action": "answer_question",
+                "question_num": 1,
+                "total_questions": 5,
+                "question_text": "¿Qué es un bucle for en Python?"
+            }
+        }
+
+
+class ChatResponse(BaseModel):
+    """Unified response for chat endpoints."""
+    messages: list = Field(
+        ...,
+        description="List of message objects from the conversation"
+    )
+    interrupted: bool = Field(
+        default=False,
+        description="Whether the conversation was interrupted (waiting for user input)"
+    )
+    interrupt_info: Optional[InterruptInfo] = Field(
+        None,
+        description="Information about the interrupt, if interrupted=True"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "messages": [
+                    {"role": "assistant", "content": "📝 Pregunta 1/5\n\n¿Qué es un bucle for en Python?\n\nPor favor, proporciona tu respuesta."}
+                ],
+                "interrupted": True,
+                "interrupt_info": {
+                    "action": "answer_question",
+                    "question_num": 1,
+                    "total_questions": 5,
+                    "question_text": "¿Qué es un bucle for en Python?"
+                }
+            }
+        }

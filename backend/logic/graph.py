@@ -1,6 +1,7 @@
 """Clase que encapsula la construcción del grafo y la llamada al agente."""
 
 import os
+import logging
 from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI
@@ -9,14 +10,29 @@ from langgraph.graph import StateGraph, END, MessagesState
 from typing import TypedDict, Optional, List, Dict, Any
 from langgraph.types import interrupt
 
+logger = logging.getLogger(__name__)
+
 
 class SubjectState(MessagesState):
     """Graph state that includes conversation messages, selected asignatura
     and a retrieval `context` where tool nodes can store document snippets.
+    
+    Also includes test session fields (shared with test subgraph).
+    These are only populated when in test mode.
     """
     asignatura: Optional[str]
     # `context` will hold a list of document snippets returned by RAG tools
     context: Optional[List[Dict[str, Any]]]
+    
+    # Test session fields (shared with test subgraph)
+    topic: Optional[str]
+    num_questions: Optional[int]
+    difficulty: Optional[str]
+    questions: Optional[List[Any]]  # List[MultipleChoiceTest]
+    current_question_index: Optional[int]
+    user_answers: Optional[List[str]]
+    feedback_history: Optional[List[str]]
+    scores: Optional[List[bool]]
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 
@@ -164,62 +180,6 @@ class GraphAgent:
 
         return {"messages": [tool_message]}
 
-    # PARA REVISAR
-    def test_session_wrapper(self, state: SubjectState):
-        """Wrapper node that invokes the test subgraph.
-        
-        This node:
-        1. Extracts tool call args from parent state
-        2. Transforms to subgraph state
-        3. Invokes subgraph
-        4. Transforms result back to parent state
-        """
-        from langchain_core.messages import ToolMessage, AIMessage
-        
-        # Extract tool call info
-        last_message = state["messages"][-1]
-        tool_calls = getattr(last_message, "tool_calls", [])
-        if not tool_calls:
-            return state
-        
-        args = tool_calls[0]["args"]
-        tool_call_id = tool_calls[0]["id"]
-        
-        # Transform to subgraph state
-        subgraph_input = {
-            "topic": args["topic"],
-            "num_questions": args.get("num_questions", 5),
-            "difficulty": args.get("difficulty"),
-            "questions": [],
-            "current_question_index": 0,
-            "user_answers": [],
-            "feedback_history": [],
-            "scores": [],
-            "messages": []
-        }
-        
-        # Get or build subgraph
-        if not hasattr(self, '_test_subgraph'):
-            self._test_subgraph = self.build_test_subgraph()
-        
-        # Invoke subgraph with SAME config (thread_id)!
-        # This allows interrupts to propagate correctly
-        config = {"configurable": {"thread_id": state.get("thread_id", "default")}}
-        subgraph_result = self._test_subgraph.invoke(subgraph_input, config=config)
-        
-        # Transform back: extract messages from subgraph
-        subgraph_messages = subgraph_result.get("messages", [])
-        
-        # Add tool completion message + subgraph messages
-        parent_messages = [
-            ToolMessage(
-                content="Test session initiated",
-                tool_call_id=tool_call_id
-            )
-        ] + subgraph_messages
-        
-        return {"messages": parent_messages}
-
     def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""
         messages = state["messages"]
@@ -233,15 +193,26 @@ class GraphAgent:
 
     def build_graph(self):
         """Construye y compila el grafo del agente y lo cachea en self._graph."""
+        from backend.logic.testGraph import create_test_subgraph
 
         # Use the SubjectState so tools can inject 'asignatura' into tool args
         graph_builder = StateGraph(SubjectState)
+
+        # Build test subgraph (will be added as a node)
+        test_subgraph = create_test_subgraph(
+            vllm_url=self.vllm_url,
+            model_name=self.model_name,
+            openai_api_key=self.openai_api_key,
+            temperature=0.7  # Higher temperature for test evaluation
+        )
 
         # Agregar nodos
         graph_builder.add_node("agent", self.think)
         graph_builder.add_node("rag_search", self.rag_search)
         graph_builder.add_node("get_guia", self.get_guia)
         graph_builder.add_node("web_search", self.web_search)
+        # Add test subgraph DIRECTLY as a node (not invoked!)
+        graph_builder.add_node("test_session", test_subgraph)
 
         # Definir el punto de entrada
         graph_builder.set_entry_point("agent")
@@ -250,11 +221,18 @@ class GraphAgent:
         graph_builder.add_conditional_edges(
             "agent",
             self.should_continue,
-            {"rag_search": "rag_search", "get_guia": "get_guia", "web_search": "web_search", END: END},
+            {
+                "rag_search": "rag_search", 
+                "get_guia": "get_guia", 
+                "web_search": "web_search",
+                "generate_test": "test_session",  # Route to subgraph node!
+                END: END
+            },
         )
         graph_builder.add_edge("rag_search", "agent")
         graph_builder.add_edge("get_guia", "agent")
         graph_builder.add_edge("web_search", "agent")
+        graph_builder.add_edge("test_session", "agent")  # Subgraph returns to agent
 
         # Preparar persistencia
         storage_dir = os.path.join(os.path.dirname(__file__), "..", "storage")
@@ -284,3 +262,23 @@ class GraphAgent:
         config = {"configurable": {"thread_id": id, "asignatura": asignatura}}
 
         return self._graph.invoke(state, config=config)
+    
+    def call_agent_resume(self, id: str, resume_value: str):
+        """Resume an interrupted graph execution.
+        
+        Args:
+            id: thread_id of the interrupted conversation
+            resume_value: the user's response (answer to question)
+            
+        Returns:
+            The result of resuming the graph execution
+        """
+        from langgraph.types import Command
+        
+        if self._graph is None:
+            self.build_graph()
+        
+        config = {"configurable": {"thread_id": id}}
+        
+        # Resume using Command with the user's answer
+        return self._graph.invoke(Command(resume=resume_value), config=config)

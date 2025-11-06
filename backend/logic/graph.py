@@ -5,13 +5,13 @@ import logging
 from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
 from langgraph.graph import StateGraph, END, MessagesState
-from typing import TypedDict, Optional, List, Dict, Any
+from typing import TypedDict, Optional, List, Dict, Any, Literal
 from langgraph.types import interrupt
 
 logger = logging.getLogger(__name__)
-
 
 class SubjectState(MessagesState):
     """Graph state that includes conversation messages, selected asignatura
@@ -33,6 +33,7 @@ class SubjectState(MessagesState):
     user_answers: Optional[List[str]]
     feedback_history: Optional[List[str]]
     scores: Optional[List[bool]]
+
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 
@@ -48,21 +49,77 @@ load_dotenv()
 class GraphAgent:
     """Clase que encapsula la construcción del grafo y la llamada al agente."""
 
-    def __init__(self, *, vllm_port: str | None = None, model_dir: str | None = None,
-                 openai_api_key: str = "EMPTY", temperature: float = 0.1):
+    def __init__(
+        self, 
+        *, 
+        llm_provider: Literal["vllm", "gemini"] = "vllm",
+        vllm_port: str | None = None, 
+        model_dir: str | None = None,
+        openai_api_key: str = "EMPTY", 
+        gemini_api_key: str | None = None,
+        gemini_model: str = "gemini-2.0-flash",
+        temperature: float = 0.1
+    ):
+        """Initialize GraphAgent with configurable LLM provider.
+        
+        Args:
+            llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
+            vllm_port: Port for vLLM service (only for vllm provider)
+            model_dir: Model directory (only for vllm provider)
+            openai_api_key: API key for vLLM OpenAI-compatible endpoint
+            gemini_api_key: Google Gemini API key (only for gemini provider)
+            gemini_model: Gemini model name (default: gemini-1.5-flash)
+            temperature: LLM temperature
+        """
+        self.llm_provider = llm_provider
+        self.temperature = temperature
 
+        # vLLM configuration
         vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
         vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
-
         self.vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
         self.model_name = model_dir or os.getenv(
             "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
         )
         self.openai_api_key = openai_api_key
-        self.temperature = temperature
+
+        # Gemini configuration
+        self.gemini_api_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
+        self.gemini_model = gemini_model
+        os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
+
 
         # Cache interno del grafo compilado
         self._graph = None
+
+    def _get_llm(self, temperature: float | None = None):
+        """Get configured LLM instance based on provider.
+        
+        Args:
+            temperature: Override temperature (uses instance default if None)
+            
+        Returns:
+            Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+        """
+        temp = temperature if temperature is not None else self.temperature
+        
+        if self.llm_provider == "gemini":
+            if not self.gemini_api_key:
+                raise ValueError(
+                    "GEMINI_API_KEY not found. Set it in .env or pass gemini_api_key parameter."
+                )
+            return ChatGoogleGenerativeAI(
+                model=self.gemini_model,
+                google_api_key=self.gemini_api_key,
+                temperature=temp,
+            )
+        else:  # vllm
+            return ChatOpenAI(
+                model=self.model_name,
+                openai_api_key=self.openai_api_key,
+                openai_api_base=self.vllm_url,
+                temperature=temp,
+            )
 
     def think(self, state: SubjectState):
         """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
@@ -73,12 +130,7 @@ class GraphAgent:
         if not messages or not isinstance(messages[0], SystemMessage):
             messages = [system_message] + messages
 
-        llm = ChatOpenAI(
-            model=self.model_name,
-            openai_api_key=self.openai_api_key,
-            openai_api_base=self.vllm_url,
-            temperature=self.temperature,
-        ).bind_tools(tools)
+        llm = self._get_llm().bind_tools(tools)
 
         response = llm.invoke(messages)
 
@@ -199,10 +251,14 @@ class GraphAgent:
         graph_builder = StateGraph(SubjectState)
 
         # Build test subgraph (will be added as a node)
+        # Pass LLM configuration to test subgraph
         test_subgraph = create_test_subgraph(
+            llm_provider=self.llm_provider,
             vllm_url=self.vllm_url,
             model_name=self.model_name,
             openai_api_key=self.openai_api_key,
+            gemini_api_key=self.gemini_api_key,
+            gemini_model=self.gemini_model,
             temperature=0.7  # Higher temperature for test evaluation
         )
 

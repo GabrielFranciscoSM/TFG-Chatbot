@@ -9,6 +9,8 @@ This module implements the logicfor the AI agent, including:
 
 __version__ = "0.1.0"
 
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, status
 from backend.models import ChatRequest, MessageResponse, ChatResponse, ResumeRequest, InterruptInfo
 from backend.logic.graph import GraphAgent
@@ -17,6 +19,8 @@ from backend.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
 from backend.db.mongo import MongoDBClient
 from backend.models import SubjectItem, SubjectsListResponse
 from fastapi import HTTPException
+
+load_dotenv()
 
 app = FastAPI(
     title="TFG Chatbot API",
@@ -30,7 +34,9 @@ app = FastAPI(
 # same compiled graph/checkpointer across requests avoids resume problems
 # that happen when different GraphAgent instances (and compiled graphs)
 # are created per-request.
-agente = GraphAgent()
+# Use LLM_PROVIDER env var to select between vllm and gemini
+llm_provider = os.getenv("LLM_PROVIDER", "vllm")
+agente = GraphAgent(llm_provider=llm_provider)
 
 @app.get(
     "/", 

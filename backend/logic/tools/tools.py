@@ -225,23 +225,39 @@ def generate_test(topic: str, num_questions: int, difficulty: str = None) -> lis
         List of MultipleChoiceTest objects with generated questions
     """
     from langchain_openai import ChatOpenAI
+    from langchain_google_genai import ChatGoogleGenerativeAI
     from backend.logic.prompts import TEST_GENERATION_PROMPT
     from backend.logic.models import Question, Answer
     import os
     
     try:
-        # Initialize LLM
-        vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
-        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
-        vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
-        model_name = os.getenv("MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct")
+        # Get LLM provider from environment
+        llm_provider = os.getenv("LLM_PROVIDER", "vllm")
         
-        llm = ChatOpenAI(
-            model=model_name,
-            openai_api_key="EMPTY",
-            openai_api_base=vllm_url,
-            temperature=0.7,
-        )
+        # Initialize LLM based on provider
+        if llm_provider == "gemini":
+            gemini_api_key = os.getenv("GEMINI_API_KEY")
+            gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+            if not gemini_api_key:
+                raise ValueError("GEMINI_API_KEY not found in environment")
+            
+            llm = ChatGoogleGenerativeAI(
+                model=gemini_model,
+                google_api_key=gemini_api_key,
+                temperature=0.7,
+            )
+        else:  # vllm
+            vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
+            vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
+            vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
+            model_name = os.getenv("MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct")
+            
+            llm = ChatOpenAI(
+                model=model_name,
+                openai_api_key="EMPTY",
+                openai_api_base=vllm_url,
+                temperature=0.7,
+            )
         
         # Build prompt
         prompt = TEST_GENERATION_PROMPT.format(

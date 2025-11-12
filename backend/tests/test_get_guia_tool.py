@@ -17,7 +17,8 @@ def test_get_guia_with_key(monkeypatch, dummy_mongo_client_class):
     # Replace MongoDBClient with a dummy that returns our document
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test", "key": "prerrequisitos_o_recomendaciones"})
+    # pass the argument name expected by the tool schema (`asignatura`)
+    result = tools.get_guia.invoke({"asignatura": "TFG Test", "key": "prerrequisitos_o_recomendaciones"})
 
     parsed = json.loads(result)
     assert isinstance(parsed, list)
@@ -35,7 +36,7 @@ def test_get_guia_no_key(monkeypatch, dummy_mongo_client_class):
     }
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test"})
+    result = tools.get_guia.invoke({"asignatura": "TFG Test"})
     parsed = json.loads(result)
 
     assert isinstance(parsed, dict)
@@ -60,6 +61,6 @@ def test_get_guia_key_not_present(monkeypatch, dummy_mongo_client_class):
     doc = {"asignatura": "TFG Test", "alguna_clave": "valor"}
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test", "key": "enlaces_recomendados"})
+    result = tools.get_guia.invoke({"asignatura": "TFG Test", "key": "enlaces_recomendados"})
     assert isinstance(result, str)
     assert "not present in guia" in result

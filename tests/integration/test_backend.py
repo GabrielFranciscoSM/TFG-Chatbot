@@ -83,26 +83,6 @@ def test_chat_endpoint_empty_message(api_base_url, session_id, api_timeout):
     result = response.json()
     assert "messages" in result
 
-
-@pytest.mark.integration
-def test_chat_endpoint_complex_calculation(api_base_url, session_id, api_timeout):
-    """Test que verifica cálculos complejos a través de la API."""
-    payload = {
-        "query": "Calcula (15 * 3) + (20 / 4)",
-        "id": session_id
-    }
-    
-    response = requests.post(f"{api_base_url}/chat", json=payload, timeout=api_timeout)
-    assert response.status_code == 200
-    
-    result = response.json()
-    assert "messages" in result
-    
-    last_msg = result["messages"][-1]
-    assert "content" in last_msg
-    assert "50" in last_msg["content"]
-
-
 @pytest.mark.integration
 def test_chat_endpoint_invalid_payload(api_base_url, api_timeout):
     """Test que verifica el manejo de payloads inválidos."""

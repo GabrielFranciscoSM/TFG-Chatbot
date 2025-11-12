@@ -1,6 +1,6 @@
 """Models for API"""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Annotated, Optional
 
 
@@ -8,39 +8,37 @@ class ChatRequest(BaseModel):
     query: Annotated[str, "Mensaje del usuario para el modelo"] = Field(
         ...,
         description="The user's message to send to the chatbot",
-        example="¿Qué es la inteligencia artificial?",
+        json_schema_extra={"example": "¿Qué es la inteligencia artificial?"},
     )
     id: Annotated[str, "Identificador para acceder a la sesión del chatbot"] = Field(
         ...,
         description="Unique session identifier for the chatbot conversation",
-        example="user-session-123",
+        json_schema_extra={"example": "user-session-123"},
     )
     asignatura: Optional[str] = Field(
         None, 
         description="Asignatura (subject) to bind to the agent state",
-        example="IV",)
+        json_schema_extra={"example": "IV"},)
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "query": "¿Cómo funciona el aprendizaje automático?",
                 "id": "session-abc-123",
                 "asignatura": "Guía docente de Trabajo Fin de Grado (Ingeniería Informática) (2971197)"
             }
         }
+    )
 
 
 class MessageResponse(BaseModel):
     message: str = Field(
         ...,
         description="Response message from the API",
-        example="Hello World",
+        json_schema_extra={"example": "Hello World"},
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {"message": "Hello World"}
-        }
+    model_config = ConfigDict(json_schema_extra={"example": {"message": "Hello World"}})
 
 
 class ScrapeRequest(BaseModel):
@@ -85,21 +83,22 @@ class ResumeRequest(BaseModel):
     id: str = Field(
         ...,
         description="Thread ID of the interrupted conversation",
-        example="user-session-123"
+        json_schema_extra={"example": "user-session-123"}
     )
     user_response: str = Field(
         ...,
         description="User's answer to the current question",
-        example="Un bucle for se utiliza para iterar sobre secuencias"
+        json_schema_extra={"example": "Un bucle for se utiliza para iterar sobre secuencias"}
     )
     
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "session-abc-123",
                 "user_response": "Un bucle for se utiliza para iterar sobre secuencias de elementos"
             }
         }
+    )
 
 
 class InterruptInfo(BaseModel):
@@ -107,26 +106,26 @@ class InterruptInfo(BaseModel):
     action: str = Field(
         ...,
         description="Type of action that caused the interrupt",
-        example="answer_question"
+        json_schema_extra={"example": "answer_question"}
     )
     question_num: int = Field(
         ...,
         description="Current question number (1-indexed)",
-        example=1
+        json_schema_extra={"example": 1}
     )
     total_questions: int = Field(
         ...,
         description="Total number of questions in the test",
-        example=5
+        json_schema_extra={"example": 5}
     )
     question_text: str = Field(
         ...,
         description="Text of the current question",
-        example="¿Qué es un bucle for en Python?"
+        json_schema_extra={"example": "¿Qué es un bucle for en Python?"}
     )
     
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "action": "answer_question",
                 "question_num": 1,
@@ -134,6 +133,7 @@ class InterruptInfo(BaseModel):
                 "question_text": "¿Qué es un bucle for en Python?"
             }
         }
+    )
 
 
 class ChatResponse(BaseModel):
@@ -151,8 +151,8 @@ class ChatResponse(BaseModel):
         description="Information about the interrupt, if interrupted=True"
     )
     
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "messages": [
                     {"role": "assistant", "content": "📝 Pregunta 1/5\n\n¿Qué es un bucle for en Python?\n\nPor favor, proporciona tu respuesta."}
@@ -166,3 +166,4 @@ class ChatResponse(BaseModel):
                 }
             }
         }
+    )

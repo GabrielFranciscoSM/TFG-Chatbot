@@ -3,6 +3,7 @@
 __version__ = "0.1.0"
 
 from fastapi import FastAPI
+import logging
 from fastapi.middleware.cors import CORSMiddleware
 from rag_service.config import settings
 
@@ -16,6 +17,14 @@ app = FastAPI(
     title="RAG Service",
     description="Retrieval-Augmented Generation service for educational chatbot",
     version=__version__,
+)
+
+# Ensure a default logging configuration so module loggers (e.g. rag_service.*)
+# emit INFO-level logs when the app is run directly (uvicorn may also configure
+# logging, but having a basicConfig here ensures logs appear in development).
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 
 # Add CORS middleware

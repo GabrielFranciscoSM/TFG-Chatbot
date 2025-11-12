@@ -14,8 +14,8 @@ class DocumentProcessor:
     
     def __init__(
         self,
-        chunk_size: int = 1000,
-        chunk_overlap: int = 200,
+        chunk_size: int = 250,
+        chunk_overlap: int = 50,
         separators: Optional[List[str]] = None,
     ):
         self.chunk_size = chunk_size
@@ -57,6 +57,7 @@ class DocumentProcessor:
         for idx, chunk_text in enumerate(chunks):
             chunk_metadata = document.metadata.model_copy(deep=True)
             chunk_metadata.chunk_id = idx
+            chunk_metadata.filename = document.metadata.filename
             
             chunked_doc = Document(
                 content=chunk_text,

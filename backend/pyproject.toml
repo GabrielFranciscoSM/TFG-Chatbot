@@ -8,7 +8,9 @@ version = "1.0.0"
 description = "Backend for TFG Chatbot (FastAPI)"
 authors = [ { name = "Gabriel Francisco" } ]
 dependencies = [
+  "langchain",
   "langchain-openai",
+  "langchain-google-genai",
   "langchain-community",
   "langchain-core",
   "langgraph",

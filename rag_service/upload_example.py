@@ -62,6 +62,7 @@ def upload_document(
     
     # Preparar metadata
     metadata = {
+        "filename": file_path.name,
         "asignatura": asignatura,
         "tipo_documento": tipo_documento,
         "fecha": datetime.now().strftime("%Y-%m-%d"),

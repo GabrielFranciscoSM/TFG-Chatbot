@@ -62,7 +62,11 @@ def test_search_returns_results(monkeypatch):
     mock_q.search.return_value = [Res({"content": "hello", "asignatura": "x"}, 0.9)]
 
     monkeypatch.setattr(store_module, "QdrantClient", lambda host, port: mock_q)
-    monkeypatch.setattr(emb_module, "get_embedding_service", lambda: MagicMock(embed_query=lambda q: [0.1, 0.2, 0.3]))
+    
+    # Mock embedding service at the store module level
+    mock_embeddings = MagicMock()
+    mock_embeddings.embed_query.return_value = [0.1, 0.2, 0.3]
+    monkeypatch.setattr(store_module, "get_embedding_service", lambda: mock_embeddings)
 
     svc = store_module.VectorStoreService()
     results = svc.search("hello")

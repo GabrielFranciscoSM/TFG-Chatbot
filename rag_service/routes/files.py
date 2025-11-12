@@ -128,6 +128,7 @@ async def upload_file(
         indexed_count = 0
         if upload_metadata.auto_index:
             doc_metadata = DocumentMetadata(
+                filename=file.filename,
                 asignatura=upload_metadata.asignatura,
                 tipo_documento=upload_metadata.tipo_documento,
                 fecha=upload_metadata.fecha,

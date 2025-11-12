@@ -8,7 +8,7 @@ import importlib
 tools = importlib.import_module('backend.logic.tools.tools')
 
 
-def test_get_guia_with_key_returns_value(monkeypatch, dummy_mongo_client_class):
+def test_get_guia_with_key(monkeypatch, dummy_mongo_client_class):
     doc = {
         "asignatura": "TFG Test",
         "prerrequisitos_o_recomendaciones": ["Req1", "Req2"],
@@ -17,14 +17,15 @@ def test_get_guia_with_key_returns_value(monkeypatch, dummy_mongo_client_class):
     # Replace MongoDBClient with a dummy that returns our document
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test", "key": "prerrequisitos_o_recomendaciones"})
+    # pass the argument name expected by the tool schema (`asignatura`)
+    result = tools.get_guia.invoke({"asignatura": "TFG Test", "key": "prerrequisitos_o_recomendaciones"})
 
     parsed = json.loads(result)
     assert isinstance(parsed, list)
     assert "Req1" in parsed
 
 
-def test_get_guia_returns_summary_when_no_key(monkeypatch, dummy_mongo_client_class):
+def test_get_guia_no_key(monkeypatch, dummy_mongo_client_class):
     doc = {
         "asignatura": "TFG Test",
         "grado": "Grado X",
@@ -35,7 +36,7 @@ def test_get_guia_returns_summary_when_no_key(monkeypatch, dummy_mongo_client_cl
     }
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test"})
+    result = tools.get_guia.invoke({"asignatura": "TFG Test"})
     parsed = json.loads(result)
 
     assert isinstance(parsed, dict)
@@ -46,7 +47,7 @@ def test_get_guia_returns_summary_when_no_key(monkeypatch, dummy_mongo_client_cl
     assert len(parsed.get("brief_description")) <= 3
 
 
-def test_get_guia_no_subject_returns_no_guia_message(monkeypatch, dummy_mongo_client_class):
+def test_get_guia_no_subject(monkeypatch, dummy_mongo_client_class):
     # When no document exists, the tool should return a helpful message
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=None))
 
@@ -55,11 +56,11 @@ def test_get_guia_no_subject_returns_no_guia_message(monkeypatch, dummy_mongo_cl
     assert "No guia found for subject" in result
 
 
-def test_get_guia_key_not_present_returns_message(monkeypatch, dummy_mongo_client_class):
+def test_get_guia_key_not_present(monkeypatch, dummy_mongo_client_class):
     # Document exists but requested key is missing
     doc = {"asignatura": "TFG Test", "alguna_clave": "valor"}
     monkeypatch.setattr(tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc))
 
-    result = tools.get_guia.invoke({"asignatura_state": "TFG Test", "key": "enlaces_recomendados"})
+    result = tools.get_guia.invoke({"asignatura": "TFG Test", "key": "enlaces_recomendados"})
     assert isinstance(result, str)
     assert "not present in guia" in result

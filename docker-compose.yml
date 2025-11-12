@@ -1,34 +1,37 @@
 version: '3.8'
 
 services:
-  vllm-openai:
-    image: docker.io/vllm/vllm-openai:latest
-    container_name: vllm-service
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ['0']
-              capabilities:
-                - gpu
-    volumes:
-        - "./models:/models"
-    env_file:
-      - .env
-    environment:
-        HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
-    ports:
-        - 8000:8000
-    command: >
-      --model ${MODEL_PATH}
-      --max-num-seqs 4
-      --max-model-len 2048
-      --gpu-memory-utilization 0.6
-      --port ${VLLM_MAIN_PORT}
-      --tool-call-parser hermes
-      --enable-auto-tool-choice
-    restart: unless-stopped
+  # vllm-openai:
+  #   image: docker.io/vllm/vllm-openai:latest
+  #   container_name: vllm-service
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             device_ids: ['0']
+  #             capabilities:
+  #               - gpu
+  #   volumes:
+  #       - "./models:/models"
+  #       - "vllm_cache:/root/.cache/vllm"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #       HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
+  #       TORCH_CUDA_ARCH_LIST: "8.9"
+  #   ports:
+  #       - 8000:8000
+  #   command: >
+  #     --model ${MODEL_PATH}
+  #     --max-num-seqs 4
+  #     --max-model-len 2048
+  #     --gpu-memory-utilization 0.6
+  #     --port ${VLLM_MAIN_PORT}
+  #     --tool-call-parser hermes
+  #     --enable-auto-tool-choice
+  #     --swap-space 3
+  #   restart: unless-stopped
 
   backend:
     build:
@@ -44,7 +47,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - vllm-openai
+      # - vllm-openai
       - rag_service
     restart: unless-stopped
 
@@ -136,3 +139,4 @@ volumes:
   qdrant_storage:
   ollama_models:
   rag_documents:
+  vllm_cache:

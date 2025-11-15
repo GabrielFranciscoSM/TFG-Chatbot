@@ -61,8 +61,8 @@ jobs:
       - name: Run rag_service unit tests
         run: |
           cd rag_service
-          # Solo ejecutar tests marcados como 'unit', no los de integración
-          pytest tests/ -m unit -v --tb=short --cov=. --cov-report=xml --cov-report=term
+          # Ejecutar todos los tests excepto los marcados como 'integration'
+          pytest tests/ -m "not integration" -v --tb=short --cov=. --cov-report=xml --cov-report=term
 
       - name: Upload rag_service coverage
         uses: codecov/codecov-action@v4

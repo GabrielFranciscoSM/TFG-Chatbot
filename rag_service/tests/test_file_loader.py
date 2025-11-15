@@ -59,6 +59,7 @@ def test_save_uploaded_and_load(tmp_path):
     assert "hola mundo" in doc.content
 
 
+@pytest.mark.integration
 def test_get_file_loader_singleton(tmp_path, monkeypatch):
     monkeypatch.setenv("DOCUMENTS_PATH", str(tmp_path))
     # ensure singleton can be created without error

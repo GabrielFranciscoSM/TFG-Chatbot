@@ -2,6 +2,8 @@
 
 from unittest.mock import MagicMock
 
+import pytest
+
 
 def test_search_endpoint_success(api_client, monkeypatch):
     """Test successful semantic search."""
@@ -175,6 +177,7 @@ def test_index_documents_success(api_client, monkeypatch):
     assert "timestamp" in data
 
 
+@pytest.mark.integration
 def test_index_documents_empty_list(api_client, monkeypatch):
     """Test indexing empty document list."""
     from rag_service.embeddings import store

@@ -115,6 +115,9 @@ Skip tests: false
 
 ## Option 2: Release Please (Automatic)
 
+> ⚠️ **Setup Required**: Release Please needs additional permissions to create PRs.  
+> See [.github/RELEASE_PLEASE_SETUP.md](../../.github/RELEASE_PLEASE_SETUP.md) for configuration steps.
+
 ### When to Use
 - You follow strict conventional commits
 - You want releases on every main merge

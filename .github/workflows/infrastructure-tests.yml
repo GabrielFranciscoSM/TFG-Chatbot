@@ -1,0 +1,170 @@
+name: Infrastructure Tests
+
+# Este workflow ejecuta tests de infraestructura que requieren
+# que todos los contenedores estén desplegados y corriendo
+# Se ejecuta manualmente o en un schedule nocturno
+
+on:
+  workflow_dispatch:
+    inputs:
+      services:
+        description: 'Services to test (all, backend, rag, mongo, qdrant, ollama)'
+        required: false
+        default: 'all'
+  schedule:
+    # Ejecutar cada noche a las 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  infrastructure-tests:
+    name: Infrastructure Tests (Docker Compose)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    env:
+      # Configuración para el entorno de CI
+      MONGO_ROOT_USERNAME: testuser
+      MONGO_ROOT_PASSWORD: testpass
+      MONGO_HOSTNAME: mongo
+      MONGO_PORT: 27017
+      MONGO_AUTH_DB: admin
+      MONGO_EXPRESS_BASICAUTH_ENABLED: "false"
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+      OLLAMA_HOST: ollama
+      OLLAMA_PORT: 11434
+      RAG_SERVICE_URL: http://rag_service:8081
+      LLM_PROVIDER: gemini
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      INSTALL_DEV: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest requests pymongo qdrant-client
+
+      - name: Create .env file for docker-compose
+        run: |
+          cat > .env << EOF
+          MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+          MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+          MONGO_HOSTNAME=${MONGO_HOSTNAME}
+          MONGO_PORT=${MONGO_PORT}
+          MONGO_AUTH_DB=${MONGO_AUTH_DB}
+          MONGO_EXPRESS_BASICAUTH_ENABLED=${MONGO_EXPRESS_BASICAUTH_ENABLED}
+          QDRANT_HOST=${QDRANT_HOST}
+          QDRANT_PORT=${QDRANT_PORT}
+          OLLAMA_HOST=${OLLAMA_HOST}
+          OLLAMA_PORT=${OLLAMA_PORT}
+          RAG_SERVICE_URL=${RAG_SERVICE_URL}
+          LLM_PROVIDER=${LLM_PROVIDER}
+          GEMINI_API_KEY=${GEMINI_API_KEY}
+          INSTALL_DEV=${INSTALL_DEV}
+          EOF
+
+      - name: Start services with docker-compose
+        run: |
+          # Usar docker-compose (GitHub Actions usa Docker, no Podman)
+          docker-compose up -d
+          echo "Waiting for services to be ready..."
+
+      - name: Wait for MongoDB
+        run: |
+          timeout 60 bash -c 'until docker-compose exec -T mongo mongosh --eval "db.runCommand({ ping: 1 })" > /dev/null 2>&1; do sleep 2; done'
+          echo "✅ MongoDB is ready"
+
+      - name: Wait for Qdrant
+        run: |
+          timeout 60 bash -c 'until curl -s http://localhost:6333/health > /dev/null; do sleep 2; done'
+          echo "✅ Qdrant is ready"
+
+      - name: Wait for Ollama
+        run: |
+          timeout 60 bash -c 'until curl -s http://localhost:11435/api/version > /dev/null; do sleep 2; done'
+          echo "✅ Ollama is ready"
+
+      - name: Initialize Ollama with embedding model
+        run: |
+          echo "Pulling nomic-embed-text model..."
+          docker-compose exec -T ollama ollama pull nomic-embed-text
+          docker-compose exec -T ollama ollama list
+          echo "✅ Ollama model ready"
+
+      - name: Wait for RAG Service
+        run: |
+          timeout 90 bash -c 'until curl -s http://localhost:8081/health > /dev/null; do sleep 3; done'
+          echo "✅ RAG Service is ready"
+
+      - name: Wait for Backend
+        run: |
+          timeout 90 bash -c 'until curl -s http://localhost:8080/health > /dev/null; do sleep 3; done'
+          echo "✅ Backend is ready"
+
+      - name: Show service status
+        run: |
+          echo "=== Docker Compose Services ==="
+          docker-compose ps
+          echo ""
+          echo "=== Service Health Checks ==="
+          curl -s http://localhost:8080/health || echo "❌ Backend health check failed"
+          curl -s http://localhost:8081/health || echo "❌ RAG Service health check failed"
+          curl -s http://localhost:6333/health || echo "❌ Qdrant health check failed"
+
+      - name: Run infrastructure tests
+        run: |
+          # Ejecutar tests según el input (por defecto todos)
+          SERVICES="${{ github.event.inputs.services || 'all' }}"
+          
+          if [ "$SERVICES" = "all" ]; then
+            echo "Running all infrastructure tests..."
+            pytest tests/infrastructure/ -v --tb=short -m podman_container
+          else
+            echo "Running tests for: $SERVICES"
+            pytest tests/infrastructure/test_${SERVICES}_container.py -v --tb=short -m podman_container || true
+          fi
+
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          echo "=== Backend Logs ==="
+          docker-compose logs --tail=100 backend
+          echo ""
+          echo "=== RAG Service Logs ==="
+          docker-compose logs --tail=100 rag_service
+          echo ""
+          echo "=== Qdrant Logs ==="
+          docker-compose logs --tail=50 qdrant
+          echo ""
+          echo "=== Ollama Logs ==="
+          docker-compose logs --tail=50 ollama
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker-compose down -v
+          docker system prune -af --volumes
+
+  infrastructure-summary:
+    name: Infrastructure Tests Summary
+    runs-on: ubuntu-latest
+    needs: [infrastructure-tests]
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [[ "${{ needs.infrastructure-tests.result }}" == "failure" ]]; then
+            echo "❌ Infrastructure tests failed"
+            exit 1
+          elif [[ "${{ needs.infrastructure-tests.result }}" == "success" ]]; then
+            echo "✅ Infrastructure tests passed"
+          else
+            echo "⚠️ Infrastructure tests were skipped or cancelled"
+          fi

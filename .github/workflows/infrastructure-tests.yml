@@ -51,7 +51,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest requests pymongo qdrant-client
 
-      - name: Create .env file for docker-compose
+      - name: Create .env file for docker compose
         run: |
           cat > .env << EOF
           MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
@@ -70,15 +70,15 @@ jobs:
           INSTALL_DEV=${INSTALL_DEV}
           EOF
 
-      - name: Start services with docker-compose
+      - name: Start services with docker compose
         run: |
-          # Usar docker-compose (GitHub Actions usa Docker, no Podman)
-          docker-compose up -d
+          # Usar docker compose (GitHub Actions usa Docker, no Podman)
+          docker compose up -d
           echo "Waiting for services to be ready..."
 
       - name: Wait for MongoDB
         run: |
-          timeout 60 bash -c 'until docker-compose exec -T mongo mongosh --eval "db.runCommand({ ping: 1 })" > /dev/null 2>&1; do sleep 2; done'
+          timeout 60 bash -c 'until docker compose exec -T mongo mongosh --eval "db.runCommand({ ping: 1 })" > /dev/null 2>&1; do sleep 2; done'
           echo "✅ MongoDB is ready"
 
       - name: Wait for Qdrant
@@ -94,8 +94,8 @@ jobs:
       - name: Initialize Ollama with embedding model
         run: |
           echo "Pulling nomic-embed-text model..."
-          docker-compose exec -T ollama ollama pull nomic-embed-text
-          docker-compose exec -T ollama ollama list
+          docker compose exec -T ollama ollama pull nomic-embed-text
+          docker compose exec -T ollama ollama list
           echo "✅ Ollama model ready"
 
       - name: Wait for RAG Service
@@ -111,7 +111,7 @@ jobs:
       - name: Show service status
         run: |
           echo "=== Docker Compose Services ==="
-          docker-compose ps
+          docker compose ps
           echo ""
           echo "=== Service Health Checks ==="
           curl -s http://localhost:8080/health || echo "❌ Backend health check failed"
@@ -135,21 +135,21 @@ jobs:
         if: failure()
         run: |
           echo "=== Backend Logs ==="
-          docker-compose logs --tail=100 backend
+          docker compose logs --tail=100 backend
           echo ""
           echo "=== RAG Service Logs ==="
-          docker-compose logs --tail=100 rag_service
+          docker compose logs --tail=100 rag_service
           echo ""
           echo "=== Qdrant Logs ==="
-          docker-compose logs --tail=50 qdrant
+          docker compose logs --tail=50 qdrant
           echo ""
           echo "=== Ollama Logs ==="
-          docker-compose logs --tail=50 ollama
+          docker compose logs --tail=50 ollama
 
       - name: Cleanup
         if: always()
         run: |
-          docker-compose down -v
+          docker compose down -v
           docker system prune -af --volumes
 
   infrastructure-summary:

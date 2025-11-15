@@ -5,6 +5,8 @@ import sys
 from io import BytesIO
 from unittest.mock import MagicMock
 
+import pytest
+
 
 def test_list_files_all(api_client, monkeypatch):
     """Test listing all files."""
@@ -152,6 +154,7 @@ def test_load_file_success(api_client, monkeypatch):
     assert data["indexed_count"] == 1
 
 
+@pytest.mark.integration
 def test_load_file_not_found(api_client, monkeypatch):
     """Test loading non-existent file."""
     files_module = sys.modules["rag_service.routes.files"]
@@ -174,12 +177,13 @@ def test_load_file_not_found(api_client, monkeypatch):
     assert resp.status_code == 404
 
 
+@pytest.mark.integration
 def test_load_file_invalid_format(api_client, monkeypatch):
     """Test loading file with invalid format."""
     files_module = sys.modules["rag_service.routes.files"]
 
     mock_loader = MagicMock()
-    mock_loader.load_file.side_effect = ValueError("Unsupported file type")
+    mock_loader.load_file.side_effect = ValueError("Invalid format")
 
     monkeypatch.setattr(files_module, "get_file_loader", lambda: mock_loader)
 

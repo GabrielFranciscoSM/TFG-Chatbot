@@ -2,6 +2,8 @@
 
 from unittest.mock import MagicMock
 
+import pytest
+
 
 def test_root_endpoint(api_client):
     """Test that root endpoint returns API information."""
@@ -16,6 +18,7 @@ def test_root_endpoint(api_client):
     assert "version" in data
 
 
+@pytest.mark.integration
 def test_health_check_healthy(api_client, monkeypatch):
     """Test health check when Qdrant is connected."""
     from rag_service.embeddings import store

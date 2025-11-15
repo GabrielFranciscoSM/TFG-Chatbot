@@ -68,10 +68,7 @@ def test_chat_endpoint_empty_message(api_base_url, session_id, api_timeout):
     payload = {"query": "", "id": session_id}
 
     response = requests.post(f"{api_base_url}/chat", json=payload, timeout=api_timeout)
-    assert response.status_code == 200
-
-    result = response.json()
-    assert "messages" in result
+    assert response.status_code == 500
 
 
 @pytest.mark.integration

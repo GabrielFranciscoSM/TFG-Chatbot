@@ -5,6 +5,13 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.2.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.2.0...v0.2.1) (2025-11-15)
+
+
+### Bug Fixes
+
+* **ci:** correct Docker build context for release workflows ([4dac49d](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/4dac49db4725330c3aa7099ab96726db28c713d6))
+
 ## [0.2.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.1.4...v0.2.0) (2025-11-15)
 
 

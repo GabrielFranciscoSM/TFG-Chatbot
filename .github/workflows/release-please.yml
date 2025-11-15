@@ -1,0 +1,116 @@
+name: Release Please
+
+# Automatiza el proceso de release usando Release Please de Google
+# - Crea PR automático con CHANGELOG actualizado y version bump
+# - Cuando se mergea el PR, crea el tag y GitHub Release
+# - Publica Docker images con el tag de versión
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Create Release PR
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+    
+    steps:
+      - name: Run Release Please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          # Token para crear PRs y releases
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+          # Tipo de proyecto (Python)
+          release-type: python
+
+  build-and-publish:
+    name: Build and Publish Docker Images
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        service: [backend, rag_service]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ needs.release-please.outputs.tag_name }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ needs.release-please.outputs.tag_name }}
+            type=semver,pattern={{major}},value=${{ needs.release-please.outputs.tag_name }}
+            type=raw,value=latest
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.service }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ needs.release-please.outputs.version }}
+
+  notify-release:
+    name: Post-Release Notifications
+    needs: [release-please, build-and-publish]
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Release Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # 🚀 Release Published
+          
+          **Version**: ${{ needs.release-please.outputs.tag_name }}
+          
+          ## Published Artifacts
+          
+          ### Docker Images
+          - \`ghcr.io/${{ github.repository }}/backend:${{ needs.release-please.outputs.version }}\`
+          - \`ghcr.io/${{ github.repository }}/rag_service:${{ needs.release-please.outputs.version }}\`
+          
+          ### Container Registry
+          [View packages](https://github.com/${{ github.repository }}/pkgs/container)
+          
+          ### Release Notes
+          [View release](https://github.com/${{ github.repository }}/releases/tag/${{ needs.release-please.outputs.tag_name }})
+          
+          ---
+          
+          **Next steps:**
+          - Update deployment configurations to use the new version
+          - Announce the release to your team
+          - Monitor for any issues
+          EOF

@@ -1,0 +1,49 @@
+name: PR Checks
+
+# Este workflow se ejecuta automáticamente en cada PR
+# Proporciona información y resumen de los checks ejecutados
+
+on:
+  pull_request:
+    branches: [ main, development ]
+
+# Cancelar runs anteriores si se hace push a la misma PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-info:
+    name: PR Information
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show PR details
+        run: |
+          echo "=== Pull Request Information ==="
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "Branch: ${{ github.head_ref }}"
+          echo "Author: ${{ github.actor }}"
+          echo ""
+          echo "Automated checks running:"
+          echo "  ✓ Code Quality (lint, format)"
+          echo "  ✓ Unit Tests (backend, rag_service)"
+          echo "  ✓ Build Validation (Docker containers)"
+
+      - name: Generate PR summary
+        run: |
+          echo "## 📊 PR Check Information" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Automated Checks" >> $GITHUB_STEP_SUMMARY
+          echo "- **Code Quality**: Ruff, Black, isort, mypy" >> $GITHUB_STEP_SUMMARY
+          echo "- **Unit Tests**: Backend and RAG Service" >> $GITHUB_STEP_SUMMARY
+          echo "- **Container Builds**: Docker image validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Run locally:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "# Format and lint" >> $GITHUB_STEP_SUMMARY
+          echo "ruff check . && black --check . && isort --check ." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Unit tests" >> $GITHUB_STEP_SUMMARY
+          echo "pytest backend/tests/ -m unit" >> $GITHUB_STEP_SUMMARY
+          echo "pytest rag_service/tests/ -m unit" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

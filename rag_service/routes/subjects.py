@@ -1,13 +1,17 @@
 """Subject-related endpoints: list subjects and document types."""
 
-from fastapi import APIRouter, HTTPException, status
 import logging
-from rag_service.models import SubjectListResponse, DocumentTypesResponse
-from rag_service.documents.file_utils import list_subjects as ls_subjects, list_document_types as ls_document_types
+
+from fastapi import APIRouter, HTTPException, status
+
+from rag_service.documents.file_utils import list_document_types as ls_document_types
+from rag_service.documents.file_utils import list_subjects as ls_subjects
+from rag_service.models import DocumentTypesResponse, SubjectListResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
 
 @router.get(
     "/subjects",
@@ -27,8 +31,9 @@ async def list_subjects():
         logger.error(f"Error listing subjects: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to list subjects: {str(e)}"
-        )
+            detail=f"Failed to list subjects: {str(e)}",
+        ) from e
+
 
 @router.get(
     "/subjects/{asignatura}/types",
@@ -49,5 +54,5 @@ async def list_document_types(asignatura: str):
         logger.error(f"Error listing document types: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to list document types: {str(e)}"
-        )
+            detail=f"Failed to list document types: {str(e)}",
+        ) from e

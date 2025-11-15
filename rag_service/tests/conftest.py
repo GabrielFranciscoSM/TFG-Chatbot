@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -7,8 +8,8 @@ from fastapi.testclient import TestClient
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.insert(0, ROOT_DIR)
 
-from rag_service.api import app
-from rag_service import config
+from rag_service import config  # noqa: E402
+from rag_service.api import app  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
@@ -17,31 +18,35 @@ def reset_singletons():
     # Reset vector store singleton
     try:
         from rag_service.embeddings import store
+
         store._vector_store = None
     except Exception:
         pass
-    
+
     # Reset embedding service singleton
     try:
         from rag_service.embeddings import embeddings
+
         embeddings._embedding_service = None
     except Exception:
         pass
-    
+
     # Reset document processor singleton
     try:
         from rag_service.documents import document_processor
+
         document_processor._document_processor = None
     except Exception:
         pass
-    
+
     # Reset file loader singleton
     try:
         from rag_service.documents import file_loader
+
         file_loader._file_loader = None
     except Exception:
         pass
-    
+
     yield
 
 

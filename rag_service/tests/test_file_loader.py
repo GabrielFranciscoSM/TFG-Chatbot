@@ -1,4 +1,3 @@
-from pathlib import Path
 import pytest
 
 from rag_service.documents.file_loader import FileLoader, get_file_loader
@@ -53,11 +52,14 @@ def test_save_uploaded_and_load(tmp_path):
     assert "mi-asignatura" in str(saved)
 
     # Try loading via load_file when metadata provided
-    meta = DocumentMetadata(asignatura="Mi Asignatura", tipo_documento="Apuntes", fecha="2025-10-19")
+    meta = DocumentMetadata(
+        asignatura="Mi Asignatura", tipo_documento="Apuntes", fecha="2025-10-19"
+    )
     doc = fl.load_file("nuevo.txt", meta)
     assert "hola mundo" in doc.content
 
 
+@pytest.mark.integration
 def test_get_file_loader_singleton(tmp_path, monkeypatch):
     monkeypatch.setenv("DOCUMENTS_PATH", str(tmp_path))
     # ensure singleton can be created without error

@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Dict, Any
+from typing import Any
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -18,7 +18,7 @@ class MongoDBClient:
         client.close()
     """
 
-    def __init__(self, uri: Optional[str] = None, db_name: Optional[str] = None):
+    def __init__(self, uri: str | None = None, db_name: str | None = None):
         # Prefer an explicit MONGO_URI. If not provided, try to construct one from
         # compose-friendly variables (MONGO_HOSTNAME, MONGO_PORT, MONGO_ROOT_USERNAME,
         # MONGO_ROOT_PASSWORD, MONGO_AUTH_DB). Fall back to localhost if nothing is set.
@@ -48,7 +48,7 @@ class MongoDBClient:
                 # last resort: localhost
                 self.uri = "mongodb://localhost:27017"
         self.db_name = db_name or os.getenv("MONGO_DB", "tfg_chatbot")
-        self.client: Optional[MongoClient] = None
+        self.client: MongoClient | None = None
         self.db = None
 
     def connect(self):
@@ -62,6 +62,8 @@ class MongoDBClient:
     def get_collection(self, name: str):
         if self.db is None:
             self.connect()
+        if self.db is None:
+            raise ValueError("Failed to connect to database")
         return self.db[name]
 
     def close(self):
@@ -71,7 +73,9 @@ class MongoDBClient:
             self.client = None
             self.db = None
 
-    def upsert(self, collection_name: str, filter_query: Dict[str, Any], doc: Dict[str, Any]):
+    def upsert(
+        self, collection_name: str, filter_query: dict[str, Any], doc: dict[str, Any]
+    ):
         """Replace the document matching filter_query or insert if not exists."""
         coll = self.get_collection(collection_name)
         result = coll.replace_one(filter_query, doc, upsert=True)

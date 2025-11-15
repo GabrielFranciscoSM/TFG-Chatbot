@@ -1,15 +1,17 @@
 """Search and indexing endpoints."""
 
-from fastapi import APIRouter, HTTPException, status
-from typing import List
 import logging
-from rag_service.models import QueryRequest, QueryResponse, Document, IndexResponse
-from rag_service.embeddings.store import get_vector_store
+
+from fastapi import APIRouter, HTTPException, status
+
 from rag_service.config import settings
+from rag_service.embeddings.store import get_vector_store
+from rag_service.models import Document, IndexResponse, QueryRequest, QueryResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
 
 @router.post(
     "/search",
@@ -61,8 +63,9 @@ async def search(request: QueryRequest):
         logger.error(f"Search error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Search failed: {str(e)}"
-        )
+            detail=f"Search failed: {str(e)}",
+        ) from e
+
 
 @router.post(
     "/index",
@@ -71,7 +74,7 @@ async def search(request: QueryRequest):
     response_model=IndexResponse,
     status_code=status.HTTP_200_OK,
 )
-async def index_documents(documents: List[Document]):
+async def index_documents(documents: list[Document]):
     try:
         vector_store = get_vector_store()
         indexed_count = vector_store.index_documents(documents)
@@ -83,8 +86,9 @@ async def index_documents(documents: List[Document]):
         logger.error(f"Indexing error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Indexing failed: {str(e)}"
-        )
+            detail=f"Indexing failed: {str(e)}",
+        ) from e
+
 
 @router.get(
     "/collection/info",
@@ -100,5 +104,5 @@ async def get_collection_info():
         logger.error(f"Error getting collection info: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get collection info: {str(e)}"
-        )
+            detail=f"Failed to get collection info: {str(e)}",
+        ) from e

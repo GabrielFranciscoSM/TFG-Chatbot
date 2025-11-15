@@ -5,24 +5,249 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tfg-chatbot"
 version = "0.1.4"
-description = "TFG Chatbot project"
+description = "TFG Chatbot project - Educational AI agent development tools and workspace"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [ { name = "Gabriel Francisco" } ]
+requires-python = ">=3.12"
+keywords = ["chatbot", "education", "ai", "llm", "langgraph", "langchain"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 dependencies = [
+  "langchain",
+  "langchain-openai",
+  "langchain-google-genai",
+  "langchain-community",
+  "langchain-core",
+  "langgraph",
+  "python-dotenv",
+  "pymongo",
+  "duckduckgo-search",
+  "ddgs",
+  "langgraph-checkpoint-sqlite",
+  "fastapi",
+  "uvicorn[standard]",
+  "beautifulsoup4>=4.12.2",
+  "sentence-transformers>=2.2.2",
+  "pypdf>=3.17.0",
 ]
 
 [project.optional-dependencies]
-dev = [
+test = [
   "pytest>=8.4.2",
+  "pytest-asyncio>=0.21.0",
+  "pytest-cov>=4.1.0",
   "testinfra>=6.0.0",
+  "requests>=2.31.0",
+  "dotenv",
+]
+quality = [
+  "ruff>=0.1.0",
+  "black>=23.0.0",
+  "isort>=5.12.0",
+  "mypy>=1.7.0",
+  "pre-commit>=3.5.0",
+]
+
+ai = [
   "qdrant-client>=1.15.1",
   "huggingface-hub>=0.18.0",
-  "safetensors",
-  "accelerate",
-  "requests"
+  "safetensors>=0.4.0",
+  "accelerate>=0.25.0",
+  "langchain_core",
+  "langchain_google_genai",
+  "langchain_openai",
+  "langgraph",
+]
+# Dev includes all development dependencies
+dev = [
+  # Testing dependencies
+  "pytest>=8.4.2",
+  "pytest-asyncio>=0.21.0",
+  "pytest-cov>=4.1.0",
+  "testinfra>=6.0.0",
+  "requests>=2.31.0",
+  "dotenv",
+  # Code quality tools
+  "ruff>=0.1.0",
+  "black>=23.0.0",
+  "isort>=5.12.0",
+  "mypy>=1.7.0",
+  "pre-commit>=3.5.0",
+  # AI/ML tools
+  "qdrant-client>=1.15.1",
+  "huggingface-hub>=0.18.0",
+  "safetensors>=0.4.0",
+  "accelerate>=0.25.0",
+  "langchain_core",
+  "langchain_google_genai",
+  "langchain_openai",
+  "langgraph",
 ]
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["tests*", "docs*", "models/*"]
+exclude = ["tests*", "docs*", "models*", "local*", "backend*", "rag_service*", "scripts*"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [
+    "build",
+    "dist",
+    ".eggs",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "tmp",
+    "docs",
+    "models",
+    "local",
+    ".git",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # unused imports in __init__.py
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["backend", "rag_service"]
+skip_gitignore = true
+extend_skip = ["models", "local"]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+extend-exclude = '''
+/(
+    models
+  | local
+  | \.venv
+)/
+'''
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = false
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+strict_optional = true
+show_error_codes = true
+pretty = true
+exclude = [
+    "^local/",
+    "^models/",
+    "^build/",
+    "^dist/",
+    "^\\.venv/",
+    "^tmp/",
+]
+
+# Allow missing imports for third-party libraries without stubs
+[[tool.mypy.overrides]]
+module = [
+    "pytest.*",
+    "requests.*",
+    "testinfra.*",
+    "qdrant_client.*",
+    "langchain.*",
+    "langchain_core.*",
+    "langchain_community.*",
+    "langchain_openai.*",
+    "langchain_google_genai.*",
+    "langchain_ollama.*",
+    "langgraph.*",
+    "dotenv.*",
+    "pymongo.*",
+    "fastapi.*",
+    "pydantic.*",
+    "pydantic_settings.*",
+    "matplotlib.*",
+    "numpy.*",
+    "huggingface_hub.*",
+    "pypdf.*",
+    "bs4.*",
+    "uvicorn.*",
+    "partial_json_parser.*",
+    "transformers.*",
+    "vllm.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests", "backend/tests", "rag_service/tests"]
+pythonpath = ["."]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov-report=term-missing",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "infrastructure: Infrastructure tests",
+    "slow: Slow running tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["backend", "rag_service"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/tmp/*",
+    "*/models/*",
+    "*/local/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if typing.TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

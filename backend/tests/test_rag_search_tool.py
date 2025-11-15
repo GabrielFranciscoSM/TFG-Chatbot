@@ -1,8 +1,8 @@
-import json
 import importlib
+
 import requests
 
-tools = importlib.import_module('backend.logic.tools.tools')
+tools = importlib.import_module("backend.logic.tools.tools")
 
 
 def test_rag_search_success(monkeypatch):
@@ -17,12 +17,20 @@ def test_rag_search_success(monkeypatch):
             return self._data
 
     def fake_post(url, json=None, timeout=None):
-        assert url.endswith('/search')
-        return DummyResp({"results": [{"content": "snippet", "score": 0.95}], "total_results": 1, "query": json.get("query")})
+        assert url.endswith("/search")
+        return DummyResp(
+            {
+                "results": [{"content": "snippet", "score": 0.95}],
+                "total_results": 1,
+                "query": json.get("query"),
+            }
+        )
 
     monkeypatch.setattr(tools.requests, "post", fake_post)
 
-    result = tools.rag_search.invoke({"query": "prueba", "asignatura": "TFG Test", "top_k": 1})
+    result = tools.rag_search.invoke(
+        {"query": "prueba", "asignatura": "TFG Test", "top_k": 1}
+    )
     # New structured return is a dict
     assert isinstance(result, dict)
     assert result.get("ok") is True

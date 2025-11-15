@@ -36,6 +36,7 @@ jobs:
           context: .
           file: ./backend/Dockerfile
           push: false
+          load: true
           tags: tfg-backend:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -67,6 +68,7 @@ jobs:
           context: .
           file: ./rag_service/Dockerfile
           push: false
+          load: true
           tags: rag-service:test
           cache-from: type=gha
           cache-to: type=gha,mode=max

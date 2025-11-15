@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   release-please:
@@ -29,8 +30,11 @@ jobs:
         id: release
         uses: googleapis/release-please-action@v4
         with:
-          # Token para crear PRs y releases
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Usar PAT si está disponible, sino GITHUB_TOKEN
+          # Para configurar PAT: Settings → Secrets → Actions → New repository secret
+          # Nombre: RELEASE_PLEASE_TOKEN
+          # Permisos: repo (full control), workflow
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
           
           # Tipo de proyecto (Python)
           release-type: python

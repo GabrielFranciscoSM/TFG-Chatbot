@@ -3,14 +3,17 @@ Tests para verificar el funcionamiento del contenedor vLLM.
 Estos tests verifican que el servicio vLLM está corriendo correctamente
 y puede procesar solicitudes de chat y tool calling.
 """
-import pytest
-import requests
+
 import os
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 API_URL = "http://localhost:" + os.getenv("VLLM_MAIN_PORT", "8000")
-MAIN_VLLM_MODEL_NAME = os.getenv("MODEL_PATH", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit") 
+MAIN_VLLM_MODEL_NAME = os.getenv(
+    "MODEL_PATH", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"
+)
 
 
 def test_health_endpoint():
@@ -23,9 +26,7 @@ def test_chat_completions():
     """Verifica que el vLLM puede procesar completions de chat básicas."""
     payload = {
         "model": MAIN_VLLM_MODEL_NAME,
-        "messages": [
-            {"role": "user", "content": "Hola, ¿cómo estás?"}
-        ]
+        "messages": [{"role": "user", "content": "Hola, ¿cómo estás?"}],
     }
     resp = requests.post(f"{API_URL}/v1/chat/completions", json=payload)
     assert resp.status_code == 200
@@ -49,31 +50,28 @@ def test_tool_calling():
                     "properties": {
                         "lugar": {
                             "type": "string",
-                            "description": "Ciudad. ej. Granada"
+                            "description": "Ciudad. ej. Granada",
                         },
                         "unidad": {
                             "type": "string",
                             "enum": ["celcius", "fahrenheit"],
-                            "description": "Unidad de temperatura"
-                        }
+                            "description": "Unidad de temperatura",
+                        },
                     },
-                    "required": ["lugar"]
-                }
-            }
+                    "required": ["lugar"],
+                },
+            },
         }
     ]
 
     payload = {
         "model": MAIN_VLLM_MODEL_NAME,
         "messages": [
-            {
-                "role": "user", 
-                "content": "Qué tiempo hace tiempo hoy en Málaga?"
-            }
+            {"role": "user", "content": "Qué tiempo hace tiempo hoy en Málaga?"}
         ],
         "tools": tools,
         "tool_choice": "auto",
-        "max_tokens": 150
+        "max_tokens": 150,
     }
     # Llamada que debería activar tool calling
     requests.post(f"{API_URL}/v1/chat/completions", json=payload)
@@ -92,7 +90,7 @@ def test_invalid_model():
     payload = {
         "model": "modelo-inexistente",
         "messages": [{"role": "user", "content": "Hola"}],
-        "max_tokens": 10
+        "max_tokens": 10,
     }
     response = requests.post(f"{API_URL}/v1/chat/completions", json=payload)
     assert response.status_code == 400 or response.status_code == 404
@@ -103,7 +101,7 @@ def test_invalid_message_format():
     payload = {
         "model": "tu-modelo",
         "messages": [{"content": "Hola"}],  # Falta 'role'
-        "max_tokens": 10
+        "max_tokens": 10,
     }
     response = requests.post(f"{API_URL}/v1/chat/completions", json=payload)
     assert response.status_code == 400
@@ -115,7 +113,7 @@ def test_invalid_tool_definition():
         "model": "tu-modelo",
         "messages": [{"role": "user", "content": "¿Qué tiempo hace?"}],
         "tools": [{"type": "function"}],  # Falta 'function' details
-        "max_tokens": 10
+        "max_tokens": 10,
     }
     response = requests.post(f"{API_URL}/v1/chat/completions", json=payload)
     assert response.status_code == 400

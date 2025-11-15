@@ -1,17 +1,20 @@
 """General endpoints: root and health check."""
 
-from fastapi import APIRouter, status
-from rag_service.models import HealthCheckResponse
-from rag_service.embeddings.store import get_vector_store
 import logging
+
+from fastapi import APIRouter, status
+
 from rag_service.config import settings
+from rag_service.embeddings.store import get_vector_store
+from rag_service.models import HealthCheckResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.get(
-    "/", 
+    "/",
     tags=["General"],
     summary="API Information",
     status_code=status.HTTP_200_OK,
@@ -19,10 +22,13 @@ router = APIRouter()
 async def root():
     return {
         "name": "RAG Service",
-        "version": settings.api_version if hasattr(settings, 'api_version') else "0.1.0",
+        "version": (
+            settings.api_version if hasattr(settings, "api_version") else "0.1.0"
+        ),
         "description": "API for interacting with a Retrieval-Augmented Generation service",
         "status": "running",
     }
+
 
 @router.get(
     "/health",
@@ -39,7 +45,7 @@ async def health_check():
             status="healthy",
             qdrant_connected=True,
             collection=collection_info,
-            message="API is healthy and running"
+            message="API is healthy and running",
         )
     except Exception as e:
         logger.error(f"Health check failed: {e}")
@@ -47,5 +53,5 @@ async def health_check():
             status="unhealthy",
             qdrant_connected=False,
             collection=None,
-            message="Service unhealthy: " + str(e)
+            message="Service unhealthy: " + str(e),
         )

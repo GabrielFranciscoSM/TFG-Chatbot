@@ -2,14 +2,15 @@
 
 __version__ = "0.1.0"
 
-from fastapi import FastAPI
 import logging
-from fastapi.middleware.cors import CORSMiddleware
-from rag_service.config import settings
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from rag_service.config import settings
+from rag_service.routes.files import router as files_router
 from rag_service.routes.general import router as general_router
 from rag_service.routes.search_index import router as search_index_router
-from rag_service.routes.files import router as files_router
 from rag_service.routes.subjects import router as subjects_router
 
 # Create FastAPI app
@@ -44,6 +45,7 @@ app.include_router(subjects_router)
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(
         "rag_service.api:app",
         host=settings.api_host,

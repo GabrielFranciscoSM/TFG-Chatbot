@@ -1,4 +1,3 @@
-from pathlib import Path
 import pytest
 
 from rag_service.documents.file_loader import FileLoader, get_file_loader
@@ -53,7 +52,9 @@ def test_save_uploaded_and_load(tmp_path):
     assert "mi-asignatura" in str(saved)
 
     # Try loading via load_file when metadata provided
-    meta = DocumentMetadata(asignatura="Mi Asignatura", tipo_documento="Apuntes", fecha="2025-10-19")
+    meta = DocumentMetadata(
+        asignatura="Mi Asignatura", tipo_documento="Apuntes", fecha="2025-10-19"
+    )
     doc = fl.load_file("nuevo.txt", meta)
     assert "hola mundo" in doc.content
 

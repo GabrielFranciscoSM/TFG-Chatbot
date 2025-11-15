@@ -1,19 +1,26 @@
 """File-related endpoints: list, get info, load, upload."""
 
-from fastapi import APIRouter, HTTPException, status, UploadFile, File, Form
-from typing import Optional
 import json
 import logging
-from rag_service.models import (
-    FileListResponse, LoadFileRequest, LoadFileResponse, DocumentMetadata, UploadFileMetadata
-)
-from rag_service.documents.file_utils import list_files as ls_files, get_file_info as file_info
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
+
 from rag_service.documents.file_loader import get_file_loader
+from rag_service.documents.file_utils import get_file_info as file_info
+from rag_service.documents.file_utils import list_files as ls_files
 from rag_service.embeddings.store import get_vector_store
+from rag_service.models import (
+    DocumentMetadata,
+    FileListResponse,
+    LoadFileRequest,
+    LoadFileResponse,
+    UploadFileMetadata,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
 
 @router.get(
     "/files",
@@ -23,10 +30,7 @@ router = APIRouter()
     response_model=FileListResponse,
     status_code=status.HTTP_200_OK,
 )
-async def list_files(
-    asignatura: Optional[str] = None,
-    tipo_documento: Optional[str] = None
-):
+async def list_files(asignatura: str | None = None, tipo_documento: str | None = None):
     try:
         files = ls_files(asignatura, tipo_documento)
         return FileListResponse(
@@ -37,8 +41,9 @@ async def list_files(
         logger.error(f"Error listing files: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to list files: {str(e)}"
-        )
+            detail=f"Failed to list files: {str(e)}",
+        ) from e
+
 
 @router.get(
     "/files/{filename:path}",
@@ -50,16 +55,14 @@ async def get_file_info(filename: str):
     try:
         return file_info(filename)
     except FileNotFoundError as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         logger.error(f"Error getting file info: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get file info: {str(e)}"
-        )
+            detail=f"Failed to get file info: {str(e)}",
+        ) from e
+
 
 @router.post(
     "/load-file",
@@ -80,21 +83,18 @@ async def load_file(request: LoadFileRequest):
             indexed_count=indexed_count,
         )
     except FileNotFoundError as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except ValueError as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+        ) from e
     except Exception as e:
         logger.error(f"Error loading file: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to load file: {str(e)}"
-        )
+            detail=f"Failed to load file: {str(e)}",
+        ) from e
+
 
 @router.post(
     "/upload",
@@ -103,18 +103,15 @@ async def load_file(request: LoadFileRequest):
     response_model=LoadFileResponse,
     status_code=status.HTTP_200_OK,
 )
-async def upload_file(
-    file: UploadFile = File(...),
-    metadata: str = Form(...)
-):
+async def upload_file(file: UploadFile = File(...), metadata: str = Form(...)):
     try:
         metadata_dict = json.loads(metadata)
         upload_metadata = UploadFileMetadata(**metadata_dict)
-        file_extension = file.filename.split('.')[-1].lower()
-        if file_extension not in ['txt', 'pdf', 'docx', 'md', 'markdown']:
+        file_extension = file.filename.split(".")[-1].lower()
+        if file_extension not in ["txt", "pdf", "docx", "md", "markdown"]:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unsupported file type: {file_extension}. Supported: txt, pdf, docx, md"
+                detail=f"Unsupported file type: {file_extension}. Supported: txt, pdf, docx, md",
             )
         file_content = await file.read()
         file_loader = get_file_loader()
@@ -122,7 +119,7 @@ async def upload_file(
             file_content=file_content,
             filename=file.filename,
             asignatura=upload_metadata.asignatura,
-            tipo_documento=upload_metadata.tipo_documento
+            tipo_documento=upload_metadata.tipo_documento,
         )
         logger.info(f"File saved: {saved_path}")
         indexed_count = 0
@@ -147,14 +144,14 @@ async def upload_file(
             doc_id=saved_path.stem,
             indexed_count=indexed_count,
         )
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid metadata JSON format"
-        )
+            detail="Invalid metadata JSON format",
+        ) from e
     except Exception as e:
         logger.error(f"Error uploading file: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to upload file: {str(e)}"
-        )
+            detail=f"Failed to upload file: {str(e)}",
+        ) from e

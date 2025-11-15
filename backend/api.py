@@ -1,4 +1,4 @@
-""" Backend module for TFG-Chatbot
+"""Backend module for TFG-Chatbot
 
 This module implements the logicfor the AI agent, including:
 - Agent Graph
@@ -10,15 +10,23 @@ This module implements the logicfor the AI agent, including:
 __version__ = "0.1.0"
 
 import os
+from typing import Literal, cast
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, status
-from backend.models import ChatRequest, MessageResponse, ChatResponse, ResumeRequest, InterruptInfo
-from backend.logic.graph import GraphAgent
-from backend.models import ScrapeRequest, ScrapeResponse
-from backend.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
+
 from backend.db.mongo import MongoDBClient
-from backend.models import SubjectItem, SubjectsListResponse
-from fastapi import HTTPException
+from backend.logic.graph import GraphAgent
+from backend.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
+from backend.models import (
+    ChatRequest,
+    ChatResponse,
+    InterruptInfo,
+    MessageResponse,
+    ResumeRequest,
+    ScrapeRequest,
+    ScrapeResponse,
+)
 
 load_dotenv()
 
@@ -27,7 +35,7 @@ app = FastAPI(
     description="API for interacting with an intelligent chatbot powered by GraphAgent",
     version=__version__,
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # Create a single GraphAgent instance for the whole process. Reusing the
@@ -35,11 +43,16 @@ app = FastAPI(
 # that happen when different GraphAgent instances (and compiled graphs)
 # are created per-request.
 # Use LLM_PROVIDER env var to select between vllm and gemini
-llm_provider = os.getenv("LLM_PROVIDER", "vllm")
+llm_provider_str = os.getenv("LLM_PROVIDER", "vllm")
+llm_provider = cast(
+    Literal["vllm", "gemini"],
+    llm_provider_str if llm_provider_str in ["vllm", "gemini"] else "vllm",
+)
 agente = GraphAgent(llm_provider=llm_provider)
 
+
 @app.get(
-    "/", 
+    "/",
     tags=["General"],
     summary="API Information",
     description="Returns information about the TFG Chatbot API including version, available endpoints, and documentation links",
@@ -57,13 +70,13 @@ agente = GraphAgent(llm_provider=llm_provider)
                             "health": "/health",
                             "chat": "/chat",
                             "docs": "/docs",
-                            "redoc": "/redoc"
-                        }
+                            "redoc": "/redoc",
+                        },
                     }
                 }
-            }
+            },
         }
-    }
+    },
 )
 async def root():
     return {
@@ -75,13 +88,13 @@ async def root():
             "health": "/health - Health check endpoint",
             "chat": "/chat - Send messages to the chatbot",
             "docs": "/docs - Interactive API documentation (Swagger UI)",
-            "redoc": "/redoc - Alternative API documentation (ReDoc)"
-        }
+            "redoc": "/redoc - Alternative API documentation (ReDoc)",
+        },
     }
 
 
 @app.get(
-    "/health", 
+    "/health",
     tags=["General"],
     summary="Health check",
     description="Check if the API is running and healthy",
@@ -90,20 +103,16 @@ async def root():
     responses={
         200: {
             "description": "API is healthy and running",
-            "content": {
-                "application/json": {
-                    "example": {"message": "Hello World"}
-                }
-            }
+            "content": {"application/json": {"example": {"message": "Hello World"}}},
         }
-    }
+    },
 )
 async def health():
     return {"message": "Hello World"}
 
 
 @app.post(
-    "/chat", 
+    "/chat",
     tags=["Chatbot"],
     summary="Chat with the bot",
     description="Send a message to the chatbot and receive an intelligent response powered by GraphAgent. May return an interrupt if the bot is waiting for user input (e.g., during a test session).",
@@ -113,10 +122,8 @@ async def health():
         200: {
             "description": "Successful chatbot response. Check 'interrupted' field to see if waiting for user input.",
         },
-        422: {
-            "description": "Validation error - invalid request format"
-        }
-    }
+        422: {"description": "Validation error - invalid request format"},
+    },
 )
 async def chat(chat_request: ChatRequest):
     respuesta = agente.call_agent(
@@ -124,22 +131,19 @@ async def chat(chat_request: ChatRequest):
         id=chat_request.id,
         asignatura=chat_request.asignatura,
     )
-    
+
     # Check for interrupt
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
-        
+
         return ChatResponse(
             messages=respuesta.get("messages", []),
             interrupted=True,
-            interrupt_info=InterruptInfo(**interrupt_data)
+            interrupt_info=InterruptInfo(**interrupt_data),
         )
-    
+
     # Normal response without interruption
-    return ChatResponse(
-        messages=respuesta.get("messages", []),
-        interrupted=False
-    )
+    return ChatResponse(messages=respuesta.get("messages", []), interrupted=False)
 
 
 @app.post(
@@ -153,33 +157,27 @@ async def chat(chat_request: ChatRequest):
         200: {
             "description": "Successful resume. May return another interrupt if there are more questions.",
         },
-        422: {
-            "description": "Validation error - invalid request format"
-        }
-    }
+        422: {"description": "Validation error - invalid request format"},
+    },
 )
 async def resume_chat(resume_request: ResumeRequest):
     respuesta = agente.call_agent_resume(
         id=resume_request.id,
         resume_value=resume_request.user_response,
     )
-    
+
     # Check if there's another interrupt (next question)
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
-        
+
         return ChatResponse(
             messages=respuesta.get("messages", []),
             interrupted=True,
-            interrupt_info=InterruptInfo(**interrupt_data)
+            interrupt_info=InterruptInfo(**interrupt_data),
         )
-    
-    # Test completed or normal flow
-    return ChatResponse(
-        messages=respuesta.get("messages", []),
-        interrupted=False
-    )
 
+    # Test completed or normal flow
+    return ChatResponse(messages=respuesta.get("messages", []), interrupted=False)
 
 
 @app.post(
@@ -205,14 +203,20 @@ async def scrape_guia(req: ScrapeRequest):
         # Prepare document and ensure subject key
         subject = data.get("asignatura")
         if not subject:
-            raise ValueError("No subject found in parsed guia; provide subject_override or ensure 'asignatura' is present in the HTML")
+            raise ValueError(
+                "No subject found in parsed guia; provide subject_override or ensure 'asignatura' is present in the HTML"
+            )
 
         doc = data.copy()
         doc["subject"] = subject
 
         res = client.upsert("guias", {"subject": subject}, doc)
-        return ScrapeResponse(status="ok", subject=subject, upserted_id=res.get("upserted_id"), detail=res)
+        return ScrapeResponse(
+            status="ok", subject=subject, upserted_id=res.get("upserted_id"), detail=res
+        )
     except Exception as e:
-        return ScrapeResponse(status="error", subject=data.get("asignatura"), detail={"error": str(e)})
+        return ScrapeResponse(
+            status="error", subject=data.get("asignatura"), detail={"error": str(e)}
+        )
     finally:
         client.close()

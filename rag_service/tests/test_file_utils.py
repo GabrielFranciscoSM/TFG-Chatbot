@@ -1,6 +1,3 @@
-import os
-from pathlib import Path
-
 from rag_service.documents import file_utils
 
 
@@ -60,6 +57,6 @@ def test_get_file_info(tmp_path):
     # non-existent file raises
     try:
         file_utils.get_file_info("nope.txt")
-        assert False, "Expected FileNotFoundError"
+        raise AssertionError("Expected FileNotFoundError")
     except FileNotFoundError:
         pass

@@ -1,8 +1,8 @@
 """Embedding generation using Ollama."""
 
-from langchain_ollama import OllamaEmbeddings
-from typing import List
 import logging
+
+from langchain_ollama import OllamaEmbeddings
 
 from rag_service.config import settings
 
@@ -11,20 +11,20 @@ logger = logging.getLogger(__name__)
 
 class EmbeddingService:
     """Service for generating embeddings using Ollama."""
-    
+
     def __init__(self):
         """Initialize Ollama embeddings."""
         ollama_url = f"http://{settings.ollama_host}:{settings.ollama_port}"
-        
+
         logger.info(f"Initializing Ollama embeddings at {ollama_url}")
         logger.info(f"Using model: {settings.ollama_model}")
-        
+
         self.embeddings = OllamaEmbeddings(
             base_url=ollama_url,
             model=settings.ollama_model,
         )
-    
-    def embed_query(self, text: str) -> List[float]:
+
+    def embed_query(self, text: str) -> list[float]:
         """
         Generate embedding for a single query text.
         """
@@ -35,8 +35,8 @@ class EmbeddingService:
         except Exception as e:
             logger.error(f"Error generating query embedding: {e}")
             raise
-    
-    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
         """
         Generate embeddings for multiple documents.
         """
@@ -47,7 +47,7 @@ class EmbeddingService:
         except Exception as e:
             logger.error(f"Error generating document embeddings: {e}")
             raise
-    
+
     def get_embedding_dimension(self) -> int:
         """
         Get the dimension of the embedding vectors.

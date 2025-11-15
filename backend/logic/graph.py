@@ -1,46 +1,45 @@
 """Clase que encapsula la construcción del grafo y la llamada al agente."""
 
-import os
 import logging
-from dotenv import load_dotenv
+import os
+import sqlite3
+from typing import Any, Literal
 
-from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import SystemMessage, ToolMessage, HumanMessage
-from langgraph.graph import StateGraph, END, MessagesState
-from typing import TypedDict, Optional, List, Dict, Any, Literal
-from langgraph.types import interrupt
+from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.graph import END, MessagesState, StateGraph
+
+from backend.logic.prompts import SYSTEM_PROMPT_V2
+from backend.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
+
 
 class SubjectState(MessagesState):
     """Graph state that includes conversation messages, selected asignatura
     and a retrieval `context` where tool nodes can store document snippets.
-    
+
     Also includes test session fields (shared with test subgraph).
     These are only populated when in test mode.
     """
-    asignatura: Optional[str]
+
+    asignatura: str | None
     # `context` will hold a list of document snippets returned by RAG tools
-    context: Optional[List[Dict[str, Any]]]
-    
+    context: list[dict[str, Any]] | None
+
     # Test session fields (shared with test subgraph)
-    topic: Optional[str]
-    num_questions: Optional[int]
-    difficulty: Optional[str]
-    questions: Optional[List[Any]]  # List[MultipleChoiceTest]
-    current_question_index: Optional[int]
-    user_answers: Optional[List[str]]
-    feedback_history: Optional[List[str]]
-    scores: Optional[List[bool]]
+    topic: str | None
+    num_questions: int | None
+    difficulty: str | None
+    questions: list[Any] | None  # List[MultipleChoiceTest]
+    current_question_index: int | None
+    user_answers: list[str] | None
+    feedback_history: list[str] | None
+    scores: list[bool] | None
 
-from langgraph.prebuilt import ToolNode
-from langgraph.checkpoint.sqlite import SqliteSaver
-
-from backend.logic.tools.tools import get_tools
-from backend.logic.prompts import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
-
-import sqlite3
 
 # --- CONFIGURACIÓN ---
 load_dotenv()
@@ -50,18 +49,18 @@ class GraphAgent:
     """Clase que encapsula la construcción del grafo y la llamada al agente."""
 
     def __init__(
-        self, 
-        *, 
+        self,
+        *,
         llm_provider: Literal["vllm", "gemini"] = "vllm",
-        vllm_port: str | None = None, 
+        vllm_port: str | None = None,
         model_dir: str | None = None,
-        openai_api_key: str = "EMPTY", 
+        openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
         gemini_model: str = "gemini-2.0-flash",
-        temperature: float = 0.1
+        temperature: float = 0.1,
     ):
         """Initialize GraphAgent with configurable LLM provider.
-        
+
         Args:
             llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
             vllm_port: Port for vLLM service (only for vllm provider)
@@ -86,23 +85,23 @@ class GraphAgent:
         # Gemini configuration
         self.gemini_api_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
         self.gemini_model = gemini_model
-        os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
-
+        if self.gemini_api_key:
+            os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
 
         # Cache interno del grafo compilado
         self._graph = None
 
     def _get_llm(self, temperature: float | None = None):
         """Get configured LLM instance based on provider.
-        
+
         Args:
             temperature: Override temperature (uses instance default if None)
-            
+
         Returns:
             Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
         """
         temp = temperature if temperature is not None else self.temperature
-        
+
         if self.llm_provider == "gemini":
             if not self.gemini_api_key:
                 raise ValueError(
@@ -135,7 +134,7 @@ class GraphAgent:
         response = llm.invoke(messages)
 
         return {"messages": [response]}
-    
+
     def rag_search(self, state: SubjectState):
         """Nodo de búsqueda RAG. Realiza una búsqueda semántica y almacena los snippets en el estado."""
         tools = get_tools()
@@ -161,19 +160,15 @@ class GraphAgent:
         results = rag_result.get("results", [])
 
         content = "This is chunks of context:\n"
-        
+
         for result in results:
-            content += f"\n- {result["content"]}\n"
+            content += f"\n- {result['content']}\n"
             state["context"].append(result["metadata"])
 
-
-        tool_message = ToolMessage(
-            content=content,
-            tool_call_id=tool_call_id 
-        )
+        tool_message = ToolMessage(content=content, tool_call_id=tool_call_id)
 
         return {"messages": [tool_message]}
-    
+
     def get_guia(self, state: SubjectState):
         """Nodo de obtención de guía. Recupera información de la guía y la añade al estado."""
         tools = get_tools()
@@ -192,22 +187,21 @@ class GraphAgent:
 
         args = tool_calls[0]["args"]
         args["asignatura"] = state.get("asignatura")
-        
+
         tool_call_id = tool_calls[0]["id"]
 
         guia_result = guia_tool.invoke(args)
 
-        tool_message = ToolMessage(
-            content=guia_result,
-            tool_call_id=tool_call_id 
-        )
+        tool_message = ToolMessage(content=guia_result, tool_call_id=tool_call_id)
 
         return {"messages": [tool_message]}
-    
+
     def web_search(self, state: SubjectState):
         """Nodo de búsqueda web. Realiza una búsqueda web y añade los resultados al estado."""
         tools = get_tools()
-        web_search_tool = next((tool for tool in tools if tool.name == "web_search"), None)
+        web_search_tool = next(
+            (tool for tool in tools if tool.name == "web_search"), None
+        )
 
         if web_search_tool is None:
             raise ValueError("Web Search tool not found")
@@ -225,10 +219,7 @@ class GraphAgent:
 
         web_search_result = web_search_tool.invoke(args)
 
-        tool_message = ToolMessage(
-            content=web_search_result,
-            tool_call_id=tool_call_id 
-        )
+        tool_message = ToolMessage(content=web_search_result, tool_call_id=tool_call_id)
 
         return {"messages": [tool_message]}
 
@@ -259,7 +250,7 @@ class GraphAgent:
             openai_api_key=self.openai_api_key,
             gemini_api_key=self.gemini_api_key,
             gemini_model=self.gemini_model,
-            temperature=0.7  # Higher temperature for test evaluation
+            temperature=0.7,  # Higher temperature for test evaluation
         )
 
         # Agregar nodos
@@ -273,16 +264,16 @@ class GraphAgent:
         # Definir el punto de entrada
         graph_builder.set_entry_point("agent")
 
-        # Agregar aristas 
+        # Agregar aristas
         graph_builder.add_conditional_edges(
             "agent",
             self.should_continue,
             {
-                "rag_search": "rag_search", 
-                "get_guia": "get_guia", 
+                "rag_search": "rag_search",
+                "get_guia": "get_guia",
                 "web_search": "web_search",
                 "generate_test": "test_session",  # Route to subgraph node!
-                END: END
+                END: END,
             },
         )
         graph_builder.add_edge("rag_search", "agent")
@@ -314,27 +305,37 @@ class GraphAgent:
         if self._graph is None:
             self.build_graph()
 
-        state = {"messages": [HumanMessage(content=query)], "asignatura": asignatura, "context": []}
+        if self._graph is None:
+            raise ValueError("Failed to build graph")
+
+        state = {
+            "messages": [HumanMessage(content=query)],
+            "asignatura": asignatura,
+            "context": [],
+        }
         config = {"configurable": {"thread_id": id, "asignatura": asignatura}}
 
         return self._graph.invoke(state, config=config)
-    
+
     def call_agent_resume(self, id: str, resume_value: str):
         """Resume an interrupted graph execution.
-        
+
         Args:
             id: thread_id of the interrupted conversation
             resume_value: the user's response (answer to question)
-            
+
         Returns:
             The result of resuming the graph execution
         """
         from langgraph.types import Command
-        
+
         if self._graph is None:
             self.build_graph()
-        
+
+        if self._graph is None:
+            raise ValueError("Failed to build graph")
+
         config = {"configurable": {"thread_id": id}}
-        
+
         # Resume using Command with the user's answer
         return self._graph.invoke(Command(resume=resume_value), config=config)

@@ -120,6 +120,29 @@ curl -X POST "http://localhost:8080/chat" \
   }'
 ```
 
+## Linter y formateo de código
+
+El proyecto usa ruff (lint + arreglos rápidos), black (formateo) e isort (ordenación de imports).
+
+Instalación local (dentro del entorno virtual):
+
+```bash
+# Instalar pre-commit globally or in venv
+uv tool install pre-commit ruff black isort
+
+# Instalar hooks (una sola vez por repo)
+pre-commit install
+
+# Ejecutar ruff manualmente
+ruff check .
+
+# Ejecutar formateos (black/isort)
+black .
+isort .
+```
+
+En CI se ejecuta un workflow que corre `ruff check`, `black --check` y `isort --check` en cada PR.
+
 
 > **Nota**: El parámetro `id` permite mantener conversaciones persistentes. Usa el mismo ID para continuar una conversación anterior.
 
@@ -140,7 +163,7 @@ curl -X POST "http://localhost:8080/chat" \
 ## Roadmap / Milestones
 
 - [x] Milestone 1: API de un agente React básico para un chatbot
-- [ ] Milestone 2: Agente con herramientas específicas
+- [x] Milestone 2: Agente con herramientas específicas
 - [ ] Milestone 3: Autenticación de usuarios
 - [ ] Milestone 4: Interfaz Educativa
 - [ ] Milestone 5: Logs y Monitorización

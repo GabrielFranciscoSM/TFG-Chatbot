@@ -1,10 +1,12 @@
 """
 Configuración específica para tests de integración.
 """
+
+import os
+import time
+
 import pytest
 import requests
-import time
-import os
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -15,9 +17,9 @@ def verify_api_available(api_base_url):
     """
     max_retries = 30
     retry_delay = 2  # segundos
-    
+
     print(f"\nVerificando disponibilidad de la API en {api_base_url}...")
-    
+
     for attempt in range(max_retries):
         try:
             response = requests.get(f"{api_base_url}/health", timeout=5)
@@ -26,11 +28,13 @@ def verify_api_available(api_base_url):
                 return
         except (requests.ConnectionError, requests.Timeout):
             if attempt < max_retries - 1:
-                print(f"Intento {attempt + 1}/{max_retries} - API no disponible, reintentando en {retry_delay}s...")
+                print(
+                    f"Intento {attempt + 1}/{max_retries} - API no disponible, reintentando en {retry_delay}s..."
+                )
                 time.sleep(retry_delay)
             else:
                 raise
-    
+
     pytest.fail(
         f"La API no está disponible en {api_base_url} después de {max_retries} intentos. "
         "Asegúrate de que los contenedores estén corriendo con 'docker-compose up -d'"
@@ -45,9 +49,9 @@ def verify_rag_service_available(rag_base_url):
     """
     max_retries = 30
     retry_delay = 2  # segundos
-    
+
     print(f"\nVerificando disponibilidad del servicio RAG en {rag_base_url}...")
-    
+
     for attempt in range(max_retries):
         try:
             response = requests.get(f"{rag_base_url}/health", timeout=5)
@@ -56,11 +60,13 @@ def verify_rag_service_available(rag_base_url):
                 return
         except (requests.ConnectionError, requests.Timeout):
             if attempt < max_retries - 1:
-                print(f"Intento {attempt + 1}/{max_retries} - Servicio RAG no disponible, reintentando en {retry_delay}s...")
+                print(
+                    f"Intento {attempt + 1}/{max_retries} - Servicio RAG no disponible, reintentando en {retry_delay}s..."
+                )
                 time.sleep(retry_delay)
             else:
                 raise
-    
+
     pytest.fail(
         f"El servicio RAG no está disponible en {rag_base_url} después de {max_retries} intentos. "
         "Asegúrate de que los contenedores estén corriendo con 'docker-compose up -d'"

@@ -1,11 +1,15 @@
+import importlib
 import os
 import sys
-import pytest
 import uuid
-from langchain_core.messages import AIMessage
-from backend.logic.graph import GraphAgent
+from types import SimpleNamespace
+
+import pytest
 from fastapi.testclient import TestClient
+from langchain_core.messages import AIMessage
+
 from backend.api import app
+from backend.logic.graph import GraphAgent
 from backend.logic.testGraph import create_test_subgraph
 
 # Get the absolute path of the project root
@@ -14,20 +18,24 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 # Add the root directory to the Python path
 sys.path.insert(0, ROOT_DIR)
 
+
 @pytest.fixture(scope="session")
 def root_path():
     """Fixture to provide the root path of the project."""
     return ROOT_DIR
+
 
 @pytest.fixture(scope="session")
 def backend_path():
     """Fixture to provide the backend directory path."""
     return os.path.join(ROOT_DIR, "backend")
 
+
 @pytest.fixture
 def mock_llm_response():
     """Create a proper AIMessage for mocking."""
     return AIMessage(content="Test response")
+
 
 @pytest.fixture
 def mock_llm_with_tools():
@@ -35,13 +43,10 @@ def mock_llm_with_tools():
     return AIMessage(
         content="",
         tool_calls=[
-            {
-                "name": "web_search",
-                "args": {"query": "test query"},
-                "id": "call_123"
-            }
-        ]
+            {"name": "web_search", "args": {"query": "test query"}, "id": "call_123"}
+        ],
     )
+
 
 @pytest.fixture
 def graph(monkeypatch):
@@ -51,6 +56,7 @@ def graph(monkeypatch):
     GraphAgent._get_llm to return a lightweight dummy LLM that implements
     `bind_tools` and `invoke` returning an `AIMessage`-like object.
     """
+
     class DummyBoundLLM:
         def bind_tools(self, tools):
             # Return self as the bound runnable; tests only call .invoke()
@@ -64,6 +70,7 @@ def graph(monkeypatch):
 
     agent = GraphAgent()
     return agent.build_graph()
+
 
 @pytest.fixture
 def testGraph(monkeypatch):
@@ -82,20 +89,25 @@ def testGraph(monkeypatch):
         def invoke(self, messages):
             return AIMessage(content="Test response from dummy TestSession LLM")
 
-    monkeypatch.setattr(tg.TestSessionGraph, "_get_llm", lambda self, temp=None: DummyBoundLLM())
+    monkeypatch.setattr(
+        tg.TestSessionGraph, "_get_llm", lambda self, temp=None: DummyBoundLLM()
+    )
 
     test_subgraph = create_test_subgraph()
     return test_subgraph
+
 
 @pytest.fixture
 def graph_config():
     """Fixture que proporciona la configuración necesaria para el checkpointer."""
     return {"configurable": {"thread_id": f"test-{uuid.uuid4()}"}}
 
+
 @pytest.fixture(scope="session")
 def api_client():
     """Fixture que proporciona un cliente de pruebas para la API de FastAPI."""
     return TestClient(app)
+
 
 @pytest.fixture
 def session_id():
@@ -106,6 +118,7 @@ def session_id():
 @pytest.fixture
 def dummy_mongo_client_class():
     """Provide a DummyMongoClient class for tests to monkeypatch MongoDBClient."""
+
     class DummyMongoClient:
         def __init__(self, doc=None):
             self._doc = doc
@@ -127,15 +140,15 @@ def dummy_mongo_client_class():
 
 
 # --- Additional test doubles / factories for testGraph ---
-from types import SimpleNamespace
-import importlib
 
 
 @pytest.fixture
 def dummy_message_factory():
     """Factory to create lightweight message-like objects (content, tool_calls)."""
+
     def factory(content=None, tool_calls=None):
         return SimpleNamespace(content=content, tool_calls=tool_calls or [])
+
     return factory
 
 
@@ -147,7 +160,7 @@ def dummy_multiple_choice_test():
     """
     # Use the real Pydantic models so isinstance checks in the code under test
     # (which compare against backend.logic.models.MultipleChoiceTest) succeed.
-    from backend.logic.models import MultipleChoiceTest, Question, Answer
+    from backend.logic.models import Answer, MultipleChoiceTest, Question
 
     def factory(question_text, options):
         # options can be list of texts (first correct) or list of (text, is_correct)
@@ -168,6 +181,7 @@ def dummy_multiple_choice_test():
 @pytest.fixture
 def dummy_tool_factory():
     """Factory for simple tool-like objects with a name and invoke(args)."""
+
     def factory(name, result):
         class Tool:
             def __init__(self, name, result):
@@ -185,6 +199,7 @@ def dummy_tool_factory():
 @pytest.fixture
 def dummy_llm_factory():
     """Factory that returns a lightweight LLM-like object with configurable reply."""
+
     def factory(reply_content="CORRECT: YES\nFEEDBACK: OK"):
         class DummyLLM:
             def __init__(self, reply_content):
@@ -201,6 +216,7 @@ def dummy_llm_factory():
 @pytest.fixture
 def patch_get_tools(monkeypatch):
     """Helper to monkeypatch backend.logic.tools.tools.get_tools to return a list of tools."""
+
     def _patch(tools_list):
         tools_mod = importlib.import_module("backend.logic.tools.tools")
         monkeypatch.setattr(tools_mod, "get_tools", lambda: tools_list)

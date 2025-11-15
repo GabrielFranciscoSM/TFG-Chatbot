@@ -1,20 +1,29 @@
-""" Tools for the LangGraph agent.
+"""Tools for the LangGraph agent.
 Contains various tools that can be used by the agent to perform actions.
 """
 
+import json
+import logging
+from typing import Any
+
+import requests
 from langchain.tools import tool
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
-from backend.logic.models import MultipleChoiceTest, TestGenerationInput, WebSearchInput, SubjectDataKey
-from backend.logic.models import SubjectLookupInput, RagQueryInput
 from backend.config import settings as backend_settings
 from backend.db.mongo import MongoDBClient
-import json
-import requests
-from typing import Dict, Any
-import logging
+from backend.logic.models import (
+    MultipleChoiceTest,
+    RagQueryInput,
+    SubjectDataKey,
+    SubjectLookupInput,
+    TestGenerationInput,
+    WebSearchInput,
+)
 
 logger = logging.getLogger(__name__)
+
+
 @tool(args_schema=WebSearchInput)
 def web_search(query: str) -> str:
     """
@@ -27,14 +36,15 @@ def web_search(query: str) -> str:
     except Exception as e:
         return f"Error performing web search: {str(e)}"
 
+
 # List of all available tools
 AVAILABLE_TOOLS = [web_search]
 
 
 @tool(args_schema=SubjectLookupInput)
 def get_guia(
-    asignatura: str = None,
-    key: SubjectDataKey = None,
+    asignatura: str | None = None,
+    key: SubjectDataKey | None = None,
 ) -> str:
     """Retrieve a stored guia document for the agent's current `asignatura` state.
 
@@ -62,7 +72,7 @@ def get_guia(
         if key:
             path = key.value
             # support nested keys with dot notation
-            parts = path.split('.') if isinstance(path, str) else [path]
+            parts = path.split(".") if isinstance(path, str) else [path]
             value = doc
             for p in parts:
                 if not isinstance(value, dict):
@@ -96,10 +106,10 @@ AVAILABLE_TOOLS.append(get_guia)
 @tool(args_schema=RagQueryInput)
 def rag_search(
     query: str,
-    asignatura: str = None,
-    tipo_documento: str = None,
-    top_k: int = None,
-) -> Dict[str, Any]:
+    asignatura: str | None = None,
+    tipo_documento: str | None = None,
+    top_k: int | None = None,
+) -> dict[str, Any]:
     """Perform a semantic search against the external RAG service.
 
     Returns a structured dict with the following shape on success:
@@ -117,10 +127,15 @@ def rag_search(
       {"ok": False, "error": "..."}
     """
     try:
-        logger.debug("rag_search called with query=%s, asignatura=%s, tipo_documento=%s, top_k=%s",
-                     query, asignatura, tipo_documento, top_k)
+        logger.debug(
+            "rag_search called with query=%s, asignatura=%s, tipo_documento=%s, top_k=%s",
+            query,
+            asignatura,
+            tipo_documento,
+            top_k,
+        )
         url = f"{backend_settings.rag_service_url.rstrip('/')}/search"
-        payload: Dict[str, Any] = {"query": query}
+        payload: dict[str, Any] = {"query": query}
         if asignatura:
             payload["asignatura"] = asignatura
         if tipo_documento:
@@ -147,10 +162,20 @@ def rag_search(
                 if isinstance(r, dict):
                     logger.debug("Processing raw result keys=%s", list(r.keys()))
                     # Prefer explicit fields used by our RAG service
-                    content = r.get("content") or r.get("text") or r.get("snippet") or r.get("payload")
+                    content = (
+                        r.get("content")
+                        or r.get("text")
+                        or r.get("snippet")
+                        or r.get("payload")
+                    )
 
                     # metadata may be under different keys depending on vector store
-                    metadata = r.get("metadata") or r.get("meta") or r.get("payload_metadata") or {}
+                    metadata = (
+                        r.get("metadata")
+                        or r.get("meta")
+                        or r.get("payload_metadata")
+                        or {}
+                    )
                     # Normalize metadata to dict
                     if metadata is None:
                         metadata = {}
@@ -172,19 +197,35 @@ def rag_search(
 
                     # Truncate content for logs if it's large
                     try:
-                        content_snip = content[:200] if isinstance(content, str) else str(content)
+                        content_snip = (
+                            content[:200] if isinstance(content, str) else str(content)
+                        )
                     except Exception:
                         content_snip = str(content)
-                    logger.debug("Normalized result content=%s score=%s metadata_keys=%s",
-                                 content_snip, score, list(metadata.keys()) if isinstance(metadata, dict) else None)
+                    logger.debug(
+                        "Normalized result content=%s score=%s metadata_keys=%s",
+                        content_snip,
+                        score,
+                        list(metadata.keys()) if isinstance(metadata, dict) else None,
+                    )
 
-                    normalized.append({"content": content, "metadata": metadata, "score": score})
+                    normalized.append(
+                        {"content": content, "metadata": metadata, "score": score}
+                    )
                 else:
-                    normalized.append({"content": str(r), "metadata": {}, "score": None})
+                    normalized.append(
+                        {"content": str(r), "metadata": {}, "score": None}
+                    )
         else:
             # If the provider returned a flat text or other shape, include it as a single result
             if isinstance(data, dict) and "content" in data:
-                normalized.append({"content": data.get("content"), "metadata": data.get("metadata", {}), "score": data.get("score")})
+                normalized.append(
+                    {
+                        "content": data.get("content"),
+                        "metadata": data.get("metadata", {}),
+                        "score": data.get("score"),
+                    }
+                )
             else:
                 normalized.append({"content": str(data), "metadata": {}, "score": None})
 
@@ -192,7 +233,11 @@ def rag_search(
         return {
             "ok": True,
             "query": data.get("query") if isinstance(data, dict) else query,
-            "total_results": data.get("total_results") if isinstance(data, dict) and data.get("total_results") is not None else len(normalized),
+            "total_results": (
+                data.get("total_results")
+                if isinstance(data, dict) and data.get("total_results") is not None
+                else len(normalized)
+            ),
             "results": normalized,
         }
     except requests.exceptions.RequestException as e:
@@ -208,41 +253,46 @@ def rag_search(
         logger.error("Unexpected error in rag_search: %s", str(e))
         return {"ok": False, "error": f"Unexpected error: {str(e)}"}
 
+
 AVAILABLE_TOOLS.append(rag_search)
 
 
 @tool(args_schema=TestGenerationInput)
-def generate_test(topic: str, num_questions: int, difficulty: str = None) -> list:
+def generate_test(
+    topic: str, num_questions: int, difficulty: str | None = None
+) -> list:
     """Generate review questions on a given topic.
-    
+
     Creates thought-provoking questions for an informal review session.
     Questions are designed to encourage reflection and understanding.
-    
+
     Args:
         topic: The subject matter for the questions
         num_questions: Number of questions to generate (1-10)
         difficulty: Optional difficulty level (easy, medium, hard)
-        
+
     Returns:
         List of MultipleChoiceTest objects with generated questions
     """
-    from langchain_openai import ChatOpenAI
-    from langchain_google_genai import ChatGoogleGenerativeAI
-    from backend.logic.prompts import TEST_GENERATION_PROMPT
-    from backend.logic.models import Question, Answer
     import os
-    
+
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    from langchain_openai import ChatOpenAI
+
+    from backend.logic.models import Question
+    from backend.logic.prompts import TEST_GENERATION_PROMPT
+
     try:
         # Get LLM provider from environment
         llm_provider = os.getenv("LLM_PROVIDER", "vllm")
-        
+
         # Initialize LLM based on provider
         if llm_provider == "gemini":
             gemini_api_key = os.getenv("GEMINI_API_KEY")
             gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
             if not gemini_api_key:
                 raise ValueError("GEMINI_API_KEY not found in environment")
-            
+
             llm = ChatGoogleGenerativeAI(
                 model=gemini_model,
                 google_api_key=gemini_api_key,
@@ -252,62 +302,67 @@ def generate_test(topic: str, num_questions: int, difficulty: str = None) -> lis
             vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
             vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
             vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
-            model_name = os.getenv("MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct")
-            
+            model_name = os.getenv(
+                "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
+            )
+
             llm = ChatOpenAI(
                 model=model_name,
                 openai_api_key="EMPTY",
                 openai_api_base=vllm_url,
                 temperature=0.7,
             )
-        
+
         # Build prompt
         prompt = TEST_GENERATION_PROMPT.format(
-            topic=topic,
-            num_questions=num_questions,
-            difficulty=difficulty or "medium"
+            topic=topic, num_questions=num_questions, difficulty=difficulty or "medium"
         )
-        
+
         # Generate questions
         response = llm.invoke(prompt)
-        response_text = response.content if hasattr(response, 'content') else str(response)
-        
+        response_text = (
+            response.content if hasattr(response, "content") else str(response)
+        )
+
         # Parse JSON response
         import re
+
         # Try to extract JSON array from response
-        json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
+        json_match = re.search(r"\[.*\]", response_text, re.DOTALL)
         if json_match:
             questions_data = json.loads(json_match.group())
         else:
             # Fallback: create simple questions
-            logger.warning(f"Could not parse LLM response for test generation. Response: {response_text[:200]}")
+            logger.warning(
+                f"Could not parse LLM response for test generation. Response: {response_text[:200]}"
+            )
             questions_data = [
                 {
-                    "question_text": f"Pregunta {i+1} sobre {topic}",
-                    "difficulty": difficulty or "medium"
+                    "question_text": f"Pregunta {i + 1} sobre {topic}",
+                    "difficulty": difficulty or "medium",
                 }
                 for i in range(num_questions)
             ]
-        
+
         # Convert to MultipleChoiceTest objects
         tests = []
         for q_data in questions_data[:num_questions]:
             question = Question(
                 question_text=q_data.get("question_text", "Pregunta sin texto"),
-                difficulty=q_data.get("difficulty", difficulty or "medium")
+                difficulty=q_data.get("difficulty", difficulty or "medium"),
             )
-            
+
             # For open-ended review questions, we don't provide multiple choice options
             # The student provides free-text answers
             test = MultipleChoiceTest(
                 question=question,
-                options=[]  # Empty options for free-form answers
+                options=[],  # Empty options for free-form answers
             )
             tests.append(test)
-        
+
         logger.info(f"Generated {len(tests)} questions for topic: {topic}")
         return tests
-        
+
     except Exception as e:
         logger.exception(f"Error generating test: {str(e)}")
         # Return a fallback question
@@ -315,13 +370,15 @@ def generate_test(topic: str, num_questions: int, difficulty: str = None) -> lis
             MultipleChoiceTest(
                 question=Question(
                     question_text=f"¿Qué has aprendido sobre {topic}?",
-                    difficulty="medium"
+                    difficulty="medium",
                 ),
-                options=[]
+                options=[],
             )
         ]
 
+
 AVAILABLE_TOOLS.append(generate_test)
+
 
 def get_tools():
     """

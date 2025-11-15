@@ -44,7 +44,7 @@ data from the stored guia documents.
 - rag_search(query: str, asignatura: str, tipo_documento: str, top_k: int = 5) -> str :
     Use to retrieve relevant passages from the project's stored documents/vector
     index (RAG). Prefer rag_search for domain- or course-specific materials; use
-    web_search for general/up-to-date external facts. 
+    web_search for general/up-to-date external facts.
 
 After calling a tool and receiving its result, present the final answer to the
 user in the language of the user's request. Do NOT call the same tool twice.
@@ -58,11 +58,11 @@ You have access to three specialized tools:
 1. **rag_search** - Search course materials and documents
    - Use when: Student asks about course-specific content, assignments, or materials
    - Provides: Relevant excerpts from uploaded documents
-   
+
 2. **get_guia** - Retrieve teaching guide information
    - Use when: Student asks about course structure, evaluation, bibliography
    - Provides: Official course information
-   
+
 3. **web_search** - Search the internet
    - Use when: Student asks about general knowledge or current events
    - Provides: Up-to-date information

@@ -1,4 +1,57 @@
-"""Clase que encapsula la construcción del grafo y la llamada al agente."""
+"""
+GraphAgent: LangGraph-based conversational agent with tool usage.
+
+This module implements the main agent logic using LangGraph for orchestrating
+conversation flows. The agent can:
+
+- Answer questions using RAG (Retrieval-Augmented Generation)
+- Consult teaching guides stored in MongoDB
+- Search the web for additional information
+- Generate and manage interactive test sessions
+- Maintain conversation state using SQLite checkpointing
+
+Architecture:
+    The agent uses a StateGraph with multiple nodes:
+
+    1. **think**: Main reasoning node that decides actions
+    2. **rag_search**: Semantic search in document database
+    3. **get_guia**: Retrieve teaching guide information
+    4. **web_search**: Search the web for additional context
+    5. **test_session**: Test generation and management subgraph
+
+    Flow:
+        User Query -> think -> [tool_node] -> think -> Response
+                              ↓
+                        test_session (if test mode)
+                              ↓
+                        interrupt with questions
+                              ↓
+                        resume with answers
+
+Key Features:
+    - **Multi-LLM Support**: Configurable vLLM or Gemini backend
+    - **Persistent State**: SQLite checkpointer for conversation continuity
+    - **Tool Calling**: Automatic tool selection and execution
+    - **Test Mode**: Interactive test sessions with interrupts
+    - **Context Management**: Maintains relevant document snippets
+
+Example:
+    # Initialize agent
+    agent = GraphAgent(llm_provider="gemini")
+
+    # Chat
+    response = agent.call_agent(
+        query="¿Qué es Docker?",
+        id="session_123",
+        asignatura="iv"
+    )
+
+    # Resume test
+    response = agent.call_agent_resume(
+        id="session_123",
+        resume_value="B"
+    )
+"""
 
 import logging
 import os
@@ -19,11 +72,28 @@ logger = logging.getLogger(__name__)
 
 
 class SubjectState(MessagesState):
-    """Graph state that includes conversation messages, selected asignatura
-    and a retrieval `context` where tool nodes can store document snippets.
+    """
+    State schema for the conversational agent graph.
 
-    Also includes test session fields (shared with test subgraph).
-    These are only populated when in test mode.
+    Extends LangGraph's MessagesState to include additional fields for:
+    - Subject/course context (asignatura)
+    - Retrieved document snippets (context)
+    - Test session management fields
+
+    Attributes:
+        messages: List of conversation messages (inherited from MessagesState)
+        asignatura: Current subject/course being discussed
+        context: Document snippets retrieved by RAG tools
+
+        Test session fields (only populated during test mode):
+            topic: Test topic/theme
+            num_questions: Number of questions in the test
+            difficulty: Difficulty level (easy/medium/hard)
+            questions: List of generated questions
+            current_question_index: Index of current question being asked
+            user_answers: List of user's answers
+            feedback_history: Feedback for each answer
+            scores: Boolean list indicating correct/incorrect answers
     """
 
     asignatura: str | None
@@ -46,7 +116,25 @@ load_dotenv()
 
 
 class GraphAgent:
-    """Clase que encapsula la construcción del grafo y la llamada al agente."""
+    """
+    Conversational agent powered by LangGraph and LLMs.
+
+    This class encapsulates the entire agent logic including graph construction,
+    tool integration, and conversation management. It supports multiple LLM
+    providers (vLLM, Gemini) and maintains conversation state using SQLite.
+
+    The agent orchestrates complex conversational flows including:
+    - Multi-turn conversations with context retention
+    - Tool calling for information retrieval
+    - Test generation and interactive assessment
+    - Interrupt/resume flow for user input collection
+
+    Design Decisions:
+        - Single instance per application to share checkpointer
+        - Lazy graph compilation (compiled on first use)
+        - SQLite for persistent conversation state
+        - Configurable LLM backend for flexibility
+    """
 
     def __init__(
         self,
@@ -121,7 +209,23 @@ class GraphAgent:
             )
 
     def think(self, state: SubjectState):
-        """Nodo del Agente. Contesta a la pregunta dada o decide usar herramientas."""
+        """
+        Main reasoning node of the agent.
+
+        This node is the brain of the agent. It receives the conversation state,
+        analyzes the user's query, and decides whether to:
+        - Answer directly
+        - Call a tool (rag_search, get_guia, web_search, test_session)
+
+        The LLM is bound with tools, enabling automatic tool selection based on
+        the query content and conversation context.
+
+        Args:
+            state: Current conversation state with messages and context
+
+        Returns:
+            Dict with updated messages including the agent's response or tool calls
+        """
         tools = get_tools()
         system_message = SystemMessage(content=SYSTEM_PROMPT_V2)
 
@@ -136,7 +240,19 @@ class GraphAgent:
         return {"messages": [response]}
 
     def rag_search(self, state: SubjectState):
-        """Nodo de búsqueda RAG. Realiza una búsqueda semántica y almacena los snippets en el estado."""
+        """
+        RAG search node - semantic search over document database.
+
+        Executes the rag_search tool to find relevant document chunks based on
+        the user's query. Results are stored in the state's context field and
+        returned as a ToolMessage for the agent to process.
+
+        Args:
+            state: Current conversation state
+
+        Returns:
+            Dict with ToolMessage containing search results
+        """
         tools = get_tools()
         rag_tool = next((tool for tool in tools if tool.name == "rag_search"), None)
 
@@ -170,7 +286,19 @@ class GraphAgent:
         return {"messages": [tool_message]}
 
     def get_guia(self, state: SubjectState):
-        """Nodo de obtención de guía. Recupera información de la guía y la añade al estado."""
+        """
+        Teaching guide retrieval node.
+
+        Fetches structured information from the teaching guide (guía docente)
+        stored in MongoDB for the current subject. This provides quick access
+        to course details, competencies, evaluation criteria, etc.
+
+        Args:
+            state: Current conversation state (must include asignatura)
+
+        Returns:
+            Dict with ToolMessage containing teaching guide information
+        """
         tools = get_tools()
         guia_tool = next((tool for tool in tools if tool.name == "get_guia"), None)
 

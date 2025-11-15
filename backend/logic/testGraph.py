@@ -1,7 +1,55 @@
-"""Test session subgraph for interactive question-answer sessions.
+"""
+Test session subgraph for interactive question-answer sessions.
 
-This module defines a separate subgraph for managing test/quiz sessions
-with human-in-the-loop interrupts for each question.
+This module implements a LangGraph subgraph that manages interactive test/quiz
+sessions with human-in-the-loop interrupts. It allows the chatbot to:
+
+- Present questions one at a time
+- Wait for user responses at each question
+- Evaluate answers and provide immediate feedback
+- Track progress through the test session
+- Provide final scores and results
+
+Architecture:
+    The test session uses a separate subgraph that integrates with the main
+    GraphAgent. It implements an interrupt-driven flow:
+
+    Flow:
+        generate_test (parent) -> test_session (subgraph)
+                                          ↓
+                                   present_question
+                                          ↓
+                                   **INTERRUPT** (wait for user)
+                                          ↓
+                                   evaluate_answer (on resume)
+                                          ↓
+                                   should_continue?
+                                    /           \
+                            next question     provide_summary
+
+    State Management:
+        The subgraph shares state with the parent graph, allowing seamless
+        communication of test data (questions, scores, user answers).
+
+Key Features:
+    - **Human-in-the-loop**: Interrupts for each question
+    - **Immediate Feedback**: Evaluates and explains answers
+    - **Progress Tracking**: Maintains question index and score
+    - **LLM Evaluation**: Uses LLM to assess answer correctness
+    - **Final Summary**: Provides complete test results
+
+Example:
+    # Test session is invoked automatically by the main agent
+    # when user requests a test. The flow:
+
+    1. User: "Quiero un test de Docker"
+    2. Agent calls generate_test tool -> creates questions
+    3. Agent enters test_session subgraph
+    4. Subgraph presents question 1 and interrupts
+    5. User provides answer via /resume_chat
+    6. Subgraph evaluates, presents question 2, interrupts again
+    7. Process repeats until all questions answered
+    8. Final summary provided
 """
 
 import os
@@ -18,10 +66,23 @@ load_dotenv()
 
 
 class TestSessionState(MessagesState):
-    """Test subgraph state - extends MessagesState.
+    """
+    State schema for the test session subgraph.
 
-    All keys here are SHARED with the parent SubjectState graph.
-    The subgraph reads/writes to the same state channels as parent.
+    This state is SHARED with the parent SubjectState. All fields defined here
+    are accessible and modifiable by both the test subgraph and the parent graph.
+    This allows seamless communication of test data between graphs.
+
+    Attributes:
+        messages: Conversation messages (inherited from MessagesState)
+        topic: Test topic/theme
+        num_questions: Total number of questions in the test
+        difficulty: Difficulty level (easy/medium/hard)
+        questions: List of generated MultipleChoiceTest questions
+        current_question_index: Index of the current question being presented
+        user_answers: List of answers provided by the user
+        feedback_history: Feedback messages for each answer
+        scores: Boolean list indicating correct (True) or incorrect (False) answers
     """
 
     # These fields are shared with parent SubjectState
@@ -37,7 +98,26 @@ class TestSessionState(MessagesState):
 
 
 class TestSessionGraph:
-    """Encapsulates the test session subgraph logic."""
+    """
+    Test session subgraph manager.
+
+    This class encapsulates the logic for interactive test sessions, including:
+    - Presenting questions sequentially
+    - Interrupting for user input
+    - Evaluating answers using LLM
+    - Tracking progress and scores
+    - Providing final results
+
+    The subgraph is designed to be invoked by the main GraphAgent when a test
+    session is initiated. It maintains its own flow but shares state with the
+    parent graph for seamless integration.
+
+    Design Decisions:
+        - Separate subgraph for clean separation of concerns
+        - Shared state with parent for easy data access
+        - LLM-based evaluation for flexible answer assessment
+        - Interrupt-based flow for true interactive experience
+    """
 
     def __init__(
         self,

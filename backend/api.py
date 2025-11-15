@@ -1,10 +1,46 @@
-"""Backend module for TFG-Chatbot
+"""
+Backend API for the TFG Chatbot.
 
-This module implements the logicfor the AI agent, including:
-- Agent Graph
-- Tools
-- Prompts
+This module implements the main FastAPI application that exposes the AI agent
+functionality through REST endpoints. The backend handles:
 
+- Chat interactions with the intelligent agent powered by LangGraph
+- Test session management with interrupts and resume capabilities
+- Web scraping of UGR teaching guides (guías docentes)
+- Integration with MongoDB for storing teaching guide data
+- Integration with RAG service for semantic search
+
+Architecture:
+    The backend uses a single GraphAgent instance shared across all requests
+    to maintain conversation state and checkpointing. This ensures proper
+    session management and allows users to resume interrupted conversations.
+
+Key Components:
+    - GraphAgent: Orchestrates the conversation flow using LangGraph
+    - MongoDB: Stores teaching guide data for quick retrieval
+    - RAG Service: Provides semantic search capabilities (separate service)
+    - LLM Provider: Configurable (vLLM or Gemini) via LLM_PROVIDER env var
+
+Main Endpoints:
+    - POST /chat: Send messages and receive intelligent responses
+    - POST /resume_chat: Resume interrupted test sessions
+    - POST /scrape_guia: Parse and store teaching guides
+    - GET /health: Health check endpoint
+
+Example:
+    Start the backend:
+        uvicorn backend.api:app --reload --port 8000
+
+    Or use Docker:
+        docker compose up backend
+
+    Chat with the bot:
+        POST http://localhost:8000/chat
+        {
+            "query": "¿Qué es Docker?",
+            "id": "session_123",
+            "asignatura": "iv"
+        }
 """
 
 __version__ = "0.1.0"
@@ -79,6 +115,15 @@ agente = GraphAgent(llm_provider=llm_provider)
     },
 )
 async def root():
+    """
+    Get API information and available endpoints.
+
+    Returns basic information about the TFG Chatbot API including version,
+    description, and links to all available endpoints.
+
+    Returns:
+        Dict with API metadata and endpoint descriptions
+    """
     return {
         "name": "TFG Chatbot API",
         "version": __version__,
@@ -108,6 +153,15 @@ async def root():
     },
 )
 async def health():
+    """
+    Health check endpoint.
+
+    Simple endpoint to verify the API is running and accessible.
+    Used for monitoring and load balancer health checks.
+
+    Returns:
+        MessageResponse with "Hello World" message
+    """
     return {"message": "Hello World"}
 
 
@@ -126,6 +180,51 @@ async def health():
     },
 )
 async def chat(chat_request: ChatRequest):
+    """
+    Send a message to the chatbot and receive an intelligent response.
+
+    The chatbot uses GraphAgent to orchestrate the conversation flow, which includes:
+    - Understanding user intent
+    - Searching for relevant information using RAG
+    - Consulting teaching guides stored in MongoDB
+    - Generating appropriate responses
+    - Managing test sessions with interrupts
+
+    If the bot initiates a test session, it will return an interrupt with the first
+    question. Use the /resume_chat endpoint to continue the test.
+
+    Args:
+        chat_request: ChatRequest containing query, session ID, and optional subject
+
+    Returns:
+        ChatResponse with messages and interrupt information if applicable
+
+    Example:
+        Request:
+        {
+            "query": "¿Qué es integración continua?",
+            "id": "user_session_123",
+            "asignatura": "iv"
+        }
+
+        Response (normal):
+        {
+            "messages": [...],
+            "interrupted": false
+        }
+
+        Response (test interrupt):
+        {
+            "messages": [...],
+            "interrupted": true,
+            "interrupt_info": {
+                "question_text": "¿Qué herramienta...",
+                "options": ["A", "B", "C", "D"],
+                "question_number": 1,
+                "total_questions": 5
+            }
+        }
+    """
     respuesta = agente.call_agent(
         query=chat_request.query,
         id=chat_request.id,
@@ -161,6 +260,49 @@ async def chat(chat_request: ChatRequest):
     },
 )
 async def resume_chat(resume_request: ResumeRequest):
+    """
+    Resume an interrupted test session with the user's answer.
+
+    When the bot interrupts with a test question, use this endpoint to provide
+    the user's answer and continue the test. The bot will either:
+    - Return the next question (another interrupt)
+    - Complete the test and provide results (no interrupt)
+
+    The session is maintained using the thread ID from the original chat request.
+
+    Args:
+        resume_request: ResumeRequest with session ID and user's answer
+
+    Returns:
+        ChatResponse with evaluation and next question or final results
+
+    Example:
+        Request:
+        {
+            "id": "user_session_123",
+            "user_response": "B"
+        }
+
+        Response (next question):
+        {
+            "messages": [
+                {"role": "assistant", "content": "Correcto! La respuesta es B..."}
+            ],
+            "interrupted": true,
+            "interrupt_info": {
+                "question_text": "Segunda pregunta...",
+                ...
+            }
+        }
+
+        Response (test completed):
+        {
+            "messages": [
+                {"role": "assistant", "content": "¡Test completado! Tu puntuación: 4/5"}
+            ],
+            "interrupted": false
+        }
+    """
     respuesta = agente.call_agent_resume(
         id=resume_request.id,
         resume_value=resume_request.user_response,
@@ -187,9 +329,45 @@ async def resume_chat(resume_request: ResumeRequest):
     response_model=ScrapeResponse,
 )
 async def scrape_guia(req: ScrapeRequest):
-    """Parse provided HTML with the scraper and upsert the result into MongoDB.
+    """
+    Parse a UGR teaching guide HTML and store it in MongoDB.
 
-    The stored document will include a `subject` top-level key (taken from `asignatura` or `subject_override`).
+    This endpoint processes the HTML content of a teaching guide (guía docente)
+    from the University of Granada, extracts structured information, and stores
+    it in MongoDB for quick retrieval by the chatbot.
+
+    The scraper extracts:
+    - Course information (name, code, credits)
+    - Competencies and learning objectives
+    - Course content and topics
+    - Teaching methodology
+    - Evaluation criteria
+    - Bibliography
+
+    Args:
+        req: ScrapeRequest with HTML content, optional URL, and subject override
+
+    Returns:
+        ScrapeResponse with status, subject, and MongoDB upsert result
+
+    Raises:
+        ValueError: If no subject can be determined from the HTML or override
+
+    Example:
+        Request:
+        {
+            "html_content": "<html>...</html>",
+            "url": "https://...",
+            "subject_override": "infraestructura-virtual"
+        }
+
+        Response:
+        {
+            "status": "ok",
+            "subject": "infraestructura-virtual",
+            "upserted_id": "507f1f77bcf86cd799439011",
+            "detail": {...}
+        }
     """
     scraper = UGRTeachingGuideScraper(req.html_content, url=req.url or "")
     data = scraper.parse()

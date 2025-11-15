@@ -1,4 +1,33 @@
-"""FastAPI application for RAG service."""
+"""
+FastAPI application for the RAG (Retrieval-Augmented Generation) service.
+
+This service provides a REST API for document management and semantic search
+functionality to support the TFG chatbot. It handles file uploads, document
+indexing, and retrieval operations using Qdrant vector database.
+
+Architecture:
+    - File Management: Upload, list, and load documents
+    - Document Processing: Text extraction, chunking, embedding generation
+    - Vector Storage: Qdrant for efficient semantic search
+    - Search API: Semantic search with metadata filtering
+
+Main Routes:
+    - /health: Health check endpoint
+    - /files: File management endpoints
+    - /search: Semantic search endpoint
+    - /index: Document indexing endpoint
+    - /subjects: Subject and document type discovery
+
+The service runs independently and can be accessed by the main backend
+through HTTP requests for RAG operations.
+
+Example:
+    Start the service:
+        uvicorn rag_service.api:app --reload --port 8001
+
+    Or use the Docker container:
+        docker compose up rag_service
+"""
 
 __version__ = "0.1.0"
 

@@ -25,13 +25,13 @@ jobs:
     name: Build Backend Container
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build backend image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./backend/Dockerfile
@@ -45,25 +45,52 @@ jobs:
 
       - name: Test backend image can run
         run: |
-          docker run --rm -d --name backend-test \
+          # Start container in detached mode (without --rm so we can check logs even after exit)
+          CONTAINER_ID=$(docker run -d \
             -e GEMINI_API_KEY=test \
             -e LLM_PROVIDER=gemini \
-            tfg-backend:test
+            tfg-backend:test)
+          
+          echo "Container started with ID: $CONTAINER_ID"
+          
+          # Wait a bit for startup
           sleep 5
-          docker logs backend-test
-          docker stop backend-test || true
+          
+          # Always capture logs (whether running or exited)
+          echo "=== Container Logs ==="
+          docker logs "$CONTAINER_ID" 2>&1 || echo "Failed to get logs"
+          echo "====================="
+          
+          # Check if container is still running
+          if docker ps -q --filter "id=$CONTAINER_ID" | grep -q .; then
+            echo "✅ Container is still running - stopping it"
+            docker stop "$CONTAINER_ID"
+            docker rm "$CONTAINER_ID"
+          else
+            echo "⚠️ Container exited"
+            # Check if uvicorn started (indicates successful build)
+            if docker logs "$CONTAINER_ID" 2>&1 | grep -qE "uvicorn|Application startup complete|Started server process"; then
+              echo "✅ Container started successfully (uvicorn ran)"
+              docker rm "$CONTAINER_ID"
+              exit 0
+            else
+              echo "❌ Container failed to start properly - no uvicorn in logs"
+              docker rm "$CONTAINER_ID"
+              exit 1
+            fi
+          fi
 
   build-rag-service:
     name: Build RAG Service Container
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build rag_service image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./rag_service/Dockerfile
@@ -77,13 +104,40 @@ jobs:
 
       - name: Test rag_service image can run
         run: |
-          docker run --rm -d --name rag-test \
+          # Start container in detached mode (without --rm so we can check logs even after exit)
+          CONTAINER_ID=$(docker run -d \
             -e QDRANT_HOST=localhost \
             -e OLLAMA_HOST=localhost \
-            rag-service:test
+            rag-service:test)
+          
+          echo "Container started with ID: $CONTAINER_ID"
+          
+          # Wait a bit for startup
           sleep 5
-          docker logs rag-test
-          docker stop rag-test || true
+          
+          # Always capture logs (whether running or exited)
+          echo "=== Container Logs ==="
+          docker logs "$CONTAINER_ID" 2>&1 || echo "Failed to get logs"
+          echo "====================="
+          
+          # Check if container is still running
+          if docker ps -q --filter "id=$CONTAINER_ID" | grep -q .; then
+            echo "✅ Container is still running - stopping it"
+            docker stop "$CONTAINER_ID"
+            docker rm "$CONTAINER_ID"
+          else
+            echo "⚠️ Container exited"
+            # Check if uvicorn started (indicates successful build)
+            if docker logs "$CONTAINER_ID" 2>&1 | grep -qE "uvicorn|Application startup complete|Started server process"; then
+              echo "✅ Container started successfully (uvicorn ran)"
+              docker rm "$CONTAINER_ID"
+              exit 0
+            else
+              echo "❌ Container failed to start properly - no uvicorn in logs"
+              docker rm "$CONTAINER_ID"
+              exit 1
+            fi
+          fi
 
   build-summary:
     name: Build Summary

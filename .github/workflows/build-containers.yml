@@ -45,8 +45,8 @@ jobs:
 
       - name: Test backend image can run
         run: |
-          # Start container in detached mode
-          CONTAINER_ID=$(docker run --rm -d \
+          # Start container in detached mode (without --rm so we can check logs even after exit)
+          CONTAINER_ID=$(docker run -d \
             -e GEMINI_API_KEY=test \
             -e LLM_PROVIDER=gemini \
             tfg-backend:test)
@@ -56,22 +56,26 @@ jobs:
           # Wait a bit for startup
           sleep 5
           
+          # Always capture logs (whether running or exited)
+          echo "=== Container Logs ==="
+          docker logs "$CONTAINER_ID" 2>&1 || echo "Failed to get logs"
+          echo "====================="
+          
           # Check if container is still running
           if docker ps -q --filter "id=$CONTAINER_ID" | grep -q .; then
-            echo "✅ Container is running"
-            docker logs "$CONTAINER_ID"
+            echo "✅ Container is still running - stopping it"
             docker stop "$CONTAINER_ID"
+            docker rm "$CONTAINER_ID"
           else
-            echo "⚠️ Container exited (checking if it's due to missing services)"
-            echo "Checking logs for errors..."
-            docker logs "$CONTAINER_ID" || true
-            
-            # Verify the container at least started (exit code should be from missing deps, not build errors)
-            if docker logs "$CONTAINER_ID" 2>&1 | grep -q "uvicorn"; then
-              echo "✅ Container started successfully (uvicorn attempted to run)"
+            echo "⚠️ Container exited"
+            # Check if uvicorn started (indicates successful build)
+            if docker logs "$CONTAINER_ID" 2>&1 | grep -qE "uvicorn|Application startup complete|Started server process"; then
+              echo "✅ Container started successfully (uvicorn ran)"
+              docker rm "$CONTAINER_ID"
               exit 0
             else
-              echo "❌ Container failed to start properly"
+              echo "❌ Container failed to start properly - no uvicorn in logs"
+              docker rm "$CONTAINER_ID"
               exit 1
             fi
           fi
@@ -100,8 +104,8 @@ jobs:
 
       - name: Test rag_service image can run
         run: |
-          # Start container in detached mode
-          CONTAINER_ID=$(docker run --rm -d \
+          # Start container in detached mode (without --rm so we can check logs even after exit)
+          CONTAINER_ID=$(docker run -d \
             -e QDRANT_HOST=localhost \
             -e OLLAMA_HOST=localhost \
             rag-service:test)
@@ -111,23 +115,26 @@ jobs:
           # Wait a bit for startup
           sleep 5
           
-          # Check if container is still running (it may crash on startup if no Qdrant)
+          # Always capture logs (whether running or exited)
+          echo "=== Container Logs ==="
+          docker logs "$CONTAINER_ID" 2>&1 || echo "Failed to get logs"
+          echo "====================="
+          
+          # Check if container is still running
           if docker ps -q --filter "id=$CONTAINER_ID" | grep -q .; then
-            echo "✅ Container is running"
-            docker logs "$CONTAINER_ID"
+            echo "✅ Container is still running - stopping it"
             docker stop "$CONTAINER_ID"
+            docker rm "$CONTAINER_ID"
           else
-            echo "⚠️ Container exited (expected - no Qdrant service available)"
-            echo "Checking logs for errors..."
-            docker logs "$CONTAINER_ID" || true
-            
-            # Verify the container at least started (exit code should be from missing deps, not build errors)
-            # We consider it a success if the container ran and exited with connection errors
-            if docker logs "$CONTAINER_ID" 2>&1 | grep -q "uvicorn"; then
-              echo "✅ Container started successfully (uvicorn attempted to run)"
+            echo "⚠️ Container exited"
+            # Check if uvicorn started (indicates successful build)
+            if docker logs "$CONTAINER_ID" 2>&1 | grep -qE "uvicorn|Application startup complete|Started server process"; then
+              echo "✅ Container started successfully (uvicorn ran)"
+              docker rm "$CONTAINER_ID"
               exit 0
             else
-              echo "❌ Container failed to start properly"
+              echo "❌ Container failed to start properly - no uvicorn in logs"
+              docker rm "$CONTAINER_ID"
               exit 1
             fi
           fi

@@ -3,17 +3,59 @@ name: Unit Tests
 # Este workflow ejecuta tests unitarios DENTRO de cada contenedor
 # No requiere levantar toda la infraestructura, solo construir y ejecutar
 # los tests en el contexto de cada servicio
+# Solo se ejecuta cuando cambian archivos relevantes de código
 
 on:
   pull_request:
     branches: [ main, development ]
+    paths:
+      - 'backend/**/*.py'
+      - 'backend/pyproject.toml'
+      - 'backend/tests/**'
+      - 'rag_service/**/*.py'
+      - 'rag_service/pyproject.toml'
+      - 'rag_service/tests/**'
+      - '.github/workflows/unit-tests.yml'
   push:
     branches: [ main, development ]
+    paths:
+      - 'backend/**/*.py'
+      - 'backend/pyproject.toml'
+      - 'backend/tests/**'
+      - 'rag_service/**/*.py'
+      - 'rag_service/pyproject.toml'
+      - 'rag_service/tests/**'
+      - '.github/workflows/unit-tests.yml'
 
 jobs:
+  # Detectar qué archivos cambiaron para ejecutar solo los tests necesarios
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      rag_service: ${{ steps.filter.outputs.rag_service }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**/*.py'
+              - 'backend/pyproject.toml'
+              - 'backend/tests/**'
+            rag_service:
+              - 'rag_service/**/*.py'
+              - 'rag_service/pyproject.toml'
+              - 'rag_service/tests/**'
+
   unit-tests-backend:
     name: Backend Unit Tests
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
     steps:
       - uses: actions/checkout@v5
 
@@ -44,6 +86,8 @@ jobs:
   unit-tests-rag-service:
     name: RAG Service Unit Tests
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.rag_service == 'true'
     steps:
       - uses: actions/checkout@v5
 
@@ -75,15 +119,47 @@ jobs:
   unit-tests-summary:
     name: Unit Tests Summary
     runs-on: ubuntu-latest
-    needs: [unit-tests-backend, unit-tests-rag-service]
+    needs: [changes, unit-tests-backend, unit-tests-rag-service]
     if: always()
     steps:
       - name: Check test results
         run: |
-          if [[ "${{ needs.unit-tests-backend.result }}" == "failure" ]] || \
-             [[ "${{ needs.unit-tests-rag-service.result }}" == "failure" ]]; then
-            echo "❌ Some unit tests failed"
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          BACKEND_RESULT="${{ needs.unit-tests-backend.result }}"
+          RAG_RESULT="${{ needs.unit-tests-rag-service.result }}"
+          BACKEND_CHANGED="${{ needs.changes.outputs.backend }}"
+          RAG_CHANGED="${{ needs.changes.outputs.rag_service }}"
+          
+          # Backend tests
+          if [[ "$BACKEND_CHANGED" == "true" ]]; then
+            if [[ "$BACKEND_RESULT" == "success" ]]; then
+              echo "✅ Backend tests: PASSED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ Backend tests: FAILED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⏭️ Backend tests: SKIPPED (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # RAG Service tests
+          if [[ "$RAG_CHANGED" == "true" ]]; then
+            if [[ "$RAG_RESULT" == "success" ]]; then
+              echo "✅ RAG Service tests: PASSED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ RAG Service tests: FAILED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⏭️ RAG Service tests: SKIPPED (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Fail if any test that ran failed
+          if [[ "$BACKEND_RESULT" == "failure" ]] || [[ "$RAG_RESULT" == "failure" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Some unit tests failed" >> $GITHUB_STEP_SUMMARY
             exit 1
           else
-            echo "✅ All unit tests passed"
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ All tests passed" >> $GITHUB_STEP_SUMMARY
           fi

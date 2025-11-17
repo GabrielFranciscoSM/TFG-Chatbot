@@ -44,12 +44,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: '3.14'
+          cache: 'pip'
 
       - name: Install test dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest requests pymongo qdrant-client
+          # Instala el paquete del repo con las dependencias de desarrollo
+          # (incluye pytest, langchain_core y otras dependencias necesarias para tests)
+          pip install -e ".[dev]"
 
       - name: Create .env file for docker compose
         run: |

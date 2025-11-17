@@ -63,7 +63,15 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.14'
-          cache: 'pip'
+
+      - name: Cache pip (backend)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-backend-${{ hashFiles('backend/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-backend-
 
       - name: Install backend dependencies
         run: |
@@ -95,7 +103,15 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.14'
-          cache: 'pip'
+
+      - name: Cache pip (rag_service)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-rag-${{ hashFiles('rag_service/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-rag-
 
       - name: Install rag_service dependencies
         run: |

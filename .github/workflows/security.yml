@@ -31,6 +31,15 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-backend-${{ hashFiles('backend/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-backend-
+
       - name: Install pip-audit
         run: |
           python -m pip install --upgrade pip
@@ -63,6 +72,15 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.14'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-rag-${{ hashFiles('rag_service/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-rag-
 
       - name: Install pip-audit
         run: |
@@ -99,6 +117,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
       - name: Test backend installation
         run: |

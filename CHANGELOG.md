@@ -5,6 +5,23 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.2.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.2.0...v0.2.1) (2025-11-18)
+
+
+### Bug Fixes
+
+* **ci:** correct Docker build context for release workflows ([4dac49d](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/4dac49db4725330c3aa7099ab96726db28c713d6))
+* **ci:** Fixed Ollama wrong port and hosts for services. ([930cf3c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/930cf3cccc28f70b0773bd43173e2fa71e77c5bc))
+* **ci:** optimize unit tests to run only on relevant file changes ([e0123d9](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e0123d9be78f9b5327f88224634de6a612e1f1ce))
+* **ci:** optimize unit tests to run only on relevant file changes ([55bcbc1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/55bcbc1ba3b090426de7a001138ab6aeef7332ef))
+* **docs:** Sprint retrospective not showing ([b8341cd](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8341cda6bd9f657ee51a6862f97f7526211ee53))
+* **RAG:** fixed langchain text splitters module ([cfbbced](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/cfbbcedd05143cbe1cabbd36404a2d21e070cb26))
+
+
+### Documentation
+
+* **plan:** Created sprint plannification for sprint 3 ([a9643fb](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a9643fb8cd9a8c73cbf31922d720ebd9ea12980e))
+
 ## [0.2.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.1.4...v0.2.0) (2025-11-15)
 
 

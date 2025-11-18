@@ -36,7 +36,7 @@ jobs:
       backend: ${{ steps.filter.outputs.backend }}
       rag_service: ${{ steps.filter.outputs.rag_service }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - uses: dorny/paths-filter@v3
         id: filter

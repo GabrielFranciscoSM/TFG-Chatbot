@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
   pull-requests: write
   issues: write
 
@@ -60,7 +61,9 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer a PAT with package permissions stored in `GHCR_PAT`.
+          # Fallback to GITHUB_TOKEN where allowed.
+          password: ${{ secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
       
       - name: Extract metadata
         id: meta

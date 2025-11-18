@@ -3,12 +3,16 @@ Tests para verificar el funcionamiento del contenedor de Qdrant.
 Estos tests verifican que Qdrant está corriendo y puede realizar operaciones básicas.
 """
 
+import os
+
 import pytest
 import requests
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
-QDRANT_URL = "http://localhost:6333"
+QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", "6333"))
+QDRANT_URL = os.getenv("QDRANT_URL", f"http://{QDRANT_HOST}:{QDRANT_PORT}")
 
 
 def test_qdrant_container_is_running():
@@ -33,7 +37,7 @@ def test_qdrant_health_endpoint():
 
 def test_qdrant_can_create_collection():
     """Verifica que Qdrant puede crear colecciones."""
-    client = QdrantClient(host="localhost", port=6333)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     collection_name = "test_infrastructure_collection"
 
@@ -60,7 +64,7 @@ def test_qdrant_can_create_collection():
 
 def test_qdrant_can_insert_and_search_vectors():
     """Verifica que Qdrant puede insertar y buscar vectores."""
-    client = QdrantClient(host="localhost", port=6333)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     collection_name = "test_search_collection"
 
@@ -106,7 +110,7 @@ def test_qdrant_can_insert_and_search_vectors():
 
 def test_qdrant_can_filter_by_metadata():
     """Verifica que Qdrant puede filtrar resultados por metadata."""
-    client = QdrantClient(host="localhost", port=6333)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     collection_name = "test_filter_collection"
 
@@ -166,7 +170,7 @@ def test_qdrant_can_filter_by_metadata():
 
 def test_qdrant_collection_info():
     """Verifica que Qdrant puede proporcionar información de una colección."""
-    client = QdrantClient(host="localhost", port=6333)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     collection_name = "test_info_collection"
 

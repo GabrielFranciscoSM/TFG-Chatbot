@@ -3,10 +3,12 @@ Tests para verificar el funcionamiento del contenedor del servicio RAG.
 Estos tests verifican que el contenedor está corriendo y responde correctamente.
 """
 
+import os
+
 import pytest
 import requests
 
-RAG_SERVICE_URL = "http://localhost:8081"
+RAG_SERVICE_URL = os.getenv("RAG_SERVICE_URL", "http://localhost:8081")
 
 
 def test_rag_service_container_is_running():

@@ -3,11 +3,13 @@ Tests para verificar el funcionamiento del contenedor de Ollama.
 Estos tests verifican que Ollama está corriendo y puede generar embeddings.
 """
 
+import os
+
 import pytest
 import requests
 
-OLLAMA_URL = "http://localhost:11435"
-EMBEDDING_MODEL = "nomic-embed-text"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11435")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
 
 
 def test_ollama_container_is_running():

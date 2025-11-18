@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Sprint Retrospective 2
-parent: Sprint Retrospective
+title: Sprint 2
+parent: Sprint Retrospectives
 grand_parent: DevLog
 ---
 

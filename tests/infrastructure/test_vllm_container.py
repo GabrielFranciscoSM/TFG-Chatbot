@@ -6,10 +6,19 @@ y puede procesar solicitudes de chat y tool calling.
 
 import os
 
+import pytest
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Skip vLLM infra tests unless LLM_PROVIDER is explicitly set to 'vllm'
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "vllm")
+pytestmark = pytest.mark.skipif(
+    LLM_PROVIDER.lower() != "vllm",
+    reason="Skipping vLLM infra tests because LLM_PROVIDER != vllm",
+)
+
 API_URL = "http://localhost:" + os.getenv("VLLM_MAIN_PORT", "8000")
 MAIN_VLLM_MODEL_NAME = os.getenv(
     "MODEL_PATH", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"

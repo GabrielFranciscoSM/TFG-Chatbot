@@ -4,10 +4,12 @@ Estos tests son unitarios básicos que verifican que el contenedor está corrien
 y responde correctamente a las peticiones HTTP.
 """
 
+import os
+
 import pytest
 import requests
 
-BACKEND_URL = "http://localhost:8080"
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8080")
 
 
 def test_backend_container_is_running():

@@ -32,7 +32,7 @@ jobs:
       QDRANT_HOST: qdrant
       QDRANT_PORT: 6333
       OLLAMA_HOST: ollama
-      OLLAMA_PORT: 11434
+      OLLAMA_PORT: 11435
       RAG_SERVICE_URL: http://rag_service:8081
       LLM_PROVIDER: gemini
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -128,10 +128,10 @@ jobs:
           
           if [ "$SERVICES" = "all" ]; then
             echo "Running all infrastructure tests..."
-            pytest tests/infrastructure/ -v --tb=short -m podman_container
+            pytest tests/infrastructure/ -v --tb=short
           else
             echo "Running tests for: $SERVICES"
-            pytest tests/infrastructure/test_${SERVICES}_container.py -v --tb=short -m podman_container || true
+            pytest tests/infrastructure/test_${SERVICES}_container.py -v --tb=short || true
           fi
 
       - name: Show logs on failure

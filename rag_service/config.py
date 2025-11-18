@@ -16,7 +16,11 @@ class Settings(BaseSettings):
 
     # Ollama configuration
     ollama_host: str = os.getenv("OLLAMA_HOST", "ollama")
-    ollama_port: int = int(os.getenv("OLLAMA_PORT", "11434"))
+    # Ollama's API server port. Use 11435 by default to match the
+    # bundled Ollama service configuration (some environments expose
+    # the API on 11435). The environment variable `OLLAMA_PORT` can
+    # override this value.
+    ollama_port: int = int(os.getenv("OLLAMA_PORT", "11435"))
     ollama_model: str = os.getenv("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
 
     # RAG parameters

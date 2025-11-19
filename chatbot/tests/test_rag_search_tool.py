@@ -2,7 +2,7 @@ import importlib
 
 import requests
 
-tools = importlib.import_module("backend.logic.tools.tools")
+tools = importlib.import_module("chatbot.logic.tools.tools")
 
 
 def test_rag_search_success(monkeypatch):

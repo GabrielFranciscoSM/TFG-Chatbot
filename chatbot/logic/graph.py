@@ -29,7 +29,7 @@ Architecture:
                         resume with answers
 
 Key Features:
-    - **Multi-LLM Support**: Configurable vLLM or Gemini backend
+    - **Multi-LLM Support**: Configurable vLLM or Gemini chatbot
     - **Persistent State**: SQLite checkpointer for conversation continuity
     - **Tool Calling**: Automatic tool selection and execution
     - **Test Mode**: Interactive test sessions with interrupts
@@ -65,8 +65,8 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
-from backend.logic.prompts import SYSTEM_PROMPT_V2
-from backend.logic.tools.tools import get_tools
+from chatbot.logic.prompts import SYSTEM_PROMPT_V2
+from chatbot.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
 
@@ -133,7 +133,7 @@ class GraphAgent:
         - Single instance per application to share checkpointer
         - Lazy graph compilation (compiled on first use)
         - SQLite for persistent conversation state
-        - Configurable LLM backend for flexibility
+        - Configurable LLM chatbot for flexibility
     """
 
     def __init__(
@@ -364,7 +364,7 @@ class GraphAgent:
 
     def build_graph(self):
         """Construye y compila el grafo del agente y lo cachea en self._graph."""
-        from backend.logic.testGraph import create_test_subgraph
+        from chatbot.logic.testGraph import create_test_subgraph
 
         # Use the SubjectState so tools can inject 'asignatura' into tool args
         graph_builder = StateGraph(SubjectState)

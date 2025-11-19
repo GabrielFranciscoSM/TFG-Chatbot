@@ -10,9 +10,9 @@ import requests
 from langchain.tools import tool
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
-from backend.config import settings as backend_settings
-from backend.db.mongo import MongoDBClient
-from backend.logic.models import (
+from chatbot.config import settings as chatbot_settings
+from chatbot.db.mongo import MongoDBClient
+from chatbot.logic.models import (
     MultipleChoiceTest,
     RagQueryInput,
     SubjectDataKey,
@@ -299,7 +299,7 @@ def rag_search(
         )
 
         # Build request
-        url = f"{backend_settings.rag_service_url.rstrip('/')}/search"
+        url = f"{chatbot_settings.rag_service_url.rstrip('/')}/search"
         payload: dict[str, Any] = {"query": query}
         if asignatura:
             payload["asignatura"] = asignatura
@@ -438,7 +438,7 @@ def _create_test_objects(
     Returns:
         List of MultipleChoiceTest objects
     """
-    from backend.logic.models import Question
+    from chatbot.logic.models import Question
 
     tests = []
     for q_data in questions_data[:num_questions]:
@@ -475,8 +475,8 @@ def generate_test(
     Returns:
         List of MultipleChoiceTest objects with generated questions
     """
-    from backend.logic.models import Question
-    from backend.logic.prompts import TEST_GENERATION_PROMPT
+    from chatbot.logic.models import Question
+    from chatbot.logic.prompts import TEST_GENERATION_PROMPT
 
     difficulty = difficulty or "medium"
 

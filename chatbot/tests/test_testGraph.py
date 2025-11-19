@@ -1,4 +1,4 @@
-# Tests rely on lightweight factories provided in `backend/tests/conftest.py`.
+# Tests rely on lightweight factories provided in `chatbot/tests/conftest.py`.
 # Use the fixtures: dummy_message_factory, dummy_multiple_choice_test,
 # dummy_tool_factory, dummy_llm_factory, patch_get_tools, interrupt_simulator.
 
@@ -6,9 +6,9 @@
 Tests for TestSessionGraph.
 
 Notes on coherence with `conftest.py`:
-- This test module relies on fixtures defined in `backend/tests/conftest.py` when
+- This test module relies on fixtures defined in `chatbot/tests/conftest.py` when
   appropriate (for example the `testGraph` fixture). We avoid globally overriding
-  the message classes imported in `backend.logic.testGraph` so tests behave more
+  the message classes imported in `chatbot.logic.testGraph` so tests behave more
   like the real runtime environment declared in `conftest.py`.
 
 Individual tests patch only the small set of external pieces they need (LLM,
@@ -26,7 +26,7 @@ def test_initialize_test_creates_questions_and_state(
     dummy_llm_factory,
     dummy_message_factory,
 ):
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     # Prepare a dummy generate_test tool that returns two questions
     MCQ = dummy_multiple_choice_test
@@ -61,7 +61,7 @@ def test_initialize_test_creates_questions_and_state(
 def test_present_question_returns_ai_message_content(
     monkeypatch, dummy_multiple_choice_test, dummy_llm_factory
 ):
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     monkeypatch.setattr(
         tg.TestSessionGraph, "_get_llm", lambda self, temp=None: dummy_llm_factory()
@@ -88,7 +88,7 @@ def test_answer_question_interrupt_and_evaluation(
     patch_get_tools,
     interrupt_simulator,
 ):
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     # Patch LLM to return a clear CORRECT and FEEDBACK response
     monkeypatch.setattr(
@@ -133,7 +133,7 @@ def test_answer_question_interrupt_and_evaluation(
 
 
 def test_test_router_continues_and_finalizes():
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     tsg = tg.TestSessionGraph.__new__(tg.TestSessionGraph)
 
@@ -149,7 +149,7 @@ def test_test_router_continues_and_finalizes():
 def test_finalize_test_returns_toolmessage_with_tool_call_id(
     monkeypatch, dummy_llm_factory, dummy_message_factory
 ):
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     monkeypatch.setattr(
         tg.TestSessionGraph, "_get_llm", lambda self, temp=None: dummy_llm_factory()
@@ -176,7 +176,7 @@ def test_finalize_test_returns_toolmessage_with_tool_call_id(
 def test_evaluate_answer_with_llm_parsing(
     monkeypatch, dummy_llm_factory, dummy_multiple_choice_test
 ):
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     # Provide a custom LLM response
     llm = dummy_llm_factory("CORRECT: YES\nFEEDBACK: Explicación detallada")
@@ -202,7 +202,7 @@ def test_build_test_subgraph_compiles(monkeypatch, testGraph, dummy_llm_factory)
     Also patch TestSessionGraph._get_llm to ensure no heavy external LLM is
     instantiated during subgraph construction.
     """
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     # Patch _get_llm so the TestSessionGraph instantiation inside
     # create_test_subgraph/testGraph doesn't reach out to real LLMs.

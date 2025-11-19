@@ -8,9 +8,9 @@ import pytest
 from fastapi.testclient import TestClient
 from langchain_core.messages import AIMessage
 
-from backend.api import app
-from backend.logic.graph import GraphAgent
-from backend.logic.testGraph import create_test_subgraph
+from chatbot.api import app
+from chatbot.logic.graph import GraphAgent
+from chatbot.logic.testGraph import create_test_subgraph
 
 # Get the absolute path of the project root
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
@@ -26,9 +26,9 @@ def root_path():
 
 
 @pytest.fixture(scope="session")
-def backend_path():
-    """Fixture to provide the backend directory path."""
-    return os.path.join(ROOT_DIR, "backend")
+def chatbot_path():
+    """Fixture to provide the chatbot directory path."""
+    return os.path.join(ROOT_DIR, "chatbot")
 
 
 @pytest.fixture
@@ -80,7 +80,7 @@ def testGraph(monkeypatch):
     construction (which instantiates an LLM in __init__). The dummy provides
     bind_tools and invoke so the subgraph can be constructed and invoked in tests.
     """
-    import backend.logic.testGraph as tg
+    import chatbot.logic.testGraph as tg
 
     class DummyBoundLLM:
         def bind_tools(self, tools):
@@ -159,8 +159,8 @@ def dummy_multiple_choice_test():
     Usage: MCQ = dummy_multiple_choice_test; q = MCQ("Q?", ["A","B"])  # first marked correct
     """
     # Use the real Pydantic models so isinstance checks in the code under test
-    # (which compare against backend.logic.models.MultipleChoiceTest) succeed.
-    from backend.logic.models import Answer, MultipleChoiceTest, Question
+    # (which compare against chatbot.logic.models.MultipleChoiceTest) succeed.
+    from chatbot.logic.models import Answer, MultipleChoiceTest, Question
 
     def factory(question_text, options):
         # options can be list of texts (first correct) or list of (text, is_correct)
@@ -215,10 +215,10 @@ def dummy_llm_factory():
 
 @pytest.fixture
 def patch_get_tools(monkeypatch):
-    """Helper to monkeypatch backend.logic.tools.tools.get_tools to return a list of tools."""
+    """Helper to monkeypatch chatbot.logic.tools.tools.get_tools to return a list of tools."""
 
     def _patch(tools_list):
-        tools_mod = importlib.import_module("backend.logic.tools.tools")
+        tools_mod = importlib.import_module("chatbot.logic.tools.tools")
         monkeypatch.setattr(tools_mod, "get_tools", lambda: tools_list)
         return tools_list
 
@@ -227,8 +227,8 @@ def patch_get_tools(monkeypatch):
 
 @pytest.fixture
 def interrupt_simulator(monkeypatch):
-    """Helper to patch the interrupt symbol in backend.logic.testGraph to return a given value."""
-    import backend.logic.testGraph as tg
+    """Helper to patch the interrupt symbol in chatbot.logic.testGraph to return a given value."""
+    import chatbot.logic.testGraph as tg
 
     def _patch(value):
         monkeypatch.setattr(tg, "interrupt", lambda payload: value)

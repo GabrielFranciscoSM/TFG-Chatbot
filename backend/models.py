@@ -1,9 +1,19 @@
+from enum import Enum
+
 from pydantic import BaseModel, EmailStr
+
+
+class UserRole(str, Enum):
+    STUDENT = "student"
+    PROFESSOR = "professor"
+    ADMIN = "admin"
 
 
 class UserBase(BaseModel):
     email: EmailStr
     username: str
+    role: UserRole = UserRole.STUDENT
+    subjects: list[str] = []
 
 
 class UserCreate(UserBase):
@@ -21,3 +31,12 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class EnrollmentRequest(BaseModel):
+    subject: str
+
+
+class AdminEnrollmentRequest(BaseModel):
+    username: str
+    subject: str

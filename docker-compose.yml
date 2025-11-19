@@ -51,21 +51,6 @@ services:
       - rag_service
     restart: unless-stopped
 
-  auth_service:
-    build:
-      context: .
-      dockerfile: auth_service/Dockerfile
-      args:
-        INSTALL_DEV: ${INSTALL_DEV:-false}
-    container_name: tfg-auth-service
-    env_file:
-      - .env
-    ports:
-      - "8083:8083"
-    depends_on:
-      - mongo
-    restart: unless-stopped
-
   mongo:
     image: docker.io/mongo:8.0
     container_name: mongo
@@ -161,7 +146,7 @@ services:
       - "8000:8000"
     depends_on:
       - chatbot
-      - auth_service
+      - mongo
     restart: unless-stopped
       
 

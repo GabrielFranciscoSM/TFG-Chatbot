@@ -33,13 +33,13 @@ services:
   #     --swap-space 3
   #   restart: unless-stopped
 
-  backend:
+  chatbot:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: chatbot/Dockerfile
       args:
         INSTALL_DEV: ${INSTALL_DEV:-false}
-    container_name: tfg-backend
+    container_name: tfg-chatbot
     env_file:
       - .env
     environment:
@@ -131,6 +131,22 @@ services:
     depends_on:
       - qdrant
       - ollama
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
+    container_name: tfg-gateway
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - chatbot
+      - mongo
     restart: unless-stopped
       
 

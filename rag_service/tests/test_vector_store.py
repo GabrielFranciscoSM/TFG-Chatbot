@@ -69,7 +69,9 @@ def test_search_returns_results(monkeypatch):
             self.payload = payload
             self.score = score
 
-    mock_q.search.return_value = [Res({"content": "hello", "asignatura": "x"}, 0.9)]
+    mock_q.query_points.return_value = MagicMock(
+        points=[Res({"content": "hello", "asignatura": "x"}, 0.9)]
+    )
 
     monkeypatch.setattr(store_module, "QdrantClient", lambda host, port: mock_q)
 

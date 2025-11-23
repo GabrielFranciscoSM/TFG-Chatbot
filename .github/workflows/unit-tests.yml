@@ -15,6 +15,9 @@ on:
       - 'rag_service/**/*.py'
       - 'rag_service/pyproject.toml'
       - 'rag_service/tests/**'
+      - 'chatbot/**/*.py'
+      - 'chatbot/pyproject.toml'
+      - 'chatbot/tests/**'
       - '.github/workflows/unit-tests.yml'
   push:
     branches: [ main, development ]
@@ -25,6 +28,9 @@ on:
       - 'rag_service/**/*.py'
       - 'rag_service/pyproject.toml'
       - 'rag_service/tests/**'
+      - 'chatbot/**/*.py'
+      - 'chatbot/pyproject.toml'
+      - 'chatbot/tests/**'
       - '.github/workflows/unit-tests.yml'
 
 jobs:
@@ -35,6 +41,7 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       rag_service: ${{ steps.filter.outputs.rag_service }}
+      chatbot: ${{ steps.filter.outputs.chatbot }}
     steps:
       - uses: actions/checkout@v5
       
@@ -50,6 +57,10 @@ jobs:
               - 'rag_service/**/*.py'
               - 'rag_service/pyproject.toml'
               - 'rag_service/tests/**'
+            chatbot:
+              - 'chatbot/**/*.py'
+              - 'chatbot/pyproject.toml'
+              - 'chatbot/tests/**'
 
   unit-tests-backend:
     name: Backend Unit Tests
@@ -132,10 +143,50 @@ jobs:
           name: rag-service-coverage
         if: always()
 
+  unit-tests-chatbot:
+    name: Chatbot Unit Tests
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.chatbot == 'true'
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+
+      - name: Cache pip (chatbot)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-chatbot-${{ hashFiles('chatbot/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-chatbot-
+
+      - name: Install chatbot dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install "./chatbot[dev]"
+
+      - name: Run chatbot unit tests
+        run: |
+          cd chatbot
+          pytest tests/ -v --tb=short --cov=. --cov-report=xml --cov-report=term
+
+      - name: Upload chatbot coverage
+        uses: codecov/codecov-action@v5
+        with:
+          file: ./chatbot/coverage.xml
+          flags: chatbot
+          name: chatbot-coverage
+        if: always()
+
   unit-tests-summary:
     name: Unit Tests Summary
     runs-on: ubuntu-latest
-    needs: [changes, unit-tests-backend, unit-tests-rag-service]
+    needs: [changes, unit-tests-backend, unit-tests-rag-service, unit-tests-chatbot]
     if: always()
     steps:
       - name: Check test results
@@ -145,8 +196,10 @@ jobs:
           
           BACKEND_RESULT="${{ needs.unit-tests-backend.result }}"
           RAG_RESULT="${{ needs.unit-tests-rag-service.result }}"
+          CHATBOT_RESULT="${{ needs.unit-tests-chatbot.result }}"
           BACKEND_CHANGED="${{ needs.changes.outputs.backend }}"
           RAG_CHANGED="${{ needs.changes.outputs.rag_service }}"
+          CHATBOT_CHANGED="${{ needs.changes.outputs.chatbot }}"
           
           # Backend tests
           if [[ "$BACKEND_CHANGED" == "true" ]]; then
@@ -169,9 +222,20 @@ jobs:
           else
             echo "⏭️ RAG Service tests: SKIPPED (no changes)" >> $GITHUB_STEP_SUMMARY
           fi
+
+          # Chatbot tests
+          if [[ "$CHATBOT_CHANGED" == "true" ]]; then
+            if [[ "$CHATBOT_RESULT" == "success" ]]; then
+              echo "✅ Chatbot tests: PASSED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ Chatbot tests: FAILED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⏭️ Chatbot tests: SKIPPED (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
           
           # Fail if any test that ran failed
-          if [[ "$BACKEND_RESULT" == "failure" ]] || [[ "$RAG_RESULT" == "failure" ]]; then
+          if [[ "$BACKEND_RESULT" == "failure" ]] || [[ "$RAG_RESULT" == "failure" ]] || [[ "$CHATBOT_RESULT" == "failure" ]]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "❌ Some unit tests failed" >> $GITHUB_STEP_SUMMARY
             exit 1

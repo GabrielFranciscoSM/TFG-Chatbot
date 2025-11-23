@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -7,11 +8,20 @@ load_dotenv()
 
 
 class MongoDBClient:
-    """Simple MongoDB helper to connect, get collections and perform common ops."""
+    """Simple MongoDB helper to connect, get collections and perform common ops.
+
+    Usage:
+        client = MongoDBClient()
+        db = client.connect()
+        coll = client.get_collection('guias')
+        client.upsert('guias', {'subject': 'ABC'}, doc)
+        client.close()
+    """
 
     def __init__(self, uri: str | None = None, db_name: str | None = None):
         # Prefer an explicit MONGO_URI. If not provided, try to construct one from
-        # compose-friendly variables.
+        # compose-friendly variables (MONGO_HOSTNAME, MONGO_PORT, MONGO_ROOT_USERNAME,
+        # MONGO_ROOT_PASSWORD, MONGO_AUTH_DB). Fall back to localhost if nothing is set.
         env_uri = os.getenv("MONGO_URI")
         if uri:
             self.uri = uri
@@ -37,7 +47,6 @@ class MongoDBClient:
             else:
                 # last resort: localhost
                 self.uri = "mongodb://localhost:27017"
-
         self.db_name = db_name or os.getenv("MONGO_DB", "tfg_chatbot")
         self.client: MongoClient | None = None
         self.db = None
@@ -63,3 +72,19 @@ class MongoDBClient:
             self.client.close()
             self.client = None
             self.db = None
+
+    def upsert(
+        self, collection_name: str, filter_query: dict[str, Any], doc: dict[str, Any]
+    ):
+        """Replace the document matching filter_query or insert if not exists."""
+        coll = self.get_collection(collection_name)
+        result = coll.replace_one(filter_query, doc, upsert=True)
+        return {
+            "matched_count": result.matched_count,
+            "modified_count": result.modified_count,
+            "upserted_id": str(result.upserted_id) if result.upserted_id else None,
+        }
+
+    def find_by_subject(self, collection_name: str, subject: str):
+        coll = self.get_collection(collection_name)
+        return coll.find_one({"subject": subject})

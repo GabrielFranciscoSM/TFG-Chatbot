@@ -60,8 +60,8 @@ def test_save_uploaded_and_load(tmp_path):
 
 
 @pytest.mark.integration
-def test_get_file_loader_singleton(tmp_path, monkeypatch):
-    monkeypatch.setenv("DOCUMENTS_PATH", str(tmp_path))
+def test_get_file_loader_singleton(tmp_documents_dir):
     # ensure singleton can be created without error
     g = get_file_loader()
     assert isinstance(g, FileLoader)
+    assert str(g.documents_path) == str(tmp_documents_dir)

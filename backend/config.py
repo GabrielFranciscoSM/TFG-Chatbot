@@ -1,25 +1,17 @@
-"""Backend configuration settings."""
-
 import os
 
-from pydantic import ConfigDict
-from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-class Settings(BaseSettings):
-    """Settings for backend components."""
-
-    # URL for the external RAG service. When running via docker-compose the
-    # backend and rag_service share a network, so use the compose service name
-    # (`rag_service`) as the default hostname rather than localhost. Override
-    # with the RAG_SERVICE_URL env var if needed.
-    rag_service_url: str = os.getenv("RAG_SERVICE_URL", "http://rag_service:8081")
-
-    model_config = ConfigDict(
-        env_file=".env",
-        case_sensitive=False,
-        extra="ignore",
-    )
+class Settings:
+    CHATBOT_SERVICE_URL = os.getenv("CHATBOT_SERVICE_URL", "http://chatbot:8080")
+    MONGO_URI = os.getenv("MONGO_URI")
+    DB_NAME = os.getenv("DB_NAME", "tfg_chatbot")
+    SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")
+    ALGORITHM = os.getenv("ALGORITHM", "HS256")
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 
 
 settings = Settings()

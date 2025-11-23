@@ -21,9 +21,9 @@ async def register(user: UserCreate):
 
     hashed_password = get_password_hash(user.password)
     user_in_db = UserInDB(
-        **user.dict(exclude={"password"}), hashed_password=hashed_password
+        **user.model_dump(exclude={"password"}), hashed_password=hashed_password
     )
-    users_collection.insert_one(user_in_db.dict())
+    users_collection.insert_one(user_in_db.model_dump())
     return user_in_db
 
 

@@ -14,15 +14,17 @@ def get_users_collection():
     return mongo_client.get_collection("users")
 
 
-async def get_user(username: str):
-    users_collection = get_users_collection()
+async def get_user(username: str, users_collection):
     user_dict = users_collection.find_one({"username": username})
     if user_dict:
         return UserInDB(**user_dict)
     return None
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    users_collection=Depends(get_users_collection),
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -40,7 +42,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception from None
     if token_data.username is None:
         raise credentials_exception
-    user = await get_user(username=token_data.username)
+    user = await get_user(
+        username=token_data.username, users_collection=users_collection
+    )
     if user is None:
         raise credentials_exception
     return user

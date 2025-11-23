@@ -12,8 +12,7 @@ router = APIRouter(tags=["auth"])
 
 
 @router.post("/register", response_model=UserBase)
-async def register(user: UserCreate):
-    users_collection = get_users_collection()
+async def register(user: UserCreate, users_collection=Depends(get_users_collection)):
     if users_collection.find_one({"username": user.username}):
         raise HTTPException(status_code=400, detail="Username already registered")
     if users_collection.find_one({"email": user.email}):
@@ -28,8 +27,11 @@ async def register(user: UserCreate):
 
 
 @router.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await get_user(form_data.username)
+async def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    users_collection=Depends(get_users_collection),
+):
+    user = await get_user(form_data.username, users_collection)
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

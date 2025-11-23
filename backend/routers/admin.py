@@ -10,8 +10,8 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 async def admin_enroll(
     request: AdminEnrollmentRequest,
     user: UserInDB = Depends(require_admin_or_professor),
+    users_collection=Depends(get_users_collection),
 ):
-    users_collection = get_users_collection()
     result = users_collection.update_one(
         {"username": request.username}, {"$addToSet": {"subjects": request.subject}}
     )
@@ -24,8 +24,8 @@ async def admin_enroll(
 async def admin_unenroll(
     request: AdminEnrollmentRequest,
     user: UserInDB = Depends(require_admin_or_professor),
+    users_collection=Depends(get_users_collection),
 ):
-    users_collection = get_users_collection()
     result = users_collection.update_one(
         {"username": request.username}, {"$pull": {"subjects": request.subject}}
     )

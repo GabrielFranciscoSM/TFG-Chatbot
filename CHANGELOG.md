@@ -5,6 +5,30 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.3.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.2.1...v0.3.0) (2025-11-23)
+
+
+### Features
+
+* add unit tests and refactor backend for dependency injection ([671632c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/671632ce09cf17f58fc89b6dfb68d8de055dd3e9))
+* **arch:** merge auth into backend and implement RBAC ([faddaa2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/faddaa2ae55e512a9217fe24020123e297de48bb))
+* **arch:** refactor into microservices (Auth, Chatbot, Gateway) ([68f4aed](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/68f4aedbaab436618312f772d5ad9ae3e760c983))
+* implement session management and integration with chat ([c9940a0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/c9940a0c9e8a896188e1ce52555379efe8673f16))
+
+
+### Bug Fixes
+
+* add pytest-cov to backend dev dependencies ([b118862](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b11886277fe4cd8a9845b88cebaf66dfe86e2a7d))
+* **ci:** Fix release-please docker images generation permissions ([38925eb](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/38925eb9bd6e29203965a14ad30eaf28ce5f18d5))
+* **docs:** removed unnecesary documentation about please release ([67f0023](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/67f00236a4cb2b31d32cb1e9aedff417d07ee62c))
+* resolve rag_service test failures by mocking external services and fixing patches ([2353e36](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2353e36d0b534bcd306fe2760cb5a705b1c4a82d))
+* update vector store test to mock query_points instead of search ([2ae0e27](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2ae0e275677beab76f7f739303c37cb8fe3cd09f))
+
+
+### Documentation
+
+* **adr:** add architectural decisions for auth and gateway ([c0ad1ab](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/c0ad1ab3fc13ffc44c498cc3ea48f70fef97424b))
+
 ## [0.2.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.2.0...v0.2.1) (2025-11-18)
 
 

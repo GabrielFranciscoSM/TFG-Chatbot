@@ -14,6 +14,10 @@ def get_users_collection():
     return mongo_client.get_collection("users")
 
 
+def get_sessions_collection():
+    return mongo_client.get_collection("sessions")
+
+
 async def get_user(username: str, users_collection):
     user_dict = users_collection.find_one({"username": username})
     if user_dict:

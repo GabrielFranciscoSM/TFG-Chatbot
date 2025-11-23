@@ -16,7 +16,7 @@ def test_chat_allowed_subject(mock_client_cls, client, student_token):
 
     response = client.post(
         "/chat",
-        json={"query": "hello", "asignatura": "iv"},
+        json={"query": "hello", "asignatura": "iv", "id": "test-session-id"},
         headers={"Authorization": f"Bearer {student_token}"},
     )
     assert response.status_code == 200
@@ -27,7 +27,7 @@ def test_chat_forbidden_subject(client, student_token):
     # Student is enrolled in 'iv', but tries to access 'tfg'
     response = client.post(
         "/chat",
-        json={"query": "hello", "asignatura": "tfg"},
+        json={"query": "hello", "asignatura": "tfg", "id": "test-session-id-2"},
         headers={"Authorization": f"Bearer {student_token}"},
     )
     assert response.status_code == 403
@@ -49,7 +49,11 @@ def test_chat_professor_any_subject(mock_client_cls, client, professor_token):
 
     response = client.post(
         "/chat",
-        json={"query": "hello", "asignatura": "random_subject"},
+        json={
+            "query": "hello",
+            "asignatura": "random_subject",
+            "id": "test-session-id-3",
+        },
         headers={"Authorization": f"Bearer {professor_token}"},
     )
     assert response.status_code == 200

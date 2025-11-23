@@ -1,6 +1,7 @@
+from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserRole(str, Enum):
@@ -40,3 +41,19 @@ class EnrollmentRequest(BaseModel):
 class AdminEnrollmentRequest(BaseModel):
     username: str
     subject: str
+
+
+class ChatSessionBase(BaseModel):
+    title: str
+    subject: str
+
+
+class ChatSessionCreate(ChatSessionBase):
+    pass
+
+
+class ChatSession(ChatSessionBase):
+    id: str = Field(validation_alias="_id")
+    user_id: str
+    created_at: datetime
+    last_active: datetime

@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 
-from backend.routers import admin, auth, chat, users
+from backend.routers import admin, auth, chat, sessions, users
 
 app = FastAPI(title="TFG Chatbot Backend")
 
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(admin.router)
+app.include_router(sessions.router)
 app.include_router(chat.router)
 
 

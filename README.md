@@ -110,12 +110,23 @@ Respuesta:
 {"message": "Hello World"}
 ```
 
-**2. Enviar un mensaje al chatbot**
+**2. Enviar un mensaje al chatbot (Requiere autenticación)**
+
+Primero, obtén un token de acceso (login):
+```bash
+curl -X POST "http://localhost:8080/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=student1&password=password123"
+```
+
+Luego usa el token para chatear:
 ```bash
 curl -X POST "http://localhost:8080/chat" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TU_TOKEN_AQUI>" \
   -d '{
     "query": "¿Qué es la inteligencia artificial?",
+    "asignatura": "iv",
     "id": "session-123"
   }'
 ```
@@ -164,7 +175,7 @@ En CI se ejecuta un workflow que corre `ruff check`, `black --check` y `isort --
 
 - [x] Milestone 1: API de un agente React básico para un chatbot
 - [x] Milestone 2: Agente con herramientas específicas
-- [ ] Milestone 3: Autenticación de usuarios
+- [x] Milestone 3: Autenticación de usuarios
 - [ ] Milestone 4: Interfaz Educativa
 - [ ] Milestone 5: Logs y Monitorización
 - [ ] Milestone 6: Métricas y Dashboard

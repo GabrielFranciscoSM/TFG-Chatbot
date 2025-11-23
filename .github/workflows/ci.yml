@@ -26,7 +26,7 @@ jobs:
           echo ""
           echo "Automated checks running:"
           echo "  ✓ Code Quality (lint, format)"
-          echo "  ✓ Unit Tests (backend, rag_service)"
+          echo "  ✓ Unit Tests (backend, rag_service, chatbot)"
           echo "  ✓ Build Validation (Docker containers)"
 
       - name: Generate PR summary
@@ -35,7 +35,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Automated Checks" >> $GITHUB_STEP_SUMMARY
           echo "- **Code Quality**: Ruff, Black, isort, mypy" >> $GITHUB_STEP_SUMMARY
-          echo "- **Unit Tests**: Backend and RAG Service" >> $GITHUB_STEP_SUMMARY
+          echo "- **Unit Tests**: Backend, RAG Service and Chatbot" >> $GITHUB_STEP_SUMMARY
           echo "- **Container Builds**: Docker image validation" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🔍 Run locally:" >> $GITHUB_STEP_SUMMARY
@@ -46,4 +46,5 @@ jobs:
           echo "# Unit tests" >> $GITHUB_STEP_SUMMARY
           echo "pytest backend/tests/ -m unit" >> $GITHUB_STEP_SUMMARY
           echo "pytest rag_service/tests/ -m unit" >> $GITHUB_STEP_SUMMARY
+          echo "pytest chatbot/tests/ -m unit" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

@@ -11,7 +11,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 # Add the root directory to the Python path
 sys.path.insert(0, ROOT_DIR)
 
-from backend.logic.graph import GraphAgent  # noqa: E402
+# from backend.logic.graph import GraphAgent  # noqa: E402
 
 
 @pytest.fixture(scope="session")
@@ -40,8 +40,9 @@ def mock_llm_with_tools():
 @pytest.fixture
 def graph():
     """Fixture que proporciona una instancia del grafo compilado."""
-    agent = GraphAgent()
-    return agent.build_graph()
+    # agent = GraphAgent()
+    # return agent.build_graph()
+    pass
 
 
 @pytest.fixture
@@ -54,7 +55,7 @@ def graph_config():
 def api_base_url():
     """Fixture que proporciona la URL base de la API."""
     # Se puede configurar mediante variable de entorno
-    return os.getenv("API_BASE_URL", "http://localhost:8080")
+    return os.getenv("API_BASE_URL", "http://localhost:8000")
 
 
 @pytest.fixture(scope="session")

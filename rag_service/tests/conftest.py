@@ -1,5 +1,6 @@
 import os
 import sys
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
@@ -10,6 +11,39 @@ sys.path.insert(0, ROOT_DIR)
 
 from rag_service import config  # noqa: E402
 from rag_service.api import app  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def mock_external_services(monkeypatch):
+    """Mock external services (Qdrant, Ollama) to prevent connection errors during tests."""
+    # Mock QdrantClient
+    mock_qdrant = MagicMock()
+    mock_qdrant.get_collections.return_value = MagicMock(collections=[])
+
+    # Mock QdrantClient constructor in store module
+    monkeypatch.setattr(
+        "rag_service.embeddings.store.QdrantClient", lambda host, port: mock_qdrant
+    )
+
+    # Mock EmbeddingService
+    mock_embedding_service = MagicMock()
+    mock_embedding_service.embed_query.return_value = [0.1] * 768
+    mock_embedding_service.embed_documents.return_value = [[0.1] * 768]
+
+    # Mock get_embedding_service to return the mock
+    monkeypatch.setattr(
+        "rag_service.embeddings.store.get_embedding_service",
+        lambda: mock_embedding_service,
+    )
+    monkeypatch.setattr(
+        "rag_service.embeddings.embeddings.get_embedding_service",
+        lambda: mock_embedding_service,
+    )
+
+    # Mock OllamaEmbeddings to avoid connection attempts
+    monkeypatch.setattr(
+        "rag_service.embeddings.embeddings.OllamaEmbeddings", MagicMock()
+    )
 
 
 @pytest.fixture(autouse=True)

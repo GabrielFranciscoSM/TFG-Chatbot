@@ -60,7 +60,7 @@ from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.types import interrupt
 
-from backend.logic.models import MultipleChoiceTest
+from chatbot.logic.models import MultipleChoiceTest
 
 load_dotenv()
 
@@ -202,7 +202,7 @@ class TestSessionGraph:
         2. Generates all questions using generate_test tool
         3. Initializes test tracking fields
         """
-        from backend.logic.tools.tools import get_tools
+        from chatbot.logic.tools.tools import get_tools
 
         tools = get_tools()
         generate_test_tool = next((t for t in tools if t.name == "generate_test"), None)
@@ -398,7 +398,7 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
         Returns:
             Tuple of (feedback_text, is_correct)
         """
-        from backend.logic.prompts import TEST_EVALUATION_PROMPT
+        from chatbot.logic.prompts import TEST_EVALUATION_PROMPT
 
         # Extract question details
         if isinstance(question, MultipleChoiceTest):

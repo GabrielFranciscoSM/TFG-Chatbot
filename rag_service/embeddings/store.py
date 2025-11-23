@@ -237,13 +237,13 @@ class VectorStoreService:
                     qdrant_filter = Filter(must=conditions)
                     logger.debug(f"Applying filters: {filters}")
 
-            search_results = self.client.search(
+            search_results = self.client.query_points(
                 collection_name=self.collection_name,
-                query_vector=query_embedding,
+                query=query_embedding,
                 limit=top_k,
                 score_threshold=score_threshold,
                 query_filter=qdrant_filter,
-            )
+            ).points
 
             results = []
             for result in search_results:
@@ -297,7 +297,11 @@ class VectorStoreService:
             info = self.client.get_collection(collection_name=self.collection_name)
             return {
                 "name": self.collection_name,
-                "vectors_count": info.vectors_count,
+                "vectors_count": (
+                    info.vectors_count
+                    if hasattr(info, "vectors_count")
+                    else info.points_count
+                ),
                 "points_count": info.points_count,
                 "status": info.status,
             }

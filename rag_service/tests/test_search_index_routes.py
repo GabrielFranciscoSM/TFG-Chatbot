@@ -116,7 +116,9 @@ def test_search_endpoint_no_results(api_client, monkeypatch):
 
 def test_search_endpoint_error(api_client, monkeypatch):
     """Test search endpoint handling errors."""
-    from rag_service.embeddings import store
+    import sys
+
+    search_index_module = sys.modules["rag_service.routes.search_index"]
 
     def raise_error(*args, **kwargs):
         raise RuntimeError("Search failed")
@@ -124,7 +126,7 @@ def test_search_endpoint_error(api_client, monkeypatch):
     mock_store = MagicMock()
     mock_store.search = raise_error
 
-    monkeypatch.setattr(store, "get_vector_store", lambda: mock_store)
+    monkeypatch.setattr(search_index_module, "get_vector_store", lambda: mock_store)
 
     payload = {"query": "test"}
 
@@ -180,12 +182,14 @@ def test_index_documents_success(api_client, monkeypatch):
 @pytest.mark.integration
 def test_index_documents_empty_list(api_client, monkeypatch):
     """Test indexing empty document list."""
-    from rag_service.embeddings import store
+    import sys
+
+    search_index_module = sys.modules["rag_service.routes.search_index"]
 
     mock_store = MagicMock()
     mock_store.index_documents.return_value = 0
 
-    monkeypatch.setattr(store, "get_vector_store", lambda: mock_store)
+    monkeypatch.setattr(search_index_module, "get_vector_store", lambda: mock_store)
 
     resp = api_client.post("/index", json=[])
     assert resp.status_code == 200
@@ -195,7 +199,9 @@ def test_index_documents_empty_list(api_client, monkeypatch):
 
 def test_index_documents_error(api_client, monkeypatch):
     """Test indexing error handling."""
-    from rag_service.embeddings import store
+    import sys
+
+    search_index_module = sys.modules["rag_service.routes.search_index"]
 
     def raise_error(*args, **kwargs):
         raise ValueError("Invalid document format")
@@ -203,7 +209,7 @@ def test_index_documents_error(api_client, monkeypatch):
     mock_store = MagicMock()
     mock_store.index_documents = raise_error
 
-    monkeypatch.setattr(store, "get_vector_store", lambda: mock_store)
+    monkeypatch.setattr(search_index_module, "get_vector_store", lambda: mock_store)
 
     payload = [
         {

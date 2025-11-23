@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 from langchain_core.messages import AIMessage, HumanMessage
 
-from backend.logic.graph import GraphAgent
+from chatbot.logic.graph import GraphAgent
 
 
 def test_build_graph():
@@ -12,7 +12,7 @@ def test_build_graph():
     assert graph is not None
 
 
-@patch("backend.logic.graph.ChatOpenAI")
+@patch("chatbot.logic.graph.ChatOpenAI")
 def test_graph_execution(mock_openai, graph, graph_config, mock_llm_response):
     """Test that the graph executes successfully."""
     # Configure the mock to return our AIMessage
@@ -32,7 +32,7 @@ def test_graph_execution(mock_openai, graph, graph_config, mock_llm_response):
     assert isinstance(result["messages"][-1], AIMessage)
 
 
-@patch("backend.logic.graph.ChatOpenAI")
+@patch("chatbot.logic.graph.ChatOpenAI")
 def test_graph_with_tool_calls(
     mock_openai, graph, graph_config, mock_llm_with_tools, mock_llm_response
 ):
@@ -55,7 +55,7 @@ def test_graph_with_tool_calls(
     assert len(result["messages"]) >= 2
 
 
-@patch("backend.logic.graph.ChatOpenAI")
+@patch("chatbot.logic.graph.ChatOpenAI")
 def test_call_agent_method(mock_openai, mock_llm_response):
     """Test the call_agent convenience method."""
     # Configure the mock to return our AIMessage

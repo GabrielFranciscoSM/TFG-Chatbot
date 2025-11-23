@@ -2,8 +2,8 @@ import importlib
 import json
 
 # Import the tools module using importlib to avoid name collisions with
-# `backend.logic.tools` attribute exported in `backend.logic.__init__`.
-tools = importlib.import_module("backend.logic.tools.tools")
+# `chatbot.logic.tools` attribute exported in `chatbot.logic.__init__`.
+tools = importlib.import_module("chatbot.logic.tools.tools")
 
 
 def test_get_guia_with_key(monkeypatch, dummy_mongo_client_class):

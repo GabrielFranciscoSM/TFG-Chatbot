@@ -10,6 +10,7 @@ on:
     paths:
       - 'backend/**'
       - 'rag_service/**'
+      - 'chatbot/**'
       - 'docker-compose.yml'
       - '**/Dockerfile'
   push:
@@ -17,6 +18,7 @@ on:
     paths:
       - 'backend/**'
       - 'rag_service/**'
+      - 'chatbot/**'
       - 'docker-compose.yml'
       - '**/Dockerfile'
 
@@ -139,16 +141,74 @@ jobs:
             fi
           fi
 
+  build-chatbot:
+    name: Build Chatbot Container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build chatbot image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./chatbot/Dockerfile
+          push: false
+          load: true
+          tags: chatbot:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            INSTALL_DEV=true
+
+      - name: Test chatbot image can run
+        run: |
+          # Start container in detached mode
+          CONTAINER_ID=$(docker run -d \
+            chatbot:test)
+          
+          echo "Container started with ID: $CONTAINER_ID"
+          
+          # Wait a bit for startup
+          sleep 5
+          
+          # Always capture logs
+          echo "=== Container Logs ==="
+          docker logs "$CONTAINER_ID" 2>&1 || echo "Failed to get logs"
+          echo "====================="
+          
+          # Check if container is still running
+          if docker ps -q --filter "id=$CONTAINER_ID" | grep -q .; then
+            echo "✅ Container is still running - stopping it"
+            docker stop "$CONTAINER_ID"
+            docker rm "$CONTAINER_ID"
+          else
+            echo "⚠️ Container exited"
+            # Check if uvicorn started
+            if docker logs "$CONTAINER_ID" 2>&1 | grep -qE "uvicorn|Application startup complete|Started server process"; then
+              echo "✅ Container started successfully (uvicorn ran)"
+              docker rm "$CONTAINER_ID"
+              exit 0
+            else
+              echo "❌ Container failed to start properly - no uvicorn in logs"
+              docker rm "$CONTAINER_ID"
+              exit 1
+            fi
+          fi
+
   build-summary:
     name: Build Summary
     runs-on: ubuntu-latest
-    needs: [build-backend, build-rag-service]
+    needs: [build-backend, build-rag-service, build-chatbot]
     if: always()
     steps:
       - name: Check build results
         run: |
           if [[ "${{ needs.build-backend.result }}" == "failure" ]] || \
-             [[ "${{ needs.build-rag-service.result }}" == "failure" ]]; then
+             [[ "${{ needs.build-rag-service.result }}" == "failure" ]] || \
+             [[ "${{ needs.build-chatbot.result }}" == "failure" ]]; then
             echo "❌ Some container builds failed"
             exit 1
           else

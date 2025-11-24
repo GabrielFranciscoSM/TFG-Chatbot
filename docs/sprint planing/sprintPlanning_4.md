@@ -10,8 +10,8 @@ grand_parent: DevLog
 ## Información General
 
 - **Sprint:** Sprint 4
-- **Fecha de inicio:** 2 de diciembre de 2025
-- **Fecha de finalización:** 23 de diciembre de 2025
+- **Fecha de inicio:** 25 de noviembre de 2025
+- **Fecha de finalización:** 15 de diciembre de 2025
 - **Duración:** 3 semanas
 - **Equipo:** Gabriel Francisco
 

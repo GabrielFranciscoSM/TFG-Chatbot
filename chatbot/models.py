@@ -147,11 +147,24 @@ class InterruptInfo(BaseModel):
     )
 
 
-class ChatResponse(BaseModel):
-    """Unified response for chat endpoints."""
+class ChatMessage(BaseModel):
+    """A single message in the conversation."""
 
-    messages: list = Field(
-        ..., description="List of message objects from the conversation"
+    type: str = Field(..., description="Message type: 'ai', 'human', 'tool', 'system'")
+    content: str = Field(..., description="The message content")
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {"type": "ai", "content": "Hello! How can I help you?"}
+        }
+    )
+
+
+class ChatResponse(BaseModel):
+    """Response for chat endpoints - returns only the last assistant message."""
+
+    message: ChatMessage | None = Field(
+        None, description="The assistant's response message"
     )
     interrupted: bool = Field(
         default=False,
@@ -164,12 +177,10 @@ class ChatResponse(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "messages": [
-                    {
-                        "role": "assistant",
-                        "content": "📝 Pregunta 1/5\n\n¿Qué es un bucle for en Python?\n\nPor favor, proporciona tu respuesta.",
-                    }
-                ],
+                "message": {
+                    "type": "ai",
+                    "content": "📝 Pregunta 1/5\n\n¿Qué es un bucle for en Python?",
+                },
                 "interrupted": True,
                 "interrupt_info": {
                     "action": "answer_question",
@@ -177,6 +188,28 @@ class ChatResponse(BaseModel):
                     "total_questions": 5,
                     "question_text": "¿Qué es un bucle for en Python?",
                 },
+            }
+        }
+    )
+
+
+class HistoryResponse(BaseModel):
+    """Response for history endpoint - returns all messages."""
+
+    messages: list[ChatMessage] = Field(
+        default_factory=list, description="All messages in the conversation"
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "messages": [
+                    {"type": "human", "content": "¿Qué es Docker?"},
+                    {
+                        "type": "ai",
+                        "content": "Docker es una plataforma de contenedores...",
+                    },
+                ]
             }
         }
     )

@@ -1,45 +1,126 @@
-import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
+import { useChat } from "@/hooks/useChat";
+import { useSessions } from "@/hooks/useSessions";
+import { MessageList } from "@/components/chat/MessageList";
+import { ChatInput } from "@/components/chat/ChatInput";
+import { SessionSelector } from "@/components/chat/SessionSelector";
+import { NewSessionDialog } from "@/components/chat/NewSessionDialog";
+import type { ChatSession } from "@/types/chat";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ChatPage() {
-  const { user } = useAuth();
+  const [activeSession, setActiveSession] = useState<ChatSession | null>(null);
+  const [showNewSessionDialog, setShowNewSessionDialog] = useState(false);
+
+  const {
+    sessions,
+    isLoading: sessionsLoading,
+    createSession,
+    deleteSession,
+  } = useSessions();
+
+  const {
+    messages,
+    isLoading: chatLoading,
+    isInterrupted,
+    sendMessage,
+    resumeTest,
+  } = useChat({
+    sessionId: activeSession?.id || null,
+    subject: activeSession?.subject,
+  });
+
+  const handleSelectSession = (session: ChatSession) => {
+    setActiveSession(session);
+  };
+
+  const handleNewSession = () => {
+    setShowNewSessionDialog(true);
+  };
+
+  const handleCreateSession = async (title: string, subject: string) => {
+    const session = await createSession(title, subject);
+    if (session) {
+      setActiveSession(session);
+      toast.success("Conversación creada");
+    }
+  };
+
+  const handleDeleteSession = async (sessionId: string) => {
+    const success = await deleteSession(sessionId);
+    if (success) {
+      if (activeSession?.id === sessionId) {
+        setActiveSession(null);
+      }
+      toast.success("Conversación eliminada");
+    }
+  };
+
+  const handleSendMessage = async (content: string) => {
+    if (isInterrupted) {
+      await resumeTest(content);
+    } else {
+      await sendMessage(content);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
-      {/* Chat Header */}
-      <div className="p-4 border-b">
-        <h1 className="text-xl font-semibold">Chat</h1>
-        <p className="text-sm text-muted-foreground">
-          Bienvenido, {user?.email}
-        </p>
+      {/* Chat Header with Session Selector */}
+      <div className="flex items-center gap-3 p-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <SessionSelector
+          sessions={sessions}
+          activeSession={activeSession}
+          isLoading={sessionsLoading}
+          onSelectSession={handleSelectSession}
+          onNewSession={handleNewSession}
+          onDeleteSession={handleDeleteSession}
+        />
+        {activeSession && (
+          <span className="text-sm text-muted-foreground">
+            {activeSession.subject}
+          </span>
+        )}
       </div>
 
-      {/* Messages Area - Placeholder */}
-      <div className="flex-1 overflow-auto p-4">
-        <div className="flex items-center justify-center h-full text-muted-foreground">
-          <p>Los mensajes aparecerán aquí</p>
-        </div>
-      </div>
-
-      {/* Input Area - Placeholder */}
-      <div className="p-4 border-t">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Escribe tu mensaje..."
-            className="flex-1 px-4 py-2 border rounded-md bg-background"
-            disabled
+      {/* Messages Area */}
+      {activeSession ? (
+        <>
+          <MessageList messages={messages} isLoading={chatLoading} />
+          <ChatInput
+            onSend={handleSendMessage}
+            isLoading={chatLoading}
+            placeholder={
+              isInterrupted
+                ? "Escribe tu respuesta..."
+                : "Escribe tu mensaje..."
+            }
           />
-          <button
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md opacity-50 cursor-not-allowed"
-            disabled
-          >
-            Enviar
-          </button>
+        </>
+      ) : (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="text-6xl">💬</div>
+            <h2 className="text-xl font-semibold">Bienvenido al Chat</h2>
+            <p className="text-muted-foreground max-w-md">
+              Crea una nueva conversación para empezar a chatear con el asistente educativo
+            </p>
+            <Button onClick={handleNewSession} size="lg" className="gap-2">
+              <Plus className="h-5 w-5" />
+              Nueva conversación
+            </Button>
+          </div>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          La funcionalidad de chat se implementará en la Semana 2
-        </p>
-      </div>
+      )}
+
+      {/* New Session Dialog */}
+      <NewSessionDialog
+        open={showNewSessionDialog}
+        onOpenChange={setShowNewSessionDialog}
+        onCreateSession={handleCreateSession}
+      />
     </div>
   );
 }

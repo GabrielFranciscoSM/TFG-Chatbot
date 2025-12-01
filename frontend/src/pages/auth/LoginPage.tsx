@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -40,10 +40,10 @@ export default function LoginPage() {
     try {
       // Use URLSearchParams for OAuth2PasswordRequestForm compatibility
       const formData = new URLSearchParams();
-      formData.append("username", data.email);
+      formData.append("username", data.username);
       formData.append("password", data.password);
 
-      const response = await api.post("/auth/login", formData, {
+      const response = await api.post("/token", formData, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -51,23 +51,18 @@ export default function LoginPage() {
 
       const { access_token } = response.data;
       
-      // Fetch user details immediately after login to populate context
-      // Note: In a real app, the login response might include user info
-      // or we rely on the AuthProvider's initAuth, but here we want immediate feedback
-      // For now, let's assume we can get user info or just mock it for the context update
-      // Ideally, /auth/login should return user info or we call /auth/me
-      
-      // Let's call /auth/me manually to get the user role
-      const meResponse = await api.get("/auth/me", {
+      // Fetch user details after login
+      const meResponse = await api.get("/users/me", {
         headers: { Authorization: `Bearer ${access_token}` }
       });
 
       login(access_token, meResponse.data);
-      toast.success("Logged in successfully");
+      toast.success("Sesión iniciada correctamente");
       navigate("/chat");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Invalid email or password");
+      const message = error.response?.data?.detail || "Usuario o contraseña incorrectos";
+      toast.error(message);
     }
   };
 
@@ -75,19 +70,19 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/50">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Login</CardTitle>
+          <CardTitle className="text-2xl text-center">Iniciar Sesión</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Usuario</FormLabel>
                     <FormControl>
-                      <Input placeholder="student@example.com" {...field} />
+                      <Input placeholder="tu_usuario" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,7 +93,7 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Contraseña</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="******" {...field} />
                     </FormControl>
@@ -107,14 +102,14 @@ export default function LoginPage() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Logging in..." : "Login"}
+                {form.formState.isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
-            Don't have an account?{" "}
+            ¿No tienes cuenta?{" "}
             <Link to="/register" className="underline">
-              Register
+              Regístrate
             </Link>
           </div>
         </CardContent>

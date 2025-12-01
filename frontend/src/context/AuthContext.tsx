@@ -2,8 +2,10 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import api from "@/lib/api";
 
 interface User {
+  username: string;
   email: string;
   role: string;
+  subjects: string[];
 }
 
 interface AuthContextType {
@@ -28,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (storedToken) {
         try {
           // Verify token and get user details
-          const response = await api.get("/auth/me");
+          const response = await api.get("/users/me");
           setUser(response.data);
           setToken(storedToken);
         } catch (error) {

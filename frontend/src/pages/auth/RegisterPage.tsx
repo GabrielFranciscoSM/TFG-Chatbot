@@ -17,11 +17,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const registerSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  username: z.string().min(3, "El usuario debe tener al menos 3 caracteres"),
+  email: z.string().email("Email inválido"),
+  password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Las contraseñas no coinciden",
   path: ["confirmPassword"],
 });
 
@@ -33,6 +34,7 @@ export default function RegisterPage() {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -41,15 +43,18 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      await api.post("/auth/register", {
+      await api.post("/register", {
+        username: data.username,
         email: data.email,
         password: data.password,
+        role: "student",
+        subjects: [],
       });
-      toast.success("Registration successful! Please login.");
+      toast.success("¡Registro exitoso! Por favor, inicia sesión.");
       navigate("/login");
     } catch (error: any) {
       console.error(error);
-      const message = error.response?.data?.detail || "Registration failed";
+      const message = error.response?.data?.detail || "Error en el registro";
       toast.error(message);
     }
   };
@@ -58,11 +63,24 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/50">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Register</CardTitle>
+          <CardTitle className="text-2xl text-center">Registro</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Usuario</FormLabel>
+                    <FormControl>
+                      <Input placeholder="tu_usuario" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -70,7 +88,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="student@example.com" {...field} />
+                      <Input placeholder="estudiante@correo.ugr.es" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -81,7 +99,7 @@ export default function RegisterPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Contraseña</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="******" {...field} />
                     </FormControl>
@@ -94,7 +112,7 @@ export default function RegisterPage() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>Confirmar Contraseña</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="******" {...field} />
                     </FormControl>
@@ -103,14 +121,14 @@ export default function RegisterPage() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Registering..." : "Register"}
+                {form.formState.isSubmitting ? "Registrando..." : "Registrarse"}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            ¿Ya tienes cuenta?{" "}
             <Link to="/login" className="underline">
-              Login
+              Iniciar Sesión
             </Link>
           </div>
         </CardContent>

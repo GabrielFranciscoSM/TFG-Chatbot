@@ -43,7 +43,7 @@ jobs:
       rag_service: ${{ steps.filter.outputs.rag_service }}
       chatbot: ${{ steps.filter.outputs.chatbot }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       
       - uses: dorny/paths-filter@v3
         id: filter
@@ -68,7 +68,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.backend == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -108,7 +108,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.rag_service == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -149,7 +149,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.chatbot == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6

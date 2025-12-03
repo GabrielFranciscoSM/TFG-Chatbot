@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Vite cache
+.vite
+
 # Environment files with secrets
 .env.local
 .env.*.local

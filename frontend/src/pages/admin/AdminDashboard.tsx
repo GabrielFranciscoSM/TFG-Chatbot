@@ -61,34 +61,38 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Panel de Administración</h1>
           <p className="text-muted-foreground">
             Gestiona usuarios y visualiza estadísticas del sistema
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
+            size="sm"
+            className="flex-1 sm:flex-none"
             onClick={() => {
               setSelectedUser(undefined);
               setAssignDialogOpen(true);
             }}
           >
             <GraduationCap className="mr-2 h-4 w-4" />
-            Asignar Asignatura
+            <span className="sm:inline">Asignar Asignatura</span>
           </Button>
           <Button
+            size="sm"
+            className="flex-1 sm:flex-none"
             onClick={() => {
               setSelectedUser(undefined);
               setPromoteDialogOpen(true);
             }}
           >
             <UserCog className="mr-2 h-4 w-4" />
-            Cambiar Rol
+            <span className="sm:inline">Cambiar Rol</span>
           </Button>
         </div>
       </div>
@@ -199,62 +203,67 @@ export default function AdminDashboard() {
           {usersLoading ? (
             <p className="text-muted-foreground">Cargando usuarios...</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Usuario</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Rol</TableHead>
-                  <TableHead>Asignaturas</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users?.map((u) => (
-                  <TableRow key={u.username}>
-                    <TableCell className="font-medium">{u.username}</TableCell>
-                    <TableCell>{u.email}</TableCell>
-                    <TableCell>
-                      <Badge variant={roleBadgeVariant[u.role]}>{roleLabels[u.role]}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {u.subjects.length > 0 ? (
-                          u.subjects.map((s) => (
-                            <Badge key={s} variant="outline" className="text-xs">
-                              {s}
-                            </Badge>
-                          ))
-                        ) : (
-                          <span className="text-muted-foreground text-sm">—</span>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handlePromoteUser(u)}>
-                            <UserCog className="mr-2 h-4 w-4" />
-                            Cambiar rol
-                          </DropdownMenuItem>
-                          {u.role === "professor" && (
-                            <DropdownMenuItem onClick={() => handleAssignSubject(u)}>
-                              <GraduationCap className="mr-2 h-4 w-4" />
-                              Asignar asignatura
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
+            <div className="overflow-x-auto -mx-6 px-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Usuario</TableHead>
+                    <TableHead className="hidden sm:table-cell">Email</TableHead>
+                    <TableHead>Rol</TableHead>
+                    <TableHead className="hidden md:table-cell">Asignaturas</TableHead>
+                    <TableHead className="w-[50px]"></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {users?.map((u) => (
+                    <TableRow key={u.username}>
+                      <TableCell>
+                        <div className="font-medium">{u.username}</div>
+                        <div className="text-sm text-muted-foreground sm:hidden">{u.email}</div>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{u.email}</TableCell>
+                      <TableCell>
+                        <Badge variant={roleBadgeVariant[u.role]}>{roleLabels[u.role]}</Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <div className="flex flex-wrap gap-1">
+                          {u.subjects.length > 0 ? (
+                            u.subjects.map((s) => (
+                              <Badge key={s} variant="outline" className="text-xs">
+                                {s}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground text-sm">—</span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handlePromoteUser(u)}>
+                              <UserCog className="mr-2 h-4 w-4" />
+                              Cambiar rol
+                            </DropdownMenuItem>
+                            {u.role === "professor" && (
+                              <DropdownMenuItem onClick={() => handleAssignSubject(u)}>
+                                <GraduationCap className="mr-2 h-4 w-4" />
+                                Asignar asignatura
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

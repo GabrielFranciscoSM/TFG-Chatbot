@@ -74,16 +74,16 @@ export function StudentList({ students, subject, isLoading, onStudentChange }: S
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <CardTitle className="capitalize">
             Estudiantes de {subject}
             <span className="ml-2 text-sm font-normal text-muted-foreground">
-              ({students.length} estudiantes)
+              ({students.length})
             </span>
           </CardTitle>
         </div>
-        <Button onClick={() => setEnrollDialogOpen(true)} size="sm">
+        <Button onClick={() => setEnrollDialogOpen(true)} size="sm" className="w-full sm:w-auto">
           <UserPlus className="h-4 w-4 mr-2" />
           Matricular
         </Button>
@@ -95,46 +95,53 @@ export function StudentList({ students, subject, isLoading, onStudentChange }: S
             <p>No hay estudiantes matriculados en esta asignatura</p>
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Usuario</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {students.map((student) => (
-                <TableRow key={student.username}>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      {student.username}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      {student.email}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => {
-                        setSelectedStudent(student.username);
-                        setUnenrollDialogOpen(true);
-                      }}
-                    >
-                      <UserMinus className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto -mx-6 px-6">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Usuario</TableHead>
+                  <TableHead className="hidden sm:table-cell">Email</TableHead>
+                  <TableHead className="text-right">Acciones</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {students.map((student) => (
+                  <TableRow key={student.username}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <div>
+                          <div className="font-medium">{student.username}</div>
+                          <div className="text-sm text-muted-foreground sm:hidden">
+                            {student.email}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-muted-foreground" />
+                        {student.email}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:text-destructive"
+                        onClick={() => {
+                          setSelectedStudent(student.username);
+                          setUnenrollDialogOpen(true);
+                        }}
+                      >
+                        <UserMinus className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </CardContent>
 

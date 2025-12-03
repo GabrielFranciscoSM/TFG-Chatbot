@@ -73,10 +73,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Biome check
+      - name: Biome lint (errors only)
         run: |
           echo "Running Biome linter..."
-          npx @biomejs/biome check .
+          npx @biomejs/biome lint .
+        continue-on-error: false
+
+      - name: Biome format check
+        run: |
+          echo "Checking Biome formatting..."
+          npx @biomejs/biome format . --write
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "⚠️ Some files were reformatted. Run 'npm run format' locally and commit the changes."
+            git diff --name-only
+            exit 1
+          fi
         continue-on-error: false
 
       - name: TypeScript check

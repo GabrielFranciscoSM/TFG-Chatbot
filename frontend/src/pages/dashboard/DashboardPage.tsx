@@ -6,6 +6,7 @@ import { SubjectCard } from "@/components/dashboard/SubjectCard";
 import { StudentList } from "@/components/dashboard/StudentList";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
+import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import {
   useSubjects,
   useStudents,
@@ -18,9 +19,11 @@ type View = "overview" | "students" | "documents";
 export default function DashboardPage() {
   const [currentView, setCurrentView] = useState<View>("overview");
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [enrollDialogOpen, setEnrollDialogOpen] = useState(false);
+  const [enrollSubject, setEnrollSubject] = useState<string | null>(null);
 
-  const { subjects, isLoading: loadingSubjects } = useSubjects();
-  const { students, isLoading: loadingStudents } = useStudents(selectedSubject);
+  const { subjects, isLoading: loadingSubjects, refetch: refetchSubjects } = useSubjects();
+  const { students, isLoading: loadingStudents, refetch: refetchStudents } = useStudents(selectedSubject);
   const {
     documents,
     isLoading: loadingDocuments,
@@ -28,7 +31,7 @@ export default function DashboardPage() {
     uploadDocument,
     deleteDocument,
   } = useDocuments(selectedSubject);
-  const { stats, isLoading: loadingStats } = useStats();
+  const { stats, isLoading: loadingStats, refetch: refetchStats } = useStats();
 
   const handleViewStudents = (subject: string) => {
     setSelectedSubject(subject);
@@ -41,8 +44,8 @@ export default function DashboardPage() {
   };
 
   const handleEnrollStudent = (subject: string) => {
-    // TODO: Implement enroll student dialog
-    console.log("Enroll student in", subject);
+    setEnrollSubject(subject);
+    setEnrollDialogOpen(true);
   };
 
   const handleBack = () => {
@@ -69,6 +72,11 @@ export default function DashboardPage() {
               students={students}
               subject={selectedSubject}
               isLoading={loadingStudents}
+              onStudentChange={() => {
+                refetchStudents();
+                refetchSubjects();
+                refetchStats();
+              }}
             />
           )}
 
@@ -144,6 +152,13 @@ export default function DashboardPage() {
             <StatsOverview stats={stats} isLoading={loadingStats} />
           </TabsContent>
         </Tabs>
+
+        {/* Enroll Student Dialog */}
+        <EnrollStudentDialog
+          open={enrollDialogOpen}
+          onOpenChange={setEnrollDialogOpen}
+          subject={enrollSubject || ""}
+        />
       </div>
     </div>
   );

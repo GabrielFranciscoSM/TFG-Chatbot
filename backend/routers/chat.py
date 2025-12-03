@@ -42,8 +42,8 @@ async def chat(
             # Auto-create session if it doesn't exist (for backward compatibility and ease of use)
             requested_subject = json_data.get("asignatura")
 
-            # Validate subject access if provided
-            if requested_subject:
+            # Validate subject access if provided (allow "general" for everyone)
+            if requested_subject and requested_subject != "general":
                 if (
                     user.role == UserRole.STUDENT
                     and requested_subject not in user.subjects
@@ -65,7 +65,7 @@ async def chat(
 
         # Validate subject access (redundant if new session, but safe for existing ones)
         requested_subject = json_data.get("asignatura")
-        if requested_subject:
+        if requested_subject and requested_subject != "general":
             # If user is student, check if they are enrolled
             if user.role == UserRole.STUDENT and requested_subject not in user.subjects:
                 raise HTTPException(
@@ -74,6 +74,35 @@ async def chat(
 
         response = await client.post(
             f"{settings.CHATBOT_SERVICE_URL}/chat", json=json_data
+        )
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code, detail=response.json()
+            )
+        return response.json()
+
+
+@router.get("/history/{session_id}")
+async def get_history(
+    session_id: str,
+    user: UserInDB = Depends(get_current_user),
+    collection=Depends(get_sessions_collection),
+):
+    """Get conversation history for a session."""
+    # Validate session ownership
+    session = collection.find_one({"_id": session_id})
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    if session["user_id"] != user.username:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this session"
+        )
+
+    # Forward to chatbot service
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.get(
+            f"{settings.CHATBOT_SERVICE_URL}/history/{session_id}"
         )
         if response.status_code != 200:
             raise HTTPException(

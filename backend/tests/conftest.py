@@ -68,7 +68,7 @@ def test_professor(mock_users_collection):
         "email": "prof1@example.com",
         "hashed_password": get_password_hash("password123"),
         "role": UserRole.PROFESSOR,
-        "subjects": [],
+        "subjects": ["iv", "dsd"],  # Professor has these subjects assigned
     }
     mock_users_collection.insert_one(user_data)
     return user_data
@@ -92,5 +92,29 @@ def professor_token(test_professor):
             "sub": test_professor["username"],
             "role": test_professor["role"],
             "subjects": test_professor["subjects"],
+        }
+    )
+
+
+@pytest.fixture
+def test_admin(mock_users_collection):
+    user_data = {
+        "username": "admin1",
+        "email": "admin1@example.com",
+        "hashed_password": get_password_hash("password123"),
+        "role": UserRole.ADMIN,
+        "subjects": [],
+    }
+    mock_users_collection.insert_one(user_data)
+    return user_data
+
+
+@pytest.fixture
+def admin_token(test_admin):
+    return create_access_token(
+        data={
+            "sub": test_admin["username"],
+            "role": test_admin["role"],
+            "subjects": test_admin["subjects"],
         }
     )

@@ -55,8 +55,10 @@ from chatbot.db.mongo import MongoDBClient
 from chatbot.logic.graph import GraphAgent
 from chatbot.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
 from chatbot.models import (
+    ChatMessage,
     ChatRequest,
     ChatResponse,
+    HistoryResponse,
     InterruptInfo,
     MessageResponse,
     ResumeRequest,
@@ -231,18 +233,26 @@ async def chat(chat_request: ChatRequest):
         asignatura=chat_request.asignatura,
     )
 
+    # Extract only the last AI message
+    messages = respuesta.get("messages", [])
+    last_ai_message = None
+    for msg in reversed(messages):
+        if hasattr(msg, "type") and msg.type == "ai":
+            last_ai_message = ChatMessage(type="ai", content=msg.content)
+            break
+
     # Check for interrupt
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
 
         return ChatResponse(
-            messages=respuesta.get("messages", []),
+            message=last_ai_message,
             interrupted=True,
             interrupt_info=InterruptInfo(**interrupt_data),
         )
 
     # Normal response without interruption
-    return ChatResponse(messages=respuesta.get("messages", []), interrupted=False)
+    return ChatResponse(message=last_ai_message, interrupted=False)
 
 
 @app.post(
@@ -308,18 +318,60 @@ async def resume_chat(resume_request: ResumeRequest):
         resume_value=resume_request.user_response,
     )
 
+    # Extract only the last AI message
+    messages = respuesta.get("messages", [])
+    last_ai_message = None
+    for msg in reversed(messages):
+        if hasattr(msg, "type") and msg.type == "ai":
+            last_ai_message = ChatMessage(type="ai", content=msg.content)
+            break
+
     # Check if there's another interrupt (next question)
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
 
         return ChatResponse(
-            messages=respuesta.get("messages", []),
+            message=last_ai_message,
             interrupted=True,
             interrupt_info=InterruptInfo(**interrupt_data),
         )
 
     # Test completed or normal flow
-    return ChatResponse(messages=respuesta.get("messages", []), interrupted=False)
+    return ChatResponse(message=last_ai_message, interrupted=False)
+
+
+@app.get(
+    "/history/{session_id}",
+    tags=["Chatbot"],
+    summary="Get conversation history",
+    description="Retrieve the message history for a specific conversation session.",
+    response_model=HistoryResponse,
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {"description": "Conversation history retrieved successfully"},
+        404: {"description": "No history found for this session"},
+    },
+)
+async def get_history(session_id: str):
+    """
+    Get the conversation history for a session.
+
+    Retrieves all messages from the LangGraph checkpointer for the given
+    session/thread ID. Returns an empty list if no history exists.
+
+    Args:
+        session_id: The thread ID of the conversation
+
+    Returns:
+        HistoryResponse with all messages from the conversation
+    """
+    raw_messages = agente.get_history(id=session_id)
+    # Convert LangChain messages to ChatMessage format
+    messages = []
+    for msg in raw_messages:
+        if hasattr(msg, "type") and msg.type in ("human", "ai"):
+            messages.append(ChatMessage(type=msg.type, content=msg.content))
+    return HistoryResponse(messages=messages)
 
 
 @app.post(

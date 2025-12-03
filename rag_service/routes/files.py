@@ -27,6 +27,7 @@ import logging
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
 
 from rag_service.documents.file_loader import get_file_loader
+from rag_service.documents.file_utils import delete_file as del_file
 from rag_service.documents.file_utils import get_file_info as file_info
 from rag_service.documents.file_utils import list_files as ls_files
 from rag_service.embeddings.store import get_vector_store
@@ -182,6 +183,41 @@ async def get_file_info(filename: str):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get file info: {str(e)}",
+        ) from e
+
+
+@router.delete(
+    "/files/{filename:path}",
+    tags=["Files"],
+    summary="Delete a file",
+    status_code=status.HTTP_200_OK,
+)
+async def delete_file(filename: str):
+    """
+    Delete a file from the documents directory.
+
+    Args:
+        filename: Relative path to the file (e.g., "iv/teoria/tema1.pdf")
+
+    Returns:
+        Success message
+
+    Raises:
+        HTTPException: 404 if file not found, 500 for other errors
+
+    Example:
+        DELETE /files/iv/teoria/tema1.pdf
+    """
+    try:
+        del_file(filename)
+        return {"message": f"File '{filename}' deleted successfully"}
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except Exception as e:
+        logger.error(f"Error deleting file: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete file: {str(e)}",
         ) from e
 
 

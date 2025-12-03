@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import api from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 
 const registerSchema = z
   .object({
@@ -54,10 +55,9 @@ export default function RegisterPage() {
       });
       toast.success("¡Registro exitoso! Por favor, inicia sesión.");
       navigate("/login");
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      const message = error.response?.data?.detail || "Error en el registro";
-      toast.error(message);
+      toast.error(getErrorMessage(error, "Error en el registro"));
     }
   };
 

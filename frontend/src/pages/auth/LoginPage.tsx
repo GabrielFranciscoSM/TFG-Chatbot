@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -59,10 +60,9 @@ export default function LoginPage() {
       login(access_token, meResponse.data);
       toast.success("Sesión iniciada correctamente");
       navigate("/chat");
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      const message = error.response?.data?.detail || "Usuario o contraseña incorrectos";
-      toast.error(message);
+      toast.error(getErrorMessage(error, "Usuario o contraseña incorrectos"));
     }
   };
 

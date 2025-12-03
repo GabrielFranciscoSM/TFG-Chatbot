@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { usePromoteUser, useUserSearch } from "@/hooks/useAdmin";
+import { getErrorMessage } from "@/lib/errors";
 import type { UserInfo } from "@/types/admin";
 
 interface PromoteUserDialogProps {
@@ -74,8 +75,8 @@ export function PromoteUserDialog({
       toast.success(`${username} ahora es ${roleLabels[newRole]}`);
       setUsername("");
       onOpenChange(false);
-    } catch (error: any) {
-      toast.error(error.response?.data?.detail || "Error al cambiar rol");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Error al cambiar rol"));
     }
   };
 

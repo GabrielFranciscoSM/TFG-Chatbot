@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useUnenrollStudent } from "@/hooks/useAdmin";
+import { getErrorMessage } from "@/lib/errors";
 import type { StudentInfo } from "@/types/dashboard";
 
 interface StudentListProps {
@@ -46,8 +47,8 @@ export function StudentList({ students, subject, isLoading, onStudentChange }: S
       setUnenrollDialogOpen(false);
       setSelectedStudent(null);
       onStudentChange?.();
-    } catch (error: any) {
-      toast.error(error.response?.data?.detail || "Error al desmatricular");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Error al desmatricular"));
     }
   };
 

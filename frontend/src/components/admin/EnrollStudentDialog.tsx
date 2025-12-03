@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEnrollStudent, useUserSearch } from "@/hooks/useAdmin";
+import { getErrorMessage } from "@/lib/errors";
 
 interface EnrollStudentDialogProps {
   open: boolean;
@@ -55,8 +56,8 @@ export function EnrollStudentDialog({
       setUsername("");
       onOpenChange(false);
       onSuccess?.();
-    } catch (error: any) {
-      toast.error(error.response?.data?.detail || "Error al matricular estudiante");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Error al matricular estudiante"));
     }
   };
 

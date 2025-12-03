@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAssignSubject, useUserSearch } from "@/hooks/useAdmin";
+import { getErrorMessage } from "@/lib/errors";
 
 interface AssignSubjectDialogProps {
   open: boolean;
@@ -55,8 +56,8 @@ export function AssignSubjectDialog({
       setUsername("");
       setSubject("");
       onOpenChange(false);
-    } catch (error: any) {
-      toast.error(error.response?.data?.detail || "Error al asignar asignatura");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Error al asignar asignatura"));
     }
   };
 

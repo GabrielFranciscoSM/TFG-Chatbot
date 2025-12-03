@@ -65,7 +65,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
-from chatbot.logic.prompts import SYSTEM_PROMPT_V2
+from chatbot.logic.prompts import SYSTEM_PROMPT_V3
 from chatbot.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
@@ -227,7 +227,11 @@ class GraphAgent:
             Dict with updated messages including the agent's response or tool calls
         """
         tools = get_tools()
-        system_message = SystemMessage(content=SYSTEM_PROMPT_V2)
+
+        # Include the current subject in the system prompt
+        asignatura = state.get("asignatura") or "general"
+        system_prompt = SYSTEM_PROMPT_V3.format(asignatura=asignatura)
+        system_message = SystemMessage(content=system_prompt)
 
         messages = state["messages"]
         if not messages or not isinstance(messages[0], SystemMessage):

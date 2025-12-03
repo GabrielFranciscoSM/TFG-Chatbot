@@ -1,7 +1,8 @@
-import { Mail, User, UserMinus, UserPlus } from "lucide-react";
+import { User, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
+import { StudentsTable } from "@/components/dashboard/StudentsTable";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,14 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useUnenrollStudent } from "@/hooks/useAdmin";
 import { getErrorMessage } from "@/lib/errors";
 import type { StudentInfo } from "@/types/dashboard";
@@ -95,53 +88,14 @@ export function StudentList({ students, subject, isLoading, onStudentChange }: S
             <p>No hay estudiantes matriculados en esta asignatura</p>
           </div>
         ) : (
-          <div className="overflow-x-auto -mx-6 px-6">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Usuario</TableHead>
-                  <TableHead className="hidden sm:table-cell">Email</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {students.map((student) => (
-                  <TableRow key={student.username}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-muted-foreground shrink-0" />
-                        <div>
-                          <div className="font-medium">{student.username}</div>
-                          <div className="text-sm text-muted-foreground sm:hidden">
-                            {student.email}
-                          </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-muted-foreground" />
-                        {student.email}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => {
-                          setSelectedStudent(student.username);
-                          setUnenrollDialogOpen(true);
-                        }}
-                      >
-                        <UserMinus className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <StudentsTable
+            students={students}
+            isLoading={isLoading}
+            onUnenroll={(username) => {
+              setSelectedStudent(username);
+              setUnenrollDialogOpen(true);
+            }}
+          />
         )}
       </CardContent>
 

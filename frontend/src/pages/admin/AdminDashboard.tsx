@@ -1,32 +1,10 @@
-import {
-  BookOpen,
-  GraduationCap,
-  MessageSquare,
-  MoreVertical,
-  Shield,
-  UserCog,
-  Users,
-} from "lucide-react";
+import { BookOpen, GraduationCap, MessageSquare, Shield, UserCog, Users } from "lucide-react";
 import { useState } from "react";
 import { AssignSubjectDialog } from "@/components/admin/AssignSubjectDialog";
 import { PromoteUserDialog } from "@/components/admin/PromoteUserDialog";
-import { Badge } from "@/components/ui/badge";
+import { UsersTable } from "@/components/admin/UsersTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useAdminStats, useUsers } from "@/hooks/useAdmin";
 import type { UserInfo } from "@/types/admin";
 
@@ -46,18 +24,6 @@ export default function AdminDashboard() {
   const handlePromoteUser = (userInfo: UserInfo) => {
     setSelectedUser(userInfo);
     setPromoteDialogOpen(true);
-  };
-
-  const roleLabels = {
-    student: "Estudiante",
-    professor: "Profesor",
-    admin: "Admin",
-  };
-
-  const roleBadgeVariant = {
-    student: "secondary" as const,
-    professor: "default" as const,
-    admin: "destructive" as const,
   };
 
   return (
@@ -200,71 +166,12 @@ export default function AdminDashboard() {
           <CardDescription>Gestiona los roles y asignaturas de los usuarios</CardDescription>
         </CardHeader>
         <CardContent>
-          {usersLoading ? (
-            <p className="text-muted-foreground">Cargando usuarios...</p>
-          ) : (
-            <div className="overflow-x-auto -mx-6 px-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Usuario</TableHead>
-                    <TableHead className="hidden sm:table-cell">Email</TableHead>
-                    <TableHead>Rol</TableHead>
-                    <TableHead className="hidden md:table-cell">Asignaturas</TableHead>
-                    <TableHead className="w-[50px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users?.map((u) => (
-                    <TableRow key={u.username}>
-                      <TableCell>
-                        <div className="font-medium">{u.username}</div>
-                        <div className="text-sm text-muted-foreground sm:hidden">{u.email}</div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">{u.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={roleBadgeVariant[u.role]}>{roleLabels[u.role]}</Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <div className="flex flex-wrap gap-1">
-                          {u.subjects.length > 0 ? (
-                            u.subjects.map((s) => (
-                              <Badge key={s} variant="outline" className="text-xs">
-                                {s}
-                              </Badge>
-                            ))
-                          ) : (
-                            <span className="text-muted-foreground text-sm">—</span>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => handlePromoteUser(u)}>
-                              <UserCog className="mr-2 h-4 w-4" />
-                              Cambiar rol
-                            </DropdownMenuItem>
-                            {u.role === "professor" && (
-                              <DropdownMenuItem onClick={() => handleAssignSubject(u)}>
-                                <GraduationCap className="mr-2 h-4 w-4" />
-                                Asignar asignatura
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+          <UsersTable
+            users={users ?? []}
+            isLoading={usersLoading}
+            onAssignSubject={handleAssignSubject}
+            onPromoteUser={handlePromoteUser}
+          />
         </CardContent>
       </Card>
 

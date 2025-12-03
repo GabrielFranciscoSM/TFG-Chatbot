@@ -15,7 +15,6 @@ dependencies = [
   "python-jose[cryptography]",
   "pydantic[email]",
   "python-multipart",
-  "passlib[bcrypt]>=1.7.4",
   "bcrypt>=5.0.0",
   "pymongo"
 ]

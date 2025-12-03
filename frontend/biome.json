@@ -6,7 +6,16 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "!!**/dist/**", "!!**/node_modules/**", "!!src/components/ui/**"]
+    "includes": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.json",
+      "!!**/dist",
+      "!!**/node_modules",
+      "!!src/components/ui"
+    ]
   },
   "formatter": {
     "enabled": true,

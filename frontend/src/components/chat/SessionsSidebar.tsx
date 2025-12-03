@@ -1,15 +1,5 @@
+import { ChevronRight, Loader2, MessageSquare, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import type { ChatSession } from "@/types/chat";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  MessageSquare,
-  Plus,
-  Trash2,
-  Loader2,
-  ChevronRight,
-} from "lucide-react";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import type { ChatSession } from "@/types/chat";
+
 interface SessionsSidebarProps {
   sessions: ChatSession[];
   activeSessionId: string | null;
@@ -49,9 +43,7 @@ export function SessionsSidebar({
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffDays = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Hoy";
     if (diffDays === 1) return "Ayer";
@@ -87,15 +79,13 @@ export function SessionsSidebar({
                   key={session.id}
                   className={cn(
                     "group flex items-center gap-2 p-3 rounded-lg cursor-pointer hover:bg-accent transition-colors",
-                    activeSessionId === session.id && "bg-accent"
+                    activeSessionId === session.id && "bg-accent",
                   )}
                   onClick={() => onSelectSession(session)}
                 >
                   <MessageSquare className="w-4 h-4 shrink-0 text-muted-foreground" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">
-                      {session.title}
-                    </p>
+                    <p className="text-sm font-medium truncate">{session.title}</p>
                     <p className="text-xs text-muted-foreground">
                       {session.subject} · {formatDate(session.last_active)}
                     </p>
@@ -122,16 +112,13 @@ export function SessionsSidebar({
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={!!deleteSessionId}
-        onOpenChange={() => setDeleteSessionId(null)}
-      >
+      <AlertDialog open={!!deleteSessionId} onOpenChange={() => setDeleteSessionId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>¿Eliminar conversación?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción no se puede deshacer. Se eliminarán todos los mensajes
-              de esta conversación.
+              Esta acción no se puede deshacer. Se eliminarán todos los mensajes de esta
+              conversación.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

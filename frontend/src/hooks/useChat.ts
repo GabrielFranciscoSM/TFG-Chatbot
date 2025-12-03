@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import api from "@/lib/api";
-import type { Message, ChatResponse, HistoryResponse, ChatMessage } from "@/types/chat";
+import type { ChatMessage, ChatResponse, HistoryResponse, Message } from "@/types/chat";
 
 interface UseChatOptions {
   sessionId: string | null;
@@ -30,7 +30,7 @@ function convertMessage(msg: ChatMessage, index: number): Message {
 // Helper to convert backend messages array to frontend format
 function convertMessages(backendMessages: ChatMessage[]): Message[] {
   return backendMessages
-    .filter(msg => msg.type === "human" || msg.type === "ai")
+    .filter((msg) => msg.type === "human" || msg.type === "ai")
     .map((msg, index) => convertMessage(msg, index));
 }
 
@@ -39,28 +39,29 @@ export function useChat({ sessionId, subject }: UseChatOptions): UseChatReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [isInterrupted, setIsInterrupted] = useState(false);
   const [interruptInfo, setInterruptInfo] = useState<ChatResponse["interrupt_info"] | null>(null);
-  
+
   // Track current session to load history on session change
   const prevSessionRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (prevSessionRef.current !== sessionId) {
       prevSessionRef.current = sessionId;
-      
+
       // Clear current messages
       setMessages([]);
       setIsInterrupted(false);
       setInterruptInfo(null);
-      
+
       // Load history for new session
       if (sessionId) {
         setIsLoading(true);
-        api.get<HistoryResponse>(`/history/${sessionId}`)
-          .then(response => {
+        api
+          .get<HistoryResponse>(`/history/${sessionId}`)
+          .then((response) => {
             const historyMessages = convertMessages(response.data.messages);
             setMessages(historyMessages);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Error loading history:", error);
             // Not a critical error - just start with empty messages
           })
@@ -71,103 +72,110 @@ export function useChat({ sessionId, subject }: UseChatOptions): UseChatReturn {
     }
   }, [sessionId]);
 
-  const sendMessage = useCallback(async (content: string) => {
-    if (!sessionId || !content.trim()) return;
+  const sendMessage = useCallback(
+    async (content: string) => {
+      if (!sessionId || !content.trim()) return;
 
-    // Add user message immediately
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      role: "user",
-      content: content.trim(),
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
-
-    try {
-      const response = await api.post<ChatResponse>("/chat", {
-        query: content.trim(),
-        id: sessionId,
-        asignatura: subject,
-      });
-
-      const { message, interrupted, interrupt_info } = response.data;
-
-      // Add the assistant's response message
-      if (message) {
-        const assistantMessage: Message = {
-          id: `assistant-${Date.now()}`,
-          role: "assistant",
-          content: message.content,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-      }
-
-      setIsInterrupted(interrupted);
-      setInterruptInfo(interrupt_info || null);
-    } catch (error) {
-      console.error("Error sending message:", error);
-      // Add error message
-      const errorMessage: Message = {
-        id: `error-${Date.now()}`,
-        role: "assistant",
-        content: "Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, inténtalo de nuevo.",
+      // Add user message immediately
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: content.trim(),
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [sessionId, subject]);
+      setMessages((prev) => [...prev, userMessage]);
+      setIsLoading(true);
 
-  const resumeTest = useCallback(async (answer: string) => {
-    if (!sessionId || !answer.trim()) return;
+      try {
+        const response = await api.post<ChatResponse>("/chat", {
+          query: content.trim(),
+          id: sessionId,
+          asignatura: subject,
+        });
 
-    // Add user answer as message
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      role: "user",
-      content: answer.trim(),
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
+        const { message, interrupted, interrupt_info } = response.data;
 
-    try {
-      const response = await api.post<ChatResponse>("/resume_chat", {
-        id: sessionId,
-        user_response: answer.trim(),
-      });
+        // Add the assistant's response message
+        if (message) {
+          const assistantMessage: Message = {
+            id: `assistant-${Date.now()}`,
+            role: "assistant",
+            content: message.content,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, assistantMessage]);
+        }
 
-      const { message, interrupted, interrupt_info } = response.data;
-
-      // Add the assistant's response message
-      if (message) {
-        const assistantMessage: Message = {
-          id: `assistant-${Date.now()}`,
+        setIsInterrupted(interrupted);
+        setInterruptInfo(interrupt_info || null);
+      } catch (error) {
+        console.error("Error sending message:", error);
+        // Add error message
+        const errorMessage: Message = {
+          id: `error-${Date.now()}`,
           role: "assistant",
-          content: message.content,
+          content:
+            "Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, inténtalo de nuevo.",
           timestamp: new Date(),
         };
-        setMessages(prev => [...prev, assistantMessage]);
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
       }
+    },
+    [sessionId, subject],
+  );
 
-      setIsInterrupted(interrupted);
-      setInterruptInfo(interrupt_info || null);
-    } catch (error) {
-      console.error("Error resuming test:", error);
-      const errorMessage: Message = {
-        id: `error-${Date.now()}`,
-        role: "assistant",
-        content: "Error al enviar tu respuesta. Por favor, inténtalo de nuevo.",
+  const resumeTest = useCallback(
+    async (answer: string) => {
+      if (!sessionId || !answer.trim()) return;
+
+      // Add user answer as message
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: answer.trim(),
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [sessionId]);
+      setMessages((prev) => [...prev, userMessage]);
+      setIsLoading(true);
+
+      try {
+        const response = await api.post<ChatResponse>("/resume_chat", {
+          id: sessionId,
+          user_response: answer.trim(),
+        });
+
+        const { message, interrupted, interrupt_info } = response.data;
+
+        // Add the assistant's response message
+        if (message) {
+          const assistantMessage: Message = {
+            id: `assistant-${Date.now()}`,
+            role: "assistant",
+            content: message.content,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, assistantMessage]);
+        }
+
+        setIsInterrupted(interrupted);
+        setInterruptInfo(interrupt_info || null);
+      } catch (error) {
+        console.error("Error resuming test:", error);
+        const errorMessage: Message = {
+          id: `error-${Date.now()}`,
+          role: "assistant",
+          content: "Error al enviar tu respuesta. Por favor, inténtalo de nuevo.",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [sessionId],
+  );
 
   const clearMessages = useCallback(() => {
     setMessages([]);

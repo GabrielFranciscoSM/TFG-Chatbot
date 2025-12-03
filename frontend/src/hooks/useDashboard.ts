@@ -1,11 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/api";
-import type {
-  SubjectInfo,
-  StudentInfo,
-  DocumentInfo,
-  DashboardStats,
-} from "@/types/dashboard";
+import type { DashboardStats, DocumentInfo, StudentInfo, SubjectInfo } from "@/types/dashboard";
 
 // Hook for fetching professor's subjects
 export function useSubjects() {
@@ -42,12 +37,12 @@ export function useStudents(subject: string | null) {
 
   const fetchStudents = useCallback(async () => {
     if (!subject) return;
-    
+
     setIsLoading(true);
     setError(null);
     try {
       const response = await api.get<StudentInfo[]>(
-        `/professor/subjects/${encodeURIComponent(subject)}/students`
+        `/professor/subjects/${encodeURIComponent(subject)}/students`,
       );
       setStudents(response.data);
     } catch (err) {
@@ -78,12 +73,12 @@ export function useDocuments(subject: string | null) {
 
   const fetchDocuments = useCallback(async () => {
     if (!subject) return;
-    
+
     setIsLoading(true);
     setError(null);
     try {
       const response = await api.get<DocumentInfo[]>(
-        `/professor/subjects/${encodeURIComponent(subject)}/documents`
+        `/professor/subjects/${encodeURIComponent(subject)}/documents`,
       );
       setDocuments(response.data);
     } catch (err) {
@@ -94,59 +89,57 @@ export function useDocuments(subject: string | null) {
     }
   }, [subject]);
 
-  const uploadDocument = useCallback(async (
-    file: File,
-    tipoDocumento: string = "teoria",
-    autoIndex: boolean = true
-  ) => {
-    if (!subject) return;
-    
-    setIsUploading(true);
-    setError(null);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("tipo_documento", tipoDocumento);
-      formData.append("auto_index", autoIndex.toString());
+  const uploadDocument = useCallback(
+    async (file: File, tipoDocumento: string = "teoria", autoIndex: boolean = true) => {
+      if (!subject) return;
 
-      await api.post(
-        `/professor/subjects/${encodeURIComponent(subject)}/documents`,
-        formData,
-        {
+      setIsUploading(true);
+      setError(null);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("tipo_documento", tipoDocumento);
+        formData.append("auto_index", autoIndex.toString());
+
+        await api.post(`/professor/subjects/${encodeURIComponent(subject)}/documents`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      );
-      
-      // Refresh document list after upload
-      await fetchDocuments();
-    } catch (err) {
-      console.error("Error uploading document:", err);
-      setError("Error al subir el documento");
-      throw err;
-    } finally {
-      setIsUploading(false);
-    }
-  }, [subject, fetchDocuments]);
+        });
 
-  const deleteDocument = useCallback(async (filePath: string) => {
-    if (!subject) return;
-    
-    setError(null);
-    try {
-      await api.delete(
-        `/professor/subjects/${encodeURIComponent(subject)}/documents/${encodeURIComponent(filePath)}`
-      );
-      
-      // Refresh document list after deletion
-      await fetchDocuments();
-    } catch (err) {
-      console.error("Error deleting document:", err);
-      setError("Error al eliminar el documento");
-      throw err;
-    }
-  }, [subject, fetchDocuments]);
+        // Refresh document list after upload
+        await fetchDocuments();
+      } catch (err) {
+        console.error("Error uploading document:", err);
+        setError("Error al subir el documento");
+        throw err;
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [subject, fetchDocuments],
+  );
+
+  const deleteDocument = useCallback(
+    async (filePath: string) => {
+      if (!subject) return;
+
+      setError(null);
+      try {
+        await api.delete(
+          `/professor/subjects/${encodeURIComponent(subject)}/documents/${encodeURIComponent(filePath)}`,
+        );
+
+        // Refresh document list after deletion
+        await fetchDocuments();
+      } catch (err) {
+        console.error("Error deleting document:", err);
+        setError("Error al eliminar el documento");
+        throw err;
+      }
+    },
+    [subject, fetchDocuments],
+  );
 
   useEffect(() => {
     if (subject) {

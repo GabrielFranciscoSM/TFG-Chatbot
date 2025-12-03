@@ -1,13 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAuth } from "@/context/AuthContext";
 
 interface NewSessionDialogProps {
   open: boolean;
@@ -32,11 +32,7 @@ const AVAILABLE_SUBJECTS = [
   { value: "general", label: "General" },
 ];
 
-export function NewSessionDialog({
-  open,
-  onOpenChange,
-  onCreateSession,
-}: NewSessionDialogProps) {
+export function NewSessionDialog({ open, onOpenChange, onCreateSession }: NewSessionDialogProps) {
   const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
@@ -45,11 +41,11 @@ export function NewSessionDialog({
   // Students can only see "general" + subjects they're enrolled in
   // Professors/Admins can see all subjects
   // Normalize to lowercase for comparison
-  const userSubjects = user?.subjects?.map(s => s.toLowerCase()) ?? [];
+  const userSubjects = user?.subjects?.map((s) => s.toLowerCase()) ?? [];
   const availableSubjects =
     user?.role === "student"
       ? AVAILABLE_SUBJECTS.filter(
-          (s) => s.value === "general" || userSubjects.includes(s.value.toLowerCase())
+          (s) => s.value === "general" || userSubjects.includes(s.value.toLowerCase()),
         )
       : AVAILABLE_SUBJECTS;
 
@@ -76,8 +72,7 @@ export function NewSessionDialog({
         <DialogHeader>
           <DialogTitle>Nueva conversación</DialogTitle>
           <DialogDescription>
-            Crea una nueva conversación. Elige una asignatura para recibir
-            respuestas específicas.
+            Crea una nueva conversación. Elige una asignatura para recibir respuestas específicas.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

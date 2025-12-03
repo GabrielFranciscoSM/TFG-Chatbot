@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { toast } from "sonner";
 import { User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -40,11 +40,15 @@ export function PromoteUserDialog({
   user: initialUser,
 }: PromoteUserDialogProps) {
   const [username, setUsername] = useState(initialUser?.username || "");
-  const [newRole, setNewRole] = useState<"student" | "professor" | "admin">(initialUser?.role || "student");
-  const [currentRole, setCurrentRole] = useState<"student" | "professor" | "admin" | null>(initialUser?.role || null);
+  const [newRole, setNewRole] = useState<"student" | "professor" | "admin">(
+    initialUser?.role || "student",
+  );
+  const [currentRole, setCurrentRole] = useState<"student" | "professor" | "admin" | null>(
+    initialUser?.role || null,
+  );
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const promoteMutation = usePromoteUser();
   const { data: suggestions = [], isLoading: searchLoading } = useUserSearch(username);
 
@@ -92,9 +96,7 @@ export function PromoteUserDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Cambiar Rol de Usuario</DialogTitle>
-          <DialogDescription>
-            Modifica el rol de un usuario en el sistema.
-          </DialogDescription>
+          <DialogDescription>Modifica el rol de un usuario en el sistema.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
@@ -115,7 +117,7 @@ export function PromoteUserDialog({
                 disabled={!!initialUser}
                 autoComplete="off"
               />
-              
+
               {/* Suggestions dropdown */}
               {showSuggestions && username.length >= 2 && !initialUser && (
                 <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border rounded-md shadow-lg max-h-48 overflow-auto">
@@ -150,7 +152,10 @@ export function PromoteUserDialog({
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">Nuevo rol</Label>
-              <Select value={newRole} onValueChange={(value) => setNewRole(value as typeof newRole)}>
+              <Select
+                value={newRole}
+                onValueChange={(value) => setNewRole(value as typeof newRole)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecciona un rol" />
                 </SelectTrigger>
@@ -172,9 +177,9 @@ export function PromoteUserDialog({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button>
-            <Button 
-              type="submit" 
-              disabled={promoteMutation.isPending || !username.trim() || (currentRole === newRole)}
+            <Button
+              type="submit"
+              disabled={promoteMutation.isPending || !username.trim() || currentRole === newRole}
             >
               {promoteMutation.isPending ? "Cambiando..." : "Cambiar Rol"}
             </Button>

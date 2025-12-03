@@ -1,14 +1,8 @@
-import { useAuth } from "@/context/AuthContext";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Bell, Bot, Database, Palette, Shield, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -16,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User, Bell, Palette, Bot, Database, Shield } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -29,9 +23,7 @@ export default function SettingsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">Configuración</h1>
-        <p className="text-muted-foreground">
-          Personaliza tu experiencia en el chatbot
-        </p>
+        <p className="text-muted-foreground">Personaliza tu experiencia en el chatbot</p>
       </div>
 
       {/* Profile Settings - All users */}
@@ -41,9 +33,7 @@ export default function SettingsPage() {
             <User className="h-5 w-5" />
             <CardTitle>Perfil</CardTitle>
           </div>
-          <CardDescription>
-            Información de tu cuenta
-          </CardDescription>
+          <CardDescription>Información de tu cuenta</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2">
@@ -56,20 +46,20 @@ export default function SettingsPage() {
           </div>
           <div className="grid gap-2">
             <Label>Rol</Label>
-            <Input 
+            <Input
               value={
-                user?.role === "admin" ? "Administrador" :
-                user?.role === "professor" ? "Profesor" : "Estudiante"
-              } 
-              disabled 
+                user?.role === "admin"
+                  ? "Administrador"
+                  : user?.role === "professor"
+                    ? "Profesor"
+                    : "Estudiante"
+              }
+              disabled
             />
           </div>
           <div className="grid gap-2">
             <Label>Asignaturas</Label>
-            <Input 
-              value={user?.subjects?.join(", ") || "Ninguna asignatura asignada"} 
-              disabled 
-            />
+            <Input value={user?.subjects?.join(", ") || "Ninguna asignatura asignada"} disabled />
           </div>
         </CardContent>
       </Card>
@@ -81,9 +71,7 @@ export default function SettingsPage() {
             <Bell className="h-5 w-5" />
             <CardTitle>Notificaciones</CardTitle>
           </div>
-          <CardDescription>
-            Configura cómo quieres recibir notificaciones
-          </CardDescription>
+          <CardDescription>Configura cómo quieres recibir notificaciones</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm">
@@ -99,9 +87,7 @@ export default function SettingsPage() {
             <Palette className="h-5 w-5" />
             <CardTitle>Apariencia</CardTitle>
           </div>
-          <CardDescription>
-            Personaliza la interfaz
-          </CardDescription>
+          <CardDescription>Personaliza la interfaz</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2">
@@ -160,7 +146,8 @@ export default function SettingsPage() {
               </Select>
             </div>
             <p className="text-muted-foreground text-xs">
-              Estos ajustes afectan a todas tus asignaturas. Los cambios se aplicarán en la próxima versión.
+              Estos ajustes afectan a todas tus asignaturas. Los cambios se aplicarán en la próxima
+              versión.
             </p>
           </CardContent>
         </Card>
@@ -175,9 +162,7 @@ export default function SettingsPage() {
                 <Database className="h-5 w-5" />
                 <CardTitle>Base de Datos RAG</CardTitle>
               </div>
-              <CardDescription>
-                Gestión del sistema de recuperación de documentos
-              </CardDescription>
+              <CardDescription>Gestión del sistema de recuperación de documentos</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
@@ -192,9 +177,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Limpiar caché</p>
-                  <p className="text-sm text-muted-foreground">
-                    Elimina la caché de consultas
-                  </p>
+                  <p className="text-sm text-muted-foreground">Elimina la caché de consultas</p>
                 </div>
                 <Button variant="outline">Limpiar</Button>
               </div>
@@ -207,9 +190,7 @@ export default function SettingsPage() {
                 <Shield className="h-5 w-5" />
                 <CardTitle>Seguridad</CardTitle>
               </div>
-              <CardDescription>
-                Configuración de seguridad del sistema
-              </CardDescription>
+              <CardDescription>Configuración de seguridad del sistema</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">

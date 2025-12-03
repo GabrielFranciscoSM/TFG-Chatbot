@@ -1,18 +1,13 @@
-import { useState } from "react";
 import { ArrowLeft, BookOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SubjectCard } from "@/components/dashboard/SubjectCard";
-import { StudentList } from "@/components/dashboard/StudentList";
+import { useState } from "react";
+import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
-import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
-import {
-  useSubjects,
-  useStudents,
-  useDocuments,
-  useStats,
-} from "@/hooks/useDashboard";
+import { StudentList } from "@/components/dashboard/StudentList";
+import { SubjectCard } from "@/components/dashboard/SubjectCard";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDocuments, useStats, useStudents, useSubjects } from "@/hooks/useDashboard";
 
 type View = "overview" | "students" | "documents";
 
@@ -23,7 +18,11 @@ export default function DashboardPage() {
   const [enrollSubject, setEnrollSubject] = useState<string | null>(null);
 
   const { subjects, isLoading: loadingSubjects, refetch: refetchSubjects } = useSubjects();
-  const { students, isLoading: loadingStudents, refetch: refetchStudents } = useStudents(selectedSubject);
+  const {
+    students,
+    isLoading: loadingStudents,
+    refetch: refetchStudents,
+  } = useStudents(selectedSubject);
   const {
     documents,
     isLoading: loadingDocuments,
@@ -58,11 +57,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto py-6 px-4 max-w-6xl">
-          <Button
-            variant="ghost"
-            onClick={handleBack}
-            className="mb-4"
-          >
+          <Button variant="ghost" onClick={handleBack} className="mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Volver al dashboard
           </Button>
@@ -118,10 +113,7 @@ export default function DashboardPage() {
             {loadingSubjects ? (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="h-48 rounded-lg bg-muted animate-pulse"
-                  />
+                  <div key={i} className="h-48 rounded-lg bg-muted animate-pulse" />
                 ))}
               </div>
             ) : subjects.length === 0 ? (

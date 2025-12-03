@@ -1,25 +1,20 @@
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import { ChatInput } from "@/components/chat/ChatInput";
+import { MessageList } from "@/components/chat/MessageList";
+import { NewSessionDialog } from "@/components/chat/NewSessionDialog";
+import { SessionSelector } from "@/components/chat/SessionSelector";
+import { Button } from "@/components/ui/button";
 import { useChat } from "@/hooks/useChat";
 import { useSessions } from "@/hooks/useSessions";
-import { MessageList } from "@/components/chat/MessageList";
-import { ChatInput } from "@/components/chat/ChatInput";
-import { SessionSelector } from "@/components/chat/SessionSelector";
-import { NewSessionDialog } from "@/components/chat/NewSessionDialog";
 import type { ChatSession } from "@/types/chat";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { toast } from "sonner";
 
 export default function ChatPage() {
   const [activeSession, setActiveSession] = useState<ChatSession | null>(null);
   const [showNewSessionDialog, setShowNewSessionDialog] = useState(false);
 
-  const {
-    sessions,
-    isLoading: sessionsLoading,
-    createSession,
-    deleteSession,
-  } = useSessions();
+  const { sessions, isLoading: sessionsLoading, createSession, deleteSession } = useSessions();
 
   const {
     messages,
@@ -79,9 +74,7 @@ export default function ChatPage() {
           onDeleteSession={handleDeleteSession}
         />
         {activeSession && (
-          <span className="text-sm text-muted-foreground">
-            {activeSession.subject}
-          </span>
+          <span className="text-sm text-muted-foreground">{activeSession.subject}</span>
         )}
       </div>
 
@@ -92,11 +85,7 @@ export default function ChatPage() {
           <ChatInput
             onSend={handleSendMessage}
             isLoading={chatLoading}
-            placeholder={
-              isInterrupted
-                ? "Escribe tu respuesta..."
-                : "Escribe tu mensaje..."
-            }
+            placeholder={isInterrupted ? "Escribe tu respuesta..." : "Escribe tu mensaje..."}
           />
         </>
       ) : (

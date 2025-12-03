@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, type KeyboardEvent } from "react";
+import { Loader2, Send } from "lucide-react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2 } from "lucide-react";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -25,7 +25,7 @@ export function ChatInput({
       textarea.style.height = "auto";
       textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
     }
-  }, [message]);
+  }, []);
 
   const handleSubmit = () => {
     if (message.trim() && !isLoading && !disabled) {
@@ -63,11 +63,7 @@ export function ChatInput({
         size="icon"
         className="h-11 w-11 rounded-xl shrink-0"
       >
-        {isLoading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          <Send className="h-5 w-5" />
-        )}
+        {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
       </Button>
     </div>
   );

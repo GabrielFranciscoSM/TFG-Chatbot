@@ -1,5 +1,5 @@
+import { ChevronDown, Loader2, MessageSquare, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import type { ChatSession } from "@/types/chat";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MessageSquare, Plus, Trash2, ChevronDown, Loader2 } from "lucide-react";
+import type { ChatSession } from "@/types/chat";
 
 interface SessionSelectorProps {
   sessions: ChatSession[];
@@ -32,9 +32,7 @@ export function SessionSelector({
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffDays = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Hoy";
     if (diffDays === 1) return "Ayer";
@@ -64,9 +62,9 @@ export function SessionSelector({
           <Plus className="h-4 w-4" />
           Nueva conversación
         </DropdownMenuItem>
-        
+
         {sessions.length > 0 && <DropdownMenuSeparator />}
-        
+
         {isLoading ? (
           <div className="flex items-center justify-center py-4">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />

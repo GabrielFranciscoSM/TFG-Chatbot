@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/api";
 import type { ChatSession } from "@/types/chat";
 
@@ -23,7 +23,7 @@ export function useSessions(): UseSessionsReturn {
       const response = await api.get<ChatSession[]>("/sessions");
       // Sort by last_active descending
       const sorted = response.data.sort(
-        (a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
+        (a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime(),
       );
       setSessions(sorted);
     } catch (err) {
@@ -38,26 +38,29 @@ export function useSessions(): UseSessionsReturn {
     fetchSessions();
   }, [fetchSessions]);
 
-  const createSession = useCallback(async (title: string, subject: string): Promise<ChatSession | null> => {
-    try {
-      const response = await api.post<ChatSession>("/sessions", {
-        title,
-        subject,
-      });
-      const newSession = response.data;
-      setSessions(prev => [newSession, ...prev]);
-      return newSession;
-    } catch (err) {
-      console.error("Error creating session:", err);
-      setError("Error al crear la sesión");
-      return null;
-    }
-  }, []);
+  const createSession = useCallback(
+    async (title: string, subject: string): Promise<ChatSession | null> => {
+      try {
+        const response = await api.post<ChatSession>("/sessions", {
+          title,
+          subject,
+        });
+        const newSession = response.data;
+        setSessions((prev) => [newSession, ...prev]);
+        return newSession;
+      } catch (err) {
+        console.error("Error creating session:", err);
+        setError("Error al crear la sesión");
+        return null;
+      }
+    },
+    [],
+  );
 
   const deleteSession = useCallback(async (sessionId: string): Promise<boolean> => {
     try {
       await api.delete(`/sessions/${sessionId}`);
-      setSessions(prev => prev.filter(s => s.id !== sessionId));
+      setSessions((prev) => prev.filter((s) => s.id !== sessionId));
       return true;
     } catch (err) {
       console.error("Error deleting session:", err);

@@ -1,16 +1,7 @@
+import { Mail, User, UserMinus, UserPlus } from "lucide-react";
 import { useState } from "react";
-import { Mail, User, UserPlus, UserMinus } from "lucide-react";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useUnenrollStudent } from "@/hooks/useAdmin";
 import type { StudentInfo } from "@/types/dashboard";
 

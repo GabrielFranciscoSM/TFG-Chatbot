@@ -1,6 +1,24 @@
+import {
+  BookOpen,
+  GraduationCap,
+  MessageSquare,
+  MoreVertical,
+  Shield,
+  UserCog,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AssignSubjectDialog } from "@/components/admin/AssignSubjectDialog";
+import { PromoteUserDialog } from "@/components/admin/PromoteUserDialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -9,25 +27,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import {
-  Users,
-  MessageSquare,
-  BookOpen,
-  GraduationCap,
-  UserCog,
-  Shield,
-  MoreVertical,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAdminStats, useUsers } from "@/hooks/useAdmin";
-import { AssignSubjectDialog } from "@/components/admin/AssignSubjectDialog";
-import { PromoteUserDialog } from "@/components/admin/PromoteUserDialog";
 import type { UserInfo } from "@/types/admin";
 
 export default function AdminDashboard() {
@@ -71,11 +71,22 @@ export default function AdminDashboard() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => { setSelectedUser(undefined); setAssignDialogOpen(true); }}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setSelectedUser(undefined);
+              setAssignDialogOpen(true);
+            }}
+          >
             <GraduationCap className="mr-2 h-4 w-4" />
             Asignar Asignatura
           </Button>
-          <Button onClick={() => { setSelectedUser(undefined); setPromoteDialogOpen(true); }}>
+          <Button
+            onClick={() => {
+              setSelectedUser(undefined);
+              setPromoteDialogOpen(true);
+            }}
+          >
             <UserCog className="mr-2 h-4 w-4" />
             Cambiar Rol
           </Button>
@@ -86,66 +97,56 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Estudiantes
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Estudiantes</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {statsLoading ? "..." : stats?.total_students ?? 0}
+              {statsLoading ? "..." : (stats?.total_students ?? 0)}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Profesores
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Profesores</CardTitle>
             <GraduationCap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {statsLoading ? "..." : stats?.total_professors ?? 0}
+              {statsLoading ? "..." : (stats?.total_professors ?? 0)}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Admins
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Admins</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {statsLoading ? "..." : stats?.total_admins ?? 0}
+              {statsLoading ? "..." : (stats?.total_admins ?? 0)}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Sesiones
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Sesiones</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {statsLoading ? "..." : stats?.total_sessions ?? 0}
+              {statsLoading ? "..." : (stats?.total_sessions ?? 0)}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Asignaturas
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Asignaturas</CardTitle>
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {statsLoading ? "..." : stats?.total_subjects ?? 0}
+              {statsLoading ? "..." : (stats?.total_subjects ?? 0)}
             </div>
           </CardContent>
         </Card>
@@ -165,7 +166,10 @@ export default function AdminDashboard() {
           ) : (
             <div className="flex items-end gap-2 h-32">
               {stats?.sessions_last_7_days.map((day) => {
-                const maxCount = Math.max(...(stats?.sessions_last_7_days.map(d => d.count) || [1]), 1);
+                const maxCount = Math.max(
+                  ...(stats?.sessions_last_7_days.map((d) => d.count) || [1]),
+                  1,
+                );
                 const height = (day.count / maxCount) * 100;
                 return (
                   <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
@@ -189,9 +193,7 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>Usuarios del Sistema</CardTitle>
-          <CardDescription>
-            Gestiona los roles y asignaturas de los usuarios
-          </CardDescription>
+          <CardDescription>Gestiona los roles y asignaturas de los usuarios</CardDescription>
         </CardHeader>
         <CardContent>
           {usersLoading ? (
@@ -213,9 +215,7 @@ export default function AdminDashboard() {
                     <TableCell className="font-medium">{u.username}</TableCell>
                     <TableCell>{u.email}</TableCell>
                     <TableCell>
-                      <Badge variant={roleBadgeVariant[u.role]}>
-                        {roleLabels[u.role]}
-                      </Badge>
+                      <Badge variant={roleBadgeVariant[u.role]}>{roleLabels[u.role]}</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">

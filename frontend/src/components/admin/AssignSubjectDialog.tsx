@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { toast } from "sonner";
 import { User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAssignSubject, useUserSearch } from "@/hooks/useAdmin";
@@ -29,7 +29,7 @@ export function AssignSubjectDialog({
   const [subject, setSubject] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const assignMutation = useAssignSubject();
   const { data: suggestions = [], isLoading: searchLoading } = useUserSearch(username, "professor");
 
@@ -97,7 +97,7 @@ export function AssignSubjectDialog({
                 disabled={!!professorUsername}
                 autoComplete="off"
               />
-              
+
               {/* Suggestions dropdown */}
               {showSuggestions && username.length >= 2 && !professorUsername && (
                 <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border rounded-md shadow-lg max-h-48 overflow-auto">
@@ -142,7 +142,10 @@ export function AssignSubjectDialog({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={assignMutation.isPending || !username.trim() || !subject.trim()}>
+            <Button
+              type="submit"
+              disabled={assignMutation.isPending || !username.trim() || !subject.trim()}
+            >
               {assignMutation.isPending ? "Asignando..." : "Asignar"}
             </Button>
           </DialogFooter>

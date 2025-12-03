@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { toast } from "sonner";
 import { User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEnrollStudent, useUserSearch } from "@/hooks/useAdmin";
@@ -30,7 +30,7 @@ export function EnrollStudentDialog({
   const [username, setUsername] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const enrollMutation = useEnrollStudent();
   const { data: suggestions = [], isLoading: searchLoading } = useUserSearch(username, "student");
 
@@ -97,7 +97,7 @@ export function EnrollStudentDialog({
                 onBlur={handleBlur}
                 autoComplete="off"
               />
-              
+
               {/* Suggestions dropdown */}
               {showSuggestions && username.length >= 2 && (
                 <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border rounded-md shadow-lg max-h-48 overflow-auto">

@@ -1,7 +1,7 @@
-import { useRef, useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import type { Message } from "@/types/chat";
 import { MessageBubble } from "./MessageBubble";
-import { Loader2 } from "lucide-react";
 
 interface MessageListProps {
   messages: Message[];
@@ -14,16 +14,14 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, []);
 
   if (messages.length === 0 && !isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center text-muted-foreground">
         <div className="text-center space-y-2">
           <p className="text-lg">¡Hola! 👋</p>
-          <p className="text-sm">
-            Soy tu asistente educativo. ¿En qué puedo ayudarte?
-          </p>
+          <p className="text-sm">Soy tu asistente educativo. ¿En qué puedo ayudarte?</p>
         </div>
       </div>
     );

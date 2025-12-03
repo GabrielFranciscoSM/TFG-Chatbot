@@ -1,4 +1,4 @@
-import { Users, MessageSquare, FileText, TrendingUp } from "lucide-react";
+import { FileText, MessageSquare, TrendingUp, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DashboardStats } from "@/types/dashboard";
 
@@ -34,61 +34,45 @@ export function StatsOverview({ stats, isLoading }: StatsOverviewProps) {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Estudiantes
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Total Estudiantes</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total_students}</div>
-            <p className="text-xs text-muted-foreground">
-              En todas tus asignaturas
-            </p>
+            <p className="text-xs text-muted-foreground">En todas tus asignaturas</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Sesiones
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Total Sesiones</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total_sessions}</div>
-            <p className="text-xs text-muted-foreground">
-              Conversaciones con el chatbot
-            </p>
+            <p className="text-xs text-muted-foreground">Conversaciones con el chatbot</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Documentos
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Total Documentos</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total_documents}</div>
-            <p className="text-xs text-muted-foreground">
-              Indexados en el sistema
-            </p>
+            <p className="text-xs text-muted-foreground">Indexados en el sistema</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Asignaturas
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Asignaturas</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.subjects.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Asignaturas activas
-            </p>
+            <p className="text-xs text-muted-foreground">Asignaturas activas</p>
           </CardContent>
         </Card>
       </div>
@@ -138,9 +122,7 @@ export function StatsOverview({ stats, isLoading }: StatsOverviewProps) {
                 stats.subjects.map((subject) => (
                   <div key={subject.subject} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium capitalize">
-                        {subject.subject}
-                      </span>
+                      <span className="text-sm font-medium capitalize">{subject.subject}</span>
                       <span className="text-sm text-muted-foreground">
                         {subject.session_count} sesiones
                       </span>
@@ -153,7 +135,7 @@ export function StatsOverview({ stats, isLoading }: StatsOverviewProps) {
                             (subject.session_count /
                               Math.max(...stats.subjects.map((s) => s.session_count), 1)) *
                               100,
-                            100
+                            100,
                           )}%`,
                         }}
                       />

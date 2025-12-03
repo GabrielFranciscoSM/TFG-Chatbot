@@ -31,7 +31,7 @@ export interface InterruptInfo {
 
 // Backend message format
 export interface ChatMessage {
-  type: string;  // 'ai', 'human', 'tool', 'system'
+  type: string; // 'ai', 'human', 'tool', 'system'
   content: string;
 }
 

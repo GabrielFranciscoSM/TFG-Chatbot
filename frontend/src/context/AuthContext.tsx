@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import api from "@/lib/api";
 
 interface User {
@@ -24,6 +24,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [isLoading, setIsLoading] = useState(true);
 
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  }, []);
+
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = localStorage.getItem("token");
@@ -42,18 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initAuth();
-  }, []);
+  }, [logout]);
 
   const login = (newToken: string, newUser: User) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
     setUser(newUser);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
   };
 
   return (

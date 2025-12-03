@@ -1,11 +1,10 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
-import { useAuth } from "@/context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
-import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -14,8 +13,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/lib/api";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -50,10 +50,10 @@ export default function LoginPage() {
       });
 
       const { access_token } = response.data;
-      
+
       // Fetch user details after login
       const meResponse = await api.get("/users/me", {
-        headers: { Authorization: `Bearer ${access_token}` }
+        headers: { Authorization: `Bearer ${access_token}` },
       });
 
       login(access_token, meResponse.data);

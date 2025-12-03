@@ -1,28 +1,6 @@
-import { useState, useRef } from "react";
-import { FileText, Upload, Trash2, File, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { File, FileText, Loader2, Trash2, Upload } from "lucide-react";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,7 +12,23 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import type { DocumentInfo } from "@/types/dashboard";
 
 interface DocumentManagerProps {
@@ -103,9 +97,7 @@ export function DocumentManager({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="capitalize">
-              Documentos de {subject}
-            </CardTitle>
+            <CardTitle className="capitalize">Documentos de {subject}</CardTitle>
             <CardDescription>
               Gestiona los documentos disponibles para los estudiantes
             </CardDescription>
@@ -136,10 +128,7 @@ export function DocumentManager({
             accept=".pdf,.txt,.md,.docx"
             onChange={handleFileSelect}
           />
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-          >
+          <Button onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
             {isUploading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -197,8 +186,8 @@ export function DocumentManager({
                         <AlertDialogHeader>
                           <AlertDialogTitle>¿Eliminar documento?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Esta acción eliminará "{doc.filename}" permanentemente.
-                            No se puede deshacer.
+                            Esta acción eliminará "{doc.filename}" permanentemente. No se puede
+                            deshacer.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

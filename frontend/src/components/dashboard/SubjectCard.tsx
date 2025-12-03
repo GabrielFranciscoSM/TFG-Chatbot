@@ -1,12 +1,6 @@
-import { Users, FileText, MoreVertical, FolderOpen, UserPlus } from "lucide-react";
+import { FileText, FolderOpen, MoreVertical, UserPlus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,9 +26,7 @@ export function SubjectCard({
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div>
-          <CardTitle className="text-lg font-semibold capitalize">
-            {subject.name}
-          </CardTitle>
+          <CardTitle className="text-lg font-semibold capitalize">{subject.name}</CardTitle>
           <CardDescription>Asignatura</CardDescription>
         </div>
         <DropdownMenu>

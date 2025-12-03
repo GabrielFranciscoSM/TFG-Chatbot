@@ -1,5 +1,9 @@
 
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Code highlighting theme (GitHub-like) */
+@import "highlight.js/styles/github.css" layer(base);
 
 @custom-variant dark (&:is(.dark *));
 

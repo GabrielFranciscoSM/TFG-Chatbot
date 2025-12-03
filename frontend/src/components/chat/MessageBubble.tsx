@@ -1,4 +1,7 @@
 import { Bot, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/types/chat";
 
@@ -28,7 +31,15 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           isUser ? "bg-primary text-primary-foreground rounded-tr-sm" : "bg-muted rounded-tl-sm",
         )}
       >
-        <div className="whitespace-pre-wrap break-words">{message.content}</div>
+        {isUser ? (
+          <div className="whitespace-pre-wrap break-words">{message.content}</div>
+        ) : (
+          <div className="prose prose-sm dark:prose-invert max-w-none break-words prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-pre:my-2 prose-code:before:content-none prose-code:after:content-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+              {message.content}
+            </ReactMarkdown>
+          </div>
+        )}
         <div className={cn("text-xs mt-1 opacity-70", isUser ? "text-right" : "text-left")}>
           {message.timestamp.toLocaleTimeString([], {
             hour: "2-digit",

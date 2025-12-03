@@ -7,6 +7,7 @@ load_dotenv()
 
 class Settings:
     CHATBOT_SERVICE_URL = os.getenv("CHATBOT_SERVICE_URL", "http://chatbot:8080")
+    RAG_SERVICE_URL = os.getenv("RAG_SERVICE_URL", "http://rag_service:8081")
     MONGO_URI = os.getenv("MONGO_URI")
     DB_NAME = os.getenv("DB_NAME", "tfg_chatbot")
     SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")

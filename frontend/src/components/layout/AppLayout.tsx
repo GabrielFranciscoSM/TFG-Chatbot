@@ -8,14 +8,19 @@ import {
   LogOut,
   Menu,
   X,
+  GraduationCap,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
+// Navigation items with visibility rules
+// roles: which roles can see this item (undefined = all)
+// requiresSubjects: if true, user must have subjects assigned
 const navItems = [
   { to: "/chat", label: "Chat", icon: MessageSquare },
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, role: "professor" },
-  { to: "/admin/settings", label: "Configuración", icon: Settings, role: "professor" },
+  { to: "/dashboard", label: "Mis Clases", icon: GraduationCap, roles: ["professor", "admin"], requiresSubjects: true },
+  { to: "/admin", label: "Admin", icon: LayoutDashboard, roles: ["admin"] },
+  { to: "/settings", label: "Configuración", icon: Settings },
 ];
 
 export default function AppLayout() {
@@ -28,10 +33,15 @@ export default function AppLayout() {
     navigate("/login");
   };
 
-  // Filter nav items based on user role
-  const filteredNavItems = navItems.filter(
-    (item) => !item.role || item.role === user?.role
-  );
+  // Filter nav items based on user role and subjects
+  const hasSubjects = user?.subjects && user.subjects.length > 0;
+  const filteredNavItems = navItems.filter((item) => {
+    // Check role restriction
+    const roleAllowed = !item.roles || (user?.role && item.roles.includes(user.role));
+    // Check subjects restriction
+    const subjectsAllowed = !item.requiresSubjects || hasSubjects;
+    return roleAllowed && subjectsAllowed;
+  });
 
   return (
     <div className="flex h-screen w-full bg-background">
@@ -70,6 +80,7 @@ export default function AppLayout() {
               <NavLink
                 key={item.to}
                 to={item.to}
+                end={item.to === "/admin"}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
                   cn(

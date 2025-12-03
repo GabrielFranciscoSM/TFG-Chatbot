@@ -4,9 +4,12 @@ import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import ChatPage from "@/pages/chat/ChatPage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
-import AdminSettings from "@/pages/admin/AdminSettings";
+import SettingsPage from "@/pages/settings/SettingsPage";
+import DashboardPage from "@/pages/dashboard/DashboardPage";
 import AppLayout from "@/components/layout/AppLayout";
 import RequireAuth from "@/components/layout/RequireAuth";
+import RequireProfessor from "@/components/layout/RequireProfessor";
+import RequireAdmin from "@/components/layout/RequireAdmin";
 import PublicRoute from "@/components/layout/PublicRoute";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
@@ -29,8 +32,17 @@ function App() {
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/settings" element={<AdminSettings />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                
+                {/* Professor and Admin routes */}
+                <Route element={<RequireProfessor />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                </Route>
+                
+                {/* Admin-only routes */}
+                <Route element={<RequireAdmin />}>
+                  <Route path="/admin" element={<AdminDashboard />} />
+                </Route>
               </Route>
             </Route>
 

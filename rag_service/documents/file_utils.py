@@ -156,3 +156,25 @@ def get_file_info(filename: str) -> dict:
         "extension": filepath.suffix,
         "modified": stat.st_mtime,
     }
+
+
+def delete_file(filename: str) -> bool:
+    """
+    Delete a file from the documents directory.
+
+    Args:
+        filename: Relative path to the file (e.g., "iv/teoria/tema1.pdf")
+
+    Returns:
+        True if file was deleted successfully
+
+    Raises:
+        FileNotFoundError: If file doesn't exist
+    """
+    filepath = documents_path / filename
+    if not filepath.exists():
+        raise FileNotFoundError(f"File not found: {filepath}")
+
+    filepath.unlink()
+    logger.info(f"Deleted file: {filename}")
+    return True

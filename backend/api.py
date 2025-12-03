@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.routers import admin, auth, chat, sessions, users
+from backend.routers import admin, auth, chat, professor, sessions, users
 
 app = FastAPI(title="TFG Chatbot Backend")
 
@@ -20,6 +20,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(admin.router)
+app.include_router(professor.router)
 app.include_router(sessions.router)
 app.include_router(chat.router)
 

@@ -25,10 +25,10 @@ interface NewSessionDialogProps {
   onCreateSession: (title: string, subject: string) => void;
 }
 
-// Available subjects - could be fetched from backend in the future
+// Available subjects - stored in lowercase to match backend
 const AVAILABLE_SUBJECTS = [
-  { value: "IV", label: "Infraestructura Virtual" },
-  { value: "TFG", label: "Trabajo Fin de Grado" },
+  { value: "iv", label: "Infraestructura Virtual" },
+  { value: "tfg", label: "Trabajo Fin de Grado" },
   { value: "general", label: "General" },
 ];
 
@@ -43,11 +43,13 @@ export function NewSessionDialog({
 
   // Filter subjects based on user enrollment (for students)
   // Students can only see "general" + subjects they're enrolled in
-  // Professors can see all subjects
+  // Professors/Admins can see all subjects
+  // Normalize to lowercase for comparison
+  const userSubjects = user?.subjects?.map(s => s.toLowerCase()) ?? [];
   const availableSubjects =
     user?.role === "student"
       ? AVAILABLE_SUBJECTS.filter(
-          (s) => s.value === "general" || user.subjects.includes(s.value)
+          (s) => s.value === "general" || userSubjects.includes(s.value.toLowerCase())
         )
       : AVAILABLE_SUBJECTS;
 

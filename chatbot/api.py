@@ -45,12 +45,9 @@ Example:
 
 __version__ = "0.1.0"
 
-import os
-from typing import Literal, cast
-
-from dotenv import load_dotenv
 from fastapi import FastAPI, status
 
+from chatbot.config import settings
 from chatbot.db.mongo import MongoDBClient
 from chatbot.logic.graph import GraphAgent
 from chatbot.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
@@ -66,8 +63,6 @@ from chatbot.models import (
     ScrapeResponse,
 )
 
-load_dotenv()
-
 app = FastAPI(
     title="TFG Chatbot API",
     description="API for interacting with an intelligent chatbot powered by GraphAgent",
@@ -80,13 +75,7 @@ app = FastAPI(
 # same compiled graph/checkpointer across requests avoids resume problems
 # that happen when different GraphAgent instances (and compiled graphs)
 # are created per-request.
-# Use LLM_PROVIDER env var to select between vllm and gemini
-llm_provider_str = os.getenv("LLM_PROVIDER", "vllm")
-llm_provider = cast(
-    Literal["vllm", "gemini"],
-    llm_provider_str if llm_provider_str in ["vllm", "gemini"] else "vllm",
-)
-agente = GraphAgent(llm_provider=llm_provider)
+agente = GraphAgent(llm_provider=settings.llm_provider)
 
 
 @app.get(

@@ -7,7 +7,7 @@ from backend.db.mongo import MongoDBClient
 from backend.models import TokenData, UserInDB, UserRole
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-mongo_client = MongoDBClient(uri=settings.MONGO_URI, db_name=settings.DB_NAME)
+mongo_client = MongoDBClient()
 
 
 def get_users_collection():
@@ -36,7 +36,9 @@ async def get_current_user(
     )
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token,
+            settings.secret_key.get_secret_value(),
+            algorithms=[settings.algorithm],
         )
         username: str = payload.get("sub")
         if username is None:

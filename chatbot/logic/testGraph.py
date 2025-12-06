@@ -55,14 +55,12 @@ Example:
 import os
 from typing import Literal
 
-from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.types import interrupt
 
+from chatbot.config import settings
 from chatbot.logic.models import MultipleChoiceTest
-
-load_dotenv()
 
 
 class TestSessionState(MessagesState):
@@ -144,17 +142,13 @@ class TestSessionGraph:
         self.llm_provider = llm_provider
         self.temperature = temperature
 
-        # vLLM configuration
-        vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
-        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
-        self.vllm_url = vllm_url or f"http://{vllm_host}:{vllm_port}/v1"
-        self.model_name = model_name or os.getenv(
-            "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
-        )
+        # vLLM configuration (use settings, allow parameter override)
+        self.vllm_url = vllm_url or settings.vllm_url
+        self.model_name = model_name or settings.model_path
         self.openai_api_key = openai_api_key
 
         # Gemini configuration
-        self.gemini_api_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
+        self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
         self.gemini_model = gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key

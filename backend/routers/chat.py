@@ -73,7 +73,7 @@ async def chat(
                 )
 
         response = await client.post(
-            f"{settings.CHATBOT_SERVICE_URL}/chat", json=json_data
+            f"{settings.chatbot_service_url}/chat", json=json_data
         )
         if response.status_code != 200:
             raise HTTPException(
@@ -102,7 +102,7 @@ async def get_history(
     # Forward to chatbot service
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.get(
-            f"{settings.CHATBOT_SERVICE_URL}/history/{session_id}"
+            f"{settings.chatbot_service_url}/history/{session_id}"
         )
         if response.status_code != 200:
             raise HTTPException(

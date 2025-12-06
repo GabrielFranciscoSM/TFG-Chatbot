@@ -357,36 +357,26 @@ def _get_llm_for_test_generation():
     Raises:
         ValueError: If required API keys are missing
     """
-    import os
-
     from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain_openai import ChatOpenAI
 
-    llm_provider = os.getenv("LLM_PROVIDER", "vllm")
+    from chatbot.config import settings
 
-    if llm_provider == "gemini":
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
-        gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-        if not gemini_api_key:
+    if settings.llm_provider == "gemini":
+        gemini_key = settings.get_gemini_api_key()
+        if not gemini_key:
             raise ValueError("GEMINI_API_KEY not found in environment")
 
         return ChatGoogleGenerativeAI(
-            model=gemini_model,
-            google_api_key=gemini_api_key,
+            model=settings.gemini_model,
+            google_api_key=gemini_key,
             temperature=0.7,
         )
     else:  # vllm
-        vllm_port = os.getenv("VLLM_MAIN_PORT", "8000")
-        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
-        vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
-        model_name = os.getenv(
-            "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
-        )
-
         return ChatOpenAI(
-            model=model_name,
+            model=settings.model_path,
             openai_api_key="EMPTY",
-            openai_api_base=vllm_url,
+            openai_api_base=settings.vllm_url,
             temperature=0.7,
         )
 

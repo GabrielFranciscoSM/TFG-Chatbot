@@ -11,9 +11,9 @@ dependencies = [
   "fastapi",
   "uvicorn[standard]",
   "httpx",
-  "python-dotenv",
   "python-jose[cryptography]",
   "pydantic[email]",
+  "pydantic-settings",
   "python-multipart",
   "bcrypt>=5.0.0",
   "pymongo"

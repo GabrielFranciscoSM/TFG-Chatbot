@@ -27,8 +27,12 @@ async def create_session(
 ):
     """Create a new chat session."""
 
-    # Verify subject enrollment
-    if user.role == UserRole.STUDENT and session_in.subject not in user.subjects:
+    # Verify subject enrollment (allow "general" for everyone)
+    if (
+        user.role == UserRole.STUDENT
+        and session_in.subject != "general"
+        and session_in.subject not in user.subjects
+    ):
         raise HTTPException(status_code=403, detail="Not enrolled in this subject")
 
     session_id = str(uuid.uuid4())

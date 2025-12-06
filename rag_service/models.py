@@ -47,7 +47,7 @@ class DocumentMetadata(BaseModel):
     tipo_documento: str = Field(
         ..., description="Document type: 'apuntes', 'ejercicios', 'examen', etc."
     )
-    fecha: str = Field(..., description="Date in ISO format: YYYY-MM-DD")
+    fecha: str | None = Field(None, description="Date in ISO format: YYYY-MM-DD")
     tema: str | None = Field(None, description="Topic within the subject")
     autor: str | None = Field(None, description="Document author")
     fuente: str = Field(

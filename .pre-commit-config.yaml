@@ -22,3 +22,27 @@ repos:
     hooks:
       - id: mypy
         args: ["--ignore-missing-imports"]
+
+  # Frontend (TypeScript/React) hooks
+  - repo: local
+    hooks:
+      - id: biome-format
+        name: biome format
+        entry: bash -c 'cd frontend && npx biome format --write .'
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx|json)$
+        pass_filenames: false
+
+      - id: biome-lint
+        name: biome lint
+        entry: bash -c 'cd frontend && npx biome lint --write .'
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx|json)$
+        pass_filenames: false
+
+      - id: typescript-check
+        name: typescript
+        entry: bash -c 'cd frontend && npx tsc --noEmit'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false

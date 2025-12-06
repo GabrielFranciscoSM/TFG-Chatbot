@@ -5,6 +5,61 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.4.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.3.0...v0.4.0) (2025-12-06)
+
+
+### Features
+
+* **auth:** implement role-based navigation and guards ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **backend:** add admin endpoints for stats, users, search, assign and promote ([162f88e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/162f88e6056473b74d80c678279f25c54c3a884e))
+* **backend:** add history endpoint and session validation ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+* **backend:** add professor dashboard API endpoints ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **chatbot:** add history retrieval method ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+* **chat:** implement chat functionality with optimized API responses ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+* **dashboard:** add professor dashboard with subject management ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **frontend:** add advanced students table with search, sort, and pagination ([69484a5](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/69484a51f57314f58cf7f6e220e77bf864de4e01))
+* **frontend:** add advanced users table with search, filter, and pagination ([f751d64](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/f751d64784b9af7fdfd3aeae5e94a5384caa7559))
+* **frontend:** add autocomplete to admin dialogs ([a0643cd](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a0643cd9e2e7462e0d2fbdef3ea6b009e068db5f))
+* **frontend:** add Biome for linting and formatting ([42f660f](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/42f660f5d4f024adba4c49d5fd2aa2678e66d342))
+* **frontend:** add chat types and hooks ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+* **frontend:** add chat UI components ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+* **frontend:** add containerization with Nginx ([4c091bb](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/4c091bb984096292bcfd09b568965c985617106c))
+* **frontend:** add enroll/unenroll functionality to StudentList ([49f9060](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/49f90605732e28cef79876e486acea86d67169dc))
+* **frontend:** add markdown rendering for chat messages ([56d4f4e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/56d4f4e5fd6aa5cf27d55b8507071e6fed242d51))
+* **frontend:** add professor dashboard and role-based access ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **Frontend:** implement core layout and authentication features ([1912e47](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/1912e47b58d1debce3ac0e02496f8eb254af3dcb))
+* **frontend:** implement layout, routing and route guards ([8a8584e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8a8584efc0108be84603c344d34f8bbdf4ee9d56))
+* **frontend:** integrate admin dialogs and update dashboard UI ([1e1bc54](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/1e1bc543026ef172ae5cb63265eaf4ff78fed77e))
+* **frontend:** integrate auth forms with backend API ([fb77597](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/fb77597c2f7812006ca96a02b07d31b3dec123b3))
+* **hooks:** add dashboard data fetching hooks ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **rag:** add file deletion endpoint ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+* **settings:** create unified settings page for all roles ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+
+
+### Bug Fixes
+
+* **chatbot:** include subject context in system prompt ([3ac38da](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3ac38da68078602ad511f0fe6426f9e19ff538b7))
+* **dependencies:** update passlib and bcrypt version constraints ([2f4e492](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2f4e4923cf2dee8aee3775b7179c770ee2e3f474))
+* **frontend:** fix Biome linting and TypeScript config for tests ([00706c2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/00706c2086d0cf6266711cbf994ddab9e9f73eb6))
+* **frontend:** normalize subject case for session creation ([bf1ac14](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/bf1ac147c6404f5bf0147e3020f90f23235f6330))
+* **frontend:** update Biome linting and formatting checks in CI and pre-commit hooks ([2ff508f](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2ff508fd8bcebc27a97defcb511f9d50d1c7e3f7))
+* **ui:** resolve navigation and responsiveness issues ([e7ae665](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e7ae66505e5c2e5cfabe3116f468affef3c0bab8))
+
+
+### Performance Improvements
+
+* reduce payload size by returning only new message per request ([b8a54f2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b8a54f2b76444f4d976dea164105864f66c3b08d))
+
+
+### Documentation
+
+* add sprint retrospective 3 ([7c179c8](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/7c179c88ba234efd8ba715881fa9dc756679538f))
+* **ADR:** add architecture decision records for frontend technologies (React, Vite, Tailwind CSS, Shadcn/ui, TanStack Query, React Router, Zod, React Hook Form) ([757ea81](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/757ea81d5297528793acff2945c7a0c7c344651f))
+* **daily-scrum:** add december daily scrums and sprint planning ([8c9daa2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8c9daa28d823e535236b1478a55237fcf10d1cdf))
+* **SCRUM:** add daily scrum entries for November 25-27, 2025 and update Sprint Planning 4 dates ([478a391](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/478a3914dbee22f5583a20ce9d73c8777a119108))
+* **SCRUM:** add Sprint Planning 4 documentation for UI Frontend development ([27e2e64](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/27e2e6498eef1141c481cc307930a59e6c6aa6eb))
+* update daily scrum with Sprint 4 frontend progress ([4c1e9e0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/4c1e9e0b377fe3e17e17c88738f41d961df91cd4))
+
 ## [0.3.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.2.1...v0.3.0) (2025-11-23)
 
 

@@ -89,7 +89,7 @@ async def list_professor_subjects(
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(
-                    f"{settings.RAG_SERVICE_URL}/files", params={"asignatura": subject}
+                    f"{settings.rag_service_url}/files", params={"asignatura": subject}
                 )
                 if response.status_code == 200:
                     data = response.json()
@@ -140,7 +140,7 @@ async def list_subject_documents(
 
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.get(
-            f"{settings.RAG_SERVICE_URL}/files", params={"asignatura": subject}
+            f"{settings.rag_service_url}/files", params={"asignatura": subject}
         )
 
         if response.status_code != 200:
@@ -161,7 +161,7 @@ async def list_subject_documents(
             # Get file info
             try:
                 info_response = await client.get(
-                    f"{settings.RAG_SERVICE_URL}/files/{file_path}"
+                    f"{settings.rag_service_url}/files/{file_path}"
                 )
                 if info_response.status_code == 200:
                     info = info_response.json()
@@ -222,7 +222,7 @@ async def upload_document(
         files = {"file": (file.filename, content, file.content_type)}
 
         response = await client.post(
-            f"{settings.RAG_SERVICE_URL}/upload",
+            f"{settings.rag_service_url}/upload",
             files=files,
             data={
                 "metadata": str(metadata)
@@ -263,7 +263,7 @@ async def delete_document(
         )
 
     async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.delete(f"{settings.RAG_SERVICE_URL}/files/{file_path}")
+        response = await client.delete(f"{settings.rag_service_url}/files/{file_path}")
 
         if response.status_code == 404:
             raise HTTPException(status_code=404, detail="Document not found")
@@ -323,7 +323,7 @@ async def get_dashboard_stats(
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(
-                    f"{settings.RAG_SERVICE_URL}/files", params={"asignatura": subject}
+                    f"{settings.rag_service_url}/files", params={"asignatura": subject}
                 )
                 if response.status_code == 200:
                     data = response.json()

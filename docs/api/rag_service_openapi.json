@@ -1,0 +1,1000 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TFG Chatbot RAG Service API",
+    "description": "Retrieval-Augmented Generation service. Handles document indexing, semantic search, and file management.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "API Information",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Health check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Semantic search",
+        "operationId": "search_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index": {
+      "post": {
+        "tags": [
+          "Indexing"
+        ],
+        "summary": "Index documents",
+        "operationId": "index_documents_index_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/Document"
+                },
+                "type": "array",
+                "title": "Documents"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collection/info": {
+      "get": {
+        "tags": [
+          "Collection"
+        ],
+        "summary": "Get collection information",
+        "operationId": "get_collection_info_collection_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files": {
+      "get": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "List files",
+        "description": "Lists all available files in the documents directory, with optional filtering by subject (asignatura) and document type (tipo_documento).",
+        "operationId": "list_files_files_get",
+        "parameters": [
+          {
+            "name": "asignatura",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Asignatura"
+            }
+          },
+          {
+            "name": "tipo_documento",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tipo Documento"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{filename}": {
+      "get": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Get file information",
+        "description": "Get metadata and information about a specific file.\n\nReturns file size, extension, and modification time.\n\nArgs:\n    filename: Relative path to the file (e.g., \"iv/teoria/tema1.pdf\")\n\nReturns:\n    Dictionary with file information: filename, size_bytes, size_kb, extension, modified\n\nRaises:\n    HTTPException: 404 if file not found, 500 for other errors\n\nExample:\n    GET /files/iv/teoria/tema1.pdf",
+        "operationId": "get_file_info_files__filename__get",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Filename"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Delete a file",
+        "description": "Delete a file from the documents directory.\n\nArgs:\n    filename: Relative path to the file (e.g., \"iv/teoria/tema1.pdf\")\n\nReturns:\n    Success message\n\nRaises:\n    HTTPException: 404 if file not found, 500 for other errors\n\nExample:\n    DELETE /files/iv/teoria/tema1.pdf",
+        "operationId": "delete_file_files__filename__delete",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Filename"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/load-file": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Load and index file",
+        "description": "Load an existing file from the documents directory and index it for semantic search.\n\nThis endpoint is useful for indexing files that were manually placed in the\ndocuments directory or uploaded without the auto_index option.\n\nArgs:\n    request: LoadFileRequest containing filename and document metadata\n\nReturns:\n    LoadFileResponse with filename, doc_id, and number of chunks indexed\n\nRaises:\n    HTTPException:\n        - 404 if file not found\n        - 400 for invalid file type\n        - 500 for other errors\n\nExample:\n    POST /load-file\n    {\n        \"filename\": \"iv/teoria/tema1.pdf\",\n        \"metadata\": {\n            \"asignatura\": \"iv\",\n            \"tipo_documento\": \"teoria\",\n            \"tema\": \"Introducción\"\n        }\n    }",
+        "operationId": "load_file_load_file_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoadFileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadFileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/upload": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Upload and index file",
+        "description": "Upload a file and optionally index it for semantic search.\n\nArgs:\n    file: The file to upload\n    metadata: JSON string containing upload metadata and indexing configuration\n\nReturns:\n    LoadFileResponse with filename, doc_id, and number of indexed chunks\n\nRaises:\n    HTTPException: If file type is unsupported, metadata is invalid, or upload fails",
+        "operationId": "upload_file_upload_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_file_upload_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadFileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subjects": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "List subjects",
+        "operationId": "list_subjects_subjects_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subjects/{asignatura}/types": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "List document types for subject",
+        "operationId": "list_document_types_subjects__asignatura__types_get",
+        "parameters": [
+          {
+            "name": "asignatura",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Asignatura"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_upload_file_upload_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "metadata": {
+            "type": "string",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "metadata"
+        ],
+        "title": "Body_upload_file_upload_post"
+      },
+      "Document": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Document content/text"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/DocumentMetadata",
+            "description": "Document metadata"
+          },
+          "doc_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doc Id",
+            "description": "Optional document ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "metadata"
+        ],
+        "title": "Document",
+        "description": "Document to be indexed."
+      },
+      "DocumentMetadata": {
+        "properties": {
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename",
+            "description": "Original file name of the document"
+          },
+          "asignatura": {
+            "type": "string",
+            "title": "Asignatura",
+            "description": "Subject name, e.g., 'Lógica Difusa'"
+          },
+          "tipo_documento": {
+            "type": "string",
+            "title": "Tipo Documento",
+            "description": "Document type: 'apuntes', 'ejercicios', 'examen', etc."
+          },
+          "fecha": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fecha",
+            "description": "Date in ISO format: YYYY-MM-DD"
+          },
+          "tema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tema",
+            "description": "Topic within the subject"
+          },
+          "autor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Autor",
+            "description": "Document author"
+          },
+          "fuente": {
+            "type": "string",
+            "title": "Fuente",
+            "description": "Source: 'PRADO UGR', 'Wikipedia', etc.",
+            "default": "PRADO UGR"
+          },
+          "idioma": {
+            "type": "string",
+            "title": "Idioma",
+            "description": "Language code: 'es' or 'en'",
+            "default": "es"
+          },
+          "chunk_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunk Id",
+            "description": "Chunk ID within the document"
+          },
+          "licencia": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Licencia",
+            "description": "Document license, e.g., 'CC-BY', 'MIT', etc."
+          }
+        },
+        "type": "object",
+        "required": [
+          "asignatura",
+          "tipo_documento"
+        ],
+        "title": "DocumentMetadata",
+        "description": "Metadata schema for indexed documents.",
+        "example": {
+          "asignatura": "Lógica Difusa",
+          "chunk_id": 0,
+          "fecha": "2025-10-14",
+          "fuente": "PRADO UGR",
+          "idioma": "es",
+          "licencia": "CC-BY",
+          "tema": "Conjuntos difusos",
+          "tipo_documento": "apuntes"
+        }
+      },
+      "DocumentTypesResponse": {
+        "properties": {
+          "asignatura": {
+            "type": "string",
+            "title": "Asignatura",
+            "description": "Subject name"
+          },
+          "document_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Document Types",
+            "description": "List of document types"
+          },
+          "total_types": {
+            "type": "integer",
+            "title": "Total Types",
+            "description": "Total number of document types"
+          }
+        },
+        "type": "object",
+        "required": [
+          "asignatura",
+          "document_types",
+          "total_types"
+        ],
+        "title": "DocumentTypesResponse",
+        "description": "Response with list of document types for a subject."
+      },
+      "FileListResponse": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Files",
+            "description": "List of available files"
+          },
+          "total_files": {
+            "type": "integer",
+            "title": "Total Files",
+            "description": "Total number of files"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files",
+          "total_files"
+        ],
+        "title": "FileListResponse",
+        "description": "Response with list of files."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthCheckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Health status of the API, e.g., 'healthy' or 'unhealthy'"
+          },
+          "qdrant_connected": {
+            "type": "boolean",
+            "title": "Qdrant Connected",
+            "description": "Whether Qdrant vector store is connected"
+          },
+          "collection": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collection",
+            "description": "Collection information from vector store"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Additional message about the health status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "qdrant_connected"
+        ],
+        "title": "HealthCheckResponse",
+        "description": "Response model for health check endpoint.",
+        "example": {
+          "collection": {
+            "name": "academic_documents",
+            "points_count": 52,
+            "status": "green",
+            "vectors_count": 0
+          },
+          "message": "API is healthy and running",
+          "qdrant_connected": true,
+          "status": "healthy"
+        }
+      },
+      "IndexResponse": {
+        "properties": {
+          "indexed_count": {
+            "type": "integer",
+            "title": "Indexed Count",
+            "description": "Number of documents indexed"
+          },
+          "collection_name": {
+            "type": "string",
+            "title": "Collection Name",
+            "description": "Qdrant collection name"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "Indexing timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "indexed_count",
+          "collection_name"
+        ],
+        "title": "IndexResponse",
+        "description": "Response after indexing documents."
+      },
+      "LoadFileRequest": {
+        "properties": {
+          "filename": {
+            "type": "string",
+            "title": "Filename",
+            "description": "Name of the file to load"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/DocumentMetadata",
+            "description": "Metadata for the document"
+          }
+        },
+        "type": "object",
+        "required": [
+          "filename",
+          "metadata"
+        ],
+        "title": "LoadFileRequest",
+        "description": "Request to load a file from the documents directory."
+      },
+      "LoadFileResponse": {
+        "properties": {
+          "filename": {
+            "type": "string",
+            "title": "Filename",
+            "description": "Name of the loaded file"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id",
+            "description": "Document ID"
+          },
+          "indexed_count": {
+            "type": "integer",
+            "title": "Indexed Count",
+            "description": "Number of chunks indexed"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "Load timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "filename",
+          "doc_id",
+          "indexed_count"
+        ],
+        "title": "LoadFileResponse",
+        "description": "Response after loading a file."
+      },
+      "QueryRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "description": "Search query"
+          },
+          "asignatura": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asignatura",
+            "description": "Filter by subject"
+          },
+          "tipo_documento": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tipo Documento",
+            "description": "Filter by document type"
+          },
+          "top_k": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top K",
+            "description": "Number of results to return"
+          },
+          "similarity_threshold": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Similarity Threshold",
+            "description": "Minimum similarity score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "QueryRequest",
+        "description": "Request for semantic search."
+      },
+      "QueryResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "Search results"
+          },
+          "total_results": {
+            "type": "integer",
+            "title": "Total Results",
+            "description": "Total number of results"
+          },
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "description": "Original query"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results",
+          "total_results",
+          "query"
+        ],
+        "title": "QueryResponse",
+        "description": "Response for semantic search."
+      },
+      "SearchResult": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Document content"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata",
+            "description": "Document metadata"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "description": "Similarity score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "metadata",
+          "score"
+        ],
+        "title": "SearchResult",
+        "description": "Single search result."
+      },
+      "SubjectListResponse": {
+        "properties": {
+          "subjects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Subjects",
+            "description": "List of available subjects"
+          },
+          "total_subjects": {
+            "type": "integer",
+            "title": "Total Subjects",
+            "description": "Total number of subjects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subjects",
+          "total_subjects"
+        ],
+        "title": "SubjectListResponse",
+        "description": "Response with list of subjects."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

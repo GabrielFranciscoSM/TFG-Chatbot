@@ -1,3 +1,11 @@
+---
+layout: default
+title: "Use vitest for frontend testing"
+date: 2025-12-5
+parent: Architecture Decision Records
+nav_order: 27
+---
+
 # ADR 0027: Usar Vitest para Testing del Frontend
 
 ## Estado

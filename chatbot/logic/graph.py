@@ -58,13 +58,13 @@ import os
 import sqlite3
 from typing import Any, Literal
 
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
+from chatbot.config import settings
 from chatbot.logic.prompts import SYSTEM_PROMPT_V3
 from chatbot.logic.tools.tools import get_tools
 
@@ -109,10 +109,6 @@ class SubjectState(MessagesState):
     user_answers: list[str] | None
     feedback_history: list[str] | None
     scores: list[bool] | None
-
-
-# --- CONFIGURACIÓN ---
-load_dotenv()
 
 
 class GraphAgent:
@@ -161,17 +157,13 @@ class GraphAgent:
         self.llm_provider = llm_provider
         self.temperature = temperature
 
-        # vLLM configuration
-        vllm_port = vllm_port or os.getenv("VLLM_MAIN_PORT", "8000")
-        vllm_host = os.getenv("VLLM_HOST", "vllm-openai")
-        self.vllm_url = f"http://{vllm_host}:{vllm_port}/v1"
-        self.model_name = model_dir or os.getenv(
-            "MODEL_PATH", "/models/HuggingFaceTB--SmolLM2-1.7B-Instruct"
-        )
+        # vLLM configuration (use settings, allow parameter override)
+        self.vllm_url = settings.vllm_url
+        self.model_name = model_dir or settings.model_path
         self.openai_api_key = openai_api_key
 
         # Gemini configuration
-        self.gemini_api_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
+        self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
         self.gemini_model = gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key

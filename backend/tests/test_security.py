@@ -17,7 +17,9 @@ def test_password_hashing():
 def test_jwt_creation():
     data = {"sub": "testuser", "role": "student"}
     token = create_access_token(data)
-    decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+    decoded = jwt.decode(
+        token, settings.secret_key.get_secret_value(), algorithms=[settings.algorithm]
+    )
     assert decoded["sub"] == "testuser"
     assert decoded["role"] == "student"
     assert "exp" in decoded
@@ -28,4 +30,8 @@ def test_jwt_expiration():
     # Create token that expires immediately
     token = create_access_token(data, expires_delta=timedelta(seconds=-1))
     with pytest.raises(jwt.ExpiredSignatureError):
-        jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        jwt.decode(
+            token,
+            settings.secret_key.get_secret_value(),
+            algorithms=[settings.algorithm],
+        )

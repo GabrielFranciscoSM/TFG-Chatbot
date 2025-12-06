@@ -1,3 +1,11 @@
+---
+layout: default
+title: "Use biome for frontend linting"
+date: 2025-12-5
+parent: Architecture Decision Records
+nav_order: 26
+---
+
 # ADR-0026: Usar Biome para linting y formateo del frontend
 
 ## Estado

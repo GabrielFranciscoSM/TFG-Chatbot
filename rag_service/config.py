@@ -1,47 +1,44 @@
 """Configuration for RAG service."""
 
-import os
-
-from pydantic import ConfigDict
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """RAG Service configuration settings."""
 
     # Qdrant configuration
-    qdrant_host: str = os.getenv("QDRANT_HOST", "qdrant")
-    qdrant_port: int = int(os.getenv("QDRANT_PORT", "6333"))
-    qdrant_collection_name: str = os.getenv("QDRANT_COLLECTION", "academic_documents")
+    qdrant_host: str = "qdrant"
+    qdrant_port: int = 6333
+    qdrant_collection_name: str = "academic_documents"
 
     # Ollama configuration
-    ollama_host: str = os.getenv("OLLAMA_HOST", "ollama")
+    ollama_host: str = "ollama"
     # Ollama's API server port. Use 11434 by default for internal communication
     # (11435 is usually the host mapped port).
-    ollama_port: int = int(os.getenv("OLLAMA_PORT", "11434"))
-    ollama_model: str = os.getenv("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
+    ollama_port: int = 11434
+    ollama_model: str = "nomic-embed-text"
 
     # RAG parameters
     embedding_dimension: int = 768  # nomic-embed-text dimension
-    top_k_results: int = int(os.getenv("RAG_TOP_K", "5"))
-    similarity_threshold: float = float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.5"))
+    top_k_results: int = 5
+    similarity_threshold: float = 0.5
 
     # Chunking parameters
-    chunk_size: int = int(os.getenv("CHUNK_SIZE", "1000"))
-    chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "200"))
+    chunk_size: int = 1000
+    chunk_overlap: int = 200
 
     # API configuration
-    api_host: str = os.getenv("RAG_API_HOST", "0.0.0.0")
-    api_port: int = int(os.getenv("RAG_API_PORT", "8081"))
+    api_host: str = "0.0.0.0"
+    api_port: int = 8081
 
     # Documents storage
-    documents_path: str = os.getenv("DOCUMENTS_PATH", "/app/documents")
+    documents_path: str = "/app/documents"
 
-    # In pydantic v2 use `model_config` to set env_file and extra behaviour.
-    model_config = ConfigDict(
+    model_config = SettingsConfigDict(
         env_file=".env",
+        env_file_encoding="utf-8",
         case_sensitive=False,
-        extra="ignore",  # ignore unrelated environment variables
+        extra="ignore",
     )
 
 

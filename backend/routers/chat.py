@@ -9,6 +9,9 @@ from backend.models import UserInDB, UserRole
 
 router = APIRouter(tags=["chat"])
 
+# Timeout for chatbot requests (LLM can be slow)
+CHATBOT_TIMEOUT = 120.0
+
 
 @router.post("/chat")
 async def chat(
@@ -16,70 +19,68 @@ async def chat(
     user: UserInDB = Depends(get_current_user),
     collection=Depends(get_sessions_collection),
 ):
-    # Forward to chatbot service
-    # Increase timeout for chatbot response (LLM generation can be slow)
-    async with httpx.AsyncClient(timeout=120.0) as client:
-        json_data = await request.json()
-        session_id = json_data.get("id")
+    """Forward chat requests to chatbot service."""
+    json_data = await request.json()
+    session_id = json_data.get("id")
 
-        if not session_id:
-            raise HTTPException(status_code=422, detail="Session ID is required")
+    if not session_id:
+        raise HTTPException(status_code=422, detail="Session ID is required")
 
-        # Validate session ownership and persistence
-        session = collection.find_one({"_id": session_id})
+    # Validate session ownership and persistence
+    session = collection.find_one({"_id": session_id})
 
-        if session:
-            if session["user_id"] != user.username:
-                raise HTTPException(
-                    status_code=403, detail="Not authorized to access this session"
-                )
-
-            # Update last_active
-            collection.update_one(
-                {"_id": session_id}, {"$set": {"last_active": datetime.now(UTC)}}
+    if session:
+        if session["user_id"] != user.username:
+            raise HTTPException(
+                status_code=403, detail="Not authorized to access this session"
             )
-        else:
-            # Auto-create session if it doesn't exist (for backward compatibility and ease of use)
-            requested_subject = json_data.get("asignatura")
 
-            # Validate subject access if provided (allow "general" for everyone)
-            if requested_subject and requested_subject != "general":
-                if (
-                    user.role == UserRole.STUDENT
-                    and requested_subject not in user.subjects
-                ):
-                    raise HTTPException(
-                        status_code=403, detail="Not enrolled in this subject"
-                    )
-
-            now = datetime.now(UTC)
-            new_session = {
-                "_id": session_id,
-                "user_id": user.username,
-                "title": "New Chat",
-                "subject": requested_subject or "general",
-                "created_at": now,
-                "last_active": now,
-            }
-            collection.insert_one(new_session)
-
-        # Validate subject access (redundant if new session, but safe for existing ones)
+        # Update last_active
+        collection.update_one(
+            {"_id": session_id}, {"$set": {"last_active": datetime.now(UTC)}}
+        )
+    else:
+        # Auto-create session if it doesn't exist (for backward compatibility and ease of use)
         requested_subject = json_data.get("asignatura")
+
+        # Validate subject access if provided (allow "general" for everyone)
         if requested_subject and requested_subject != "general":
-            # If user is student, check if they are enrolled
             if user.role == UserRole.STUDENT and requested_subject not in user.subjects:
                 raise HTTPException(
                     status_code=403, detail="Not enrolled in this subject"
                 )
 
-        response = await client.post(
-            f"{settings.CHATBOT_SERVICE_URL}/chat", json=json_data
-        )
-        if response.status_code != 200:
-            raise HTTPException(
-                status_code=response.status_code, detail=response.json()
+        now = datetime.now(UTC)
+        new_session = {
+            "_id": session_id,
+            "user_id": user.username,
+            "title": "New Chat",
+            "subject": requested_subject or "general",
+            "created_at": now,
+            "last_active": now,
+        }
+        collection.insert_one(new_session)
+
+    # Validate subject access (redundant if new session, but safe for existing ones)
+    requested_subject = json_data.get("asignatura")
+    if requested_subject and requested_subject != "general":
+        if user.role == UserRole.STUDENT and requested_subject not in user.subjects:
+            raise HTTPException(status_code=403, detail="Not enrolled in this subject")
+
+    # Forward to chatbot service
+    try:
+        async with httpx.AsyncClient(timeout=CHATBOT_TIMEOUT) as client:
+            response = await client.post(
+                f"{settings.chatbot_service_url}/chat", json=json_data
             )
-        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.json())
+    return response.json()
 
 
 @router.get("/history/{session_id}")
@@ -100,12 +101,16 @@ async def get_history(
         )
 
     # Forward to chatbot service
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.get(
-            f"{settings.CHATBOT_SERVICE_URL}/history/{session_id}"
-        )
-        if response.status_code != 200:
-            raise HTTPException(
-                status_code=response.status_code, detail=response.json()
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{settings.chatbot_service_url}/history/{session_id}"
             )
-        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.json())
+    return response.json()

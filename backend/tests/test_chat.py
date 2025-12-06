@@ -5,13 +5,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 def test_chat_allowed_subject(mock_client_cls, client, student_token):
     # Setup mock
     mock_instance = AsyncMock()
-    mock_client_cls.return_value = mock_instance
-    mock_instance.__aenter__.return_value = mock_instance
+    mock_client_cls.return_value.__aenter__.return_value = mock_instance
 
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {"response": "Hello from AI"}
-
     mock_instance.post.return_value = mock_response
 
     response = client.post(
@@ -38,13 +36,11 @@ def test_chat_forbidden_subject(client, student_token):
 def test_chat_professor_any_subject(mock_client_cls, client, professor_token):
     # Setup mock
     mock_instance = AsyncMock()
-    mock_client_cls.return_value = mock_instance
-    mock_instance.__aenter__.return_value = mock_instance
+    mock_client_cls.return_value.__aenter__.return_value = mock_instance
 
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {"response": "Hello Prof"}
-
     mock_instance.post.return_value = mock_response
 
     response = client.post(

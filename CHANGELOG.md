@@ -5,6 +5,28 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.4.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.0...v0.4.1) (2025-12-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **config:** Settings field names changed from UPPERCASE to lowercase
+
+### Documentation
+
+* add frontmatter to ADR documents for consistent formatting ([58150a3](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/58150a39bf43c6a4a2991ea925507e63e99d9441))
+* add microservices architecture documentation and OpenAPI export ([b5230a8](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/b5230a8995a070485908cd5d880c1ef02c43996c))
+
+
+### Miscellaneous Chores
+
+* release 0.4.1 ([866f71c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/866f71c6f2da654f23437e251be1af9f93e31acc))
+
+
+### Code Refactoring
+
+* **config:** migrate to pydantic-settings for type-safe configuration ([cf0adfe](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/cf0adfe619a453de028e90aeb4dad2cdcf7542a2))
+
 ## [0.4.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.3.0...v0.4.0) (2025-12-06)
 
 

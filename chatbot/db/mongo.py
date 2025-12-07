@@ -23,7 +23,7 @@ class MongoDBClient:
         else:
             self.uri = settings.get_mongo_uri()
 
-        self.db_name = db_name or settings.mongo_db
+        self.db_name = db_name or settings.db_name
         self.client: MongoClient | None = None
         self.db = None
 

@@ -1,202 +1,334 @@
-# TFG chatbot
+# TFG Chatbot - Agente IA Pedagógico para Entornos Educativos
 
-[![state: en desarrollo](https://img.shields.io/badge/state-en%20desarrollo-yellow)](README.md) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![GitHub](https://img.shields.io/badge/GitHub-Repo-black?logo=github&logoColor=white)](https://github.com/GabrielFranciscoSM/TFG-Chatbot?tab=readme-ov-file) [![Release](https://img.shields.io/github/v/tag/GabrielFranciscoSM/TFG-Chatbot?sort=semver)](https://github.com/GabrielFranciscoSM/TFG-Chatbot/releases) [![Web](https://img.shields.io/badge/Web-GitHub%20Pages-blue?logo=github)](https://gabrielfranciscosm.github.io/TFG-Chatbot/)
+[![Estado: en desarrollo](https://img.shields.io/badge/estado-en%20desarrollo-yellow)](README.md)
+[![Licencia](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-Repo-black?logo=github&logoColor=white)](https://github.com/GabrielFranciscoSM/TFG-Chatbot)
+[![Release](https://img.shields.io/github/v/tag/GabrielFranciscoSM/TFG-Chatbot?sort=semver)](https://github.com/GabrielFranciscoSM/TFG-Chatbot/releases)
+[![Documentación](https://img.shields.io/badge/Docs-GitHub%20Pages-blue?logo=github)](https://gabrielfranciscosm.github.io/TFG-Chatbot/)
 
-## Resumen
+## Descripción
 
-Proyecto para el Trabajo de Fin de Grado (TFG) que investiga y desarrolla un agente de IA tipo chatbot orientado a entornos educativos. El objetivo es combinar los beneficios de los LLM con directrices pedagógicas que reduzcan alucinaciones y favorezcan el aprendizaje del estudiante. El repositorio está en una fase inicial (prácticamente vacío) y actúa como contenedor del TFG: documentación, experimentos y código.
+**Trabajo de Fin de Grado (TFG)** de Ingeniería Informática que desarrolla un agente conversacional basado en IA orientado a entornos educativos. El proyecto combina los beneficios de los modelos de lenguaje (LLMs) con directrices pedagógicas para crear un tutor inteligente que reduce alucinaciones y favorece el aprendizaje activo del estudiante.
 
-## Tabla de contenidos
+### Objetivos del Proyecto
 
-- [TFG-Chatbot](#tfg-chatbot)
-  - [Resumen](#resumen)
-  - [Table of Contents](#table-of-contents)
-  - [Motivación](#motivación)
-  - [Desarrollo agil](#desarrollo-agil)
-  - [Estado del proyecto](#estado-del-proyecto)
-  - [Tecnologías (planificadas)](#tecnologías-planificadas)
-  - [Instalación mínima (proyecto vacío)](#instalación-mínima-proyecto-vacío)
-  - [Quick start (demo/ejecución)](#quick-start-demoejecución)
-  - [Arquitectura (plan)](#arquitectura-plan)
-  - [Evaluación y consideraciones éticas](#evaluación-y-consideraciones-éticas)
-  - [Roadmap / Milestones](#roadmap--milestones)
-  - [Cómo contribuir](#cómo-contribuir)
-  - [Licencia](#licencia)
-  - [Contacto](#contacto)
-  - [Agradecimientos](#agradecimientos)
+- **Investigar** la aplicación de LLMs en la educación, mitigando sus riesgos (alucinaciones, respuestas directas sin razonamiento).
+- **Desarrollar** un chatbot educativo con herramientas especializadas y memoria conversacional.
+- **Implementar** una arquitectura de microservicios moderna con buenas prácticas de desarrollo.
+- **Documentar** todo el proceso siguiendo la metodología Scrum.
 
-## Motivación
+---
 
-Hoy en día los LLM, y más específicamente los chatbots, han revolucionado la sociedad. Como evidencia de esto, chatbots como chatGPT alcanzó los 100 millones de usuarios a solo 60 días de su lanzamiento, y este número no para de crecer, junto con el de sus competidores.
+## Arquitectura
 
-Estas nuevas herramientas pueden aportar a la docencia, sobretodo como apoyo a profesores y métodos más clásicos. Es más, han existido durante decadas Intelligent Tutoring Systems, que han usado técnicas de machine learning y NLP para poder simular chatbots educacionales, con el objetivo de alcanzar el ratio de profesores-alumnos 1:1. Los LLM son un cambio de paradigma en este campo.
+El proyecto sigue una **arquitectura de microservicios** orquestada con Docker Compose:
 
-Sin embargo, estudios demuestran que el uso no adecuado de estos LLM puede llevar a los estudiantes a empeorar su aprendizaje. Por ejemplo, si el agente alucina una respuesta falsea, o da un respuesta directa en vez de razonarla junto con el estudiante.
+```mermaid
+flowchart TB
+    subgraph Frontend["🌐 Frontend (React + Vite)"]
+        FE["Puerto: 3000"]
+    end
+    
+    subgraph Gateway["🔐 Backend Gateway (FastAPI)"]
+        GW["JWT Auth + API REST<br/>Puerto: 8000"]
+    end
+    
+    subgraph Chatbot["🤖 Chatbot Service"]
+        CB["LangChain/LangGraph<br/>Puerto: 8080"]
+    end
+    
+    subgraph MongoDB["🗄️ MongoDB"]
+        MDB["Usuarios, Sesiones<br/>Puerto: 27017"]
+    end
+    
+    subgraph RAG["📚 RAG Service"]
+        RS["Document Processing<br/>Puerto: 8081"]
+    end
+    
+    subgraph Qdrant["🔍 Qdrant"]
+        QD["Vector DB<br/>Puerto: 6333"]
+    end
+    
+    subgraph Ollama["🧠 Ollama"]
+        OL["Embeddings<br/>Puerto: 11434"]
+    end
+    
+    Frontend --> Gateway
+    Gateway --> Chatbot
+    Gateway --> MongoDB
+    Chatbot --> RAG
+    RAG --> Qdrant
+    RAG --> Ollama
+```
 
-De estos y otros problemas surge la necesidad de desarrollar un agente chatbot que aporte los beneficios de los LLM, pero adaptando su uso al entorno educativo, dandole directrizes pedagógicas y especializandolos.
+### Servicios
 
-## Desarrollo agil
+| Servicio | Tecnología | Descripción |
+|----------|------------|-------------|
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui | Interfaz de chat y panel de administración |
+| **Backend Gateway** | FastAPI, PyMongo, JWT | API REST, autenticación RBAC, proxy a servicios |
+| **Chatbot** | FastAPI, LangChain, LangGraph | Agente conversacional con herramientas pedagógicas |
+| **RAG Service** | FastAPI, Sentence Transformers | Procesamiento de documentos y búsqueda semántica |
+| **Qdrant** | Vector Database | Almacenamiento de embeddings para RAG |
+| **Ollama** | LLM Server | Servicio de embeddings local |
+| **MongoDB** | NoSQL Database | Persistencia de usuarios, sesiones y guías docentes |
 
-Como metodología para desarrollar este proyecto he elegido SCRUM.
+---
 
-Para ello he creado un Product Backlog compuesto de historias de usuario en los Issues de este repositorio, así como diferentes Mileston que los agrupa y definen Prodúctos Mínimamente Viables que entregar después de cada sprint.
+## Tecnologías Principales
 
-## Estado del proyecto
+### Backend (Python 3.13+)
+- **Framework API**: FastAPI + Uvicorn
+- **IA/LLM**: LangChain, LangGraph, LangChain-Google-GenAI, LangChain-OpenAI
+- **Base de datos**: MongoDB (PyMongo), SQLite (memoria del grafo)
+- **Vector Store**: Qdrant Client
+- **Validación**: Pydantic, Pydantic-Settings
 
-Actualmente este repositorio está en una fase inicial: no hay código ni modelos entrenados incluidos. Se usan las Issues y Milestones del repositorio para planificar el Product Backlog y los sprints del TFG.
+### Frontend (Node.js 20+)
+- **Framework**: React 19 + TypeScript
+- **Build Tool**: Vite 7
+- **Styling**: Tailwind CSS 4, shadcn/ui (Radix UI)
+- **Estado/Fetching**: TanStack Query, React Hook Form, Zod
+- **Routing**: React Router DOM 7
 
-## Tecnologías (planificadas)
+### Infraestructura
+- **Contenedores**: Docker + Docker Compose
+- **CI/CD**: GitHub Actions (lint, test, build, security)
+- **Calidad de código**: Ruff, Black, isort, MyPy, Biome
 
-- Lenguaje: Python (versión mínima recomendada: 3.10)
-- Modelos/Frameworks: LangChain y langgraph o similares (según necesidades), herramientas de evaluación (nltk, lanfuse) y librerías para despliegue (FastAPI, Streamlit o similar)
-- Experimentos y notebooks: Jupyter / Colab
+---
 
-## Instalación
+## Instalación y Ejecución
 
-1. Clonar el repositorio.
-2. Crear un entorno virtual (venv/conda) y activar.
-3. Instalar las dependencias del proyecto.
+### Prerrequisitos
 
-Ejemplo:
+- Python 3.13+ y [uv](https://github.com/astral-sh/uv) (gestor de paquetes)
+- Node.js 20+ y npm
+- Docker y Docker Compose
+- Variables de entorno configuradas (ver `.env.example`)
+
+### Con Docker Compose (Recomendado)
 
 ```bash
 # Clonar el repositorio
 git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
 cd TFG-Chatbot
 
-# Crear entorno virtual (recomendado)
-python -m venv .venv
-source .venv/bin/activate  # En Windows: .venv\Scripts\activate
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus credenciales (API keys, MongoDB, etc.)
 
-# Instalar dependencias del backend y del servicio RAG desde sus pyproject.toml
-# (pip will build and install the packages and their declared dependencies)
-pip install --upgrade pip setuptools wheel
-pip install ./backend
-pip install ./rag_service
+# Levantar todos los servicios
+docker compose up -d
+
+# Ver logs
+docker compose logs -f
 ```
 
-## Quick start
+Los servicios estarán disponibles en:
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **Documentación API (Swagger)**: http://localhost:8000/docs
+- **Mongo Express**: http://localhost:8082
 
-### Ejecutar la API del backend
+### Desarrollo Local
 
-Para iniciar el servidor FastAPI del chatbot:
+Para ejecutar los servicios Python localmente sin Docker, cada servicio tiene un archivo `__main__.py` que configura el path correctamente:
 
-**Opción 1: Usando el script de inicio**
-```bash
-bash scripts/run_fastAPI.sh
-```
-
-**Opción 2: Usando uvicorn directamente**
-```bash
-uvicorn backend.api:app --reload --host 0.0.0.0 --port 8080
-```
-
-La API estará disponible en `http://localhost:8080`
-
-### Endpoints disponibles
-
-- **Documentación interactiva (Swagger)**: `http://localhost:8080/docs`
-- **Documentación alternativa (ReDoc)**: `http://localhost:8080/redoc`
-
-### Ejemplos de uso
-
-**1. Health check**
-```bash
-curl http://localhost:8080/health
-```
-
-Respuesta:
-```json
-{"message": "Hello World"}
-```
-
-**2. Enviar un mensaje al chatbot (Requiere autenticación)**
-
-Primero, obtén un token de acceso (login):
-```bash
-curl -X POST "http://localhost:8080/token" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=student1&password=password123"
-```
-
-Luego usa el token para chatear:
-```bash
-curl -X POST "http://localhost:8080/chat" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <TU_TOKEN_AQUI>" \
-  -d '{
-    "query": "¿Qué es la inteligencia artificial?",
-    "asignatura": "iv",
-    "id": "session-123"
-  }'
-```
-
-## Linter y formateo de código
-
-El proyecto usa ruff (lint + arreglos rápidos), black (formateo) e isort (ordenación de imports).
-
-Instalación local (dentro del entorno virtual):
+#### Backend Services
 
 ```bash
-# Instalar pre-commit globally or in venv
-uv tool install pre-commit ruff black isort
+# Terminal 1: Backend Gateway (puerto 8000)
+cd backend && uv run python __main__.py
 
-# Instalar hooks (una sola vez por repo)
+# Terminal 2: Chatbot Service (puerto 8080)
+cd chatbot && uv run python __main__.py
+
+# Terminal 3: RAG Service (puerto 8081)
+cd rag_service && uv run python __main__.py
+```
+
+> **Nota**: Los servicios Python dependen de MongoDB, Qdrant y Ollama. Para desarrollo local completo, puedes ejecutar solo las dependencias con Docker:
+> ```bash
+> docker compose up -d mongo qdrant-service ollama-service
+> ```
+
+#### Frontend
+
+```bash
+cd frontend
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+```
+
+---
+
+## Testing
+
+El proyecto incluye tests unitarios, de integración e infraestructura.
+
+```bash
+# Ejecutar todos los tests
+uv run pytest
+
+# Tests con cobertura
+uv run pytest --cov
+
+# Tests específicos por servicio
+uv run pytest backend/tests/
+uv run pytest chatbot/tests/
+uv run pytest rag_service/tests/
+
+# Tests de infraestructura
+uv run pytest tests/infrastructure/
+
+# Tests del frontend
+cd frontend && npm run test
+```
+
+### Marcadores de Tests
+
+- `@pytest.mark.unit` - Tests unitarios
+- `@pytest.mark.integration` - Tests de integración
+- `@pytest.mark.infrastructure` - Tests de infraestructura Docker
+- `@pytest.mark.slow` - Tests lentos
+
+---
+
+## Calidad de Código
+
+```bash
+# Linting Python (Ruff)
+uv run ruff check .
+
+# Formateo (Black + isort)
+uv run black .
+uv run isort .
+
+# Type checking (MyPy)
+uv run mypy .
+
+# Linting/Formateo Frontend (Biome)
+cd frontend && npm run check:fix
+
+# Pre-commit hooks
 pre-commit install
-
-# Ejecutar ruff manualmente
-ruff check .
-
-# Ejecutar formateos (black/isort)
-black .
-isort .
+pre-commit run --all-files
 ```
 
-En CI se ejecuta un workflow que corre `ruff check`, `black --check` y `isort --check` en cada PR.
+---
 
+## Documentación
 
-> **Nota**: El parámetro `id` permite mantener conversaciones persistentes. Usa el mismo ID para continuar una conversación anterior.
+- **[Documentación del Proyecto](https://gabrielfranciscosm.github.io/TFG-Chatbot/)** - GitHub Pages con Jekyll
+- **[Architecture Decision Records (ADRs)](docs/ADR/)** - 29 decisiones arquitectónicas documentadas
+- **[API Documentation](http://localhost:8000/docs)** - Swagger/OpenAPI (con servicios ejecutándose)
+- **[Daily Scrum](docs/daily%20scrum/)** - Registro diario del desarrollo
+- **[Sprint Planning](docs/sprint%20planing/)** - Planificación de sprints
+- **[Sprint Retrospective](docs/sprint%20retrospective/)** - Retrospectivas
 
+---
 
-## Arquitectura (plan)
+## Metodología de Desarrollo
 
-- interfaz (web / CLI) para interacción con el estudiante
-- backend que gestiona la sesión y la memoria pedagógica
-- capa de integración con LLMs y filtros de seguridad/validez
-- módulo de políticas pedagógicas que guía las respuestas (scaffolding, hinting, preguntas socráticas)
-- registro de logs y métricas para evaluación
+El proyecto sigue **Scrum** como metodología ágil:
 
-## Evaluación y consideraciones éticas
+- **Product Backlog**: Historias de usuario en GitHub Issues
+- **Milestones**: Sprints con entregables incrementales
+- **Daily Scrum**: Documentado en `docs/daily scrum/`
+- **Sprint Reviews/Retrospectives**: Documentados en `docs/`
+- **CI/CD**: Integración y despliegue continuo con GitHub Actions
 
-- Se documentarán métricas de evaluación (evaluación humana, exactitud, medidas de coherencia y robustez frente a alucinaciones).
-- Se incluirá un apartado de privacidad y uso de datos: origen de datos, licencias y medidas para preservar privacidad del alumnado.
+### Roadmap
 
-## Roadmap / Milestones
+- [x] **Milestone 1**: API de un agente React básico para chatbot
+- [x] **Milestone 2**: Agente con herramientas específicas
+- [x] **Milestone 3**: Autenticación de usuarios (JWT + RBAC)
+- [x] **Milestone 4**: Interfaz educativa completa
+- [ ] **Milestone 5**: Logs y monitorización
+- [ ] **Milestone 6**: Métricas y dashboard
+- [ ] **Milestone 7**: Chatbot con herramientas avanzadas
+- [ ] **Milestone 8**: Evaluación y documentación final
 
-- [x] Milestone 1: API de un agente React básico para un chatbot
-- [x] Milestone 2: Agente con herramientas específicas
-- [x] Milestone 3: Autenticación de usuarios
-- [ ] Milestone 4: Interfaz Educativa
-- [ ] Milestone 5: Logs y Monitorización
-- [ ] Milestone 6: Métricas y Dashboard
-- [ ] Milestone 7: Chatbot con herramientas avanzadas
-- [ ] Milestone 8: Evaluación y documentación
+---
 
-## Cómo contribuir
+## Estructura del Repositorio
 
-- Abrir Issues para bugs, ideas y tareas del TFG.
-- Proponer Pull Requests con pequeñas unidades de trabajo.
-- En próximas versiones se añadirá un `CONTRIBUTING.md` con normas de estilo, testing y workflow.
+```
+TFG-Chatbot/
+├── backend/              # API Gateway (FastAPI)
+│   ├── routers/          # Endpoints (auth, users, chat, etc.)
+│   ├── tests/            # Tests del gateway
+│   └── Dockerfile
+├── chatbot/              # Servicio del Chatbot
+│   ├── logic/            # Lógica del agente (LangGraph)
+│   │   ├── graph.py      # Grafo conversacional
+│   │   ├── prompts.py    # Prompts pedagógicos
+│   │   └── tools/        # Herramientas del agente
+│   ├── tests/
+│   └── Dockerfile
+├── rag_service/          # Servicio RAG
+│   ├── embeddings/       # Gestión de embeddings
+│   ├── documents/        # Procesamiento de documentos
+│   ├── routes/           # Endpoints RAG
+│   ├── tests/
+│   └── Dockerfile
+├── frontend/             # Frontend React
+│   ├── src/
+│   │   ├── components/   # Componentes UI (shadcn/ui)
+│   │   ├── pages/        # Páginas (chat, admin, login)
+│   │   ├── hooks/        # Custom hooks
+│   │   └── context/      # React Context (Auth)
+│   └── Dockerfile
+├── tests/                # Tests de integración/infraestructura
+├── docs/                 # Documentación del TFG
+│   ├── ADR/              # Architecture Decision Records
+│   ├── daily scrum/      # Registro diario
+│   └── sprint*/          # Planning y retrospectives
+├── scripts/              # Scripts de utilidad
+├── docker-compose.yml    # Orquestación de servicios
+├── pyproject.toml        # Configuración Python (uv, ruff, etc.)
+└── .github/workflows/    # CI/CD pipelines
+```
+
+---
+
+## Contribuir
+
+Este es un proyecto académico (TFG), pero las contribuciones son bienvenidas:
+
+1. Abrir **Issues** para reportar bugs o proponer mejoras
+2. Crear **Pull Requests** con cambios pequeños y bien documentados
+3. Seguir las guías de estilo (ejecutar linters antes de commitear)
+
+---
 
 ## Licencia
 
-Este repositorio incluye un fichero `LICENSE`. Revisa ese fichero para conocer los términos exactos.
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
 
-## Contacto
+---
 
-Autor: Gabriel Francisco Sánchez Muñoz
-Tutores: Pablo García Sánchez y Nuria Rico Castro.
+## Autor y Tutores
+
+**Autor**: Gabriel Francisco Sánchez Muñoz
+
+**Tutores**:
+- Pablo García Sánchez
+- Nuria Rico Castro
+
+**Universidad**: Universidad de Granada  
+**Grado**: Ingeniería Informática  
+**Curso académico**: 2024-2025
+
+---
 
 ## Agradecimientos
 
-- Referencias y bibliografía relevantes se añadirán en la sección de Referencias.
+- A los tutores por su guía y apoyo durante el desarrollo
+- A la comunidad open source por las herramientas utilizadas
+- Las referencias bibliográficas completas se incluirán en la memoria del TFG

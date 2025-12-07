@@ -1,29 +1,43 @@
-# Usar imagen base de Python 3.14
+# =============================================================================
+# Stage 1: Build dependencies
+# =============================================================================
+FROM python:3.14-slim AS builder
+
+WORKDIR /build
+
+# Install build tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Copy only pyproject.toml first for better caching
+COPY chatbot/pyproject.toml chatbot/
+COPY chatbot/__init__.py chatbot/
+
+# Install dependencies (cached if pyproject.toml unchanged)
+ARG INSTALL_DEV=false
+RUN if [ "$INSTALL_DEV" = "true" ]; then \
+        pip install --no-cache-dir "./chatbot[dev]"; \
+    else \
+        pip install --no-cache-dir ./chatbot; \
+    fi
+
+# =============================================================================
+# Stage 2: Runtime
+# =============================================================================
 FROM python:3.14-slim
 
-# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Build args to control optional dev dependency installation
-ARG INSTALL_DEV=false
+# Copy installed packages from builder
+COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Copiar el código del backend (incluye pyproject.toml)
-# Copiar el código del chatbot (incluye pyproject.toml)
+# Copy source code
 COPY chatbot chatbot/
 
-# Upgrade pip/build tools and install the chatbot package so pip reads
-# dependencies from chatbot/pyproject.toml. If INSTALL_DEV=true, install
-# the optional 'dev' extras declared in pyproject.toml (e.g. pytest).
-RUN pip install --upgrade pip setuptools wheel && \
-	if [ "$INSTALL_DEV" = "true" ]; then \
-		echo "Installing dev extras for chatbot" && \
-		pip install "./chatbot[dev]"; \
-	else \
-		pip install ./chatbot; \
-	fi
+# Create non-root user for security
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
 
-# Exponer el puerto en el que correrá la API (puedes cambiarlo según necesites)
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación con uvicorn
 CMD ["uvicorn", "chatbot.api:app", "--host", "0.0.0.0", "--port", "8080"]

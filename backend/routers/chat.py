@@ -9,9 +9,6 @@ from backend.models import UserInDB, UserRole
 
 router = APIRouter(tags=["chat"])
 
-# Timeout for chatbot requests (LLM can be slow)
-CHATBOT_TIMEOUT = 120.0
-
 
 @router.post("/chat")
 async def chat(
@@ -69,7 +66,7 @@ async def chat(
 
     # Forward to chatbot service
     try:
-        async with httpx.AsyncClient(timeout=CHATBOT_TIMEOUT) as client:
+        async with httpx.AsyncClient(timeout=settings.chatbot_timeout) as client:
             response = await client.post(
                 f"{settings.chatbot_service_url}/chat", json=json_data
             )

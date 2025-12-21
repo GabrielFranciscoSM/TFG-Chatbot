@@ -6,29 +6,9 @@ import json
 tools = importlib.import_module("chatbot.logic.tools.tools")
 
 
-def test_web_search_returns_result(monkeypatch):
-    class DummySearch:
-        def run(self, query):
-            return f"Results for {query}"
-
-    monkeypatch.setattr(tools, "DuckDuckGoSearchAPIWrapper", lambda: DummySearch())
-    assert tools.web_search.invoke("python") == "Results for python"
-
-
-def test_web_search_handles_exception(monkeypatch):
-    class DummySearch:
-        def run(self, query):
-            raise Exception("API error")
-
-    monkeypatch.setattr(tools, "DuckDuckGoSearchAPIWrapper", lambda: DummySearch())
-    result = tools.web_search.invoke("python")
-    assert result.startswith("Error performing web search:")
-
-
 def test_get_tools_returns_expected_tools():
     tool_list = tools.get_tools()
     assert isinstance(tool_list, list)
-    assert tools.web_search in tool_list
     assert tools.get_guia in tool_list
     assert tools.generate_test in tool_list
 

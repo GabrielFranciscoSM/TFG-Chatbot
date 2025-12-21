@@ -68,7 +68,7 @@ def test_professor(mock_users_collection):
         "email": "prof1@example.com",
         "hashed_password": get_password_hash("password123"),
         "role": UserRole.PROFESSOR,
-        "subjects": ["iv", "dsd"],  # Professor has these subjects assigned
+        "subjects": ["iv", "dsd"],
     }
     mock_users_collection.insert_one(user_data)
     return user_data

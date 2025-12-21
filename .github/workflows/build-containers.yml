@@ -1,8 +1,8 @@
 name: Build and Test Containers
 
 # Este workflow valida que los contenedores se construyen correctamente
-# Usa Docker (disponible en GitHub Actions) para builds, pero los comandos
-# son compatibles con Podman
+# Usa Docker (disponible en GitHub Actions) para builds.
+
 
 on:
   pull_request:

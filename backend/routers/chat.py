@@ -40,7 +40,7 @@ async def chat(
             {"_id": session_id}, {"$set": {"last_active": datetime.now(UTC)}}
         )
     else:
-        # Auto-create session if it doesn't exist (for backward compatibility and ease of use)
+        # Auto-create session if it doesn't exist
         requested_subject = json_data.get("asignatura")
 
         # Validate subject access if provided (allow "general" for everyone)
@@ -61,7 +61,7 @@ async def chat(
         }
         collection.insert_one(new_session)
 
-    # Validate subject access (redundant if new session, but safe for existing ones)
+    # Validate subject access
     requested_subject = json_data.get("asignatura")
     if requested_subject and requested_subject != "general":
         if user.role == UserRole.STUDENT and requested_subject not in user.subjects:

@@ -139,9 +139,6 @@ def dummy_mongo_client_class():
     return DummyMongoClient
 
 
-# --- Additional test doubles / factories for testGraph ---
-
-
 @pytest.fixture
 def dummy_message_factory():
     """Factory to create lightweight message-like objects (content, tool_calls)."""

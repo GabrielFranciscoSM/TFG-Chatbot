@@ -5,6 +5,26 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [1.0.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.1...v1.0.0) (2025-12-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chatbot:** The web_search tool and DuckDuckGo integration have been removed. The tool was not being used correctly and added unnecessary complexity.
+
+### Bug Fixes
+
+* add __main__.py entry points for local development ([3d43fb7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3d43fb707f82737f59e075d505b3155c18a573c0))
+* **chatbot:** downgrade Python to 3.12 for compatibility ([a019734](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a019734de9cf4011d325a37cac39ac95dba8f893))
+* ensure environment configuration consistency ([868daad](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/868daad2f2de2e023ae329711f4d6b3061624c15))
+* optimize Dockerfiles with multi-stage builds ([ef591a7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ef591a7790fa3eac9cb12ccf3054b0bee2fad1d6))
+* **rag_service:** create documents directory with correct permissions ([00caed4](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/00caed49f84344e952f2178e6f2a36bdd5318ff7))
+
+
+### Code Refactoring
+
+* **chatbot:** remove unused web_search tool ([04cbe09](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/04cbe0932fea620ae7a6743a20b29fdaa4cdc4d5))
+
 ## [0.4.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.0...v0.4.1) (2025-12-06)
 
 

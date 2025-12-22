@@ -21,7 +21,13 @@ dependencies = [
   "langgraph-checkpoint-sqlite",
   "fastapi",
   "uvicorn[standard]",
-  "beautifulsoup4>=4.12.2"
+  "beautifulsoup4>=4.12.2",
+  # Observability - Phoenix + OpenInference
+  "arize-phoenix>=4.0.0",
+  "openinference-instrumentation-langchain>=0.1.0",
+  "openinference-semantic-conventions>=0.1.0",
+  "opentelemetry-sdk>=1.20.0",
+  "opentelemetry-exporter-otlp>=1.20.0",
 ]
 
 [project.optional-dependencies]

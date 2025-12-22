@@ -33,6 +33,12 @@ class Settings(BaseSettings):
     mongo_auth_db: str | None = None
     db_name: str = "tfg_chatbot"
 
+    # Phoenix/OpenInference observability configuration
+    phoenix_enabled: bool = True
+    phoenix_host: str = "phoenix"
+    phoenix_port: str = "6006"
+    phoenix_project_name: str = "tfg-chatbot"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

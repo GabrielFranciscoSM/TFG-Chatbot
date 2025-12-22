@@ -87,7 +87,7 @@ jobs:
           python-version: '3.14'
 
       - name: Cache pip (backend)
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/pip
@@ -127,7 +127,7 @@ jobs:
           python-version: '3.14'
 
       - name: Cache pip (rag_service)
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/pip
@@ -168,7 +168,7 @@ jobs:
           python-version: '3.14'
 
       - name: Cache pip (chatbot)
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/pip

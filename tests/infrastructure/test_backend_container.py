@@ -87,7 +87,9 @@ def test_backend_chat_flow():
     token = get_auth_token()
     headers = {"Authorization": f"Bearer {token}"}
 
-    payload = {"query": "Hola", "asignatura": "iv", "id": "test-container-session"}
+    # Use unique session ID to avoid conflicts with previous test runs
+    session_id = f"test-container-{uuid.uuid4()}"
+    payload = {"query": "Hola", "asignatura": "iv", "id": session_id}
 
     # Aumentar timeout porque el LLM puede tardar en responder
     # Nota: Esto fallará si el servicio de chatbot no está corriendo o mockeado
@@ -103,9 +105,9 @@ def test_backend_chat_flow():
         assert resp.status_code == 200
         data = resp.json()
 
-        # Verificar estructura de la respuesta (depende de lo que devuelva el chatbot)
-        # Asumimos que devuelve lo que el chatbot service devuelve
-        assert "response" in data or "messages" in data
+        # Verificar estructura de la respuesta (nuevo formato)
+        assert "message" in data
+        assert "content" in data["message"]
 
     except requests.exceptions.ReadTimeout:
         pytest.fail("Timeout waiting for chat response")

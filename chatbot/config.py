@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     mongo_root_username: str | None = None
     mongo_root_password: SecretStr | None = None
     mongo_auth_db: str | None = None
-    mongo_db: str = "tfg_chatbot"
+    db_name: str = "tfg_chatbot"
 
     model_config = SettingsConfigDict(
         env_file=".env",

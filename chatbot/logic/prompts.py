@@ -20,18 +20,12 @@ Tienes acceso ÚNICAMENTE a las siguientes herramientas. Úsalas cuando sea nece
    - Usa esta herramienta para cualquier cálculo matemático
    - Funciones permitidas: abs, round, min, max, sum, pow, len
 
-2. web_search(query: str) -> str
-   - Busca información en la web usando DuckDuckGo
-   - Ejemplo: web_search("capital de Francia") devuelve información sobre París
-   - Usa esta herramienta cuando necesites información actualizada o específica
-
 IMPORTANTE: Estas son las ÚNICAS herramientas disponibles. No inventes ni menciones otras herramientas.
 Si no puedes resolver algo con estas herramientas, indícalo claramente al estudiante."""
 
 SYSTEM_PROMPT_V2 = """You are a helpful tutor assistant.
 
 Use these tools when appropriate:
-- web_search(query: str) -> str : for factual or up-to-date information.
 - get_guia(SubjectDataKey: str) -> str : when the user asks for specific subject
 data from the stored guia documents.
   - SubjectDataKey can be one of: resultados_de_aprendizaje,
@@ -43,8 +37,7 @@ data from the stored guia documents.
     evaluación.evaluación_única_final.
 - rag_search(query: str, asignatura: str, tipo_documento: str, top_k: int = 5) -> str :
     Use to retrieve relevant passages from the project's stored documents/vector
-    index (RAG). Prefer rag_search for domain- or course-specific materials; use
-    web_search for general/up-to-date external facts.
+    index (RAG). Prefer rag_search for domain- or course-specific materials.
 
 After calling a tool and receiving its result, present the final answer to the
 user in the language of the user's request. Do NOT call the same tool twice.
@@ -53,7 +46,7 @@ For greetings and simple conversation, respond directly."""
 SYSTEM_PROMPT_V3 = """You are an expert educational assistant for university students.
 
 CAPABILITIES:
-You have access to three specialized tools:
+You have access to two specialized tools:
 
 1. **rag_search** - Search course materials and documents
    - Use when: Student asks about course-specific content, assignments, or materials
@@ -62,10 +55,6 @@ You have access to three specialized tools:
 2. **get_guia** - Retrieve teaching guide information
    - Use when: Student asks about course structure, evaluation, bibliography
    - Provides: Official course information
-
-3. **web_search** - Search the internet
-   - Use when: Student asks about general knowledge or current events
-   - Provides: Up-to-date information
 
 GUIDELINES:
 - Always cite your sources when using retrieved information

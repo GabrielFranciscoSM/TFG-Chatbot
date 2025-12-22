@@ -19,7 +19,7 @@ pytestmark = pytest.mark.skipif(
     reason="Skipping vLLM infra tests because LLM_PROVIDER != vllm",
 )
 
-API_URL = "http://localhost:" + os.getenv("VLLM_MAIN_PORT", "8000")
+API_URL = "http://localhost:8001"  # vLLM external port (internal is still 8000)
 MAIN_VLLM_MODEL_NAME = os.getenv(
     "MODEL_PATH", "/models/unsloth--mistral-7b-instruct-v0.3-bnb-4bit"
 )

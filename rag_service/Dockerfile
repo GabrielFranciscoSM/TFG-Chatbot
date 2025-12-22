@@ -1,32 +1,45 @@
-# Dockerfile for RAG Service
+# =============================================================================
+# Stage 1: Build dependencies
+# =============================================================================
+FROM python:3.14-slim AS builder
+
+WORKDIR /build
+
+# Install build tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Copy only pyproject.toml first for better caching
+COPY rag_service/pyproject.toml rag_service/
+COPY rag_service/__init__.py rag_service/
+
+# Install dependencies (cached if pyproject.toml unchanged)
+ARG INSTALL_DEV=false
+RUN if [ "$INSTALL_DEV" = "true" ]; then \
+        pip install --no-cache-dir "./rag_service[dev]"; \
+    else \
+        pip install --no-cache-dir ./rag_service; \
+    fi
+
+# =============================================================================
+# Stage 2: Runtime
+# =============================================================================
 FROM python:3.14-slim
 
 WORKDIR /app
 
-# Build arg to enable optional dev dependencies installation
-ARG INSTALL_DEV=false
+# Copy installed packages from builder
+COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Upgrade pip/build tools and install the package (this will install dependencies
-# declared in pyproject.toml via the build backend).
-# Copy the build context into /app so the package files live directly at /app.
-# Installing from /app removes ambiguity about nested paths and makes the
-# `rag_service` package importable as `rag_service` at runtime.
-# Copy the package sources
+# Copy source code
 COPY rag_service rag_service/
 
-# Install build tools and the package. If INSTALL_DEV=true, install the
-# optional 'dev' extras declared in rag_service/pyproject.toml
-RUN pip install --upgrade pip setuptools wheel && \
-    if [ "$INSTALL_DEV" = "true" ]; then \
-        echo "Installing dev extras for rag_service" && \
-        pip install "./rag_service[dev]"; \
-    else \
-        pip install ./rag_service; \
-    fi
+# Create directories and non-root user for security
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /app/documents && \
+    chown -R appuser:appuser /app
+USER appuser
 
-# Expose API port
 EXPOSE 8081
 
-# Run the API. After installing the package from /app, the module path
-# `rag_service.api:app` should be importable by uvicorn.
 CMD ["uvicorn", "rag_service.api:app", "--host", "0.0.0.0", "--port", "8081"]

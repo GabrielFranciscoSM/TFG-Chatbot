@@ -43,15 +43,10 @@ def test_chatbot_container_accepts_chat_requests():
         assert resp.status_code == 200
         data = resp.json()
 
-        # Verificar estructura de la respuesta
-        assert "messages" in data
-        assert isinstance(data["messages"], list)
-        assert len(data["messages"]) > 0
-
-        # Verificar que hay al menos el mensaje del usuario
-        assert any(msg.get("type") == "human" for msg in data["messages"])
-        # Verificar que hay una respuesta del agente
-        assert any(msg.get("type") == "ai" for msg in data["messages"])
+        # Verificar estructura de la respuesta (nuevo formato)
+        assert "message" in data
+        assert "content" in data["message"]
+        assert data["message"]["type"] == "ai"
 
     except requests.exceptions.ReadTimeout:
         pytest.fail("Timeout waiting for chatbot response")

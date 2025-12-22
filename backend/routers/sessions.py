@@ -27,7 +27,7 @@ async def create_session(
 ):
     """Create a new chat session."""
 
-    # Verify subject enrollment (allow "general" for everyone)
+    # Verify subject enrollment
     if (
         user.role == UserRole.STUDENT
         and session_in.subject != "general"

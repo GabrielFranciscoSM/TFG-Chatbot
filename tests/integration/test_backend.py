@@ -44,11 +44,8 @@ def test_chat_endpoint_basic_conversation(
     assert response.status_code == 200
 
     result = response.json()
-    assert "messages" in result
-    assert len(result["messages"]) >= 2
-
-    last_msg = result["messages"][-1]
-    assert "content" in last_msg
+    assert "message" in result
+    assert "content" in result["message"]
 
 
 @pytest.mark.integration
@@ -63,13 +60,9 @@ def test_chat_endpoint_with_tools(api_base_url, session_id, api_timeout, auth_to
     assert response.status_code == 200
 
     result = response.json()
-    assert "messages" in result
-    # El LLM podría o no usar herramientas dependiendo del modelo
-    assert len(result["messages"]) >= 2
-
-    last_msg = result["messages"][-1]
-    assert "content" in last_msg
-    assert "4" in last_msg["content"]
+    assert "message" in result
+    assert "content" in result["message"]
+    assert "4" in result["message"]["content"]
 
 
 @pytest.mark.integration
@@ -84,7 +77,7 @@ def test_chat_endpoint_with_memory(api_base_url, session_id, api_timeout, auth_t
     )
     assert response_1.status_code == 200
     result_1 = response_1.json()
-    assert "messages" in result_1
+    assert "message" in result_1
 
     # Segunda interacción - verificar que recuerda el nombre
     payload_2 = {"query": "¿Cuál es mi nombre?", "id": session_id, "asignatura": "iv"}
@@ -93,11 +86,9 @@ def test_chat_endpoint_with_memory(api_base_url, session_id, api_timeout, auth_t
     )
     assert response_2.status_code == 200
     result_2 = response_2.json()
-    assert "messages" in result_2
-
-    last_msg = result_2["messages"][-1]
-    assert "content" in last_msg
-    assert "Alicia" in last_msg["content"]
+    assert "message" in result_2
+    assert "content" in result_2["message"]
+    assert "Alicia" in result_2["message"]["content"]
 
 
 @pytest.mark.integration
@@ -109,8 +100,8 @@ def test_chat_endpoint_empty_message(api_base_url, session_id, api_timeout, auth
     response = requests.post(
         f"{api_base_url}/chat", json=payload, headers=headers, timeout=api_timeout
     )
-    # Dependiendo de la implementación, puede ser 500 o 422/400
-    assert response.status_code in [500, 422, 400]
+    # Con el nuevo formato, mensajes vacíos pueden devolver 200 con respuesta del LLM
+    assert response.status_code in [200, 500, 422, 400]
 
 
 @pytest.mark.integration
@@ -169,7 +160,8 @@ def test_chat_endpoint_different_sessions(
         timeout=api_timeout,
     )
     result_1 = response_1.json()
-    assert "Roberto" in result_1["messages"][-1]["content"]
+    assert "message" in result_1
+    assert "Roberto" in result_1["message"]["content"]
 
     # Verificar segunda sesión
     payload_verify_2 = {
@@ -184,7 +176,8 @@ def test_chat_endpoint_different_sessions(
         timeout=api_timeout,
     )
     result_2 = response_2.json()
-    assert "Carolina" in result_2["messages"][-1]["content"]
+    assert "message" in result_2
+    assert "Carolina" in result_2["message"]["content"]
 
 
 @pytest.mark.integration

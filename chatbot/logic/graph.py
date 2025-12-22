@@ -16,8 +16,7 @@ Architecture:
     1. **think**: Main reasoning node that decides actions
     2. **rag_search**: Semantic search in document database
     3. **get_guia**: Retrieve teaching guide information
-    4. **web_search**: Search the web for additional context
-    5. **test_session**: Test generation and management subgraph
+    4. **test_session**: Test generation and management subgraph
 
     Flow:
         User Query -> think -> [tool_node] -> think -> Response
@@ -207,7 +206,7 @@ class GraphAgent:
         This node is the brain of the agent. It receives the conversation state,
         analyzes the user's query, and decides whether to:
         - Answer directly
-        - Call a tool (rag_search, get_guia, web_search, test_session)
+        - Call a tool (rag_search, get_guia, test_session)
 
         The LLM is bound with tools, enabling automatic tool selection based on
         the query content and conversation context.
@@ -320,33 +319,6 @@ class GraphAgent:
 
         return {"messages": [tool_message]}
 
-    def web_search(self, state: SubjectState):
-        """Nodo de búsqueda web. Realiza una búsqueda web y añade los resultados al estado."""
-        tools = get_tools()
-        web_search_tool = next(
-            (tool for tool in tools if tool.name == "web_search"), None
-        )
-
-        if web_search_tool is None:
-            raise ValueError("Web Search tool not found")
-
-        messages = state["messages"]
-        last_message = messages[-1]
-
-        tool_calls = getattr(last_message, "tool_calls", [])
-        if not tool_calls:
-            # No hay llamadas a herramientas, no hacer nada
-            return state
-
-        args = tool_calls[0]["args"]
-        tool_call_id = tool_calls[0]["id"]
-
-        web_search_result = web_search_tool.invoke(args)
-
-        tool_message = ToolMessage(content=web_search_result, tool_call_id=tool_call_id)
-
-        return {"messages": [tool_message]}
-
     def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""
         messages = state["messages"]
@@ -381,7 +353,6 @@ class GraphAgent:
         graph_builder.add_node("agent", self.think)
         graph_builder.add_node("rag_search", self.rag_search)
         graph_builder.add_node("get_guia", self.get_guia)
-        graph_builder.add_node("web_search", self.web_search)
         # Add test subgraph DIRECTLY as a node (not invoked!)
         graph_builder.add_node("test_session", test_subgraph)
 
@@ -395,14 +366,12 @@ class GraphAgent:
             {
                 "rag_search": "rag_search",
                 "get_guia": "get_guia",
-                "web_search": "web_search",
                 "generate_test": "test_session",  # Route to subgraph node!
                 END: END,
             },
         )
         graph_builder.add_edge("rag_search", "agent")
         graph_builder.add_edge("get_guia", "agent")
-        graph_builder.add_edge("web_search", "agent")
         graph_builder.add_edge("test_session", "agent")  # Subgraph returns to agent
 
         # Preparar persistencia

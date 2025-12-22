@@ -8,7 +8,6 @@ from typing import Any
 
 import requests
 from langchain.tools import tool
-from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from chatbot.config import settings as chatbot_settings
 from chatbot.db.mongo import MongoDBClient
@@ -18,27 +17,13 @@ from chatbot.logic.models import (
     SubjectDataKey,
     SubjectLookupInput,
     TestGenerationInput,
-    WebSearchInput,
 )
 
 logger = logging.getLogger(__name__)
 
 
-@tool(args_schema=WebSearchInput)
-def web_search(query: str) -> str:
-    """
-    Search the web for information using DuckDuckGo.
-    """
-    try:
-        search = DuckDuckGoSearchAPIWrapper()
-        results = search.run(query)
-        return results
-    except Exception as e:
-        return f"Error performing web search: {str(e)}"
-
-
 # List of all available tools
-AVAILABLE_TOOLS = [web_search]
+AVAILABLE_TOOLS: list = []
 
 
 def _navigate_nested_dict(data: dict, path: str) -> Any | None:

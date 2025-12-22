@@ -7,6 +7,7 @@ class Settings(BaseSettings):
 
     chatbot_service_url: str = "http://chatbot:8080"
     rag_service_url: str = "http://rag_service:8081"
+    chatbot_timeout: float = 120.0  # Timeout for LLM requests (can be slow)
 
     # MongoDB configuration
     mongo_uri: SecretStr | None = None

@@ -9,9 +9,6 @@ from backend.models import UserInDB, UserRole
 
 router = APIRouter(tags=["chat"])
 
-# Timeout for chatbot requests (LLM can be slow)
-CHATBOT_TIMEOUT = 120.0
-
 
 @router.post("/chat")
 async def chat(
@@ -40,7 +37,7 @@ async def chat(
             {"_id": session_id}, {"$set": {"last_active": datetime.now(UTC)}}
         )
     else:
-        # Auto-create session if it doesn't exist (for backward compatibility and ease of use)
+        # Auto-create session if it doesn't exist
         requested_subject = json_data.get("asignatura")
 
         # Validate subject access if provided (allow "general" for everyone)
@@ -61,7 +58,7 @@ async def chat(
         }
         collection.insert_one(new_session)
 
-    # Validate subject access (redundant if new session, but safe for existing ones)
+    # Validate subject access
     requested_subject = json_data.get("asignatura")
     if requested_subject and requested_subject != "general":
         if user.role == UserRole.STUDENT and requested_subject not in user.subjects:
@@ -69,7 +66,7 @@ async def chat(
 
     # Forward to chatbot service
     try:
-        async with httpx.AsyncClient(timeout=CHATBOT_TIMEOUT) as client:
+        async with httpx.AsyncClient(timeout=settings.chatbot_timeout) as client:
             response = await client.post(
                 f"{settings.chatbot_service_url}/chat", json=json_data
             )

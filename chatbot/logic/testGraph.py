@@ -120,23 +120,27 @@ class TestSessionGraph:
     def __init__(
         self,
         *,
-        llm_provider: Literal["vllm", "gemini"] = "vllm",
+        llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm",
         vllm_url: str | None = None,
         model_name: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
         gemini_model: str = "gemini-2.0-flash",
+        mistral_api_key: str | None = None,
+        mistral_model: str = "mistral-large-latest",
         temperature: float = 0.7,
     ):
         """Initialize with LLM configuration for answer evaluation.
 
         Args:
-            llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
+            llm_provider: "vllm" (local), "gemini" (Google), or "mistral" (Mistral AI)
             vllm_url: URL for vLLM service (only for vllm provider)
             model_name: Model name (only for vllm provider)
             openai_api_key: API key for vLLM OpenAI-compatible endpoint
             gemini_api_key: Google Gemini API key (only for gemini provider)
-            gemini_model: Gemini model name (default: gemini-1.5-flash)
+            gemini_model: Gemini model name (default: gemini-2.0-flash)
+            mistral_api_key: Mistral AI API key (only for mistral provider)
+            mistral_model: Mistral model name (default: mistral-large-latest)
             temperature: LLM temperature
         """
         self.llm_provider = llm_provider
@@ -153,6 +157,10 @@ class TestSessionGraph:
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
 
+        # Mistral configuration
+        self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
+        self.mistral_model = mistral_model
+
         # Initialize LLM for answer evaluation
         self.llm = self._get_llm()
 
@@ -163,9 +171,10 @@ class TestSessionGraph:
             temperature: Override temperature (uses instance default if None)
 
         Returns:
-            Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+            Configured LLM instance (ChatOpenAI, ChatGoogleGenerativeAI, or ChatMistralAI)
         """
         from langchain_google_genai import ChatGoogleGenerativeAI
+        from langchain_mistralai import ChatMistralAI
         from langchain_openai import ChatOpenAI
 
         temp = temperature if temperature is not None else self.temperature
@@ -178,6 +187,16 @@ class TestSessionGraph:
             return ChatGoogleGenerativeAI(
                 model=self.gemini_model,
                 google_api_key=self.gemini_api_key,
+                temperature=temp,
+            )
+        elif self.llm_provider == "mistral":
+            if not self.mistral_api_key:
+                raise ValueError(
+                    "MISTRAL_API_KEY not found. Set it in .env or pass mistral_api_key parameter."
+                )
+            return ChatMistralAI(
+                model=self.mistral_model,
+                mistral_api_key=self.mistral_api_key,
                 temperature=temp,
             )
         else:  # vllm

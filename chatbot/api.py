@@ -50,6 +50,7 @@ from fastapi import FastAPI, status
 from chatbot.config import settings
 from chatbot.db.mongo import MongoDBClient
 from chatbot.instrumentation import setup_phoenix_instrumentation
+from chatbot.logging_config import CorrelationIdMiddleware, setup_logging
 from chatbot.logic.graph import GraphAgent
 from chatbot.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
 from chatbot.models import (
@@ -64,6 +65,9 @@ from chatbot.models import (
     ScrapeResponse,
 )
 
+# Initialize structured logging
+setup_logging()
+
 # Initialize Phoenix/OpenInference instrumentation for LLM tracing
 # Must be called BEFORE creating ChatModel/LLM instances
 setup_phoenix_instrumentation()
@@ -75,6 +79,9 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+# Add correlation ID middleware
+app.add_middleware(CorrelationIdMiddleware)
 
 # Create a single GraphAgent instance for the whole process. Reusing the
 # same compiled graph/checkpointer across requests avoids resume problems

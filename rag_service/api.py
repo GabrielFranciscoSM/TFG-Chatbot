@@ -34,6 +34,7 @@ __version__ = "0.1.0"
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from rag_service.config import settings
 from rag_service.logging_config import CorrelationIdMiddleware, setup_logging
@@ -48,6 +49,9 @@ app = FastAPI(
     description="Retrieval-Augmented Generation service for educational chatbot",
     version=__version__,
 )
+
+# Initialize Prometheus instrumentator
+Instrumentator().instrument(app).expose(app)
 
 # Initialize structured logging
 setup_logging()

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from backend.logging_config import CorrelationIdMiddleware, setup_logging
 from backend.routers import admin, auth, chat, professor, sessions, users
@@ -8,6 +9,9 @@ from backend.routers import admin, auth, chat, professor, sessions, users
 setup_logging()
 
 app = FastAPI(title="TFG Chatbot Backend")
+
+# Initialize Prometheus instrumentator
+Instrumentator().instrument(app).expose(app)
 
 # Add correlation ID middleware
 app.add_middleware(CorrelationIdMiddleware)

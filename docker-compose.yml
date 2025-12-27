@@ -179,6 +179,21 @@ services:
       - phoenix_data:/data
     restart: unless-stopped
 
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    restart: unless-stopped
+
 volumes:
   mongodb_data:
   qdrant_storage:
@@ -186,3 +201,4 @@ volumes:
   rag_documents:
   vllm_cache:
   phoenix_data:
+  prometheus_data:

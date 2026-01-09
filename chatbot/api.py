@@ -46,6 +46,7 @@ Example:
 __version__ = "0.1.0"
 
 from fastapi import FastAPI, status
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from chatbot.config import settings
 from chatbot.db.mongo import MongoDBClient
@@ -79,6 +80,9 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+# Initialize Prometheus instrumentator for metrics endpoint
+Instrumentator().instrument(app).expose(app)
 
 # Add correlation ID middleware
 app.add_middleware(CorrelationIdMiddleware)

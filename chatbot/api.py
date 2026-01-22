@@ -50,6 +50,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from chatbot.config import settings
 from chatbot.db.mongo import MongoDBClient
+from chatbot.events import get_event_logger
 from chatbot.instrumentation import setup_phoenix_instrumentation
 from chatbot.logging_config import CorrelationIdMiddleware, setup_logging
 from chatbot.logic.graph import GraphAgent
@@ -232,6 +233,18 @@ async def chat(chat_request: ChatRequest):
             }
         }
     """
+    import time
+
+    start_time = time.time()
+
+    # Log question asked event
+    event_logger = get_event_logger()
+    event_logger.log_question_asked(
+        session_id=chat_request.id,
+        query=chat_request.query,
+        subject_id=chat_request.asignatura,
+    )
+
     respuesta = agente.call_agent(
         query=chat_request.query,
         id=chat_request.id,
@@ -245,6 +258,16 @@ async def chat(chat_request: ChatRequest):
         if hasattr(msg, "type") and msg.type == "ai":
             last_ai_message = ChatMessage(type="ai", content=msg.content)
             break
+
+    # Log answer received event
+    latency_ms = (time.time() - start_time) * 1000
+    if last_ai_message:
+        event_logger.log_answer_received(
+            session_id=chat_request.id,
+            answer=last_ai_message.content,
+            subject_id=chat_request.asignatura,
+            latency_ms=latency_ms,
+        )
 
     # Check for interrupt
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:

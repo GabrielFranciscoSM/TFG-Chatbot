@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     rag_service_url: str = "http://rag_service:8081"
 
     # LLM Provider configuration
-    llm_provider: Literal["vllm", "gemini"] = "vllm"
+    llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm"
 
     # vLLM configuration
     vllm_host: str = "vllm-openai"
@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     gemini_api_key: SecretStr | None = None
     gemini_model: str = "gemini-2.0-flash"
 
+    # Mistral configuration (SecretStr to avoid logging API key)
+    mistral_api_key: SecretStr | None = None
+    mistral_model: str = "mistral-large-latest"
+
     # MongoDB configuration
     mongo_uri: SecretStr | None = None
     mongo_hostname: str | None = None
@@ -32,6 +36,12 @@ class Settings(BaseSettings):
     mongo_root_password: SecretStr | None = None
     mongo_auth_db: str | None = None
     db_name: str = "tfg_chatbot"
+
+    # Phoenix/OpenInference observability configuration
+    phoenix_enabled: bool = True
+    phoenix_host: str = "phoenix"
+    phoenix_port: str = "6006"
+    phoenix_project_name: str = "tfg-chatbot"
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -48,6 +58,10 @@ class Settings(BaseSettings):
     def get_gemini_api_key(self) -> str | None:
         """Get Gemini API key value safely."""
         return self.gemini_api_key.get_secret_value() if self.gemini_api_key else None
+
+    def get_mistral_api_key(self) -> str | None:
+        """Get Mistral API key value safely."""
+        return self.mistral_api_key.get_secret_value() if self.mistral_api_key else None
 
     def get_mongo_uri(self) -> str:
         """Construct MongoDB URI from configuration."""

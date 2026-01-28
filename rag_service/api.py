@@ -31,12 +31,13 @@ Example:
 
 __version__ = "0.1.0"
 
-import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from rag_service.config import settings
+from rag_service.logging_config import CorrelationIdMiddleware, setup_logging
 from rag_service.routes.files import router as files_router
 from rag_service.routes.general import router as general_router
 from rag_service.routes.search_index import router as search_index_router
@@ -49,13 +50,14 @@ app = FastAPI(
     version=__version__,
 )
 
-# Ensure a default logging configuration so module loggers (e.g. rag_service.*)
-# emit INFO-level logs when the app is run directly (uvicorn may also configure
-# logging, but having a basicConfig here ensures logs appear in development).
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-)
+# Initialize Prometheus instrumentator
+Instrumentator().instrument(app).expose(app)
+
+# Initialize structured logging
+setup_logging()
+
+# Add correlation ID middleware
+app.add_middleware(CorrelationIdMiddleware)
 
 # Add CORS middleware
 app.add_middleware(

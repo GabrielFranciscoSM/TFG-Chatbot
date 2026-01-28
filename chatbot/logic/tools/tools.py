@@ -337,12 +337,13 @@ def _get_llm_for_test_generation():
     """Initialize LLM for test generation based on environment configuration.
 
     Returns:
-        Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+        Configured LLM instance (ChatOpenAI, ChatGoogleGenerativeAI, or ChatMistralAI)
 
     Raises:
         ValueError: If required API keys are missing
     """
     from langchain_google_genai import ChatGoogleGenerativeAI
+    from langchain_mistralai import ChatMistralAI
     from langchain_openai import ChatOpenAI
 
     from chatbot.config import settings
@@ -355,6 +356,16 @@ def _get_llm_for_test_generation():
         return ChatGoogleGenerativeAI(
             model=settings.gemini_model,
             google_api_key=gemini_key,
+            temperature=0.7,
+        )
+    elif settings.llm_provider == "mistral":
+        mistral_key = settings.get_mistral_api_key()
+        if not mistral_key:
+            raise ValueError("MISTRAL_API_KEY not found in environment")
+
+        return ChatMistralAI(
+            model=settings.mistral_model,
+            mistral_api_key=mistral_key,
             temperature=0.7,
         )
     else:  # vllm

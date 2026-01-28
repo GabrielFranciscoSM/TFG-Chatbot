@@ -46,9 +46,13 @@ Example:
 __version__ = "0.1.0"
 
 from fastapi import FastAPI, status
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from chatbot.config import settings
 from chatbot.db.mongo import MongoDBClient
+from chatbot.events import get_event_logger
+from chatbot.instrumentation import setup_phoenix_instrumentation
+from chatbot.logging_config import CorrelationIdMiddleware, setup_logging
 from chatbot.logic.graph import GraphAgent
 from chatbot.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
 from chatbot.models import (
@@ -63,6 +67,13 @@ from chatbot.models import (
     ScrapeResponse,
 )
 
+# Initialize structured logging
+setup_logging()
+
+# Initialize Phoenix/OpenInference instrumentation for LLM tracing
+# Must be called BEFORE creating ChatModel/LLM instances
+setup_phoenix_instrumentation()
+
 app = FastAPI(
     title="TFG Chatbot API",
     description="API for interacting with an intelligent chatbot powered by GraphAgent",
@@ -70,6 +81,12 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+# Initialize Prometheus instrumentator for metrics endpoint
+Instrumentator().instrument(app).expose(app)
+
+# Add correlation ID middleware
+app.add_middleware(CorrelationIdMiddleware)
 
 # Create a single GraphAgent instance for the whole process. Reusing the
 # same compiled graph/checkpointer across requests avoids resume problems
@@ -216,6 +233,18 @@ async def chat(chat_request: ChatRequest):
             }
         }
     """
+    import time
+
+    start_time = time.time()
+
+    # Log question asked event
+    event_logger = get_event_logger()
+    event_logger.log_question_asked(
+        session_id=chat_request.id,
+        query=chat_request.query,
+        subject_id=chat_request.asignatura,
+    )
+
     respuesta = agente.call_agent(
         query=chat_request.query,
         id=chat_request.id,
@@ -229,6 +258,16 @@ async def chat(chat_request: ChatRequest):
         if hasattr(msg, "type") and msg.type == "ai":
             last_ai_message = ChatMessage(type="ai", content=msg.content)
             break
+
+    # Log answer received event
+    latency_ms = (time.time() - start_time) * 1000
+    if last_ai_message:
+        event_logger.log_answer_received(
+            session_id=chat_request.id,
+            answer=last_ai_message.content,
+            subject_id=chat_request.asignatura,
+            latency_ms=latency_ms,
+        )
 
     # Check for interrupt
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:

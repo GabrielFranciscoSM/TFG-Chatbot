@@ -59,6 +59,7 @@ from typing import Any, Literal
 
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
@@ -134,23 +135,27 @@ class GraphAgent:
     def __init__(
         self,
         *,
-        llm_provider: Literal["vllm", "gemini"] = "vllm",
+        llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm",
         vllm_port: str | None = None,
         model_dir: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
         gemini_model: str = "gemini-2.0-flash",
+        mistral_api_key: str | None = None,
+        mistral_model: str = "mistral-large-latest",
         temperature: float = 0.1,
     ):
         """Initialize GraphAgent with configurable LLM provider.
 
         Args:
-            llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
+            llm_provider: "vllm" (local), "gemini" (Google), or "mistral" (Mistral AI)
             vllm_port: Port for vLLM service (only for vllm provider)
             model_dir: Model directory (only for vllm provider)
             openai_api_key: API key for vLLM OpenAI-compatible endpoint
             gemini_api_key: Google Gemini API key (only for gemini provider)
-            gemini_model: Gemini model name (default: gemini-1.5-flash)
+            gemini_model: Gemini model name (default: gemini-2.0-flash)
+            mistral_api_key: Mistral AI API key (only for mistral provider)
+            mistral_model: Mistral model name (default: mistral-large-latest)
             temperature: LLM temperature
         """
         self.llm_provider = llm_provider
@@ -167,6 +172,10 @@ class GraphAgent:
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
 
+        # Mistral configuration
+        self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
+        self.mistral_model = mistral_model
+
         # Cache interno del grafo compilado
         self._graph = None
 
@@ -177,7 +186,7 @@ class GraphAgent:
             temperature: Override temperature (uses instance default if None)
 
         Returns:
-            Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+            Configured LLM instance (ChatOpenAI, ChatGoogleGenerativeAI, or ChatMistralAI)
         """
         temp = temperature if temperature is not None else self.temperature
 
@@ -189,6 +198,16 @@ class GraphAgent:
             return ChatGoogleGenerativeAI(
                 model=self.gemini_model,
                 google_api_key=self.gemini_api_key,
+                temperature=temp,
+            )
+        elif self.llm_provider == "mistral":
+            if not self.mistral_api_key:
+                raise ValueError(
+                    "MISTRAL_API_KEY not found. Set it in .env or pass mistral_api_key parameter."
+                )
+            return ChatMistralAI(
+                model=self.mistral_model,
+                mistral_api_key=self.mistral_api_key,
                 temperature=temp,
             )
         else:  # vllm
@@ -346,6 +365,8 @@ class GraphAgent:
             openai_api_key=self.openai_api_key,
             gemini_api_key=self.gemini_api_key,
             gemini_model=self.gemini_model,
+            mistral_api_key=self.mistral_api_key,
+            mistral_model=self.mistral_model,
             temperature=0.7,  # Higher temperature for test evaluation
         )
 

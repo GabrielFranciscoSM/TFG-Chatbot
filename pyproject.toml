@@ -39,6 +39,7 @@ dependencies = [
   "beautifulsoup4>=4.12.2",
   "sentence-transformers>=2.2.2",
   "pypdf>=3.17.0",
+  "langchain-mistralai>=1.0.1",
 ]
 
 [project.optional-dependencies]

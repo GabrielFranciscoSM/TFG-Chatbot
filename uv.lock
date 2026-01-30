@@ -1160,6 +1160,22 @@ wheels = [
 ]
 
 [[package]]
+name = "langchain-mistralai"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "httpx-sse" },
+    { name = "langchain-core" },
+    { name = "pydantic" },
+    { name = "tokenizers" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/89/d0/42aefe12d072a31d7d1a76bc79308e6ff9df5f8a1fdf409b365ce29fe83b/langchain_mistralai-1.0.1.tar.gz", hash = "sha256:4770e4e1f6181c073d0d1c935e50ac8d824eee5169f83abee0955963c54c2b71", size = 139557, upload-time = "2025-10-24T13:55:40.35Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e6/5e/d1ed75e38ce431c49b609a524fc178ecbc38cc0a3ba44b5c3b935d82d824/langchain_mistralai-1.0.1-py3-none-any.whl", hash = "sha256:1777de4ceef3d3d5b2d08ab7cf6ce2d27188469eeae4d09756fd3b08ea3751a6", size = 17843, upload-time = "2025-10-24T13:55:39.358Z" },
+]
+
+[[package]]
 name = "langchain-openai"
 version = "1.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -2761,6 +2777,7 @@ dependencies = [
     { name = "langchain-community" },
     { name = "langchain-core" },
     { name = "langchain-google-genai" },
+    { name = "langchain-mistralai" },
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "langgraph-checkpoint-sqlite" },
@@ -2843,6 +2860,7 @@ requires-dist = [
     { name = "langchain-google-genai" },
     { name = "langchain-google-genai", marker = "extra == 'ai'" },
     { name = "langchain-google-genai", marker = "extra == 'dev'" },
+    { name = "langchain-mistralai", specifier = ">=1.0.1" },
     { name = "langchain-openai" },
     { name = "langchain-openai", marker = "extra == 'ai'" },
     { name = "langchain-openai", marker = "extra == 'dev'" },

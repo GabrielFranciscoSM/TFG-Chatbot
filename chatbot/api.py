@@ -67,6 +67,39 @@ from chatbot.models import (
     ScrapeResponse,
 )
 
+
+def _extract_text_content(content) -> str:
+    """Extract text content from LangChain message content.
+
+    Handles different content formats from various LLM providers:
+    - String: returned as-is
+    - List of content blocks (Gemini format): extracts text from each block
+
+    Args:
+        content: Message content, either a string or a list of content blocks
+
+    Returns:
+        Extracted text content as a string
+    """
+    if isinstance(content, str):
+        return content
+
+    if isinstance(content, list):
+        # Handle Gemini-style content blocks: [{'type': 'text', 'text': '...'}]
+        text_parts = []
+        for block in content:
+            if isinstance(block, dict):
+                # Extract 'text' field from content block
+                if "text" in block:
+                    text_parts.append(block["text"])
+            elif isinstance(block, str):
+                text_parts.append(block)
+        return "".join(text_parts)
+
+    # Fallback: convert to string
+    return str(content)
+
+
 # Initialize structured logging
 setup_logging()
 
@@ -256,7 +289,9 @@ async def chat(chat_request: ChatRequest):
     last_ai_message = None
     for msg in reversed(messages):
         if hasattr(msg, "type") and msg.type == "ai":
-            last_ai_message = ChatMessage(type="ai", content=msg.content)
+            last_ai_message = ChatMessage(
+                type="ai", content=_extract_text_content(msg.content)
+            )
             break
 
     # Log answer received event
@@ -351,7 +386,9 @@ async def resume_chat(resume_request: ResumeRequest):
     last_ai_message = None
     for msg in reversed(messages):
         if hasattr(msg, "type") and msg.type == "ai":
-            last_ai_message = ChatMessage(type="ai", content=msg.content)
+            last_ai_message = ChatMessage(
+                type="ai", content=_extract_text_content(msg.content)
+            )
             break
 
     # Check if there's another interrupt (next question)
@@ -398,7 +435,9 @@ async def get_history(session_id: str):
     messages = []
     for msg in raw_messages:
         if hasattr(msg, "type") and msg.type in ("human", "ai"):
-            messages.append(ChatMessage(type=msg.type, content=msg.content))
+            messages.append(
+                ChatMessage(type=msg.type, content=_extract_text_content(msg.content))
+            )
     return HistoryResponse(messages=messages)
 
 

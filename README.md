@@ -6,6 +6,78 @@
 [![Release](https://img.shields.io/github/v/tag/GabrielFranciscoSM/TFG-Chatbot?sort=semver)](https://github.com/GabrielFranciscoSM/TFG-Chatbot/releases)
 [![Documentación](https://img.shields.io/badge/Docs-GitHub%20Pages-blue?logo=github)](https://gabrielfranciscosm.github.io/TFG-Chatbot/)
 
+## 🚀 Quick Start
+
+Levanta el proyecto en **5 minutos** con Docker Compose.
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
+cd TFG-Chatbot
+```
+
+### 2. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+> [!TIP]
+> **Las API keys de LLM son opcionales.** Si no configuras una API key (Gemini/Mistral), puedes usar modelos locales con Ollama/vLLM. Para usar Gemini (recomendado), obtén una API key gratuita en [Google AI Studio](https://aistudio.google.com/app/apikey) y añádela a `.env`:
+> ```
+> LLM_PROVIDER=gemini
+> GEMINI_API_KEY=tu-api-key-aqui
+> ```
+
+### 3. Levantar los servicios
+
+```bash
+docker compose up -d
+```
+
+### 4. Descargar el modelo de embeddings (Ollama)
+
+El servicio RAG necesita el modelo `nomic-embed-text` para los embeddings:
+
+```bash
+# Opción A: Ejecutar el script de inicialización
+./scripts/init_ollama.sh
+
+# Opción B: Descargar manualmente
+docker exec ollama-service ollama pull nomic-embed-text
+```
+
+### 5. Crear usuarios de demostración
+
+```bash
+uv run scripts/seed_users.py
+```
+
+> [!NOTE]
+> Si no tienes `uv` instalado, puedes ejecutar: `pip install uv` o `pipx install uv`
+
+### ✅ ¡Listo!
+
+Accede a la aplicación:
+
+| Servicio | URL |
+|----------|-----|
+| **Frontend** | http://localhost:3000 |
+| **API Docs (Swagger)** | http://localhost:8000/docs |
+| **Phoenix (Observabilidad LLM)** | http://localhost:6006 |
+| **Grafana (Métricas)** | http://localhost:3001 |
+
+**Credenciales de demo:**
+
+| Usuario | Contraseña | Rol |
+|---------|------------|-----|
+| `admin` | `admin123` | Administrador |
+| `profesor` | `admin123` | Profesor |
+| `estudiante` | `admin123` | Estudiante |
+
+---
+
 ## Descripción
 
 **Trabajo de Fin de Grado (TFG)** de Ingeniería Informática que desarrolla un agente conversacional basado en IA orientado a entornos educativos. El proyecto combina los beneficios de los modelos de lenguaje (LLMs) con directrices pedagógicas para crear un tutor inteligente que reduce alucinaciones y favorece el aprendizaje activo del estudiante.

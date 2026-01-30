@@ -125,7 +125,7 @@ class TestSessionGraph:
         model_name: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
-        gemini_model: str = "gemini-2.0-flash",
+        gemini_model: str = "gemini-2.5-flash",
         mistral_api_key: str | None = None,
         mistral_model: str = "mistral-large-latest",
         temperature: float = 0.7,
@@ -138,7 +138,7 @@ class TestSessionGraph:
             model_name: Model name (only for vllm provider)
             openai_api_key: API key for vLLM OpenAI-compatible endpoint
             gemini_api_key: Google Gemini API key (only for gemini provider)
-            gemini_model: Gemini model name (default: gemini-2.0-flash)
+            gemini_model: Gemini model name (default: gemini-2.5-flash)
             mistral_api_key: Mistral AI API key (only for mistral provider)
             mistral_model: Mistral model name (default: mistral-large-latest)
             temperature: LLM temperature

@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # Gemini configuration (SecretStr to avoid logging API key)
     gemini_api_key: SecretStr | None = None
-    gemini_model: str = "gemini-2.0-flash"
+    gemini_model: str = "gemini-2.5-flash"
 
     # Mistral configuration (SecretStr to avoid logging API key)
     mistral_api_key: SecretStr | None = None

@@ -68,7 +68,7 @@ def test_rag_index_and_search_workflow(rag_base_url, api_timeout):
     search_payload = {
         "query": "¿Qué es la lógica difusa?",
         "top_k": 5,
-        "min_score": 0.3,
+        "similarity_threshold": 0.3,
     }
 
     search_response = requests.post(
@@ -283,7 +283,7 @@ def test_rag_search_no_results(rag_base_url, api_timeout):
     search_payload = {
         "query": "xyzabc123notexistingterm999",
         "top_k": 5,
-        "min_score": 0.9,  # Score muy alto para no obtener resultados
+        "similarity_threshold": 0.99,  # Score muy alto para no obtener resultados
     }
 
     response = requests.post(
@@ -360,7 +360,11 @@ def test_rag_search_with_similarity_threshold(rag_base_url, api_timeout):
     requests.post(f"{rag_base_url}/index", json=documents, timeout=api_timeout)
 
     # Buscar con umbral bajo (debe retornar resultados)
-    search_payload_low = {"query": "redes neuronales", "top_k": 5, "min_score": 0.1}
+    search_payload_low = {
+        "query": "redes neuronales",
+        "top_k": 5,
+        "similarity_threshold": 0.1,
+    }
 
     response_low = requests.post(
         f"{rag_base_url}/search", json=search_payload_low, timeout=api_timeout
@@ -369,7 +373,11 @@ def test_rag_search_with_similarity_threshold(rag_base_url, api_timeout):
     result_low = response_low.json()
 
     # Buscar con umbral alto (probablemente no retorne resultados)
-    search_payload_high = {"query": "redes neuronales", "top_k": 5, "min_score": 0.99}
+    search_payload_high = {
+        "query": "redes neuronales",
+        "top_k": 5,
+        "similarity_threshold": 0.99,
+    }
 
     response_high = requests.post(
         f"{rag_base_url}/search", json=search_payload_high, timeout=api_timeout

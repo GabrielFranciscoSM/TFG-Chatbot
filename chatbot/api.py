@@ -308,6 +308,17 @@ async def chat(chat_request: ChatRequest):
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
 
+        # When interrupted, if message is empty, use question_text from interrupt
+        # This happens because the last AI message is just the tool call
+        if last_ai_message is None or not last_ai_message.content:
+            question_text = interrupt_data.get("question_text", "")
+            question_num = interrupt_data.get("question_num", 1)
+            total_questions = interrupt_data.get("total_questions", 1)
+            formatted_message = (
+                f"📝 Pregunta {question_num}/{total_questions}\n\n{question_text}"
+            )
+            last_ai_message = ChatMessage(type="ai", content=formatted_message)
+
         return ChatResponse(
             message=last_ai_message,
             interrupted=True,
@@ -394,6 +405,16 @@ async def resume_chat(resume_request: ResumeRequest):
     # Check if there's another interrupt (next question)
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
         interrupt_data = respuesta["__interrupt__"][0].value
+
+        # When interrupted, if message is empty, use question_text from interrupt
+        if last_ai_message is None or not last_ai_message.content:
+            question_text = interrupt_data.get("question_text", "")
+            question_num = interrupt_data.get("question_num", 1)
+            total_questions = interrupt_data.get("total_questions", 1)
+            formatted_message = (
+                f"📝 Pregunta {question_num}/{total_questions}\n\n{question_text}"
+            )
+            last_ai_message = ChatMessage(type="ai", content=formatted_message)
 
         return ChatResponse(
             message=last_ai_message,

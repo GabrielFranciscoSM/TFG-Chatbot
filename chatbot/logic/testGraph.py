@@ -125,9 +125,9 @@ class TestSessionGraph:
         model_name: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
-        gemini_model: str = "gemini-2.5-flash",
+        gemini_model: str | None = None,
         mistral_api_key: str | None = None,
-        mistral_model: str = "mistral-large-latest",
+        mistral_model: str | None = None,
         temperature: float = 0.7,
     ):
         """Initialize with LLM configuration for answer evaluation.
@@ -153,13 +153,13 @@ class TestSessionGraph:
 
         # Gemini configuration
         self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
-        self.gemini_model = gemini_model
+        self.gemini_model = gemini_model or settings.gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
 
         # Mistral configuration
         self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
-        self.mistral_model = mistral_model
+        self.mistral_model = mistral_model or settings.mistral_model
 
         # Initialize LLM for answer evaluation
         self.llm = self._get_llm()
@@ -235,9 +235,13 @@ class TestSessionGraph:
         # Generate ALL questions upfront
         questions = generate_test_tool.invoke(args)
 
-        # Initialize test session state
+        # Get tool_call_id to respond immediately and satisfy Mistral order requirements
+        tool_call_id = tool_calls[0]["id"]
+        topic = args.get("topic", "este tema")
+
+        # Initialize test session state AND return ToolMessage immediately
         return {
-            "topic": args["topic"],
+            "topic": topic,
             "num_questions": args.get("num_questions", 5),
             "difficulty": args.get("difficulty"),
             "questions": questions if isinstance(questions, list) else [questions],
@@ -245,6 +249,12 @@ class TestSessionGraph:
             "user_answers": [],
             "feedback_history": [],
             "scores": [],
+            "messages": [
+                ToolMessage(
+                    content=f"Iniciando sesión de repaso sobre {topic}...",
+                    tool_call_id=tool_call_id,
+                )
+            ],
         }
 
     def present_question(self, state: TestSessionState):
@@ -279,7 +289,15 @@ class TestSessionGraph:
         else:
             question_text = str(question)
 
-        return {"messages": [AIMessage(content=question_text)]}
+        # Prepend pending feedback if exists
+        pending_feedback = state.get("pending_feedback")
+        if pending_feedback:
+            question_text = f"{pending_feedback}\n\n---\n\n{question_text}"
+
+        return {
+            "messages": [AIMessage(content=question_text)],
+            "pending_feedback": None,  # Consumed
+        }
 
     def answer_question(self, state: TestSessionState):
         """Wait for user answer, then evaluate it.
@@ -341,7 +359,7 @@ class TestSessionGraph:
         updated_scores = state.get("scores", []) + [is_correct]
         updated_index = idx + 1
 
-        # Format feedback message - THIS is saved to messages
+        # Format feedback message - we store it in state to prepend to next question
         emoji = "✅" if is_correct else "❌"
         feedback_msg = f"""{emoji} {feedback}
 
@@ -352,9 +370,9 @@ Progreso: {updated_index}/{state.get("num_questions", len(questions))} completad
             "feedback_history": updated_feedback,
             "scores": updated_scores,
             "current_question_index": updated_index,
+            "pending_feedback": feedback_msg,  # Save for next node
             "messages": [
                 HumanMessage(content=user_answer),
-                AIMessage(content=feedback_msg),
             ],
         }
 
@@ -375,28 +393,23 @@ Progreso: {updated_index}/{state.get("num_questions", len(questions))} completad
         total = state.get("num_questions", len(scores))
         percentage = (score / total) * 100 if total > 0 else 0
 
-        # Get tool_call_id from the original tool call
-        messages = state.get("messages", [])
-        last_ai_message = next(
-            (
-                m
-                for m in reversed(messages)
-                if hasattr(m, "tool_calls") and m.tool_calls
-            ),
-            None,
-        )
-        tool_call_id = (
-            last_ai_message.tool_calls[0]["id"] if last_ai_message else "unknown"
-        )
-
         topic = state.get("topic", "este tema")
+
+        # Merge final feedback with summary
+        pending_feedback = state.get("pending_feedback", "")
         summary = f"""🎓 ¡Sesión de repaso completada!
 
 Puntuación: {score}/{total} ({percentage:.0f}%)
 
 ¡Excelente trabajo repasando {topic}!"""
 
-        return {"messages": [ToolMessage(content=summary, tool_call_id=tool_call_id)]}
+        if pending_feedback:
+            summary = f"{pending_feedback}\n\n---\n\n{summary}"
+
+        return {
+            "messages": [AIMessage(content=summary)],
+            "pending_feedback": None,
+        }
 
     def evaluate_answer_with_llm(
         self, question: MultipleChoiceTest, user_answer: str, state: TestSessionState

@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from backend.dependencies import (
     get_sessions_collection,
+    get_subjects_collection,
     get_users_collection,
     require_admin_or_professor,
 )
@@ -18,6 +19,11 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 class AssignSubjectRequest(BaseModel):
     username: str
+    subject: str
+
+
+class BatchEnrollmentRequest(BaseModel):
+    usernames: list[str]
     subject: str
 
 
@@ -168,12 +174,20 @@ async def admin_enroll(
     request: AdminEnrollmentRequest,
     user: UserInDB = Depends(require_admin_or_professor),
     users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
 ):
     """
     Enroll a student in a subject.
     - Professors can only enroll students in their own subjects.
     - Admins can enroll anyone in any subject.
     """
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
+
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
     if not target_user:
@@ -197,6 +211,65 @@ async def admin_enroll(
         {"username": request.username}, {"$addToSet": {"subjects": request.subject}}
     )
     return {"status": "enrolled", "subject": request.subject, "user": request.username}
+
+
+@router.post("/enroll-batch")
+async def admin_enroll_batch(
+    request: BatchEnrollmentRequest,
+    user: UserInDB = Depends(require_admin_or_professor),
+    users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
+):
+    """
+    Enroll multiple students in a subject at once.
+    - Professors can only enroll students in their own subjects.
+    - Admins can enroll anyone in any subject.
+
+    Returns a summary of successful and failed enrollments.
+    """
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
+
+    # Professors can only enroll in their own subjects
+    if user.role == UserRole.PROFESSOR:
+        if request.subject not in user.subjects:
+            raise HTTPException(
+                status_code=403,
+                detail="You can only enroll students in your own subjects",
+            )
+
+    enrolled = []
+    not_found = []
+    not_students = []
+
+    for username in request.usernames:
+        target_user = users_collection.find_one({"username": username.strip()})
+        if not target_user:
+            not_found.append(username)
+            continue
+
+        # Only students can be enrolled
+        if target_user.get("role", UserRole.STUDENT) != UserRole.STUDENT:
+            not_students.append(username)
+            continue
+
+        users_collection.update_one(
+            {"username": username.strip()}, {"$addToSet": {"subjects": request.subject}}
+        )
+        enrolled.append(username)
+
+    return {
+        "status": "completed",
+        "subject": request.subject,
+        "enrolled": enrolled,
+        "enrolled_count": len(enrolled),
+        "not_found": not_found,
+        "not_students": not_students,
+    }
 
 
 @router.post("/unenroll")
@@ -238,11 +311,19 @@ async def assign_subject_to_professor(
     request: AssignSubjectRequest,
     user: UserInDB = Depends(require_admin_or_professor),
     users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
 ):
     """
     Assign a subject to a professor. Admin only.
     """
     require_admin(user)
+
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})

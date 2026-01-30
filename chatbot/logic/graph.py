@@ -65,7 +65,8 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
 from chatbot.config import settings
-from chatbot.logic.prompts import SYSTEM_PROMPT_V3
+from chatbot.logic.prompts import SYSTEM_PROMPT_COT, SYSTEM_PROMPT_V3
+from chatbot.logic.query_classifier import QueryComplexity, classify_query
 from chatbot.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
@@ -99,6 +100,8 @@ class SubjectState(MessagesState):
     asignatura: str | None
     # `context` will hold a list of document snippets returned by RAG tools
     context: list[dict[str, Any]] | None
+    # Chain-of-Thought reasoning from last response (if CoT was used)
+    thinking: str | None
 
     # Test session fields (shared with test subgraph)
     topic: str | None
@@ -109,6 +112,7 @@ class SubjectState(MessagesState):
     user_answers: list[str] | None
     feedback_history: list[str] | None
     scores: list[bool] | None
+    pending_feedback: str | None
 
 
 class GraphAgent:
@@ -140,9 +144,9 @@ class GraphAgent:
         model_dir: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
-        gemini_model: str = "gemini-2.5-flash",
+        gemini_model: str | None = None,
         mistral_api_key: str | None = None,
-        mistral_model: str = "mistral-large-latest",
+        mistral_model: str | None = None,
         temperature: float = 0.1,
     ):
         """Initialize GraphAgent with configurable LLM provider.
@@ -168,13 +172,13 @@ class GraphAgent:
 
         # Gemini configuration
         self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
-        self.gemini_model = gemini_model
+        self.gemini_model = gemini_model or settings.gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
 
         # Mistral configuration
         self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
-        self.mistral_model = mistral_model
+        self.mistral_model = mistral_model or settings.mistral_model
 
         # Cache interno del grafo compilado
         self._graph = None
@@ -220,12 +224,12 @@ class GraphAgent:
 
     def think(self, state: SubjectState):
         """
-        Main reasoning node of the agent.
+        Main reasoning node of the agent with adaptive Chain-of-Thought.
 
         This node is the brain of the agent. It receives the conversation state,
-        analyzes the user's query, and decides whether to:
-        - Answer directly
-        - Call a tool (rag_search, get_guia, test_session)
+        classifies the query complexity, and decides whether to:
+        - Use simple prompt for straightforward queries (lower latency)
+        - Use CoT prompt for complex queries (better reasoning)
 
         The LLM is bound with tools, enabling automatic tool selection based on
         the query content and conversation context.
@@ -234,24 +238,73 @@ class GraphAgent:
             state: Current conversation state with messages and context
 
         Returns:
-            Dict with updated messages including the agent's response or tool calls
+            Dict with updated messages and optional thinking field
         """
-        tools = get_tools()
+        import re
 
-        # Include the current subject in the system prompt
+        tools = get_tools()
         asignatura = state.get("asignatura") or "general"
-        system_prompt = SYSTEM_PROMPT_V3.format(asignatura=asignatura)
+        messages = state["messages"]
+
+        # Get the last user message for classification
+        last_user_message = None
+        for msg in reversed(messages):
+            if isinstance(msg, HumanMessage):
+                last_user_message = msg.content
+                break
+
+        # Classify query complexity
+        use_cot = False
+        if last_user_message:
+            complexity = classify_query(last_user_message)
+            use_cot = complexity == QueryComplexity.COMPLEX
+            logger.debug(
+                f"Query classified as {complexity.value}: '{last_user_message[:50]}...'"
+            )
+
+        # Select appropriate prompt based on complexity
+        if use_cot:
+            system_prompt = SYSTEM_PROMPT_COT.format(asignatura=asignatura)
+        else:
+            system_prompt = SYSTEM_PROMPT_V3.format(asignatura=asignatura)
+
         system_message = SystemMessage(content=system_prompt)
 
-        messages = state["messages"]
         if not messages or not isinstance(messages[0], SystemMessage):
             messages = [system_message] + messages
 
         llm = self._get_llm().bind_tools(tools)
-
         response = llm.invoke(messages)
 
-        return {"messages": [response]}
+        # Parse CoT response if applicable
+        result: dict[str, Any] = {"messages": [response]}
+
+        if use_cot and hasattr(response, "content") and response.content:
+            content = response.content
+
+            # Extract thinking section
+            thinking_match = re.search(
+                r"<thinking>(.*?)</thinking>", content, re.DOTALL
+            )
+            if thinking_match:
+                result["thinking"] = thinking_match.group(1).strip()
+                logger.debug(f"Extracted thinking: {result['thinking'][:100]}...")
+
+            # Extract answer section and update response content
+            answer_match = re.search(r"<answer>(.*?)</answer>", content, re.DOTALL)
+            if answer_match:
+                # Update the response content to only show the answer
+                from langchain_core.messages import AIMessage
+
+                clean_answer = answer_match.group(1).strip()
+                result["messages"] = [
+                    AIMessage(
+                        content=clean_answer,
+                        tool_calls=getattr(response, "tool_calls", []),
+                    )
+                ]
+
+        return result
 
     def rag_search(self, state: SubjectState):
         """
@@ -393,7 +446,7 @@ class GraphAgent:
         )
         graph_builder.add_edge("rag_search", "agent")
         graph_builder.add_edge("get_guia", "agent")
-        graph_builder.add_edge("test_session", "agent")  # Subgraph returns to agent
+        graph_builder.add_edge("test_session", END)  # Finalize after test session
 
         # Preparar persistencia
         storage_dir = os.path.join(os.path.dirname(__file__), "..", "storage")

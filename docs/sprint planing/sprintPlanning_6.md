@@ -31,6 +31,7 @@ Este sprint combina los objetivos del Milestone 7 (herramientas avanzadas del ch
 - **Razonamiento visible:** Implementar Chain-of-Thought para mostrar el proceso de pensamiento.
 - **Evaluación de dificultad:** Clasificar la complejidad de las preguntas del estudiante.
 - **Adaptación de respuestas:** Ajustar el nivel de detalle según la dificultad detectada.
+- **Mejora de Test (RAG + Feedback):** Integrar contexto RAG en la generación de preguntas y análisis de respuestas para feedback pedagógico.
 
 ### Integración Matemática (Clustering Textual)
 - **Topic Modeling (NMF):** Descubrimiento automático de tópicos latentes en la base de conocimiento.
@@ -132,11 +133,14 @@ Este sprint combina los objetivos del Milestone 7 (herramientas avanzadas del ch
 
 ### Semana 3: Evaluación de Dificultad + Validación Matemática
 
-6. **Módulo de Evaluación de Dificultad**
+6. **Módulo de Evaluación de Dificultad e Interacción**
    - Implementar clasificador de dificultad basado en clustering de preguntas.
    - Definir niveles de dificultad (básico, intermedio, avanzado).
    - Integrar evaluación en el flujo del agente.
    - Crear prompts adaptativos según nivel detectado.
+   - **Mejora del Tool de Test**:
+     - Integrar búsqueda RAG previa a la generación de preguntas para asegurar relevancia temática.
+     - Utilizar el contexto recuperado para enriquecer el feedback pedagógico tras las respuestas del alumno.
 
 7. **Notebook de Validación Matemática**
    - Crear `notebooks/math_clustering.ipynb`.

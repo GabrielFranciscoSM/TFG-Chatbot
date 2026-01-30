@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from backend.logging_config import CorrelationIdMiddleware, setup_logging
-from backend.routers import admin, auth, chat, professor, sessions, users
+from backend.routers import admin, auth, chat, professor, sessions, subjects, users
 
 # Initialize structured logging
 setup_logging()
@@ -31,6 +31,8 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(admin.router)
+app.include_router(subjects.router)
+app.include_router(subjects.public_router)
 app.include_router(professor.router)
 app.include_router(sessions.router)
 app.include_router(chat.router)

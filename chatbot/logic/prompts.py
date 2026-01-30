@@ -120,12 +120,16 @@ Topic: {topic}
 Number of questions: {num_questions}
 Difficulty level: {difficulty}
 
+Relevant Context:
+{context}
+
 Generate {num_questions} thoughtful review questions about {topic}. These are for informal review, not a formal exam.
 
 Requirements:
 - Questions should encourage reflection and understanding
 - Use clear, accessible language in Spanish
 - Cover different aspects of the topic
+- If "Relevant Context" is provided above, base the questions on that material to make them more specific and relevant to the course content.
 - Each question should have a clear, verifiable answer
 - Make questions progressively more challenging
 
@@ -137,6 +141,23 @@ Return ONLY a JSON array of questions in this exact format:
   }},
   ...
 ]"""
+
+
+TEST_QUERY_GENERATION_PROMPT = """You are an expert student assistant preparing a review session.
+
+Topic: {topic}
+Number of queries: {num_queries}
+
+Generate {num_queries} short and effective search queries in Spanish to find relevant course materials about {topic} in a document database.
+
+Requirements:
+- Queries should be precise and use technical terminology
+- Cover different sub-topics or aspects of {topic}
+- Focus on content that would be useful for creating educational questions
+- Return ONLY a JSON array of strings
+
+Example:
+["arquitectura de contenedores docker", "comandos básicos de docker", "uso de volúmenes en docker"]"""
 
 
 TEST_EVALUATION_PROMPT = """You are evaluating a student's answer in a friendly review session.

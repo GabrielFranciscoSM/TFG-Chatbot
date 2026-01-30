@@ -53,7 +53,7 @@ Example:
 """
 
 import os
-from typing import Literal
+from typing import Any, Literal
 
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langgraph.graph import END, MessagesState, StateGraph
@@ -87,11 +87,15 @@ class TestSessionState(MessagesState):
     topic: str
     num_questions: int
     difficulty: str | None
+    asignatura: str | None
     questions: list[MultipleChoiceTest]
     current_question_index: int
     user_answers: list[str]
     feedback_history: list[str]
     scores: list[bool]
+    queries: list[str] | None
+    context: list[dict[str, Any]] | None
+    pending_feedback: str | None
     # messages is inherited from MessagesState (shared with parent)
 
 
@@ -208,13 +212,110 @@ class TestSessionGraph:
             )
 
     def initialize_test(self, state: TestSessionState):
-        """Entry point: Extract tool call args and generate questions.
+        """Entry point: Extract tool call args and prepare state.
 
         This node:
         1. Reads last message's tool_calls from parent state
-        2. Generates all questions using generate_test tool
-        3. Initializes test tracking fields
+        2. Initializes test tracking fields and topic
         """
+        messages = state["messages"]
+        last_message = messages[-1]
+        tool_calls = getattr(last_message, "tool_calls", [])
+
+        if not tool_calls:
+            return {}
+
+        # Process the first generate_test tool call, but respond to ALL to satisfy Mistral
+        target_call = None
+        tool_messages = []
+
+        for tc in tool_calls:
+            if tc["name"] == "generate_test" and target_call is None:
+                target_call = tc
+                content = f"Preparando sesión de repaso sobre {tc['args'].get('topic', 'este tema')}..."
+            else:
+                content = "Ignorando llamada a herramienta duplicada o no válida durante el test."
+
+            tool_messages.append(
+                ToolMessage(
+                    content=content,
+                    tool_call_id=tc["id"],
+                )
+            )
+
+        if not target_call:
+            return {"messages": tool_messages}
+
+        args = target_call["args"]
+        topic = args.get("topic", "este tema")
+        num_questions = args.get("num_questions", 5)
+        difficulty = args.get("difficulty")
+
+        # Initialize test session state AND return ToolMessages
+        return {
+            "topic": topic,
+            "num_questions": num_questions,
+            "difficulty": difficulty,
+            "asignatura": state.get("asignatura"),
+            "current_question_index": 0,
+            "user_answers": [],
+            "feedback_history": [],
+            "scores": [],
+            "context": [],
+            "queries": [],
+            "messages": tool_messages,
+        }
+
+    def generate_queries_node(self, state: TestSessionState):
+        """Generate search queries for the RAG service based on the topic."""
+        import json
+        import re
+
+        from chatbot.logic.prompts import TEST_QUERY_GENERATION_PROMPT
+
+        topic = state.get("topic")
+        llm = self._get_llm(temperature=0.3)  # Lower temperature for query generation
+
+        prompt = TEST_QUERY_GENERATION_PROMPT.format(topic=topic, num_queries=3)
+        response = llm.invoke(prompt)
+        response_text = (
+            response.content if hasattr(response, "content") else str(response)
+        )
+
+        # Parse JSON array of queries
+        queries = []
+        json_match = re.search(r"\[.*\]", response_text, re.DOTALL)
+        if json_match:
+            try:
+                queries = json.loads(json_match.group())
+            except Exception:
+                queries = [topic]
+        else:
+            queries = [topic]
+
+        return {"queries": queries}
+
+    def retrieve_context_node(self, state: TestSessionState):
+        """Invoke RAG search tool for each generated query."""
+        from chatbot.logic.tools.tools import rag_search
+
+        queries = state.get("queries", [])
+        asignatura = state.get("asignatura")
+        all_context = []
+
+        for query in queries:
+            try:
+                # Call tool directly (it's a LangChain tool, use .func)
+                result = rag_search.func(query=query, asignatura=asignatura, top_k=3)
+                if result.get("ok"):
+                    all_context.extend(result.get("results", []))
+            except Exception as e:
+                print(f"Error in proactive RAG search for query '{query}': {e}")
+
+        return {"context": all_context}
+
+    def generate_questions_node(self, state: TestSessionState):
+        """Generate test questions using the proactively retrieved context."""
         from chatbot.logic.tools.tools import get_tools
 
         tools = get_tools()
@@ -223,36 +324,37 @@ class TestSessionGraph:
         if generate_test_tool is None:
             raise ValueError("generate_test tool not found")
 
-        messages = state["messages"]
-        last_message = messages[-1]
-        tool_calls = getattr(last_message, "tool_calls", [])
+        topic = state.get("topic")
+        num_questions = state.get("num_questions", 5)
+        difficulty = state.get("difficulty")
+        context_list = state.get("context", [])
 
-        if not tool_calls:
-            return {}
-
-        args = tool_calls[0]["args"]
+        # Format context for the tool
+        context_text = ""
+        if context_list:
+            context_text = "\n\n".join(
+                [
+                    f"Fragmento {i+1}:\n{item['content']}"
+                    for i, item in enumerate(context_list)
+                    if isinstance(item, dict) and "content" in item
+                ]
+            )
 
         # Generate ALL questions upfront
+        args = {
+            "topic": topic,
+            "num_questions": num_questions,
+            "difficulty": difficulty,
+            "context": context_text if context_text else None,
+        }
+
         questions = generate_test_tool.invoke(args)
 
-        # Get tool_call_id to respond immediately and satisfy Mistral order requirements
-        tool_call_id = tool_calls[0]["id"]
-        topic = args.get("topic", "este tema")
-
-        # Initialize test session state AND return ToolMessage immediately
         return {
-            "topic": topic,
-            "num_questions": args.get("num_questions", 5),
-            "difficulty": args.get("difficulty"),
             "questions": questions if isinstance(questions, list) else [questions],
-            "current_question_index": 0,
-            "user_answers": [],
-            "feedback_history": [],
-            "scores": [],
             "messages": [
-                ToolMessage(
-                    content=f"Iniciando sesión de repaso sobre {topic}...",
-                    tool_call_id=tool_call_id,
+                AIMessage(
+                    content=f"He recopilado información relevante sobre {topic}. ¡Empecemos con las preguntas!"
                 )
             ],
         }
@@ -292,7 +394,7 @@ class TestSessionGraph:
         # Prepend pending feedback if exists
         pending_feedback = state.get("pending_feedback")
         if pending_feedback:
-            question_text = f"{pending_feedback}\n\n---\n\n{question_text}"
+            question_text = f"📢 Resultados de la pregunta anterior:\n{pending_feedback}\n\n---\n\n{question_text}"
 
         return {
             "messages": [AIMessage(content=question_text)],
@@ -488,15 +590,21 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
         """
         subgraph_builder = StateGraph(TestSessionState)
 
-        # Add nodes - NOW includes initialization as entry point
+        # Add nodes
         subgraph_builder.add_node("initialize_test", self.initialize_test)
+        subgraph_builder.add_node("generate_queries", self.generate_queries_node)
+        subgraph_builder.add_node("retrieve_context", self.retrieve_context_node)
+        subgraph_builder.add_node("generate_questions", self.generate_questions_node)
         subgraph_builder.add_node("present_question", self.present_question)
         subgraph_builder.add_node("answer_question", self.answer_question)
         subgraph_builder.add_node("finalize", self.finalize_test)
 
-        # Define flow - START with initialization
+        # Define flow
         subgraph_builder.set_entry_point("initialize_test")
-        subgraph_builder.add_edge("initialize_test", "present_question")
+        subgraph_builder.add_edge("initialize_test", "generate_queries")
+        subgraph_builder.add_edge("generate_queries", "retrieve_context")
+        subgraph_builder.add_edge("retrieve_context", "generate_questions")
+        subgraph_builder.add_edge("generate_questions", "present_question")
         subgraph_builder.add_edge("present_question", "answer_question")
         subgraph_builder.add_conditional_edges(
             "answer_question",

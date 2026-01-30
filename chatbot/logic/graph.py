@@ -332,25 +332,41 @@ class GraphAgent:
         tool_calls = getattr(last_message, "tool_calls", [])
         if not tool_calls:
             # No hay llamadas a herramientas, no hacer nada
-            state.context = []
-            return state
+            return {"context": []}
 
-        args = tool_calls[0]["args"]
-        tool_call_id = tool_calls[0]["id"]
+        tool_messages = []
 
-        rag_result = rag_tool.invoke(args)
+        for tc in tool_calls:
+            if tc["name"] == "rag_search":
+                tool_call_id = tc["id"]
+                args = tc["args"]
 
-        results = rag_result.get("results", [])
+                # Execute tool
+                rag_result = rag_tool.invoke(args)
+                results = rag_result.get("results", [])
 
-        content = "This is chunks of context:\n"
+                content = "This is chunks of context:\n"
+                for result in results:
+                    content += f"\n- {result['content']}\n"
+                    # Store both content and metadata
+                    if state.get("context") is None:
+                        state["context"] = []
+                    state["context"].append(
+                        {"content": result["content"], "metadata": result["metadata"]}
+                    )
+                tool_messages.append(
+                    ToolMessage(content=content, tool_call_id=tool_call_id)
+                )
+            else:
+                # Placeholder response for other tool calls to satisfy Mistral
+                tool_messages.append(
+                    ToolMessage(
+                        content="Procesando...",
+                        tool_call_id=tc["id"],
+                    )
+                )
 
-        for result in results:
-            content += f"\n- {result['content']}\n"
-            state["context"].append(result["metadata"])
-
-        tool_message = ToolMessage(content=content, tool_call_id=tool_call_id)
-
-        return {"messages": [tool_message]}
+        return {"messages": tool_messages}
 
     def get_guia(self, state: SubjectState):
         """
@@ -380,16 +396,26 @@ class GraphAgent:
             # No hay llamadas a herramientas, no hacer nada
             return state
 
-        args = tool_calls[0]["args"]
-        args["asignatura"] = state.get("asignatura")
+        tool_messages = []
+        for tc in tool_calls:
+            if tc["name"] == "get_guia":
+                tool_call_id = tc["id"]
+                args = tc["args"]
+                args["asignatura"] = state.get("asignatura")
 
-        tool_call_id = tool_calls[0]["id"]
+                content = guia_tool.invoke(args)
+                tool_messages.append(
+                    ToolMessage(content=content, tool_call_id=tool_call_id)
+                )
+            else:
+                tool_messages.append(
+                    ToolMessage(
+                        content="Procesando...",
+                        tool_call_id=tc["id"],
+                    )
+                )
 
-        guia_result = guia_tool.invoke(args)
-
-        tool_message = ToolMessage(content=guia_result, tool_call_id=tool_call_id)
-
-        return {"messages": [tool_message]}
+        return {"messages": tool_messages}
 
     def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""

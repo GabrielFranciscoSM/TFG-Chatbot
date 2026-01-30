@@ -147,3 +147,7 @@ class TestGenerationInput(BaseModel):
         None,
         description="Desired difficulty level of the questions (e.g., easy, medium, hard)",
     )
+    context: str | None = Field(
+        None,
+        description="Additional context for question generation (e.g., RAG results)",
+    )

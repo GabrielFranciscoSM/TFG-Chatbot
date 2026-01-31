@@ -287,6 +287,80 @@ class TFIDFVectorizer:
         return self.feature_names_
 
 
+class OllamaEmbeddings:
+    """Embeddings using Ollama API with nomic-embed-text model.
+
+    This provides dense semantic embeddings (768 dimensions) as an alternative
+    to sparse TF-IDF representations.
+
+    Requires Ollama running locally (or in Docker) with nomic-embed-text model.
+    """
+
+    def __init__(
+        self,
+        model: str = "nomic-embed-text",
+        base_url: str = "http://localhost:11435",
+    ):
+        """Initialize Ollama embeddings.
+
+        Args:
+            model: Ollama embedding model name
+            base_url: Ollama API base URL
+        """
+        self.model = model
+        self.base_url = base_url
+        self.embedding_dim = 768
+
+    def _get_embedding(self, text: str) -> np.ndarray:
+        """Get embedding for a single text using Ollama API."""
+        import urllib.error
+        import urllib.request
+
+        url = f"{self.base_url}/api/embeddings"
+        payload = json.dumps({"model": self.model, "prompt": text}).encode("utf-8")
+
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=60) as response:
+                result = json.loads(response.read().decode("utf-8"))
+                return np.array(result["embedding"])
+        except urllib.error.URLError as e:
+            logger.error(f"Failed to get embedding: {e}")
+            raise
+
+    def fit_transform(self, documents: list[str]) -> np.ndarray:
+        """Transform documents to embedding matrix.
+
+        Returns:
+            Embedding matrix of shape (n_docs, 768), normalized to non-negative
+        """
+        n_docs = len(documents)
+        embeddings = np.zeros((n_docs, self.embedding_dim))
+
+        logger.info(
+            f"Generating embeddings for {n_docs} documents with {self.model}..."
+        )
+
+        for i, doc in enumerate(documents):
+            if (i + 1) % 50 == 0:
+                logger.info(f"  Processed {i + 1}/{n_docs} documents")
+
+            try:
+                embeddings[i] = self._get_embedding(doc)
+            except Exception as e:
+                logger.warning(f"Failed to get embedding for doc {i}: {e}")
+                # Use zero vector as fallback
+                embeddings[i] = np.zeros(self.embedding_dim)
+
+        return embeddings
+
+
 class NMF:
     """Non-negative Matrix Factorization using multiplicative update rules.
 
@@ -638,6 +712,7 @@ class TopicModeler:
         max_iter: int = 200,
         random_state: int = 42,
         cost: str = "frobenius",
+        use_embeddings: bool = False,
     ):
         """Initialize topic modeler.
 
@@ -647,8 +722,11 @@ class TopicModeler:
             max_iter: Maximum NMF iterations
             random_state: Random seed
             cost: NMF cost function ('frobenius' or 'kl')
+            use_embeddings: Whether to use dense embeddings instead of TF-IDF
         """
+        self.use_embeddings = use_embeddings
         self.vectorizer = TFIDFVectorizer(max_features=max_features)
+        self.embeddings_vectorizer = OllamaEmbeddings() if use_embeddings else None
         self.nmf = NMF(
             n_components=n_components,
             max_iter=max_iter,
@@ -658,6 +736,7 @@ class TopicModeler:
         self.coherence_scorer: CoherenceScorer | None = None
         self.tfidf_matrix_: np.ndarray | None = None
         self.documents_: list[str] | None = None
+        self.word_embeddings_: np.ndarray | None = None
 
     def fit(self, documents: list[str]) -> None:
         """Fit topic model to documents.
@@ -670,14 +749,38 @@ class TopicModeler:
         # Store documents for coherence calculation
         self.documents_ = documents
 
-        # Step 1: TF-IDF vectorization
+        # Step 1: TF-IDF vectorization (always needed for vocabulary/coherence)
         self.tfidf_matrix_ = self.vectorizer.fit_transform(documents)
+
+        if self.use_embeddings:
+            # Step 2: Dense embeddings
+            assert self.embeddings_vectorizer is not None
+            V = self.embeddings_vectorizer.fit_transform(documents)
+
+            # Ensure non-negativity for NMF (shift by min value)
+            v_min = V.min()
+            if v_min < 0:
+                V = V - v_min
+
+            # Step 3: Embed vocabulary for topic interpretation
+            logger.info("Embedding vocabulary for topic interpretation...")
+            feature_names = self.vectorizer.get_feature_names()
+            self.word_embeddings_ = np.zeros((len(feature_names), 768))
+            for i, word in enumerate(feature_names):
+                try:
+                    self.word_embeddings_[i] = (
+                        self.embeddings_vectorizer._get_embedding(word)
+                    )
+                except Exception:
+                    self.word_embeddings_[i] = np.zeros(768)
+        else:
+            V = self.tfidf_matrix_
 
         # Step 2: Initialize coherence scorer
         self.coherence_scorer = CoherenceScorer(self.vectorizer)
 
         # Step 3: NMF decomposition
-        self.nmf.fit(self.tfidf_matrix_)
+        self.nmf.fit(V)
 
     def get_topics(self, n_words: int = 10) -> dict[int, list[str]]:
         """Extract top words for each topic.
@@ -694,11 +797,25 @@ class TopicModeler:
         feature_names = self.vectorizer.get_feature_names()
         topics = {}
 
-        for topic_idx, topic_vec in enumerate(self.nmf.H_):
-            # Get indices of top words
-            top_indices = topic_vec.argsort()[-n_words:][::-1]
-            top_words = [feature_names[i] for i in top_indices]
-            topics[topic_idx] = top_words
+        if self.use_embeddings and self.word_embeddings_ is not None:
+            # Topic vectors in H are in embedding space (shifted)
+            # Normalize word embeddings for cosine similarity
+            norms = np.linalg.norm(self.word_embeddings_, axis=1, keepdims=True)
+            norms[norms == 0] = 1
+            word_emb_norm = self.word_embeddings_ / norms
+
+            for topic_idx, topic_emb in enumerate(self.nmf.H_):
+                # Calculate cosine similarity manually using dot product
+                # (Assuming topic_emb is also representative of semantic space)
+                similarities = word_emb_norm @ topic_emb
+                top_indices = similarities.argsort()[-n_words:][::-1]
+                topics[topic_idx] = [feature_names[i] for i in top_indices]
+        else:
+            for topic_idx, topic_vec in enumerate(self.nmf.H_):
+                # Get indices of top words
+                top_indices = topic_vec.argsort()[-n_words:][::-1]
+                top_words = [feature_names[i] for i in top_indices]
+                topics[topic_idx] = top_words
 
         return topics
 
@@ -727,6 +844,7 @@ class TopicModeler:
 
         topics = self.get_topics(n_words=n_words)
 
+        assert self.tfidf_matrix_ is not None
         uci_scores = self.coherence_scorer.uci_coherence(topics, self.documents_)
         umass_scores = self.coherence_scorer.umass_coherence(topics, self.tfidf_matrix_)
 
@@ -850,6 +968,11 @@ def main():
         action="store_true",
         help="Run with fewer documents for testing",
     )
+    parser.add_argument(
+        "--embeddings",
+        action="store_true",
+        help="Use dense embeddings (Ollama) instead of TF-IDF",
+    )
 
     args = parser.parse_args()
 
@@ -881,6 +1004,7 @@ def main():
             max_features=args.max_features,
             max_iter=args.max_iter,
             cost=args.cost,
+            use_embeddings=args.embeddings,
         )
 
         modeler.fit(documents)

@@ -65,9 +65,8 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
 from chatbot.config import settings
-from chatbot.logic.difficulty import classify_difficulty_detailed
-from chatbot.logic.prompts import SYSTEM_PROMPT_COT, SYSTEM_PROMPT_V3
-from chatbot.logic.query_classifier import QueryComplexity, classify_query
+from chatbot.logic.difficulty import DifficultyLevel, classify_difficulty_detailed
+from chatbot.logic.prompts import SYSTEM_PROMPT_COT, get_adaptive_prompt
 from chatbot.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
@@ -256,30 +255,30 @@ class GraphAgent:
                 last_user_message = msg.content
                 break
 
-        # Classify query complexity
-        use_cot = False
+        # Classify query difficulty level (used for both prompt adaptation and CoT decision)
         query_difficulty = None
+        use_cot = False
         if last_user_message:
-            complexity = classify_query(last_user_message)
-            use_cot = complexity == QueryComplexity.COMPLEX
-            logger.debug(
-                f"Query classified as {complexity.value}: '{last_user_message[:50]}...'"
-            )
-
-            # Classify query difficulty level
             difficulty_result = classify_difficulty_detailed(last_user_message)
             query_difficulty = difficulty_result.level.value
+            # Use Chain-of-Thought for advanced queries (need deeper reasoning)
+            use_cot = difficulty_result.level == DifficultyLevel.ADVANCED
             logger.debug(
                 f"Query difficulty: {query_difficulty} "
                 f"(confidence: {difficulty_result.confidence:.2f}, "
-                f"method: {difficulty_result.method})"
+                f"method: {difficulty_result.method}, use_cot: {use_cot})"
             )
 
-        # Select appropriate prompt based on complexity
+        # Select appropriate prompt based on difficulty level (HU #17)
         if use_cot:
+            # CoT prompt for advanced/complex queries (deeper reasoning)
             system_prompt = SYSTEM_PROMPT_COT.format(asignatura=asignatura)
+        elif query_difficulty:
+            # Adaptive prompt based on difficulty level
+            system_prompt = get_adaptive_prompt(query_difficulty, asignatura)
         else:
-            system_prompt = SYSTEM_PROMPT_V3.format(asignatura=asignatura)
+            # Fallback to intermediate prompt
+            system_prompt = get_adaptive_prompt("intermediate", asignatura)
 
         system_message = SystemMessage(content=system_prompt)
 

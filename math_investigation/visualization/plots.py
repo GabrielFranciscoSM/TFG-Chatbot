@@ -359,3 +359,267 @@ def generate_concept_map(
 
     logger.info(f"Concept map saved to {output}")
     return concept_map
+
+
+# =============================================================================
+# Dimensionality Reduction Visualizations (t-SNE / UMAP)
+# =============================================================================
+
+
+def plot_tsne_clusters(
+    embeddings: np.ndarray,
+    labels: np.ndarray,
+    output_path: str,
+    perplexity: int = 30,
+    title: str = "t-SNE Cluster Visualization",
+    label_names: dict[int, str] | None = None,
+    figsize: tuple[int, int] = (12, 8),
+) -> None:
+    """Plot t-SNE dimensionality reduction with cluster coloring.
+
+    Args:
+        embeddings: High-dimensional embeddings array (n_samples, n_features)
+        labels: Cluster labels for each sample (n_samples,)
+        output_path: Path to save the plot
+        perplexity: t-SNE perplexity parameter (default 30, range 5-50)
+        title: Plot title
+        label_names: Optional mapping from label int to display name
+        figsize: Figure size as (width, height)
+    """
+    try:
+        from sklearn.manifold import TSNE
+    except ImportError:
+        logger.warning("sklearn not available, skipping t-SNE plot")
+        return
+
+    logger.info(f"Computing t-SNE with perplexity={perplexity}...")
+
+    # Adjust perplexity if needed (must be < n_samples)
+    n_samples = embeddings.shape[0]
+    if perplexity >= n_samples:
+        perplexity = max(5, n_samples // 4)
+        logger.warning(f"Adjusted perplexity to {perplexity} due to small sample size")
+
+    tsne = TSNE(
+        n_components=2,
+        perplexity=perplexity,
+        random_state=42,
+        max_iter=1000,
+        learning_rate="auto",
+        init="pca",
+    )
+    embeddings_2d = tsne.fit_transform(embeddings)
+
+    _plot_2d_clusters(
+        embeddings_2d,
+        labels,
+        output_path,
+        title=title,
+        label_names=label_names,
+        figsize=figsize,
+        method="t-SNE",
+    )
+
+
+def plot_umap_clusters(
+    embeddings: np.ndarray,
+    labels: np.ndarray,
+    output_path: str,
+    n_neighbors: int = 15,
+    min_dist: float = 0.1,
+    title: str = "UMAP Cluster Visualization",
+    label_names: dict[int, str] | None = None,
+    figsize: tuple[int, int] = (12, 8),
+) -> None:
+    """Plot UMAP dimensionality reduction with cluster coloring.
+
+    Args:
+        embeddings: High-dimensional embeddings array (n_samples, n_features)
+        labels: Cluster labels for each sample (n_samples,)
+        output_path: Path to save the plot
+        n_neighbors: UMAP n_neighbors parameter (default 15)
+        min_dist: UMAP minimum distance parameter (default 0.1)
+        title: Plot title
+        label_names: Optional mapping from label int to display name
+        figsize: Figure size as (width, height)
+    """
+    try:
+        import umap
+    except ImportError:
+        logger.warning("umap-learn not available, skipping UMAP plot")
+        return
+
+    logger.info(
+        f"Computing UMAP with n_neighbors={n_neighbors}, min_dist={min_dist}..."
+    )
+
+    reducer = umap.UMAP(
+        n_components=2,
+        n_neighbors=n_neighbors,
+        min_dist=min_dist,
+        random_state=42,
+        metric="cosine",
+    )
+    embeddings_2d = reducer.fit_transform(embeddings)
+
+    _plot_2d_clusters(
+        embeddings_2d,
+        labels,
+        output_path,
+        title=title,
+        label_names=label_names,
+        figsize=figsize,
+        method="UMAP",
+    )
+
+
+def _plot_2d_clusters(
+    embeddings_2d: np.ndarray,
+    labels: np.ndarray,
+    output_path: str,
+    title: str,
+    label_names: dict[int, str] | None = None,
+    figsize: tuple[int, int] = (12, 8),
+    method: str = "",
+) -> None:
+    """Internal function to plot 2D scatter with cluster coloring.
+
+    Args:
+        embeddings_2d: 2D embeddings array (n_samples, 2)
+        labels: Cluster labels for each sample
+        output_path: Path to save the plot
+        title: Plot title
+        label_names: Optional mapping from label int to display name
+        figsize: Figure size
+        method: Dimensionality reduction method name for axis labels
+    """
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        logger.warning("matplotlib not available, skipping plot")
+        return
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    unique_labels = np.unique(labels)
+    colors = plt.cm.tab10(np.linspace(0, 1, len(unique_labels)))
+
+    for idx, label in enumerate(unique_labels):
+        mask = labels == label
+        display_name = (
+            label_names.get(label, f"Cluster {label}")
+            if label_names
+            else f"Cluster {label}"
+        )
+        ax.scatter(
+            embeddings_2d[mask, 0],
+            embeddings_2d[mask, 1],
+            c=[colors[idx]],
+            label=display_name,
+            alpha=0.7,
+            s=50,
+            edgecolors="white",
+            linewidths=0.5,
+        )
+
+    ax.set_xlabel(f"{method} Dimension 1", fontsize=12)
+    ax.set_ylabel(f"{method} Dimension 2", fontsize=12)
+    ax.set_title(title, fontsize=14)
+    ax.legend(loc="best", fontsize=10)
+    ax.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    logger.info(f"{method} cluster plot saved to {output_path}")
+
+
+def plot_comparison_tsne_umap(
+    embeddings: np.ndarray,
+    predicted_labels: np.ndarray,
+    true_labels: np.ndarray,
+    output_path: str,
+    label_names: dict[int, str] | None = None,
+    figsize: tuple[int, int] = (16, 12),
+) -> None:
+    """Plot side-by-side comparison of t-SNE and UMAP with predicted vs true labels.
+
+    Creates a 2x2 grid:
+    - Top row: t-SNE (predicted vs true)
+    - Bottom row: UMAP (predicted vs true)
+
+    Args:
+        embeddings: High-dimensional embeddings array
+        predicted_labels: Cluster predictions
+        true_labels: Ground truth labels
+        output_path: Path to save the plot
+        label_names: Optional mapping from label int to display name
+        figsize: Figure size
+    """
+    try:
+        import matplotlib.pyplot as plt
+        import umap
+        from sklearn.manifold import TSNE
+    except ImportError:
+        logger.warning(
+            "matplotlib/sklearn/umap not available, skipping comparison plot"
+        )
+        return
+
+    logger.info("Computing t-SNE and UMAP for comparison plot...")
+
+    # Compute both reductions
+    n_samples = embeddings.shape[0]
+    perplexity = min(30, max(5, n_samples // 4))
+
+    tsne = TSNE(n_components=2, perplexity=perplexity, random_state=42, init="pca")
+    tsne_2d = tsne.fit_transform(embeddings)
+
+    reducer = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, random_state=42)
+    umap_2d = reducer.fit_transform(embeddings)
+
+    # Create 2x2 subplot
+    fig, axes = plt.subplots(2, 2, figsize=figsize)
+
+    def scatter_subplot(ax, coords, labels, title, label_names_map):
+        unique_labels = np.unique(labels)
+        colors = plt.cm.tab10(np.linspace(0, 1, len(unique_labels)))
+        for idx, label in enumerate(unique_labels):
+            mask = labels == label
+            name = (
+                label_names_map.get(label, f"Label {label}")
+                if label_names_map
+                else f"Label {label}"
+            )
+            ax.scatter(
+                coords[mask, 0],
+                coords[mask, 1],
+                c=[colors[idx]],
+                label=name,
+                alpha=0.7,
+                s=40,
+                edgecolors="white",
+                linewidths=0.3,
+            )
+        ax.set_title(title, fontsize=12)
+        ax.legend(loc="best", fontsize=8)
+        ax.grid(True, alpha=0.3)
+
+    scatter_subplot(
+        axes[0, 0], tsne_2d, predicted_labels, "t-SNE - Predicted Labels", label_names
+    )
+    scatter_subplot(
+        axes[0, 1], tsne_2d, true_labels, "t-SNE - True Labels", label_names
+    )
+    scatter_subplot(
+        axes[1, 0], umap_2d, predicted_labels, "UMAP - Predicted Labels", label_names
+    )
+    scatter_subplot(axes[1, 1], umap_2d, true_labels, "UMAP - True Labels", label_names)
+
+    plt.suptitle("Clustering Validation: Predicted vs True Labels", fontsize=14, y=1.02)
+    plt.tight_layout()
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    logger.info(f"Comparison plot saved to {output_path}")

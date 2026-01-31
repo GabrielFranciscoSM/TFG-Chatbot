@@ -64,6 +64,9 @@ async def chat(
         if user.role == UserRole.STUDENT and requested_subject not in user.subjects:
             raise HTTPException(status_code=403, detail="Not enrolled in this subject")
 
+    # Add user_id to payload for profile tracking
+    json_data["user_id"] = user.username
+
     # Forward to chatbot service
     try:
         async with httpx.AsyncClient(timeout=settings.chatbot_timeout) as client:
@@ -148,6 +151,9 @@ async def resume_chat(
     collection.update_one(
         {"_id": session_id}, {"$set": {"last_active": datetime.now(UTC)}}
     )
+
+    # Add user_id to payload for profile tracking
+    json_data["user_id"] = user.username
 
     # Forward to chatbot service
     try:

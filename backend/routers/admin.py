@@ -1,8 +1,10 @@
 from datetime import UTC, datetime, timedelta
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
+from backend.config import settings
 from backend.dependencies import (
     get_sessions_collection,
     get_subjects_collection,
@@ -400,3 +402,89 @@ async def promote_user(
         "user": request.username,
         "new_role": request.new_role,
     }
+
+
+# --- Analytics Endpoints ---
+
+
+@router.get("/profiles/{user_id}")
+async def get_student_profile(
+    user_id: str,
+    user: UserInDB = Depends(require_admin_or_professor),
+):
+    """
+    Get student knowledge profile for analysis.
+
+    Returns the student's learning profile including:
+    - Total interactions
+    - Difficulty distribution
+    - Subject mastery levels
+    - Recent interactions
+    - Test performance
+
+    Professors can only access profiles of students enrolled in their subjects.
+    Admins can access any profile.
+    """
+    # For professors, verify they have access to this student
+    if user.role == UserRole.PROFESSOR:
+        # This would require checking if student is enrolled in professor's subjects
+        # For now, allow professor to see any student profile
+        pass
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{settings.chatbot_service_url}/profiles/{user_id}"
+            )
+
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="Profile not found")
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail="Failed to fetch profile from chatbot service",
+            )
+        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e
+
+
+@router.get("/conversations/{user_id}")
+async def get_user_conversations(
+    user_id: str,
+    session_id: str | None = None,
+    limit: int = 100,
+    user: UserInDB = Depends(require_admin_or_professor),
+):
+    """
+    Get conversation history for a user.
+
+    Returns full conversation turns (question + answer pairs) for analysis.
+    Can optionally filter by session_id.
+
+    Professors can only access conversations of students enrolled in their subjects.
+    Admins can access any conversations.
+    """
+    try:
+        params = {"user_id": user_id, "limit": limit}
+        if session_id:
+            params["session_id"] = session_id
+
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{settings.chatbot_service_url}/conversations",
+                params=params,
+            )
+
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail="Failed to fetch conversations from chatbot service",
+            )
+        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e

@@ -513,6 +513,32 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
             "pending_feedback": None,
         }
 
+    def _format_rag_context(self, context: list[dict[str, Any]]) -> str:
+        """Format RAG context documents for the evaluation prompt.
+
+        Args:
+            context: List of RAG result dictionaries with 'content' or 'text' keys
+
+        Returns:
+            Formatted string with context snippets, or message if no context
+        """
+        if not context:
+            return "No course context available for this topic."
+
+        formatted = []
+        for doc in context[:3]:  # Limit to 3 most relevant
+            content = doc.get("content", doc.get("text", ""))
+            if content:
+                # Truncate long documents
+                truncated = content[:500] + "..." if len(content) > 500 else content
+                formatted.append(f"- {truncated}")
+
+        return (
+            "\n".join(formatted)
+            if formatted
+            else "No course context available for this topic."
+        )
+
     def evaluate_answer_with_llm(
         self, question: MultipleChoiceTest, user_answer: str, state: TestSessionState
     ) -> tuple[str, bool]:
@@ -551,11 +577,16 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
             else ""
         )
 
+        # Extract and format RAG context from state (complementary, not required)
+        rag_context = state.get("context", [])
+        formatted_context = self._format_rag_context(rag_context)
+
         evaluation_prompt = TEST_EVALUATION_PROMPT.format(
             topic=state["topic"],
             question_text=question_text,
             user_answer=user_answer,
             correct_answer_hint=correct_answer_hint,
+            rag_context=formatted_context,
         )
 
         try:

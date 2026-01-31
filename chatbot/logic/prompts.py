@@ -167,14 +167,21 @@ Question: {question_text}
 Student's Answer: {user_answer}
 {correct_answer_hint}
 
-Evaluate the student's understanding and provide encouraging feedback.
+## Course Context (if available):
+{rag_context}
+
+## Evaluation Guidelines:
+- Use your own knowledge and reasoning as the PRIMARY basis for evaluation
+- Use the course context above as SUPPORTING information when relevant
+- If no course context is provided, still evaluate based on general knowledge
+- The student can be correct even if their answer doesn't match course materials exactly
+- Be encouraging and supportive
 
 Format your response EXACTLY as:
 CORRECT: YES/NO
 FEEDBACK: [2-3 sentences of constructive, friendly feedback in Spanish]
 
 Guidelines:
-- Be encouraging and supportive
 - If incorrect, gently explain why and guide toward understanding
 - If correct, reinforce their understanding with additional context
 - Keep feedback brief but meaningful

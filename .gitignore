@@ -214,3 +214,5 @@ models/
 local
 storage
 tmp/
+# Test reports
+test-reports/

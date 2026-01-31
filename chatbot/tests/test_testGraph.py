@@ -45,17 +45,25 @@ def test_initialize_test_creates_questions_and_state(
     tsg = tg.TestSessionGraph()
 
     # Simulate last message having tool_calls with args
+    # Must include "name" and "id" keys as expected by initialize_test
     last_msg = dummy_message_factory(
-        tool_calls=[{"args": {"topic": "math", "num_questions": 2}}]
+        tool_calls=[
+            {
+                "name": "generate_test",
+                "id": "call_123",
+                "args": {"topic": "math", "num_questions": 2},
+            }
+        ]
     )
     state: dict[str, Any] = {"messages": [last_msg]}
 
     init_state = tsg.initialize_test(cast(tg.TestSessionState, state))
 
+    # initialize_test no longer generates questions (that's done in generate_questions_node)
+    # It just extracts topic and num_questions from tool_calls
     assert init_state["topic"] == "math"
     assert init_state["num_questions"] == 2
-    assert "questions" in init_state
-    assert len(init_state["questions"]) == 2
+    assert init_state["current_question_index"] == 0
 
 
 def test_present_question_returns_ai_message_content(
@@ -146,9 +154,10 @@ def test_test_router_continues_and_finalizes():
     assert tsg.test_router(cast(tg.TestSessionState, st2)) == "finalize"
 
 
-def test_finalize_test_returns_toolmessage_with_tool_call_id(
+def test_finalize_test_returns_summary_message(
     monkeypatch, dummy_llm_factory, dummy_message_factory
 ):
+    """Test that finalize_test returns an AIMessage with score summary."""
     import chatbot.logic.testGraph as tg
 
     monkeypatch.setattr(
@@ -156,21 +165,21 @@ def test_finalize_test_returns_toolmessage_with_tool_call_id(
     )
     tsg = tg.TestSessionGraph()
 
-    # Create a fake last AI message that contains tool_calls
-    last_ai = dummy_message_factory(tool_calls=[{"id": "toolcall-123"}])
-
     state: dict[str, Any] = {
         "scores": [True, False, True],
         "num_questions": 3,
-        "messages": [last_ai],
+        "messages": [],
         "topic": "prueba",
+        "pending_feedback": None,
     }
 
     out = tsg.finalize_test(cast(tg.TestSessionState, state))
 
     assert "messages" in out
     msg = out["messages"][0]
-    assert msg.tool_call_id == "toolcall-123"
+    # finalize_test returns AIMessage with summary content
+    assert "2/3" in msg.content  # Score should be in the message
+    assert "prueba" in msg.content  # Topic should be mentioned
 
 
 def test_evaluate_answer_with_llm_parsing(

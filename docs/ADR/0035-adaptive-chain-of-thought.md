@@ -50,9 +50,12 @@ Implementar CoT adaptativo que:
 
 ## Implementation
 
-- `chatbot/logic/query_classifier.py`: Clasificador heurístico
-- `chatbot/logic/prompts.py`: `SYSTEM_PROMPT_COT` con formato estructurado
-- `chatbot/logic/graph.py`: `think()` modificado para CoT adaptativo
+- `chatbot/logic/difficulty.py`: Clasificador de dificultad (BASIC/INTERMEDIATE/ADVANCED)
+  - CoT se activa automáticamente para preguntas ADVANCED
+- `chatbot/logic/prompts.py`: `SYSTEM_PROMPT_COT` con formato estructurado + prompts adaptativos
+- `chatbot/logic/graph.py`: `think()` modificado para CoT adaptativo basado en dificultad
+
+**Nota**: El clasificador `query_classifier.py` fue eliminado y consolidado con `difficulty.py` (Feb 2026).
 
 ## References
 

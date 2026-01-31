@@ -216,3 +216,5 @@ storage
 tmp/
 # Test reports
 test-reports/
+# Embeddings cache
+*.npy

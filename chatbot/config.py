@@ -43,6 +43,11 @@ class Settings(BaseSettings):
     phoenix_port: str = "6006"
     phoenix_project_name: str = "tfg-chatbot"
 
+    # Difficulty classifier configuration
+    difficulty_centroids_path: str | None = None
+    difficulty_embedding_dim: int = 768
+    difficulty_use_heuristics: bool = True
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

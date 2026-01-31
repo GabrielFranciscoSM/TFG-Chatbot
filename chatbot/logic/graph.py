@@ -65,6 +65,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
 from chatbot.config import settings
+from chatbot.logic.difficulty import classify_difficulty_detailed
 from chatbot.logic.prompts import SYSTEM_PROMPT_COT, SYSTEM_PROMPT_V3
 from chatbot.logic.query_classifier import QueryComplexity, classify_query
 from chatbot.logic.tools.tools import get_tools
@@ -102,6 +103,8 @@ class SubjectState(MessagesState):
     context: list[dict[str, Any]] | None
     # Chain-of-Thought reasoning from last response (if CoT was used)
     thinking: str | None
+    # Classified difficulty level of the current query
+    query_difficulty: str | None
 
     # Test session fields (shared with test subgraph)
     topic: str | None
@@ -255,11 +258,21 @@ class GraphAgent:
 
         # Classify query complexity
         use_cot = False
+        query_difficulty = None
         if last_user_message:
             complexity = classify_query(last_user_message)
             use_cot = complexity == QueryComplexity.COMPLEX
             logger.debug(
                 f"Query classified as {complexity.value}: '{last_user_message[:50]}...'"
+            )
+
+            # Classify query difficulty level
+            difficulty_result = classify_difficulty_detailed(last_user_message)
+            query_difficulty = difficulty_result.level.value
+            logger.debug(
+                f"Query difficulty: {query_difficulty} "
+                f"(confidence: {difficulty_result.confidence:.2f}, "
+                f"method: {difficulty_result.method})"
             )
 
         # Select appropriate prompt based on complexity
@@ -277,7 +290,10 @@ class GraphAgent:
         response = llm.invoke(messages)
 
         # Parse CoT response if applicable
-        result: dict[str, Any] = {"messages": [response]}
+        result: dict[str, Any] = {
+            "messages": [response],
+            "query_difficulty": query_difficulty,
+        }
 
         if use_cot and hasattr(response, "content") and response.content:
             content = response.content

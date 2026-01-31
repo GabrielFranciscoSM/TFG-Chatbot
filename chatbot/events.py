@@ -146,28 +146,33 @@ class EventLogger:
         user_id: str | None = None,
         subject_id: str | None = None,
         latency_ms: float | None = None,
+        store_full_answer: bool = False,
     ) -> str | None:
         """Log when the chatbot provides an answer.
 
         Args:
             session_id: Session/thread identifier
-            answer: The response text (truncated for storage)
+            answer: The response text
             user_id: Optional user identifier
             subject_id: Optional subject/course identifier
             latency_ms: Optional response latency in milliseconds
+            store_full_answer: If True, store full answer; else truncate to 500 chars
 
         Returns:
             Inserted document ID or None if failed
         """
-        # Truncate answer to avoid storing very large responses
-        truncated_answer = answer[:500] + "..." if len(answer) > 500 else answer
+        # Truncate answer unless full storage requested
+        if store_full_answer:
+            stored_answer = answer
+        else:
+            stored_answer = answer[:500] + "..." if len(answer) > 500 else answer
 
         return self._log_event(
             event_type=EventType.ANSWER_RECEIVED,
             session_id=session_id,
             user_id=user_id,
             subject_id=subject_id,
-            payload={"answer_preview": truncated_answer, "latency_ms": latency_ms},
+            payload={"answer_preview": stored_answer, "latency_ms": latency_ms},
         )
 
     def log_rag_context_used(

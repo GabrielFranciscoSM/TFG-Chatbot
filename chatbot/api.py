@@ -54,6 +54,7 @@ from chatbot.events import get_event_logger
 from chatbot.instrumentation import setup_phoenix_instrumentation
 from chatbot.logging_config import CorrelationIdMiddleware, setup_logging
 from chatbot.logic.graph import GraphAgent
+from chatbot.logic.profile_manager import get_profile_manager
 from chatbot.logic.tools.guia_docente_scraper import UGRTeachingGuideScraper
 from chatbot.models import (
     ChatMessage,
@@ -275,6 +276,7 @@ async def chat(chat_request: ChatRequest):
     event_logger.log_question_asked(
         session_id=chat_request.id,
         query=chat_request.query,
+        user_id=chat_request.user_id,
         subject_id=chat_request.asignatura,
     )
 
@@ -294,15 +296,44 @@ async def chat(chat_request: ChatRequest):
             )
             break
 
+    # Extract difficulty from response state
+    query_difficulty = respuesta.get("query_difficulty", "unknown")
+
     # Log answer received event
     latency_ms = (time.time() - start_time) * 1000
     if last_ai_message:
         event_logger.log_answer_received(
             session_id=chat_request.id,
             answer=last_ai_message.content,
+            user_id=chat_request.user_id,
             subject_id=chat_request.asignatura,
             latency_ms=latency_ms,
         )
+
+    # Update student profile and save conversation turn
+    if chat_request.user_id:
+        profile_manager = get_profile_manager()
+
+        # Record the interaction for profile tracking
+        profile_manager.record_interaction(
+            user_id=chat_request.user_id,
+            query=chat_request.query,
+            difficulty=query_difficulty or "unknown",
+            subject=chat_request.asignatura,
+            topic=None,  # TODO: Extract topic from RAG context or LLM
+        )
+
+        # Save full conversation turn for analysis
+        if last_ai_message:
+            profile_manager.save_conversation_turn(
+                session_id=chat_request.id,
+                query=chat_request.query,
+                answer=last_ai_message.content,
+                user_id=chat_request.user_id,
+                subject=chat_request.asignatura,
+                difficulty=query_difficulty,
+                latency_ms=latency_ms,
+            )
 
     # Check for interrupt
     if "__interrupt__" in respuesta and respuesta["__interrupt__"]:
@@ -538,3 +569,71 @@ async def scrape_guia(req: ScrapeRequest):
         )
     finally:
         client.close()
+
+
+# --- Analytics Endpoints ---
+
+
+@app.get(
+    "/profiles/{user_id}",
+    tags=["Analytics"],
+    summary="Get student knowledge profile",
+    description="Retrieve the knowledge profile for a student, including mastery levels and interaction history.",
+)
+async def get_profile(user_id: str):
+    """
+    Get student knowledge profile for analysis.
+
+    Returns the student's learning profile including difficulty distribution,
+    subject mastery levels, recent interactions, and test performance.
+
+    Args:
+        user_id: The user identifier
+
+    Returns:
+        Student profile data or 404 if not found
+    """
+    profile_manager = get_profile_manager()
+    profile = profile_manager.get_profile(user_id)
+
+    if profile is None:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="Profile not found")
+
+    return profile.model_dump()
+
+
+@app.get(
+    "/conversations",
+    tags=["Analytics"],
+    summary="Get conversation history",
+    description="Retrieve full conversation turns for analysis and research.",
+)
+async def get_conversations(
+    user_id: str | None = None,
+    session_id: str | None = None,
+    limit: int = 100,
+):
+    """
+    Get conversation history for analysis.
+
+    Returns full conversation turns (question + answer pairs) with metadata.
+    Can filter by user_id and/or session_id.
+
+    Args:
+        user_id: Optional user filter
+        session_id: Optional session filter
+        limit: Maximum number of turns to return (default 100)
+
+    Returns:
+        List of conversation turns
+    """
+    profile_manager = get_profile_manager()
+    turns = profile_manager.get_conversation_history(
+        session_id=session_id,
+        user_id=user_id,
+        limit=limit,
+    )
+
+    return [turn.model_dump() for turn in turns]

@@ -21,9 +21,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 | Role | Capabilities |
 |------|--------------|
-| **Student** | Chat, take tests, view own progress |
-| **Professor** | All student features + manage students, upload documents, view analytics |
-| **Admin** | All features + user management, system configuration |
+| **Student** | Chat with assistant, take tests, view own progress, configure test preferences |
+| **Professor** | Dashboard access, manage students, upload documents, view analytics, configure test defaults for students |
+| **Admin** | All features + user management, subject management, system configuration |
+
+> **Note**: The chat interface is exclusively for students. Professors access the system via their dashboard.
 
 ---
 
@@ -235,13 +237,20 @@ View your account information:
 - Role
 - Assigned subjects
 
-### Appearance
+### Test Preferences
 
-- **Theme**: Light / Dark / System (coming soon)
+Configure default settings for generated tests:
+- **Default number of questions**: 1-20 questions per test
+- **Default difficulty**: Easy, Medium, or Hard
+- **Language**: Spanish or English for test questions
 
-### Notifications
+These preferences are used as defaults when generating tests. You can always override them by specifying parameters in your test request.
 
-Notification preferences (coming soon).
+### System Information
+
+View the current LLM model being used by the chatbot (e.g., `gemini-2.0-flash-lite`, `Qwen/Qwen2.5-7B-Instruct`).
+
+**Note**: Only students can access the chat feature. Professors should use their dashboard to view student progress and manage documents.
 
 ---
 

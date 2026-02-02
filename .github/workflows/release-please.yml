@@ -37,8 +37,9 @@ jobs:
           # Permisos: repo (full control), workflow
           token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
           
-          # Tipo de proyecto (Python)
-          release-type: python
+          # Usar manifest mode para control de versión
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   build-and-publish:
     name: Build and Publish Docker Images

@@ -3,59 +3,36 @@ Tests para verificar el funcionamiento del contenedor de MongoDB.
 Estos tests verifican que MongoDB está corriendo y puede realizar operaciones básicas.
 """
 
-import os
-
 import pytest
-from dotenv import load_dotenv
-from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 
-load_dotenv()
+from tests.infrastructure.conftest import MONGO_HOST, MONGO_PORT
 
-MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
-MONGO_PORT = int(os.getenv("MONGO_PORT", "27017"))
-MONGO_USER = os.getenv("MONGO_ROOT_USERNAME", "root")
-MONGO_PASSWORD = os.getenv("MONGO_ROOT_PASSWORD", "example")
+# Aplicar marker a todos los tests de este módulo
+pytestmark = pytest.mark.podman_container
 
 
-def get_mongo_client():
-    """Crea y retorna un cliente de MongoDB."""
-    return MongoClient(
-        host=MONGO_HOST,
-        port=MONGO_PORT,
-        username=MONGO_USER,
-        password=MONGO_PASSWORD,
-        serverSelectionTimeoutMS=5000,
-    )
-
-
-def test_mongo_container_is_running():
+def test_mongo_container_is_running(mongo_client):
     """Verifica que el contenedor de MongoDB está corriendo y acepta conexiones."""
     try:
-        client = get_mongo_client()
-        # Intentar hacer ping para verificar conexión
-        client.admin.command("ping")
-        client.close()
+        mongo_client.admin.command("ping")
     except (ConnectionFailure, ServerSelectionTimeoutError):
-        pytest.fail("El contenedor de MongoDB no está disponible en localhost:27017")
+        pytest.fail(
+            f"El contenedor de MongoDB no está disponible en {MONGO_HOST}:{MONGO_PORT}"
+        )
 
 
-def test_mongo_list_databases():
+def test_mongo_list_databases(mongo_client):
     """Verifica que MongoDB puede listar bases de datos."""
-    client = get_mongo_client()
-    databases = client.list_database_names()
+    databases = mongo_client.list_database_names()
 
     # Deberían existir al menos las bases de datos del sistema
     assert "admin" in databases
 
-    client.close()
 
-
-def test_mongo_can_create_database_and_collection():
+def test_mongo_can_create_database_and_collection(mongo_client):
     """Verifica que MongoDB puede crear bases de datos y colecciones."""
-    client = get_mongo_client()
-
-    test_db = client["test_infrastructure_db"]
+    test_db = mongo_client["test_infrastructure_db"]
     test_collection = test_db["test_collection"]
 
     # Insertar un documento de prueba
@@ -69,16 +46,10 @@ def test_mongo_can_create_database_and_collection():
     assert found_doc is not None
     assert found_doc["value"] == 123
 
-    # Cleanup
-    client.drop_database("test_infrastructure_db")
-    client.close()
 
-
-def test_mongo_can_query_documents():
+def test_mongo_can_query_documents(mongo_client):
     """Verifica que MongoDB puede realizar consultas."""
-    client = get_mongo_client()
-
-    test_db = client["test_query_db"]
+    test_db = mongo_client["test_query_db"]
     test_collection = test_db["documents"]
 
     # Insertar varios documentos
@@ -97,16 +68,10 @@ def test_mongo_can_query_documents():
     ia_docs = list(test_collection.find({"asignatura": "IA"}))
     assert len(ia_docs) == 2
 
-    # Cleanup
-    client.drop_database("test_query_db")
-    client.close()
 
-
-def test_mongo_can_update_documents():
+def test_mongo_can_update_documents(mongo_client):
     """Verifica que MongoDB puede actualizar documentos."""
-    client = get_mongo_client()
-
-    test_db = client["test_update_db"]
+    test_db = mongo_client["test_update_db"]
     test_collection = test_db["documents"]
 
     # Insertar un documento
@@ -120,16 +85,10 @@ def test_mongo_can_update_documents():
     updated_doc = test_collection.find_one({"name": "original"})
     assert updated_doc["value"] == 200
 
-    # Cleanup
-    client.drop_database("test_update_db")
-    client.close()
 
-
-def test_mongo_can_delete_documents():
+def test_mongo_can_delete_documents(mongo_client):
     """Verifica que MongoDB puede eliminar documentos."""
-    client = get_mongo_client()
-
-    test_db = client["test_delete_db"]
+    test_db = mongo_client["test_delete_db"]
     test_collection = test_db["documents"]
 
     # Insertar documentos
@@ -148,16 +107,10 @@ def test_mongo_can_delete_documents():
     # Verificar que doc2 fue eliminado
     assert test_collection.find_one({"name": "doc2"}) is None
 
-    # Cleanup
-    client.drop_database("test_delete_db")
-    client.close()
 
-
-def test_mongo_supports_indexes():
+def test_mongo_supports_indexes(mongo_client):
     """Verifica que MongoDB puede crear y usar índices."""
-    client = get_mongo_client()
-
-    test_db = client["test_index_db"]
+    test_db = mongo_client["test_index_db"]
     test_collection = test_db["documents"]
 
     # Crear un índice en el campo "asignatura"
@@ -170,16 +123,10 @@ def test_mongo_supports_indexes():
     # Debería existir el índice que creamos
     assert "asignatura_1" in index_names
 
-    # Cleanup
-    client.drop_database("test_index_db")
-    client.close()
 
-
-def test_mongo_supports_aggregation():
+def test_mongo_supports_aggregation(mongo_client):
     """Verifica que MongoDB puede realizar operaciones de agregación."""
-    client = get_mongo_client()
-
-    test_db = client["test_aggregation_db"]
+    test_db = mongo_client["test_aggregation_db"]
     test_collection = test_db["documents"]
 
     # Insertar documentos con diferentes asignaturas
@@ -206,13 +153,11 @@ def test_mongo_supports_aggregation():
         elif result["_id"] == "BD":
             assert result["avg_score"] == 77.5
 
-    # Cleanup
-    client.drop_database("test_aggregation_db")
-    client.close()
 
-
-def test_mongo_authentication():
+def test_mongo_authentication(mongo_client):
     """Verifica que MongoDB requiere autenticación."""
+    from pymongo import MongoClient
+
     # Intentar conectar sin credenciales debería fallar
     try:
         client_no_auth = MongoClient(
@@ -220,23 +165,17 @@ def test_mongo_authentication():
         )
         # Intentar una operación que requiera autenticación
         client_no_auth.admin.command("ping")
-        # Si llegamos aquí, falló la autenticación (no debería pasar)
         client_no_auth.close()
         # Este test puede pasar si MongoDB no tiene auth habilitado
-        # En ese caso, solo verificamos que funciona
     except Exception:
         # Autenticación requerida (comportamiento esperado)
         pass
 
 
-def test_mongo_server_info():
+def test_mongo_server_info(mongo_client):
     """Verifica que podemos obtener información del servidor MongoDB."""
-    client = get_mongo_client()
-
-    server_info = client.server_info()
+    server_info = mongo_client.server_info()
 
     # Verificar que tenemos información básica del servidor
     assert "version" in server_info
     assert isinstance(server_info["version"], str)
-
-    client.close()

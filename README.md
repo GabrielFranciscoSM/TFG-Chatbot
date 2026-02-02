@@ -244,78 +244,18 @@ Los algoritmos están implementados siguiendo la teoría desarrollada en la memo
 
 ---
 
-## Instalación y Ejecución
-
-### Prerrequisitos
-
-- Python 3.13+ y [uv](https://github.com/astral-sh/uv) (gestor de paquetes)
-- Node.js 20+ y npm
-- Docker y Docker Compose
-- Variables de entorno configuradas (ver `.env.example`)
-
-### Con Docker Compose (Recomendado)
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
-cd TFG-Chatbot
-
-# Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales (API keys, MongoDB, etc.)
-
-# Levantar todos los servicios
-docker compose up -d
-
-# Ver logs
-docker compose logs -f
-```
-
-Los servicios estarán disponibles en:
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **Documentación API (Swagger)**: http://localhost:8000/docs
-- **Mongo Express**: http://localhost:8082
-
-### Desarrollo Local
-
-Para ejecutar los servicios Python localmente sin Docker, cada servicio tiene un archivo `__main__.py` que configura el path correctamente:
-
-#### Backend Services
-
-```bash
-# Terminal 1: Backend Gateway (puerto 8000)
-cd backend && uv run python __main__.py
-
-# Terminal 2: Chatbot Service (puerto 8080)
-cd chatbot && uv run python __main__.py
-
-# Terminal 3: RAG Service (puerto 8081)
-cd rag_service && uv run python __main__.py
-```
-
-> **Nota**: Los servicios Python dependen de MongoDB, Qdrant y Ollama. Para desarrollo local completo, puedes ejecutar solo las dependencias con Docker:
-> ```bash
-> docker compose up -d mongo qdrant-service ollama-service
-> ```
-
-#### Frontend
-
-```bash
-cd frontend
-
-# Instalar dependencias
-npm install
-
-# Ejecutar en modo desarrollo
-npm run dev
-```
-
----
-
 ## Testing
 
 El proyecto incluye tests unitarios, de integración e infraestructura.
+
+Para ejecutar los tests unitarios se recomienda el uso del script de ayuda [run_tests.sh](./scripts/run_tests.sh)
+
+```bash
+# Ejecutar todos los tests unitarios
+./scripts/run_tests.sh all
+```
+
+Para ejecutar los tests de integración, usar simplemente pytest en el directorio base del proyecto.
 
 ```bash
 # Ejecutar todos los tests
@@ -323,25 +263,7 @@ uv run pytest
 
 # Tests con cobertura
 uv run pytest --cov
-
-# Tests específicos por servicio
-uv run pytest backend/tests/
-uv run pytest chatbot/tests/
-uv run pytest rag_service/tests/
-
-# Tests de infraestructura
-uv run pytest tests/infrastructure/
-
-# Tests del frontend
-cd frontend && npm run test
 ```
-
-### Marcadores de Tests
-
-- `@pytest.mark.unit` - Tests unitarios
-- `@pytest.mark.integration` - Tests de integración
-- `@pytest.mark.infrastructure` - Tests de infraestructura Docker
-- `@pytest.mark.slow` - Tests lentos
 
 ---
 
@@ -395,10 +317,10 @@ El proyecto sigue **Scrum** como metodología ágil:
 - [x] **Milestone 2**: Agente con herramientas específicas
 - [x] **Milestone 3**: Autenticación de usuarios (JWT + RBAC)
 - [x] **Milestone 4**: Interfaz educativa completa
-- [ ] **Milestone 5**: Logs y monitorización
-- [ ] **Milestone 6**: Métricas y dashboard
-- [ ] **Milestone 7**: Chatbot con herramientas avanzadas
-- [ ] **Milestone 8**: Evaluación y documentación final
+- [x] **Milestone 5**: Logs y monitorización
+- [x] **Milestone 6**: Métricas y dashboard
+- [x] **Milestone 7**: Chatbot con herramientas avanzadas
+- [x] **Milestone 8**: Evaluación y documentación final
 
 ---
 
@@ -461,11 +383,7 @@ Este es un proyecto académico (TFG), pero las contribuciones son bienvenidas:
    - [Copilot Instructions](.github/copilot-instructions.md) - Guía técnica del proyecto
    - [API Docs](http://localhost:8000/docs) - Documentación Swagger (con servicios ejecutándose)
 
-2. **Entiende las dos partes del proyecto**:
-   - **Chatbot (Informática)**: Microservicios en `backend/`, `chatbot/`, `rag_service/`, `frontend/`
-   - **Clustering (Matemáticas)**: Módulo `math_investigation/` con algoritmos desde cero
-
-3. **Configura el entorno de desarrollo**:
+2. **Configura el entorno de desarrollo**:
    ```bash
    # Clonar e instalar
    git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
@@ -477,7 +395,7 @@ Este es un proyecto académico (TFG), pero las contribuciones son bienvenidas:
    pre-commit install
    ```
 
-4. **Ejecuta los tests antes de hacer cambios**:
+3. **Ejecuta los tests antes de hacer cambios**:
    ```bash
    uv run pytest backend/tests/ chatbot/tests/ rag_service/tests/ -v
    ```

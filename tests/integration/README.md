@@ -7,26 +7,29 @@ Este directorio contiene tests de integración que validan el funcionamiento end
 ```
 tests/integration/
 ├── conftest.py              # Configuración y fixtures para tests de integración
-├── test_backend.py          # Tests de integración del backend/chatbot
-└── test_rag_service.py      # Tests de integración del servicio RAG
+├── test_backend.py          # Tests de integración del backend/chatbot (7 tests)
+├── test_proactive_rag.py    # Tests de RAG proactivo en tests (2 tests)
+└── test_rag_service.py      # Tests de integración del servicio RAG (20 tests)
 ```
+
+**Total: 29 tests de integración**
 
 ## Requisitos Previos
 
 Los tests de integración requieren que todos los servicios estén corriendo. Antes de ejecutar los tests:
 
-1. **Levantar los servicios con Docker Compose:**
+1. **Levantar los servicios con Podman Compose:**
 
 ```bash
 # Desde el directorio raíz del proyecto
-docker-compose up -d
+podman-compose up -d
 ```
 
 2. **Verificar que los servicios estén disponibles:**
 
 ```bash
 # Backend
-curl http://localhost:8080/health
+curl http://localhost:8000/health
 
 # RAG Service
 curl http://localhost:8081/health
@@ -62,6 +65,9 @@ pytest tests/integration/test_backend.py -m integration
 
 # Solo tests del servicio RAG
 pytest tests/integration/test_rag_service.py -m integration
+
+# Solo tests de RAG proactivo
+pytest tests/integration/test_proactive_rag.py -m integration
 ```
 
 ### Ejecutar un Test Específico
@@ -76,8 +82,8 @@ pytest tests/integration/test_rag_service.py::test_rag_index_and_search_workflow
 Puedes configurar los tests mediante variables de entorno:
 
 ```bash
-# URL del backend (por defecto: http://localhost:8080)
-export API_BASE_URL="http://localhost:8080"
+# URL del backend (por defecto: http://localhost:8000)
+export API_BASE_URL="http://localhost:8000"
 
 # URL del servicio RAG (por defecto: http://localhost:8081)
 export RAG_BASE_URL="http://localhost:8081"

@@ -3,30 +3,34 @@ Tests para verificar el funcionamiento del contenedor de Ollama.
 Estos tests verifican que Ollama está corriendo y puede generar embeddings.
 """
 
-import os
-
 import pytest
 import requests
 
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11435")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
+from tests.infrastructure.conftest import (
+    DEFAULT_TIMEOUT,
+    EMBEDDING_MODEL,
+    EMBEDDING_TIMEOUT,
+    NOMIC_EMBED_TEXT_DIMENSION,
+    OLLAMA_URL,
+)
+
+# Aplicar marker a todos los tests de este módulo
+pytestmark = pytest.mark.podman_container
 
 
 def test_ollama_container_is_running():
     """Verifica que el contenedor de Ollama está corriendo y responde."""
     try:
-        resp = requests.get(f"{OLLAMA_URL}/", timeout=5)
+        resp = requests.get(f"{OLLAMA_URL}/", timeout=DEFAULT_TIMEOUT)
         assert resp.status_code == 200
         assert resp.text == "Ollama is running"
     except requests.exceptions.ConnectionError:
-        pytest.fail(
-            "El contenedor de Ollama no está disponible en http://localhost:11435"
-        )
+        pytest.fail(f"El contenedor de Ollama no está disponible en {OLLAMA_URL}")
 
 
 def test_ollama_api_version():
     """Verifica que el endpoint de versión de Ollama responde."""
-    resp = requests.get(f"{OLLAMA_URL}/api/version", timeout=5)
+    resp = requests.get(f"{OLLAMA_URL}/api/version", timeout=DEFAULT_TIMEOUT)
     assert resp.status_code == 200
     data = resp.json()
     assert "version" in data
@@ -34,7 +38,7 @@ def test_ollama_api_version():
 
 def test_ollama_list_models():
     """Verifica que Ollama puede listar los modelos instalados."""
-    resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
+    resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=DEFAULT_TIMEOUT)
     assert resp.status_code == 200
     data = resp.json()
     assert "models" in data
@@ -43,7 +47,7 @@ def test_ollama_list_models():
 
 def test_ollama_embedding_model_available():
     """Verifica que el modelo de embeddings está disponible."""
-    resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
+    resp = requests.get(f"{OLLAMA_URL}/api/tags", timeout=DEFAULT_TIMEOUT)
     assert resp.status_code == 200
     data = resp.json()
 
@@ -61,7 +65,9 @@ def test_ollama_can_generate_embeddings():
         "prompt": "This is a test document for embedding generation",
     }
 
-    resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     assert resp.status_code == 200
     data = resp.json()
 
@@ -75,15 +81,16 @@ def test_ollama_can_generate_embeddings():
 
 
 def test_ollama_embeddings_dimension():
-    """Verifica que los embeddings tienen la dimensión correcta (768 para nomic-embed-text)."""
+    """Verifica que los embeddings tienen la dimensión correcta."""
     payload = {"model": EMBEDDING_MODEL, "prompt": "Test text"}
 
-    resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     assert resp.status_code == 200
     data = resp.json()
 
-    # nomic-embed-text genera embeddings de 768 dimensiones
-    assert len(data["embedding"]) == 768
+    assert len(data["embedding"]) == NOMIC_EMBED_TEXT_DIMENSION
 
 
 def test_ollama_embeddings_consistency():
@@ -91,12 +98,16 @@ def test_ollama_embeddings_consistency():
     payload = {"model": EMBEDDING_MODEL, "prompt": "Consistent test text"}
 
     # Generar primer embedding
-    resp1 = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp1 = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     assert resp1.status_code == 200
     embedding1 = resp1.json()["embedding"]
 
     # Generar segundo embedding con el mismo texto
-    resp2 = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp2 = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     assert resp2.status_code == 200
     embedding2 = resp2.json()["embedding"]
 
@@ -119,13 +130,15 @@ def test_ollama_multiple_embeddings():
     embeddings = []
     for text in texts:
         payload = {"model": EMBEDDING_MODEL, "prompt": text}
-        resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+        resp = requests.post(
+            f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+        )
         assert resp.status_code == 200
         embeddings.append(resp.json()["embedding"])
 
     # Verificar que todos tienen la misma dimensión
     assert len(embeddings) == 3
-    assert all(len(emb) == 768 for emb in embeddings)
+    assert all(len(emb) == NOMIC_EMBED_TEXT_DIMENSION for emb in embeddings)
 
     # Verificar que son diferentes (no idénticos)
     assert embeddings[0] != embeddings[1]
@@ -136,7 +149,9 @@ def test_ollama_empty_text_handling():
     """Verifica cómo Ollama maneja textos vacíos."""
     payload = {"model": EMBEDDING_MODEL, "prompt": ""}
 
-    resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     # Debería responder correctamente incluso con texto vacío
     assert resp.status_code == 200
     data = resp.json()
@@ -155,14 +170,16 @@ def test_ollama_long_text_handling():
     assert resp.status_code == 200
     data = resp.json()
     assert "embedding" in data
-    assert len(data["embedding"]) == 768
+    assert len(data["embedding"]) == NOMIC_EMBED_TEXT_DIMENSION
 
 
 def test_ollama_invalid_model():
     """Verifica que Ollama maneja correctamente peticiones con modelos inválidos."""
     payload = {"model": "modelo-que-no-existe", "prompt": "Test text"}
 
-    resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=10)
+    resp = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=DEFAULT_TIMEOUT
+    )
     # Debería devolver error
     assert resp.status_code != 200
 
@@ -174,8 +191,10 @@ def test_ollama_special_characters():
         "prompt": "Texto con áéíóú ñ y símbolos: @#$%&*()[]{}|\\<>?/",
     }
 
-    resp = requests.post(f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=30)
+    resp = requests.post(
+        f"{OLLAMA_URL}/api/embeddings", json=payload, timeout=EMBEDDING_TIMEOUT
+    )
     assert resp.status_code == 200
     data = resp.json()
     assert "embedding" in data
-    assert len(data["embedding"]) == 768
+    assert len(data["embedding"]) == NOMIC_EMBED_TEXT_DIMENSION

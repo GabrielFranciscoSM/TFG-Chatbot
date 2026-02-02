@@ -637,3 +637,115 @@ async def get_conversations(
     )
 
     return [turn.model_dump() for turn in turns]
+
+
+@app.post(
+    "/profiles/batch",
+    tags=["Analytics"],
+    summary="Get multiple student profiles",
+    description="Retrieve profiles for multiple students at once. Useful for dashboard views.",
+)
+async def get_profiles_batch(user_ids: list[str]):
+    """
+    Get multiple student profiles in a single request.
+
+    Returns profiles for the specified user IDs. Users without profiles
+    are omitted from the response.
+
+    Args:
+        user_ids: List of user identifiers
+
+    Returns:
+        List of student profiles that exist
+    """
+    profile_manager = get_profile_manager()
+    profiles = []
+
+    for user_id in user_ids:
+        profile = profile_manager.get_profile(user_id)
+        if profile is not None:
+            profiles.append(profile.model_dump())
+
+    return profiles
+
+
+@app.get(
+    "/conversations/stats",
+    tags=["Analytics"],
+    summary="Get conversation statistics for users",
+    description="Get aggregated statistics for conversations, optionally filtered by users and subject.",
+)
+async def get_conversation_stats(
+    user_ids: str | None = None,
+    subject: str | None = None,
+):
+    """
+    Get aggregated conversation statistics.
+
+    Returns statistics like total conversations, difficulty distribution,
+    topics discussed, and activity over time.
+
+    Args:
+        user_ids: Comma-separated list of user IDs to filter (optional)
+        subject: Subject to filter by (optional)
+
+    Returns:
+        Aggregated statistics dictionary
+    """
+    profile_manager = get_profile_manager()
+    collection = profile_manager.db_client.get_collection(
+        profile_manager.CONVERSATIONS_COLLECTION
+    )
+
+    # Build match stage
+    match_stage: dict = {}
+    if user_ids:
+        user_id_list = [uid.strip() for uid in user_ids.split(",")]
+        match_stage["user_id"] = {"$in": user_id_list}
+    if subject:
+        match_stage["subject"] = subject
+
+    # Aggregation pipeline
+    pipeline = [
+        {"$match": match_stage} if match_stage else {"$match": {}},
+        {
+            "$group": {
+                "_id": None,
+                "total_conversations": {"$sum": 1},
+                "unique_users": {"$addToSet": "$user_id"},
+                "unique_sessions": {"$addToSet": "$session_id"},
+                "difficulty_counts": {"$push": "$difficulty"},
+                "avg_latency_ms": {"$avg": "$latency_ms"},
+                "test_conversations": {"$sum": {"$cond": ["$was_test", 1, 0]}},
+            }
+        },
+    ]
+
+    results = list(collection.aggregate(pipeline))
+
+    if not results:
+        return {
+            "total_conversations": 0,
+            "unique_users": 0,
+            "unique_sessions": 0,
+            "difficulty_distribution": {},
+            "avg_latency_ms": None,
+            "test_conversations": 0,
+        }
+
+    result = results[0]
+
+    # Count difficulty distribution
+    difficulty_dist: dict[str, int] = {}
+    for diff in result.get("difficulty_counts", []):
+        if diff:
+            difficulty_dist[diff] = difficulty_dist.get(diff, 0) + 1
+
+    return {
+        "total_conversations": result["total_conversations"],
+        "unique_users": len(result.get("unique_users", [])),
+        "unique_sessions": len(result.get("unique_sessions", [])),
+        "difficulty_distribution": difficulty_dist,
+        "avg_latency_ms": result.get("avg_latency_ms"),
+        "test_conversations": result.get("test_conversations", 0),
+    }

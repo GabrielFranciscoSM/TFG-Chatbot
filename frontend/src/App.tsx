@@ -1,10 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
+import DefaultRedirect from "@/components/layout/DefaultRedirect";
 import PublicRoute from "@/components/layout/PublicRoute";
 import RequireAdmin from "@/components/layout/RequireAdmin";
 import RequireAuth from "@/components/layout/RequireAuth";
 import RequireProfessor from "@/components/layout/RequireProfessor";
+import RequireStudent from "@/components/layout/RequireStudent";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/AuthContext";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -31,7 +33,11 @@ function App() {
             {/* Protected Routes */}
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
-                <Route path="/chat" element={<ChatPage />} />
+                {/* Student-only routes */}
+                <Route element={<RequireStudent />}>
+                  <Route path="/chat" element={<ChatPage />} />
+                </Route>
+
                 <Route path="/settings" element={<SettingsPage />} />
 
                 {/* Professor and Admin routes */}
@@ -46,8 +52,8 @@ function App() {
               </Route>
             </Route>
 
-            {/* Default Redirect */}
-            <Route path="*" element={<Navigate to="/chat" replace />} />
+            {/* Default Redirect - Role-based */}
+            <Route path="*" element={<DefaultRedirect />} />
           </Routes>
           <Toaster />
         </BrowserRouter>

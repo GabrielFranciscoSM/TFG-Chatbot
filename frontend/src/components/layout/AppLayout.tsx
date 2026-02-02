@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 // roles: which roles can see this item (undefined = all)
 // requiresSubjects: if true, user must have subjects assigned
 const navItems = [
-  { to: "/chat", label: "Chat", icon: MessageSquare },
+  { to: "/chat", label: "Chat", icon: MessageSquare, roles: ["student"] },
   {
     to: "/dashboard",
     label: "Mis Clases",

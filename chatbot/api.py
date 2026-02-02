@@ -207,6 +207,49 @@ async def health():
     return {"message": "Hello World"}
 
 
+@app.get(
+    "/system/info",
+    tags=["General"],
+    summary="System information",
+    description="Get information about the chatbot system configuration",
+    status_code=status.HTTP_200_OK,
+)
+async def system_info():
+    """
+    Get system configuration information.
+
+    Returns the current LLM provider, model name, and system version.
+    Used by the frontend to display system information.
+
+    Returns:
+        Dict with system configuration details
+    """
+    # Map provider to display name
+    provider_display = {
+        "gemini": "Gemini",
+        "mistral": "Mistral AI",
+        "vllm": "vLLM (Local)",
+    }
+
+    # Map provider to model name
+    model_display = {
+        "gemini": settings.gemini_model,
+        "mistral": settings.mistral_model,
+        "vllm": (
+            settings.model_path.split("/")[-1] if settings.model_path else "Unknown"
+        ),
+    }
+
+    return {
+        "version": __version__,
+        "llm_provider": provider_display.get(
+            settings.llm_provider, settings.llm_provider
+        ),
+        "llm_model": model_display.get(settings.llm_provider, "Unknown"),
+        "status": "operational",
+    }
+
+
 @app.post(
     "/chat",
     tags=["Chatbot"],

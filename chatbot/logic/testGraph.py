@@ -328,6 +328,7 @@ class TestSessionGraph:
         num_questions = state.get("num_questions", 5)
         difficulty = state.get("difficulty")
         context_list = state.get("context", [])
+        asignatura = state.get("asignatura")
 
         # Format context for the tool
         context_text = ""
@@ -341,11 +342,13 @@ class TestSessionGraph:
             )
 
         # Generate ALL questions upfront
+        # Pass asignatura so generate_test can fetch professor preferences
         args = {
             "topic": topic,
             "num_questions": num_questions,
             "difficulty": difficulty,
             "context": context_text if context_text else None,
+            "asignatura": asignatura,
         }
 
         questions = generate_test_tool.invoke(args)

@@ -142,12 +142,19 @@ class TestGenerationInput(BaseModel):
     """Input model for generating a multiple-choice test."""
 
     topic: str = Field(..., description="The topic about which to generate the test")
-    num_questions: int = Field(..., description="Number of questions to generate")
+    num_questions: int | None = Field(
+        None,
+        description="Number of questions to generate (uses professor default if not specified)",
+    )
     difficulty: str | None = Field(
         None,
-        description="Desired difficulty level of the questions (e.g., easy, medium, hard)",
+        description="Desired difficulty level of the questions (e.g., easy, medium, hard). Uses professor default if not specified.",
     )
     context: str | None = Field(
         None,
         description="Additional context for question generation (e.g., RAG results)",
+    )
+    asignatura: str | None = Field(
+        None,
+        description="The subject (asignatura) to get professor preferences from",
     )

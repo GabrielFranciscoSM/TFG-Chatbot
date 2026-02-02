@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     # RAG Service configuration
     rag_service_url: str = "http://rag_service:8081"
 
+    # Backend Service configuration (for fetching preferences)
+    backend_service_url: str = "http://backend:8000"
+
     # LLM Provider configuration
     llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm"
 

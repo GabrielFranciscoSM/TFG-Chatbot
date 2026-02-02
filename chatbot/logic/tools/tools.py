@@ -444,22 +444,67 @@ def _create_test_objects(
     return tests
 
 
+def _get_professor_preferences(subject: str) -> dict:
+    """Fetch test preferences configured by the professor for a subject.
+
+    Calls the backend API to get the default test configuration
+    (number of questions, difficulty) set by the professor who
+    teaches the given subject.
+
+    Args:
+        subject: The subject identifier (e.g., "iv", "algebra")
+
+    Returns:
+        Dictionary with preferences:
+        - default_test_questions: int (1-20, default 5)
+        - default_test_difficulty: str ("easy", "medium", "hard")
+    """
+    defaults = {
+        "default_test_questions": 5,
+        "default_test_difficulty": "medium",
+    }
+
+    try:
+        url = f"{chatbot_settings.backend_service_url}/users/subject/{subject}/preferences"
+        response = requests.get(url, timeout=5)
+
+        if response.status_code == 200:
+            prefs = response.json()
+            logger.info(f"Got professor preferences for {subject}: {prefs}")
+            return prefs
+        else:
+            logger.warning(
+                f"Failed to get professor preferences for {subject}: "
+                f"status={response.status_code}"
+            )
+            return defaults
+
+    except requests.RequestException as e:
+        logger.warning(f"Error fetching professor preferences for {subject}: {e}")
+        return defaults
+
+
 @tool(args_schema=TestGenerationInput)
 def generate_test(
     topic: str,
-    num_questions: int,
+    num_questions: int | None = None,
     difficulty: str | None = None,
     context: str | None = None,
+    asignatura: str | None = None,
 ) -> list:
     """Generate review questions on a given topic.
 
     Creates thought-provoking questions for an informal review session.
     Questions are designed to encourage reflection and understanding.
 
+    When num_questions or difficulty are not specified, the function
+    fetches the professor's configured preferences for the subject.
+
     Args:
         topic: The subject matter for the questions
-        num_questions: Number of questions to generate (1-10)
-        difficulty: Optional difficulty level (easy, medium, hard)
+        num_questions: Number of questions to generate (1-10). Uses professor default if not specified.
+        difficulty: Optional difficulty level (easy, medium, hard). Uses professor default if not specified.
+        asignatura: The subject to get professor preferences from
 
     Returns:
         List of MultipleChoiceTest objects with generated questions
@@ -467,7 +512,28 @@ def generate_test(
     from chatbot.logic.models import Question
     from chatbot.logic.prompts import TEST_GENERATION_PROMPT
 
-    difficulty = difficulty or "medium"
+    # Fetch professor preferences if we have a subject
+    professor_prefs = _get_professor_preferences(asignatura) if asignatura else None
+
+    # Use professor defaults when values not explicitly provided
+    if num_questions is None:
+        num_questions = (
+            professor_prefs.get("default_test_questions", 5) if professor_prefs else 5
+        )
+
+    if difficulty is None:
+        difficulty = (
+            professor_prefs.get("default_test_difficulty", "medium")
+            if professor_prefs
+            else "medium"
+        )
+
+    # Log if using professor preferences
+    if professor_prefs and asignatura:
+        logger.info(
+            f"Using professor preferences for {asignatura}: "
+            f"questions={num_questions}, difficulty={difficulty}"
+        )
 
     try:
         # Initialize LLM

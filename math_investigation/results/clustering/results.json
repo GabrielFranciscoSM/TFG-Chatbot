@@ -1,0 +1,150 @@
+{
+  "vectorizer": "tfidf",
+  "n_documents": 320,
+  "n_features": 1000,
+  "n_clusters": 3,
+  "kmeans": {
+    "sse": 263.5354048720813,
+    "n_iter": 2,
+    "sse_history": [
+      269.48548875098595,
+      263.5354048720813,
+      263.5354048720813
+    ],
+    "silhouette": 0.08160821809173588,
+    "ari": 0.4243153297495607,
+    "nmi": 0.5333649785015298
+  },
+  "fcm": {
+    "jm": 98.11536848407687,
+    "n_iter": 4,
+    "jm_history": [
+      98.39557105136564,
+      98.11918371776981,
+      98.11549082177714,
+      98.11537327999514,
+      98.11536848407687
+    ],
+    "silhouette": 0.07011641266761008,
+    "fpc": 0.333333333575046,
+    "ari": 0.33739324241877605,
+    "nmi": 0.4356420792956401,
+    "fuzzy_documents_count": 320,
+    "fuzzy_documents": [
+      {
+        "doc_index": 0,
+        "text_preview": "Serverless computing, a paradigm within cloud computing, abstracts the underlying infrastructure fro...",
+        "memberships": {
+          "cluster_0": 0.33333300813627165,
+          "cluster_1": 0.33333556092476146,
+          "cluster_2": 0.33333143093896683
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 1,
+        "text_preview": "A hybrid cloud strategy integrates on-premises infrastructure with public cloud services, enabling o...",
+        "memberships": {
+          "cluster_0": 0.3333328036285063,
+          "cluster_1": 0.33333839504014795,
+          "cluster_2": 0.3333288013313458
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 2,
+        "text_preview": "Infrastructure as a Service (IaaS) is a fundamental model within cloud computing that provides virtu...",
+        "memberships": {
+          "cluster_0": 0.33332627451919483,
+          "cluster_1": 0.3333425911520742,
+          "cluster_2": 0.3333311343287309
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 3,
+        "text_preview": "Infrastructure as a Service (IaaS) is a fundamental model of cloud computing that provides virtualiz...",
+        "memberships": {
+          "cluster_0": 0.3333263271964954,
+          "cluster_1": 0.33334254696364163,
+          "cluster_2": 0.33333112583986296
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 4,
+        "text_preview": "Virtualization technologies form the cornerstone of modern cloud computing infrastructures, enabling...",
+        "memberships": {
+          "cluster_0": 0.33332788821485376,
+          "cluster_1": 0.33334063913767353,
+          "cluster_2": 0.3333314726474727
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 5,
+        "text_preview": "Kubernetes orchestration is a pivotal component in the realm of cloud computing, facilitating the au...",
+        "memberships": {
+          "cluster_0": 0.3333312079283613,
+          "cluster_1": 0.3333366596189065,
+          "cluster_2": 0.33333213245273224
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 6,
+        "text_preview": "Virtualization technologies form the backbone of modern cloud computing infrastructures, enabling th...",
+        "memberships": {
+          "cluster_0": 0.33332994900828017,
+          "cluster_1": 0.3333389819361095,
+          "cluster_2": 0.3333310690556103
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 7,
+        "text_preview": "A hybrid cloud strategy integrates on-premises infrastructure with public cloud services, enabling o...",
+        "memberships": {
+          "cluster_0": 0.33333214594312255,
+          "cluster_1": 0.3333387782834261,
+          "cluster_2": 0.33332907577345133
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 8,
+        "text_preview": "Cloud storage scalability refers to the ability of a cloud storage system to dynamically adjust its ...",
+        "memberships": {
+          "cluster_0": 0.33331682598048323,
+          "cluster_1": 0.3333486808552959,
+          "cluster_2": 0.3333344931642208
+        },
+        "max_cluster": 1
+      },
+      {
+        "doc_index": 9,
+        "text_preview": "Cloud storage scalability refers to the ability of cloud storage systems to dynamically adjust resou...",
+        "memberships": {
+          "cluster_0": 0.3333185500457441,
+          "cluster_1": 0.33334712803920263,
+          "cluster_2": 0.3333343219150534
+        },
+        "max_cluster": 1
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "cluster": 0,
+      "question": "Cloud storage scalability refers to the ability of a cloud storage system to handle growing amounts of work or its potential to be enlarged to accommodate growth. This is a critical aspect of cloud computing, as it allows organizations to dynamically adjust their storage resources based on demand. Scalability in cloud storage is typically achieved through horizontal scaling, where additional storage nodes are added to distribute the load, and vertical scaling, where the capacity of existing nodes is increased. Elastic block storage and object storage systems, such as Amazon S3 and Google Cloud Storage, exemplify this scalability by automatically provisioning and deprovisioning resources. The use of distributed file systems and data replication techniques further enhances scalability by ensuring data availability and redundancy across multiple geographic locations. Additionally, cloud storage providers often employ auto-scaling policies and monitoring tools to optimize resource allocation and performance, ensuring that storage systems can seamlessly scale to meet the needs of diverse workloads."
+    },
+    {
+      "cluster": 1,
+      "question": "Reinforcement Learning (RL) is a paradigm of machine learning where an agent learns to make decisions by interacting with an environment. The agent receives rewards or penalties based on its actions, aiming to maximize cumulative reward over time. Key components include the policy, which defines the agent's behavior; the value function, which estimates the expected reward; and the model, which predicts the environment's dynamics. RL algorithms can be categorized into model-based and model-free approaches. Model-based methods use a learned model of the environment to plan actions, while model-free methods, such as Q-learning and Deep Q-Networks (DQN), rely on direct experience. Recent advancements include Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC), which combine policy gradient methods with stability and efficiency improvements. RL has applications in robotics, game playing, and autonomous systems, demonstrating its versatility in solving complex decision-making tasks."
+    },
+    {
+      "cluster": 2,
+      "question": "Network intrusion detection (NID) is a critical component of modern cybersecurity frameworks, designed to identify and respond to malicious activities within a network. Intrusion detection systems (IDS) employ a variety of techniques, including signature-based detection, anomaly-based detection, and stateful protocol analysis, to monitor network traffic for signs of unauthorized access or malicious behavior. Signature-based detection relies on predefined patterns, or signatures, of known threats, while anomaly-based detection utilizes statistical models to identify deviations from normal network behavior. Stateful protocol analysis involves deep packet inspection to detect protocol violations and other suspicious activities. Advanced IDS implementations often incorporate machine learning algorithms to enhance detection capabilities, enabling the system to adapt to evolving threat landscapes. Effective network intrusion detection requires continuous monitoring, regular updates to threat intelligence feeds, and integration with other security measures such as firewalls and endpoint protection systems."
+    }
+  ]
+}

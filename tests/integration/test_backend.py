@@ -1,33 +1,7 @@
-import uuid
-
 import pytest
 import requests
 
-
-@pytest.fixture(scope="module")
-def auth_token(api_base_url):
-    """Registra un usuario y devuelve un token válido para los tests."""
-    username = f"integration_user_{uuid.uuid4()}"
-    password = "testpassword"
-    email = f"{username}@example.com"
-
-    # 1. Register
-    register_payload = {
-        "username": username,
-        "password": password,
-        "email": email,
-        "role": "student",
-        "subjects": ["iv"],
-    }
-    resp = requests.post(f"{api_base_url}/register", json=register_payload, timeout=5)
-    assert resp.status_code == 200
-
-    # 2. Login
-    login_payload = {"username": username, "password": password}
-    resp = requests.post(f"{api_base_url}/token", data=login_payload, timeout=5)
-    assert resp.status_code == 200
-
-    return resp.json()["access_token"]
+# auth_token fixture moved to conftest.py
 
 
 @pytest.mark.integration

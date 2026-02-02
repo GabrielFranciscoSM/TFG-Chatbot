@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/api";
-import type { DashboardStats, DocumentInfo, StudentInfo, SubjectInfo } from "@/types/dashboard";
+import type {
+  DashboardStats,
+  DocumentInfo,
+  StudentInfo,
+  SubjectInfo,
+  SubjectProgressResponse,
+} from "@/types/dashboard";
 
 // Hook for fetching professor's subjects
 export function useSubjects() {
@@ -185,4 +191,39 @@ export function useStats() {
   }, [fetchStats]);
 
   return { stats, isLoading, error, refetch: fetchStats };
+}
+
+// Hook for fetching student progress in a subject
+export function useStudentProgress(subject: string | null) {
+  const [progress, setProgress] = useState<SubjectProgressResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchProgress = useCallback(async () => {
+    if (!subject) return;
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await api.get<SubjectProgressResponse>(
+        `/professor/subjects/${encodeURIComponent(subject)}/progress`,
+      );
+      setProgress(response.data);
+    } catch (err) {
+      console.error("Error fetching student progress:", err);
+      setError("Error al cargar el progreso de los estudiantes");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [subject]);
+
+  useEffect(() => {
+    if (subject) {
+      fetchProgress();
+    } else {
+      setProgress(null);
+    }
+  }, [subject, fetchProgress]);
+
+  return { progress, isLoading, error, refetch: fetchProgress };
 }

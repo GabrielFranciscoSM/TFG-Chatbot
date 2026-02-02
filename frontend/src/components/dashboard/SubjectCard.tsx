@@ -1,4 +1,4 @@
-import { FileText, FolderOpen, MoreVertical, UserPlus, Users } from "lucide-react";
+import { FileText, FolderOpen, MoreVertical, TrendingUp, UserPlus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -14,6 +14,7 @@ interface SubjectCardProps {
   onViewStudents: (subject: string) => void;
   onViewDocuments: (subject: string) => void;
   onEnrollStudent: (subject: string) => void;
+  onViewProgress?: (subject: string) => void;
 }
 
 export function SubjectCard({
@@ -21,6 +22,7 @@ export function SubjectCard({
   onViewStudents,
   onViewDocuments,
   onEnrollStudent,
+  onViewProgress,
 }: SubjectCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -48,6 +50,12 @@ export function SubjectCard({
               <UserPlus className="mr-2 h-4 w-4" />
               Matricular estudiante
             </DropdownMenuItem>
+            {onViewProgress && (
+              <DropdownMenuItem onClick={() => onViewProgress(subject.name)}>
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Ver progreso
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
@@ -76,7 +84,7 @@ export function SubjectCard({
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 min-w-[100px] overflow-hidden"
+            className="flex-1 min-w-[80px] overflow-hidden"
             onClick={() => onViewStudents(subject.name)}
           >
             <Users className="h-4 w-4 shrink-0" />
@@ -85,12 +93,23 @@ export function SubjectCard({
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 min-w-[100px] overflow-hidden"
+            className="flex-1 min-w-[80px] overflow-hidden"
             onClick={() => onViewDocuments(subject.name)}
           >
             <FileText className="h-4 w-4 shrink-0" />
-            <span className="ml-2 truncate">Documentos</span>
+            <span className="ml-2 truncate">Docs</span>
           </Button>
+          {onViewProgress && (
+            <Button
+              variant="default"
+              size="sm"
+              className="flex-1 min-w-[80px] overflow-hidden"
+              onClick={() => onViewProgress(subject.name)}
+            >
+              <TrendingUp className="h-4 w-4 shrink-0" />
+              <span className="ml-2 truncate">Progreso</span>
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

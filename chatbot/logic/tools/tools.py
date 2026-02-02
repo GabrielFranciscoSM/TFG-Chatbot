@@ -446,7 +446,10 @@ def _create_test_objects(
 
 @tool(args_schema=TestGenerationInput)
 def generate_test(
-    topic: str, num_questions: int, difficulty: str | None = None
+    topic: str,
+    num_questions: int,
+    difficulty: str | None = None,
+    context: str | None = None,
 ) -> list:
     """Generate review questions on a given topic.
 
@@ -472,7 +475,10 @@ def generate_test(
 
         # Build prompt and generate questions
         prompt = TEST_GENERATION_PROMPT.format(
-            topic=topic, num_questions=num_questions, difficulty=difficulty
+            topic=topic,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            context=context or "No additional context provided.",
         )
 
         response = llm.invoke(prompt)

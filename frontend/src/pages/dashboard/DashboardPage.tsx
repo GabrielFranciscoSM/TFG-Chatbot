@@ -4,12 +4,13 @@ import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
 import { StudentList } from "@/components/dashboard/StudentList";
+import { StudentProgressView } from "@/components/dashboard/StudentProgressView";
 import { SubjectCard } from "@/components/dashboard/SubjectCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDocuments, useStats, useStudents, useSubjects } from "@/hooks/useDashboard";
 
-type View = "overview" | "students" | "documents";
+type View = "overview" | "students" | "documents" | "progress";
 
 export default function DashboardPage() {
   const [currentView, setCurrentView] = useState<View>("overview");
@@ -42,6 +43,11 @@ export default function DashboardPage() {
     setCurrentView("documents");
   };
 
+  const handleViewProgress = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("progress");
+  };
+
   const handleEnrollStudent = (subject: string) => {
     setEnrollSubject(subject);
     setEnrollDialogOpen(true);
@@ -54,6 +60,11 @@ export default function DashboardPage() {
 
   // Show subject detail view
   if (currentView !== "overview" && selectedSubject) {
+    // Progress view has its own layout
+    if (currentView === "progress") {
+      return <StudentProgressView subject={selectedSubject} onBack={handleBack} />;
+    }
+
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto py-6 px-4 max-w-6xl">
@@ -133,6 +144,7 @@ export default function DashboardPage() {
                     onViewStudents={handleViewStudents}
                     onViewDocuments={handleViewDocuments}
                     onEnrollStudent={handleEnrollStudent}
+                    onViewProgress={handleViewProgress}
                   />
                 ))}
               </div>

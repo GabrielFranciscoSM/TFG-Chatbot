@@ -109,7 +109,12 @@ def test_ollama_embeddings_consistency():
 
 def test_ollama_multiple_embeddings():
     """Verifica que Ollama puede generar múltiples embeddings en secuencia."""
-    texts = ["First test document", "Second test document", "Third test document"]
+    # Use very distinct texts to ensure different embeddings
+    texts = [
+        "Quantum physics explores subatomic particles and wave functions",
+        "Italian pasta recipes require fresh tomatoes and basil leaves",
+        "Basketball statistics include points rebounds and assists per game",
+    ]
 
     embeddings = []
     for text in texts:

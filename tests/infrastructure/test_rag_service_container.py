@@ -37,7 +37,7 @@ def test_rag_service_container_root_endpoint():
 
 def test_rag_service_accepts_search_requests():
     """Verifica que el servicio RAG acepta peticiones de búsqueda."""
-    payload = {"query": "test query", "top_k": 5, "min_score": 0.3}
+    payload = {"query": "test query", "top_k": 5, "similarity_threshold": 0.3}
     resp = requests.post(f"{RAG_SERVICE_URL}/search", json=payload, timeout=10)
     assert resp.status_code == 200
     data = resp.json()

@@ -12,7 +12,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAssignSubject, useUserSearch } from "@/hooks/useAdmin";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAssignSubject, useSubjectsPublic, useUserSearch } from "@/hooks/useAdmin";
 import { getErrorMessage } from "@/lib/errors";
 
 interface AssignSubjectDialogProps {
@@ -33,6 +40,7 @@ export function AssignSubjectDialog({
 
   const assignMutation = useAssignSubject();
   const { data: suggestions = [], isLoading: searchLoading } = useUserSearch(username, "professor");
+  const { data: subjects = [], isLoading: subjectsLoading } = useSubjectsPublic();
 
   // Reset state when dialog closes or professorUsername changes
   useEffect(() => {
@@ -45,14 +53,15 @@ export function AssignSubjectDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username.trim() || !subject.trim()) return;
+    if (!username.trim() || !subject) return;
 
     try {
       await assignMutation.mutateAsync({
         username: username.trim(),
-        subject: subject.trim().toLowerCase(),
+        subject: subject,
       });
-      toast.success(`Asignatura ${subject} asignada a ${username}`);
+      const subjectLabel = subjects.find((s) => s.name === subject)?.display_name || subject;
+      toast.success(`Asignatura ${subjectLabel} asignada a ${username}`);
       setUsername("");
       setSubject("");
       onOpenChange(false);
@@ -131,12 +140,20 @@ export function AssignSubjectDialog({
             </div>
             <div className="grid gap-2">
               <Label htmlFor="subject">Asignatura</Label>
-              <Input
-                id="subject"
-                placeholder="ingenieria_de_software"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-              />
+              <Select value={subject} onValueChange={setSubject}>
+                <SelectTrigger id="subject">
+                  <SelectValue
+                    placeholder={subjectsLoading ? "Cargando..." : "Selecciona una asignatura"}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.map((s) => (
+                    <SelectItem key={s.name} value={s.name}>
+                      {s.display_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
@@ -145,7 +162,7 @@ export function AssignSubjectDialog({
             </Button>
             <Button
               type="submit"
-              disabled={assignMutation.isPending || !username.trim() || !subject.trim()}
+              disabled={assignMutation.isPending || !username.trim() || !subject}
             >
               {assignMutation.isPending ? "Asignando..." : "Asignar"}
             </Button>

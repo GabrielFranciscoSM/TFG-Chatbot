@@ -1,0 +1,149 @@
+{
+  "topics": [
+    {
+      "id": 0,
+      "name": "Rl",
+      "keywords": [
+        "rl",
+        "agent",
+        "reward",
+        "policy",
+        "actions"
+      ],
+      "all_keywords": [
+        "rl",
+        "agent",
+        "reward",
+        "policy",
+        "actions",
+        "rewards",
+        "value",
+        "cumulative",
+        "maximize",
+        "reinforcement",
+        "agents",
+        "function",
+        "environment",
+        "qlearning",
+        "learns"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Access",
+      "keywords": [
+        "access",
+        "iam",
+        "trust",
+        "authentication",
+        "zero"
+      ],
+      "all_keywords": [
+        "access",
+        "iam",
+        "trust",
+        "authentication",
+        "zero",
+        "identity",
+        "users",
+        "verification",
+        "control",
+        "mfa",
+        "user",
+        "management",
+        "multifactor",
+        "identities",
+        "device"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Detection",
+      "keywords": [
+        "detection",
+        "malware",
+        "analysis",
+        "network",
+        "signaturebased"
+      ],
+      "all_keywords": [
+        "detection",
+        "malware",
+        "analysis",
+        "network",
+        "signaturebased",
+        "protocol",
+        "anomalybased",
+        "intrusion",
+        "behavior",
+        "malicious",
+        "identify",
+        "stateful",
+        "threat",
+        "traffic",
+        "detect"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Nlp",
+      "keywords": [
+        "nlp",
+        "language",
+        "neural",
+        "transformer",
+        "networks"
+      ],
+      "all_keywords": [
+        "nlp",
+        "language",
+        "neural",
+        "transformer",
+        "networks",
+        "processing",
+        "vision",
+        "tasks",
+        "human",
+        "models",
+        "computer",
+        "transformers",
+        "natural",
+        "input",
+        "selfattention"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Storage",
+      "keywords": [
+        "storage",
+        "cloud",
+        "iaas",
+        "virtualization",
+        "nodes"
+      ],
+      "all_keywords": [
+        "storage",
+        "cloud",
+        "iaas",
+        "virtualization",
+        "nodes",
+        "scaling",
+        "scalability",
+        "system",
+        "resources",
+        "physical",
+        "computing",
+        "distributed",
+        "infrastructure",
+        "virtual",
+        "hardware"
+      ]
+    }
+  ],
+  "connections": [],
+  "metadata": {
+    "n_topics": 5,
+    "generated_by": "NMF Topic Modeling"
+  }
+}

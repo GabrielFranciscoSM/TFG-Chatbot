@@ -18,6 +18,7 @@ from backend.dependencies import (
     require_admin_or_professor,
 )
 from backend.models import UserInDB, UserRole
+from backend.utils import get_test_user_filter
 
 router = APIRouter(prefix="/professor", tags=["professor"])
 
@@ -122,9 +123,9 @@ async def list_professor_subjects(
     subjects_info = []
 
     for subject in user.subjects:
-        # Count students enrolled in this subject
+        # Count students enrolled in this subject (excluding test users)
         student_count = users_collection.count_documents(
-            {"role": UserRole.STUDENT, "subjects": subject}
+            {"role": UserRole.STUDENT, "subjects": subject, **get_test_user_filter()}
         )
 
         # Get document count from RAG service
@@ -164,7 +165,10 @@ async def list_subject_students(
     if subject not in user.subjects:
         raise HTTPException(status_code=403, detail="You don't teach this subject")
 
-    students = users_collection.find({"role": UserRole.STUDENT, "subjects": subject})
+    # Exclude test users from the list
+    students = users_collection.find(
+        {"role": UserRole.STUDENT, "subjects": subject, **get_test_user_filter()}
+    )
 
     return [StudentInfo(username=s["username"], email=s["email"]) for s in students]
 
@@ -340,9 +344,15 @@ async def get_dashboard_stats(
     total_documents = 0
 
     for subject in user.subjects:
-        # Count students
+        # Count students (excluding test users)
         students = list(
-            users_collection.find({"role": UserRole.STUDENT, "subjects": subject})
+            users_collection.find(
+                {
+                    "role": UserRole.STUDENT,
+                    "subjects": subject,
+                    **get_test_user_filter(),
+                }
+            )
         )
         for s in students:
             all_students.add(s["username"])
@@ -431,9 +441,11 @@ async def get_subject_progress(
     if subject not in user.subjects:
         raise HTTPException(status_code=403, detail="You don't teach this subject")
 
-    # Get students enrolled in this subject
+    # Get students enrolled in this subject (excluding test users)
     students = list(
-        users_collection.find({"role": UserRole.STUDENT, "subjects": subject})
+        users_collection.find(
+            {"role": UserRole.STUDENT, "subjects": subject, **get_test_user_filter()}
+        )
     )
     student_usernames = [s["username"] for s in students]
 

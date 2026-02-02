@@ -18,6 +18,7 @@ from backend.dependencies import (
     require_admin_or_professor,
 )
 from backend.models import UserInDB, UserRole
+from backend.utils import get_test_user_filter
 
 router = APIRouter(prefix="/admin/subjects", tags=["subjects"])
 
@@ -163,8 +164,9 @@ async def list_subjects(
 
     result = []
     for s in subjects:
+        # Exclude test users from counts
         student_count = users_collection.count_documents(
-            {"role": UserRole.STUDENT, "subjects": s["name"]}
+            {"role": UserRole.STUDENT, "subjects": s["name"], **get_test_user_filter()}
         )
         professor_count = users_collection.count_documents(
             {"role": UserRole.PROFESSOR, "subjects": s["name"]}
@@ -302,7 +304,7 @@ async def reindex_guia(
     # Fetch updated subject
     updated = subjects_collection.find_one({"name": subject_name})
     student_count = users_collection.count_documents(
-        {"role": UserRole.STUDENT, "subjects": subject_name}
+        {"role": UserRole.STUDENT, "subjects": subject_name, **get_test_user_filter()}
     )
     professor_count = users_collection.count_documents(
         {"role": UserRole.PROFESSOR, "subjects": subject_name}

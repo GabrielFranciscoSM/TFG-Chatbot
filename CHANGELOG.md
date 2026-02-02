@@ -5,6 +5,86 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.4.2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.2...v0.4.2) (2026-01-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chatbot:** The web_search tool and DuckDuckGo integration have been removed. The tool was not being used correctly and added unnecessary complexity.
+
+### Features
+
+* **backend:** add prometheus instrumentation [#106](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/106) ([8408c13](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8408c13cd7eb8070db0eb22dcccbc7284e379bd9))
+* **chatbot:** add Mistral AI as LLM provider option ([3ea5462](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3ea5462fe5b03b69ebc67b198d034731721289bc))
+* **chatbot:** add observability dependencies ([38ba70f](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/38ba70f475cfd874fe5dabfa867c459f16e50aee))
+* **chatbot:** add Phoenix LLM tracing instrumentation ([1b60a41](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/1b60a41566be379aec13848b5b18342d62dd70fb))
+* complete Sprint 5 observability ([87ce973](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/87ce9735ad3c4b1f951fa52f7742b88858535db5))
+* **grafana:** add provisioning configuration ([a95f523](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a95f523f000543fc9c5b7829ed84fbea5710228f))
+* **infra:** add Loki and Promtail for log aggregation [#107](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/107) ([370aa44](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/370aa442b2d301afcff67cabb445118fa0a791e5))
+* **infra:** add prometheus service and configuration [#106](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/106) ([55780db](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/55780db83c1a00f1e2efabc13ce9d28a363792b6))
+* **observability:** add AlertManager for alerting ([#104](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/104), [#105](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/105)) ([6930489](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/6930489c98f9ab1a415278d3c1460366a3a867c7))
+* **observability:** configure Grafana and enhance Promtail ([e78f746](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e78f746f630183fbb087ad6a681af5f57cd5ea66))
+* **observability:** implement JSON structured logging and correlation ID across services [#102](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/102) ([51a7c3e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/51a7c3e3a493faed7ec027f8409997cd08dce168))
+* **rag:** add prometheus instrumentation [#106](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/106) ([9641406](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/9641406b0bad978399c008c0279b0aa460d8e2b8))
+
+
+### Bug Fixes
+
+* add __main__.py entry points for local development ([3d43fb7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3d43fb707f82737f59e075d505b3155c18a573c0))
+* **chatbot:** downgrade Python to 3.12 for compatibility ([a019734](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a019734de9cf4011d325a37cac39ac95dba8f893))
+* **ci:** downgrade Python 3.14 to 3.13 in workflows ([ca9c866](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ca9c866cf24d5427087976a5f303fcbe16182071))
+* **ci:** pin Black version to &lt;26 to avoid bug in 26.1.0 ([01519f3](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/01519f30b2483fcae1c73ecb2d61ee673b37deeb))
+* ensure environment configuration consistency ([868daad](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/868daad2f2de2e023ae329711f4d6b3061624c15))
+* optimize Dockerfiles with multi-stage builds ([ef591a7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ef591a7790fa3eac9cb12ccf3054b0bee2fad1d6))
+* **rag_service:** create documents directory with correct permissions ([00caed4](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/00caed49f84344e952f2178e6f2a36bdd5318ff7))
+* update Python requirement from &gt;=3.14 to &gt;=3.13 ([05cbede](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/05cbede6c99d0862fd25f3469e2c6571b98af2a7))
+
+
+### Documentation
+
+* add ADRs for observability architecture ([5faea0e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/5faea0ef55131c4ec0e91419e88661afaa07fbc9))
+* add daily scrums for December 2025 (09-25) ([5f308fc](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/5f308fc67080e681cc569fcaa7ec7eac242e4b83))
+* add sprint 5 planning and sprint 4 retrospective ([5a72a1d](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/5a72a1d72c81f89e9de648eabf7b71458811d3fd))
+* add Sprint 5 retrospective ([9b03b88](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/9b03b8887590ecf4e8a976ebf21ec16615711a26))
+* **adr:** add ADR-0033 for Grafana visualization ([bce995a](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/bce995acdc91400a86cbfa53f4280e06946b1ee6))
+* **scrum:** add daily scrum notes for Dec 28-29 ([472c976](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/472c97671981d6adb4cafa2e4285fc6c618f0c13))
+* **scrum:** update daily scrum 27-12-25 - Prometheus completed [#106](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/106) ([259bbd0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/259bbd095d88828abaf70b2f8a16758e540539db))
+
+
+### Miscellaneous Chores
+
+* release 0.4.2 ([47c3a0b](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/47c3a0b05dbf22efab47177abf3f216de8e8fb48))
+
+
+### Code Refactoring
+
+* **chatbot:** remove unused web_search tool ([04cbe09](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/04cbe0932fea620ae7a6743a20b29fdaa4cdc4d5))
+
+## [0.4.2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.1...v0.4.2) (2025-12-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chatbot:** The web_search tool and DuckDuckGo integration have been removed. The tool was not being used correctly and added unnecessary complexity.
+
+### Bug Fixes
+
+* add __main__.py entry points for local development ([3d43fb7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3d43fb707f82737f59e075d505b3155c18a573c0))
+* **chatbot:** downgrade Python to 3.12 for compatibility ([a019734](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a019734de9cf4011d325a37cac39ac95dba8f893))
+* ensure environment configuration consistency ([868daad](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/868daad2f2de2e023ae329711f4d6b3061624c15))
+* optimize Dockerfiles with multi-stage builds ([ef591a7](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ef591a7790fa3eac9cb12ccf3054b0bee2fad1d6))
+* **rag_service:** create documents directory with correct permissions ([00caed4](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/00caed49f84344e952f2178e6f2a36bdd5318ff7))
+
+
+### Miscellaneous Chores
+
+* release 0.4.2 ([47c3a0b](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/47c3a0b05dbf22efab47177abf3f216de8e8fb48))
+
+
+### Code Refactoring
+
+* **chatbot:** remove unused web_search tool ([04cbe09](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/04cbe0932fea620ae7a6743a20b29fdaa4cdc4d5))
+
 ## [0.4.1](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.4.0...v0.4.1) (2025-12-06)
 
 

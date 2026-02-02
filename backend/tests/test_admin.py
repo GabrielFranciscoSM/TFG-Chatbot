@@ -1,6 +1,21 @@
+from datetime import UTC, datetime
+
+
 def test_admin_enroll_success(
-    client, professor_token, test_user, mock_users_collection
+    client, professor_token, test_user, mock_users_collection, mock_subjects_collection
 ):
+    # Create the subject first (subjects must exist to be assigned)
+    mock_subjects_collection.insert_one(
+        {
+            "name": "dsd",
+            "display_name": "DSD",
+            "guia_url": None,
+            "guia_indexed": False,
+            "created_at": datetime.now(UTC),
+            "created_by": "admin",
+        }
+    )
+
     # Professor enrolling a student in their own subject (dsd)
     response = client.post(
         "/admin/enroll",
@@ -27,8 +42,20 @@ def test_admin_enroll_forbidden_for_student(client, student_token, test_user):
 
 
 def test_admin_enroll_forbidden_for_professor_wrong_subject(
-    client, professor_token, test_user
+    client, professor_token, test_user, mock_subjects_collection
 ):
+    # Create the subject first (but professor doesn't teach it)
+    mock_subjects_collection.insert_one(
+        {
+            "name": "other_subject",
+            "display_name": "Other Subject",
+            "guia_url": None,
+            "guia_indexed": False,
+            "created_at": datetime.now(UTC),
+            "created_by": "admin",
+        }
+    )
+
     # Professor trying to enroll in a subject they don't manage
     response = client.post(
         "/admin/enroll",
@@ -115,9 +142,21 @@ def test_admin_get_users_filter_by_role(
 
 
 def test_admin_assign_subject(
-    client, admin_token, test_professor, mock_users_collection
+    client, admin_token, test_professor, mock_users_collection, mock_subjects_collection
 ):
     """Admin can assign a subject to a professor"""
+    # Create the subject first
+    mock_subjects_collection.insert_one(
+        {
+            "name": "new_subject",
+            "display_name": "New Subject",
+            "guia_url": None,
+            "guia_indexed": False,
+            "created_at": datetime.now(UTC),
+            "created_by": "admin",
+        }
+    )
+
     response = client.post(
         "/admin/assign-subject",
         json={"username": test_professor["username"], "subject": "new_subject"},

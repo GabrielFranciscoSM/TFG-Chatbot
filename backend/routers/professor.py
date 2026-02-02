@@ -63,6 +63,49 @@ class DashboardStats(BaseModel):
     sessions_last_7_days: list[dict]
 
 
+# --- Progress Dashboard Models ---
+
+
+class TopicProgress(BaseModel):
+    """Progress metrics for a specific topic."""
+
+    topic: str
+    level: float  # 0-1 mastery level
+    interactions_count: int
+    test_questions: int
+    correct_answers: int
+
+
+class StudentProgress(BaseModel):
+    """Detailed learning progress for a student."""
+
+    username: str
+    email: str
+    total_interactions: int
+    difficulty_distribution: dict[str, int]
+    topics: list[TopicProgress]
+    tests_taken: int
+    average_test_score: float | None
+    last_active: datetime | None
+
+
+class AggregatedStats(BaseModel):
+    """Aggregated statistics for a subject."""
+
+    total_students: int
+    total_interactions: int
+    total_tests: int
+    difficulty_distribution: dict[str, int]
+
+
+class SubjectProgressResponse(BaseModel):
+    """Response model for subject progress endpoint."""
+
+    subject: str
+    students: list[StudentProgress]
+    aggregated_stats: AggregatedStats
+
+
 # --- Endpoints ---
 
 
@@ -363,4 +406,144 @@ async def get_dashboard_stats(
         total_documents=total_documents,
         subjects=subject_stats,
         sessions_last_7_days=sessions_last_7_days,
+    )
+
+
+@router.get("/subjects/{subject}/progress", response_model=SubjectProgressResponse)
+async def get_subject_progress(
+    subject: str,
+    user: UserInDB = Depends(require_admin_or_professor),
+    users_collection=Depends(get_users_collection),
+):
+    """
+    Get detailed learning progress for all students in a subject.
+
+    Returns per-student metrics including:
+    - Difficulty distribution (basic, intermediate, advanced questions)
+    - Topic mastery levels within the subject
+    - Test performance statistics
+    - Recent activity timestamps
+
+    This endpoint fetches student profiles from the chatbot service
+    and aggregates them for the professor's dashboard view.
+    """
+    # Verify professor teaches this subject
+    if subject not in user.subjects:
+        raise HTTPException(status_code=403, detail="You don't teach this subject")
+
+    # Get students enrolled in this subject
+    students = list(
+        users_collection.find({"role": UserRole.STUDENT, "subjects": subject})
+    )
+    student_usernames = [s["username"] for s in students]
+
+    if not student_usernames:
+        return SubjectProgressResponse(
+            subject=subject,
+            students=[],
+            aggregated_stats=AggregatedStats(
+                total_students=0,
+                total_interactions=0,
+                total_tests=0,
+                difficulty_distribution={"basic": 0, "intermediate": 0, "advanced": 0},
+            ),
+        )
+
+    # Get profiles from chatbot service (batch request)
+    profiles_data: list[dict] = []
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                f"{settings.chatbot_service_url}/profiles/batch",
+                json=student_usernames,
+            )
+            if response.status_code == 200:
+                profiles_data = response.json()
+    except Exception:
+        pass  # If chatbot service is down, continue with empty profiles
+
+    # Build profile lookup by user_id
+    profiles_by_user = {p["user_id"]: p for p in profiles_data}
+
+    # Build student progress list
+    student_progress: list[StudentProgress] = []
+    total_interactions = 0
+    total_tests = 0
+    all_difficulties: dict[str, int] = {"basic": 0, "intermediate": 0, "advanced": 0}
+
+    for student in students:
+        username = student["username"]
+        profile = profiles_by_user.get(username, {})
+
+        # Extract topics for this specific subject
+        topics: list[TopicProgress] = []
+        subject_mastery = profile.get("subject_mastery", {}).get(subject, {})
+        for topic_name, mastery in subject_mastery.items():
+            topics.append(
+                TopicProgress(
+                    topic=topic_name,
+                    level=mastery.get("level", 0.5),
+                    interactions_count=mastery.get("interactions_count", 0),
+                    test_questions=mastery.get("total_test_questions", 0),
+                    correct_answers=mastery.get("correct_answers", 0),
+                )
+            )
+
+        # Get difficulty distribution
+        diff_dist = profile.get(
+            "difficulty_distribution",
+            {"basic": 0, "intermediate": 0, "advanced": 0},
+        )
+        interactions = profile.get("total_interactions", 0)
+        tests = profile.get("total_tests_taken", 0)
+
+        # Aggregate stats across all students
+        total_interactions += interactions
+        total_tests += tests
+        for k, v in diff_dist.items():
+            if k in all_difficulties:
+                all_difficulties[k] += v
+
+        # Get last activity from recent_interactions
+        recent = profile.get("recent_interactions", [])
+        last_active = None
+        if recent:
+            last_ts = recent[-1].get("timestamp")
+            if last_ts:
+                # Handle both string and datetime formats
+                if isinstance(last_ts, str):
+                    try:
+                        last_active = datetime.fromisoformat(
+                            last_ts.replace("Z", "+00:00")
+                        )
+                    except ValueError:
+                        pass
+                else:
+                    last_active = last_ts
+
+        student_progress.append(
+            StudentProgress(
+                username=username,
+                email=student["email"],
+                total_interactions=interactions,
+                difficulty_distribution=diff_dist,
+                topics=topics,
+                tests_taken=tests,
+                average_test_score=profile.get("average_test_score"),
+                last_active=last_active,
+            )
+        )
+
+    # Sort by total interactions (most active students first)
+    student_progress.sort(key=lambda s: s.total_interactions, reverse=True)
+
+    return SubjectProgressResponse(
+        subject=subject,
+        students=student_progress,
+        aggregated_stats=AggregatedStats(
+            total_students=len(students),
+            total_interactions=total_interactions,
+            total_tests=total_tests,
+            difficulty_distribution=all_difficulties,
+        ),
     )

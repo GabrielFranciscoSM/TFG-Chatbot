@@ -10,7 +10,11 @@ os.environ["ALGORITHM"] = "HS256"
 os.environ["MONGO_DB"] = "test_db"
 
 from backend.api import app
-from backend.dependencies import get_sessions_collection, get_users_collection
+from backend.dependencies import (
+    get_sessions_collection,
+    get_subjects_collection,
+    get_users_collection,
+)
 from backend.models import UserRole
 from backend.security import create_access_token, get_password_hash
 
@@ -33,7 +37,13 @@ def mock_sessions_collection(mock_mongo_client):
 
 
 @pytest.fixture
-def client(mock_users_collection, mock_sessions_collection):
+def mock_subjects_collection(mock_mongo_client):
+    db = mock_mongo_client.test_db
+    return db.subjects
+
+
+@pytest.fixture
+def client(mock_users_collection, mock_sessions_collection, mock_subjects_collection):
     # Override the dependency to use mongomock
     def override_get_users_collection():
         return mock_users_collection
@@ -41,8 +51,12 @@ def client(mock_users_collection, mock_sessions_collection):
     def override_get_sessions_collection():
         return mock_sessions_collection
 
+    def override_get_subjects_collection():
+        return mock_subjects_collection
+
     app.dependency_overrides[get_users_collection] = override_get_users_collection
     app.dependency_overrides[get_sessions_collection] = override_get_sessions_collection
+    app.dependency_overrides[get_subjects_collection] = override_get_subjects_collection
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()

@@ -21,6 +21,11 @@ class ChatRequest(BaseModel):
         description="Asignatura (subject) to bind to the agent state",
         json_schema_extra={"example": "IV"},
     )
+    user_id: str | None = Field(
+        None,
+        description="User identifier for profile tracking (passed from gateway)",
+        json_schema_extra={"example": "student123"},
+    )
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -28,6 +33,7 @@ class ChatRequest(BaseModel):
                 "query": "¿Cómo funciona el aprendizaje automático?",
                 "id": "session-abc-123",
                 "asignatura": "Guía docente de Trabajo Fin de Grado (Ingeniería Informática) (2971197)",
+                "user_id": "student123",
             }
         }
     )

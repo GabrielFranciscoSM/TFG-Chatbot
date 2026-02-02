@@ -42,3 +42,45 @@ export interface UploadDocumentRequest {
   tipo_documento: string;
   auto_index: boolean;
 }
+
+// --- Student Progress Types ---
+
+export interface TopicProgress {
+  topic: string;
+  level: number; // 0-1 mastery level
+  interactions_count: number;
+  test_questions: number;
+  correct_answers: number;
+}
+
+export interface StudentProgress {
+  username: string;
+  email: string;
+  total_interactions: number;
+  difficulty_distribution: {
+    basic: number;
+    intermediate: number;
+    advanced: number;
+  };
+  topics: TopicProgress[];
+  tests_taken: number;
+  average_test_score: number | null;
+  last_active: string | null;
+}
+
+export interface AggregatedStats {
+  total_students: number;
+  total_interactions: number;
+  total_tests: number;
+  difficulty_distribution: {
+    basic: number;
+    intermediate: number;
+    advanced: number;
+  };
+}
+
+export interface SubjectProgressResponse {
+  subject: string;
+  students: StudentProgress[];
+  aggregated_stats: AggregatedStats;
+}

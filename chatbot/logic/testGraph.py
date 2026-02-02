@@ -53,7 +53,7 @@ Example:
 """
 
 import os
-from typing import Literal
+from typing import Any, Literal
 
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langgraph.graph import END, MessagesState, StateGraph
@@ -87,11 +87,15 @@ class TestSessionState(MessagesState):
     topic: str
     num_questions: int
     difficulty: str | None
+    asignatura: str | None
     questions: list[MultipleChoiceTest]
     current_question_index: int
     user_answers: list[str]
     feedback_history: list[str]
     scores: list[bool]
+    queries: list[str] | None
+    context: list[dict[str, Any]] | None
+    pending_feedback: str | None
     # messages is inherited from MessagesState (shared with parent)
 
 
@@ -120,23 +124,27 @@ class TestSessionGraph:
     def __init__(
         self,
         *,
-        llm_provider: Literal["vllm", "gemini"] = "vllm",
+        llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm",
         vllm_url: str | None = None,
         model_name: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
-        gemini_model: str = "gemini-2.0-flash",
+        gemini_model: str | None = None,
+        mistral_api_key: str | None = None,
+        mistral_model: str | None = None,
         temperature: float = 0.7,
     ):
         """Initialize with LLM configuration for answer evaluation.
 
         Args:
-            llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
+            llm_provider: "vllm" (local), "gemini" (Google), or "mistral" (Mistral AI)
             vllm_url: URL for vLLM service (only for vllm provider)
             model_name: Model name (only for vllm provider)
             openai_api_key: API key for vLLM OpenAI-compatible endpoint
             gemini_api_key: Google Gemini API key (only for gemini provider)
-            gemini_model: Gemini model name (default: gemini-1.5-flash)
+            gemini_model: Gemini model name (default: gemini-2.5-flash)
+            mistral_api_key: Mistral AI API key (only for mistral provider)
+            mistral_model: Mistral model name (default: mistral-large-latest)
             temperature: LLM temperature
         """
         self.llm_provider = llm_provider
@@ -149,9 +157,13 @@ class TestSessionGraph:
 
         # Gemini configuration
         self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
-        self.gemini_model = gemini_model
+        self.gemini_model = gemini_model or settings.gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
+
+        # Mistral configuration
+        self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
+        self.mistral_model = mistral_model or settings.mistral_model
 
         # Initialize LLM for answer evaluation
         self.llm = self._get_llm()
@@ -163,9 +175,10 @@ class TestSessionGraph:
             temperature: Override temperature (uses instance default if None)
 
         Returns:
-            Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+            Configured LLM instance (ChatOpenAI, ChatGoogleGenerativeAI, or ChatMistralAI)
         """
         from langchain_google_genai import ChatGoogleGenerativeAI
+        from langchain_mistralai import ChatMistralAI
         from langchain_openai import ChatOpenAI
 
         temp = temperature if temperature is not None else self.temperature
@@ -180,6 +193,16 @@ class TestSessionGraph:
                 google_api_key=self.gemini_api_key,
                 temperature=temp,
             )
+        elif self.llm_provider == "mistral":
+            if not self.mistral_api_key:
+                raise ValueError(
+                    "MISTRAL_API_KEY not found. Set it in .env or pass mistral_api_key parameter."
+                )
+            return ChatMistralAI(
+                model=self.mistral_model,
+                mistral_api_key=self.mistral_api_key,
+                temperature=temp,
+            )
         else:  # vllm
             return ChatOpenAI(
                 model=self.model_name,
@@ -189,13 +212,110 @@ class TestSessionGraph:
             )
 
     def initialize_test(self, state: TestSessionState):
-        """Entry point: Extract tool call args and generate questions.
+        """Entry point: Extract tool call args and prepare state.
 
         This node:
         1. Reads last message's tool_calls from parent state
-        2. Generates all questions using generate_test tool
-        3. Initializes test tracking fields
+        2. Initializes test tracking fields and topic
         """
+        messages = state["messages"]
+        last_message = messages[-1]
+        tool_calls = getattr(last_message, "tool_calls", [])
+
+        if not tool_calls:
+            return {}
+
+        # Process the first generate_test tool call, but respond to ALL to satisfy Mistral
+        target_call = None
+        tool_messages = []
+
+        for tc in tool_calls:
+            if tc["name"] == "generate_test" and target_call is None:
+                target_call = tc
+                content = f"Preparando sesión de repaso sobre {tc['args'].get('topic', 'este tema')}..."
+            else:
+                content = "Ignorando llamada a herramienta duplicada o no válida durante el test."
+
+            tool_messages.append(
+                ToolMessage(
+                    content=content,
+                    tool_call_id=tc["id"],
+                )
+            )
+
+        if not target_call:
+            return {"messages": tool_messages}
+
+        args = target_call["args"]
+        topic = args.get("topic", "este tema")
+        num_questions = args.get("num_questions", 5)
+        difficulty = args.get("difficulty")
+
+        # Initialize test session state AND return ToolMessages
+        return {
+            "topic": topic,
+            "num_questions": num_questions,
+            "difficulty": difficulty,
+            "asignatura": state.get("asignatura"),
+            "current_question_index": 0,
+            "user_answers": [],
+            "feedback_history": [],
+            "scores": [],
+            "context": [],
+            "queries": [],
+            "messages": tool_messages,
+        }
+
+    def generate_queries_node(self, state: TestSessionState):
+        """Generate search queries for the RAG service based on the topic."""
+        import json
+        import re
+
+        from chatbot.logic.prompts import TEST_QUERY_GENERATION_PROMPT
+
+        topic = state.get("topic")
+        llm = self._get_llm(temperature=0.3)  # Lower temperature for query generation
+
+        prompt = TEST_QUERY_GENERATION_PROMPT.format(topic=topic, num_queries=3)
+        response = llm.invoke(prompt)
+        response_text = (
+            response.content if hasattr(response, "content") else str(response)
+        )
+
+        # Parse JSON array of queries
+        queries = []
+        json_match = re.search(r"\[.*\]", response_text, re.DOTALL)
+        if json_match:
+            try:
+                queries = json.loads(json_match.group())
+            except Exception:
+                queries = [topic]
+        else:
+            queries = [topic]
+
+        return {"queries": queries}
+
+    def retrieve_context_node(self, state: TestSessionState):
+        """Invoke RAG search tool for each generated query."""
+        from chatbot.logic.tools.tools import rag_search
+
+        queries = state.get("queries", [])
+        asignatura = state.get("asignatura")
+        all_context = []
+
+        for query in queries:
+            try:
+                # Call tool directly (it's a LangChain tool, use .func)
+                result = rag_search.func(query=query, asignatura=asignatura, top_k=3)
+                if result.get("ok"):
+                    all_context.extend(result.get("results", []))
+            except Exception as e:
+                print(f"Error in proactive RAG search for query '{query}': {e}")
+
+        return {"context": all_context}
+
+    def generate_questions_node(self, state: TestSessionState):
+        """Generate test questions using the proactively retrieved context."""
         from chatbot.logic.tools.tools import get_tools
 
         tools = get_tools()
@@ -204,28 +324,39 @@ class TestSessionGraph:
         if generate_test_tool is None:
             raise ValueError("generate_test tool not found")
 
-        messages = state["messages"]
-        last_message = messages[-1]
-        tool_calls = getattr(last_message, "tool_calls", [])
+        topic = state.get("topic")
+        num_questions = state.get("num_questions", 5)
+        difficulty = state.get("difficulty")
+        context_list = state.get("context", [])
 
-        if not tool_calls:
-            return {}
-
-        args = tool_calls[0]["args"]
+        # Format context for the tool
+        context_text = ""
+        if context_list:
+            context_text = "\n\n".join(
+                [
+                    f"Fragmento {i+1}:\n{item['content']}"
+                    for i, item in enumerate(context_list)
+                    if isinstance(item, dict) and "content" in item
+                ]
+            )
 
         # Generate ALL questions upfront
+        args = {
+            "topic": topic,
+            "num_questions": num_questions,
+            "difficulty": difficulty,
+            "context": context_text if context_text else None,
+        }
+
         questions = generate_test_tool.invoke(args)
 
-        # Initialize test session state
         return {
-            "topic": args["topic"],
-            "num_questions": args.get("num_questions", 5),
-            "difficulty": args.get("difficulty"),
             "questions": questions if isinstance(questions, list) else [questions],
-            "current_question_index": 0,
-            "user_answers": [],
-            "feedback_history": [],
-            "scores": [],
+            "messages": [
+                AIMessage(
+                    content=f"He recopilado información relevante sobre {topic}. ¡Empecemos con las preguntas!"
+                )
+            ],
         }
 
     def present_question(self, state: TestSessionState):
@@ -260,7 +391,15 @@ class TestSessionGraph:
         else:
             question_text = str(question)
 
-        return {"messages": [AIMessage(content=question_text)]}
+        # Prepend pending feedback if exists
+        pending_feedback = state.get("pending_feedback")
+        if pending_feedback:
+            question_text = f"📢 Resultados de la pregunta anterior:\n{pending_feedback}\n\n---\n\n{question_text}"
+
+        return {
+            "messages": [AIMessage(content=question_text)],
+            "pending_feedback": None,  # Consumed
+        }
 
     def answer_question(self, state: TestSessionState):
         """Wait for user answer, then evaluate it.
@@ -322,7 +461,7 @@ class TestSessionGraph:
         updated_scores = state.get("scores", []) + [is_correct]
         updated_index = idx + 1
 
-        # Format feedback message - THIS is saved to messages
+        # Format feedback message - we store it in state to prepend to next question
         emoji = "✅" if is_correct else "❌"
         feedback_msg = f"""{emoji} {feedback}
 
@@ -333,9 +472,9 @@ Progreso: {updated_index}/{state.get("num_questions", len(questions))} completad
             "feedback_history": updated_feedback,
             "scores": updated_scores,
             "current_question_index": updated_index,
+            "pending_feedback": feedback_msg,  # Save for next node
             "messages": [
                 HumanMessage(content=user_answer),
-                AIMessage(content=feedback_msg),
             ],
         }
 
@@ -356,28 +495,49 @@ Progreso: {updated_index}/{state.get("num_questions", len(questions))} completad
         total = state.get("num_questions", len(scores))
         percentage = (score / total) * 100 if total > 0 else 0
 
-        # Get tool_call_id from the original tool call
-        messages = state.get("messages", [])
-        last_ai_message = next(
-            (
-                m
-                for m in reversed(messages)
-                if hasattr(m, "tool_calls") and m.tool_calls
-            ),
-            None,
-        )
-        tool_call_id = (
-            last_ai_message.tool_calls[0]["id"] if last_ai_message else "unknown"
-        )
-
         topic = state.get("topic", "este tema")
+
+        # Merge final feedback with summary
+        pending_feedback = state.get("pending_feedback", "")
         summary = f"""🎓 ¡Sesión de repaso completada!
 
 Puntuación: {score}/{total} ({percentage:.0f}%)
 
 ¡Excelente trabajo repasando {topic}!"""
 
-        return {"messages": [ToolMessage(content=summary, tool_call_id=tool_call_id)]}
+        if pending_feedback:
+            summary = f"{pending_feedback}\n\n---\n\n{summary}"
+
+        return {
+            "messages": [AIMessage(content=summary)],
+            "pending_feedback": None,
+        }
+
+    def _format_rag_context(self, context: list[dict[str, Any]]) -> str:
+        """Format RAG context documents for the evaluation prompt.
+
+        Args:
+            context: List of RAG result dictionaries with 'content' or 'text' keys
+
+        Returns:
+            Formatted string with context snippets, or message if no context
+        """
+        if not context:
+            return "No course context available for this topic."
+
+        formatted = []
+        for doc in context[:3]:  # Limit to 3 most relevant
+            content = doc.get("content", doc.get("text", ""))
+            if content:
+                # Truncate long documents
+                truncated = content[:500] + "..." if len(content) > 500 else content
+                formatted.append(f"- {truncated}")
+
+        return (
+            "\n".join(formatted)
+            if formatted
+            else "No course context available for this topic."
+        )
 
     def evaluate_answer_with_llm(
         self, question: MultipleChoiceTest, user_answer: str, state: TestSessionState
@@ -417,11 +577,16 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
             else ""
         )
 
+        # Extract and format RAG context from state (complementary, not required)
+        rag_context = state.get("context", [])
+        formatted_context = self._format_rag_context(rag_context)
+
         evaluation_prompt = TEST_EVALUATION_PROMPT.format(
             topic=state["topic"],
             question_text=question_text,
             user_answer=user_answer,
             correct_answer_hint=correct_answer_hint,
+            rag_context=formatted_context,
         )
 
         try:
@@ -456,15 +621,21 @@ Puntuación: {score}/{total} ({percentage:.0f}%)
         """
         subgraph_builder = StateGraph(TestSessionState)
 
-        # Add nodes - NOW includes initialization as entry point
+        # Add nodes
         subgraph_builder.add_node("initialize_test", self.initialize_test)
+        subgraph_builder.add_node("generate_queries", self.generate_queries_node)
+        subgraph_builder.add_node("retrieve_context", self.retrieve_context_node)
+        subgraph_builder.add_node("generate_questions", self.generate_questions_node)
         subgraph_builder.add_node("present_question", self.present_question)
         subgraph_builder.add_node("answer_question", self.answer_question)
         subgraph_builder.add_node("finalize", self.finalize_test)
 
-        # Define flow - START with initialization
+        # Define flow
         subgraph_builder.set_entry_point("initialize_test")
-        subgraph_builder.add_edge("initialize_test", "present_question")
+        subgraph_builder.add_edge("initialize_test", "generate_queries")
+        subgraph_builder.add_edge("generate_queries", "retrieve_context")
+        subgraph_builder.add_edge("retrieve_context", "generate_questions")
+        subgraph_builder.add_edge("generate_questions", "present_question")
         subgraph_builder.add_edge("present_question", "answer_question")
         subgraph_builder.add_conditional_edges(
             "answer_question",

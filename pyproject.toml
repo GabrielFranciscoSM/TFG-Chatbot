@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tfg-chatbot"
-version = "0.4.1"
+version = "0.4.2"
 description = "TFG Chatbot project - Educational AI agent development tools and workspace"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [ { name = "Gabriel Francisco" } ]
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 keywords = ["chatbot", "education", "ai", "llm", "langgraph", "langchain"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -39,6 +39,7 @@ dependencies = [
   "beautifulsoup4>=4.12.2",
   "sentence-transformers>=2.2.2",
   "pypdf>=3.17.0",
+  "langchain-mistralai>=1.0.1",
 ]
 
 [project.optional-dependencies]
@@ -67,6 +68,7 @@ ai = [
   "langchain_google_genai",
   "langchain_openai",
   "langgraph",
+  "umap-learn>=0.5.5",
 ]
 # Dev includes all development dependencies
 dev = [
@@ -100,7 +102,7 @@ exclude = ["tests*", "docs*", "models*", "local*", "backend*", "rag_service*", "
 
 [tool.ruff]
 line-length = 88
-target-version = "py314"
+target-version = "py313"
 exclude = [
     "build",
     "dist",
@@ -143,7 +145,7 @@ extend_skip = ["models", "local"]
 
 [tool.black]
 line-length = 88
-target-version = ["py314"]
+target-version = ["py313"]
 extend-exclude = '''
 /(
     models
@@ -153,7 +155,7 @@ extend-exclude = '''
 '''
 
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.13"
 warn_return_any = false
 warn_unused_configs = true
 warn_redundant_casts = true

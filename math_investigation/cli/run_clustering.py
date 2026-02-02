@@ -63,6 +63,7 @@ def run_clustering(
 
     # Step 1: Vectorization
     from typing import Any
+
     vectorizer: Any
     if vectorizer_type == "tfidf":
         vectorizer = TFIDFVectorizer(max_features=1000)

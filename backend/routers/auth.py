@@ -19,9 +19,12 @@ async def register(user: UserCreate, users_collection=Depends(get_users_collecti
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = get_password_hash(user.password)
-    user_in_db = UserInDB(
-        **user.model_dump(exclude={"password"}), hashed_password=hashed_password
-    )
+    # Exclude password and preferences (if None, let UserInDB use default)
+    user_data = user.model_dump(exclude={"password", "preferences"})
+    if user.preferences is not None:
+        user_data["preferences"] = user.preferences.model_dump()
+
+    user_in_db = UserInDB(**user_data, hashed_password=hashed_password)
     users_collection.insert_one(user_in_db.model_dump())
     return user_in_db
 

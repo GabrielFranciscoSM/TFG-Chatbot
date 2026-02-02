@@ -80,34 +80,34 @@ export function SubjectCard({
             </div>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 grid grid-cols-2 gap-2">
           <Button
             variant="outline"
-            size="sm"
-            className="flex-1 min-w-[80px] overflow-hidden"
+            size="default"
+            className="w-full justify-start"
             onClick={() => onViewStudents(subject.name)}
           >
-            <Users className="h-4 w-4 shrink-0" />
-            <span className="ml-2 truncate">Estudiantes</span>
+            <Users className="h-4 w-4 mr-2" />
+            Estudiantes
           </Button>
           <Button
             variant="outline"
-            size="sm"
-            className="flex-1 min-w-[80px] overflow-hidden"
+            size="default"
+            className="w-full justify-start"
             onClick={() => onViewDocuments(subject.name)}
           >
-            <FileText className="h-4 w-4 shrink-0" />
-            <span className="ml-2 truncate">Docs</span>
+            <FileText className="h-4 w-4 mr-2" />
+            Documentos
           </Button>
           {onViewProgress && (
             <Button
               variant="default"
-              size="sm"
-              className="flex-1 min-w-[80px] overflow-hidden"
+              size="default"
+              className="col-span-2 w-full justify-center"
               onClick={() => onViewProgress(subject.name)}
             >
-              <TrendingUp className="h-4 w-4 shrink-0" />
-              <span className="ml-2 truncate">Progreso</span>
+              <TrendingUp className="h-4 w-4 mr-2" />
+              Ver Progreso
             </Button>
           )}
         </div>

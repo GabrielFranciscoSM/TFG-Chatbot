@@ -122,9 +122,9 @@ export default function DashboardPage() {
           {/* Subjects Tab */}
           <TabsContent value="subjects" className="space-y-6">
             {loadingSubjects ? (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-48 rounded-lg bg-muted animate-pulse" />
+              <div className="grid gap-6 md:grid-cols-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-56 rounded-lg bg-muted animate-pulse" />
                 ))}
               </div>
             ) : subjects.length === 0 ? (
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2">
                 {subjects.map((subject) => (
                   <SubjectCard
                     key={subject.name}

@@ -7,6 +7,8 @@ Compares Frobenius-norm NMF on TF-IDF vs KL-divergence NMF on BoW.
 import argparse
 import logging
 
+import numpy as np
+
 from math_investigation.clustering.metrics import evaluate_purity
 from math_investigation.nlp import BoWVectorizer, TFIDFVectorizer
 from math_investigation.topic_modeling import NMF
@@ -27,6 +29,7 @@ def run_experiment(
     logger.info(f"\n--- Running Experiment: {name} ---")
 
     from typing import Any
+
     vec: Any
     if vectorizer_type == "tfidf":
         vec = TFIDFVectorizer(max_features=500)
@@ -47,7 +50,7 @@ def run_experiment(
 
     feature_names = vec.get_feature_names()
     print("  Top words per topic:")
-    top_n = 5 # Defined top_n for clarity
+    top_n = 5  # Defined top_n for clarity
     if nmf.H_ is None:
         logger.warning("NMF components not found")
         return purity

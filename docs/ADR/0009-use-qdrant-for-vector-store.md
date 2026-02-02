@@ -52,7 +52,7 @@ Qdrant will be the default vector store used by the project's ingestion, indexin
 
 ## Operational notes and recommendations
 
-- Local development: support running a single-node Qdrant instance via `docker-compose` / Podman Compose. Provide example compose service (port, volume mount for persistence) in repository docs or CI scripts.
+- Local development: support running a single-node Qdrant instance via `docker compose`. Provide example compose service (port, volume mount for persistence) in repository docs or CI scripts.
 - Resource sizing: embedding dimensionality and collection size drive memory and CPU/GPU needs. Benchmark with realistic datasets and set appropriate machine sizes for production.
 - Backups and snapshots: schedule regular snapshots and/or export collections for disaster recovery. Document backup/restore commands and location of persisted data volumes.
 - Metrics & monitoring: collect latency, QPS, collection size, index build times and resource usage. Export Prometheus metrics where available and add alerts for high error rates or resource exhaustion.

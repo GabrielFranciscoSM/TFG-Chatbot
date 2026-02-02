@@ -11,7 +11,7 @@ This is a **dual degree TFG (Trabajo Fin de Grado)** for Computer Science and Ma
 
 ### Chatbot Microservices (Computer Science)
 
-Four containerized services (Podman) communicate via HTTP:
+Four containerized services (Docker) communicate via HTTP:
 
 ```
 Frontend → Backend (gateway) → Chatbot (AI agent) → RAG Service
@@ -80,14 +80,14 @@ The agent uses `StateGraph` with nodes for each tool. State includes `asignatura
 ```
 
 ### Service Communication
-Services use environment-based URLs defaulting to Podman Compose service names:
+Services use environment-based URLs defaulting to Docker Compose service names:
 - Backend → Chatbot: `CHATBOT_SERVICE_URL` (default: `http://chatbot:8080`)
 - Chatbot → RAG: `RAG_SERVICE_URL` (default: `http://rag_service:8081`)
 
 ### Configuration Pattern
 - Use `pydantic_settings.BaseSettings` for type-safe config (see `rag_service/config.py`)
 - Backend uses simpler class-based `Settings` (see `backend/config.py`)
-- All configs load from `.env` with sensible defaults for Podman Compose
+- All configs load from `.env` with sensible defaults for Docker Compose
 
 ### Test Session Flow (chatbot/logic/testGraph.py)
 Interactive tests use LangGraph interrupts:
@@ -107,7 +107,7 @@ uv pip install -e ./backend -e ./rag_service -e ./chatbot  # Install packages
 # Run tests (use markers for filtering)
 pytest backend/tests/ -m unit -v              # Backend unit tests
 pytest rag_service/tests/ -m unit -v          # RAG service tests  
-pytest tests/infrastructure/ -m podman_container  # Requires containers
+pytest tests/infrastructure/ -m container  # Requires containers
 
 # Math investigation experiments
 python -m math_investigation.cli.run_clustering --k 5 --vectorizer tfidf
@@ -117,9 +117,9 @@ python -m math_investigation.cli.compare --k-range 3,10
 # Linting (pre-commit installed)
 ruff check . && black . && isort .
 
-# Podman development
-podman-compose up -d                           # Start all services
-INSTALL_DEV=true podman-compose build          # Build with dev deps
+# Docker development
+docker compose up -d                           # Start all services
+INSTALL_DEV=true docker compose build          # Build with dev deps
 ```
 
 ## Test Patterns
@@ -136,7 +136,7 @@ INSTALL_DEV=true podman-compose build          # Build with dev deps
 3. **LLM Provider**: Gemini (dev) / vLLM (prod) via `LLM_PROVIDER` env var
 4. **Guía Docente**: UGR teaching guides stored in MongoDB via scraper tool
 5. **Thread IDs**: LangGraph uses `thread_id` from request `id` for checkpointing
-6. **Containerization**: Use Podman (not Docker) - commands are compatible
+6. **Containerization**: Use Docker Compose for container orchestration
 
 ## File Organization
 

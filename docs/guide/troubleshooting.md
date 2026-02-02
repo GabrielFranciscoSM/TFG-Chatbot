@@ -19,17 +19,17 @@ Common issues and their solutions.
 
 ```bash
 # Check container status
-podman-compose ps
+docker compose ps
 
 # View logs for specific service
-podman-compose logs -f backend
-podman-compose logs -f chatbot
+docker compose logs -f backend
+docker compose logs -f chatbot
 
 # Restart specific service
-podman-compose restart backend
+docker compose restart backend
 
 # Full restart
-podman-compose down && podman-compose up -d
+docker compose down && docker compose up -d
 ```
 
 ### Port Already in Use
@@ -52,7 +52,7 @@ kill -9 <PID>
 
 ```bash
 # Check resource usage
-podman stats
+docker stats
 
 # Increase memory limits in docker-compose.yml
 services:
@@ -73,7 +73,7 @@ services:
 
 ```bash
 # Verify MongoDB is running
-podman exec mongo-service mongosh --eval "db.runCommand('ping')"
+docker exec mongo-service mongosh --eval "db.runCommand('ping')"
 
 # Check credentials match .env
 cat .env | grep MONGO
@@ -88,8 +88,8 @@ mongosh "mongodb://root:example@localhost:27017"
 
 ```bash
 # Reset database (WARNING: deletes all data)
-podman-compose down -v
-podman-compose up -d
+docker compose down -v
+docker compose up -d
 
 # Re-seed users
 python scripts/seed_users.py
@@ -116,10 +116,10 @@ python scripts/seed_users.py
 
 ```bash
 # List available models
-podman exec ollama-service ollama list
+docker exec ollama-service ollama list
 
 # Pull model manually
-podman exec ollama-service ollama pull nomic-embed-text
+docker exec ollama-service ollama pull nomic-embed-text
 
 # Or run init script
 ./scripts/init_ollama.sh
@@ -242,7 +242,7 @@ pytest --markers | grep -E "unit|integration"
 
 1. Verify services are running:
    ```bash
-   podman-compose ps
+   docker compose ps
    curl http://localhost:8000/health
    ```
 2. Wait for services to be healthy
@@ -270,11 +270,11 @@ pytest --fixtures tests/infrastructure/
 
 ```bash
 # Test connectivity from container
-podman exec tfg-chatbot curl http://rag_service:8081/health
+docker exec tfg-chatbot curl http://rag_service:8081/health
 
 # Check network
-podman network ls
-podman network inspect tfg-chatbot_default
+docker network ls
+docker network inspect tfg-chatbot_default
 ```
 
 ### DNS Resolution Fails
@@ -283,10 +283,10 @@ podman network inspect tfg-chatbot_default
 
 ```bash
 # Use IP instead of hostname for testing
-podman inspect rag-service | grep IPAddress
+docker inspect rag-service | grep IPAddress
 
 # Restart containers
-podman-compose down && podman-compose up -d
+docker compose down && docker compose up -d
 ```
 
 ---
@@ -299,7 +299,7 @@ podman-compose down && podman-compose up -d
 
 1. Pre-pull images:
    ```bash
-   podman-compose pull
+   docker compose pull
    ```
 2. Use `--no-rebuild` flag for testing:
    ```bash
@@ -312,7 +312,7 @@ podman-compose down && podman-compose up -d
 
 1. Check memory usage:
    ```bash
-   podman stats
+   docker stats
    ```
 2. Reduce parallel test workers
 3. Use smaller LLM models for development
@@ -333,7 +333,7 @@ Enable debug logging for more information:
 
 ```bash
 export LOG_LEVEL=DEBUG
-podman-compose up
+docker compose up
 ```
 
 ### Report Issues

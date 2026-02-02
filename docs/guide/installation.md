@@ -20,25 +20,10 @@ Complete guide to installing and setting up the TFG-Chatbot project.
 | **Python** | 3.13+ | Backend services, math investigation |
 | **Node.js** | 20+ | Frontend development |
 | **uv** | Latest | Python package manager (recommended) |
-| **Podman** or **Docker** | Latest | Container orchestration |
+| **Docker** | Latest | Container orchestration |
 | **Git** | Latest | Version control |
 
 ### Installing Prerequisites
-
-#### Python 3.13+
-
-```bash
-# Ubuntu/Debian
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install python3.13 python3.13-venv
-
-# macOS (with Homebrew)
-brew install python@3.13
-
-# Verify installation
-python3.13 --version
-```
 
 #### uv (Python Package Manager)
 
@@ -53,22 +38,20 @@ pip install uv
 uv --version
 ```
 
-#### Podman (or Docker)
+#### Docker
 
 ```bash
-# Ubuntu/Debian (Podman)
-sudo apt install podman podman-compose
+# Ubuntu/Debian
+sudo apt install docker.io docker-compose-plugin
+sudo usermod -aG docker $USER  # Add user to docker group
 
 # macOS
-brew install podman podman-compose
+brew install --cask docker
 
 # Verify installation
-podman --version
-podman-compose --version
+docker --version
+docker compose version
 ```
-
-{: .note }
-All `docker` and `docker-compose` commands work with Podman. The project uses `podman-compose` but commands are interchangeable.
 
 #### Node.js 20+
 

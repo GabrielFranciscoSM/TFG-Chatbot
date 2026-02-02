@@ -18,7 +18,7 @@ from qdrant_client.models import (
 from tests.infrastructure.conftest import DEFAULT_TIMEOUT, QDRANT_URL
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 # Dimensión de vectores para tests
 TEST_VECTOR_SIZE = 128

@@ -8,7 +8,7 @@ import requests
 from tests.infrastructure.conftest import CHATBOT_URL, DEFAULT_TIMEOUT, LLM_TIMEOUT
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 
 def test_chatbot_container_is_running():

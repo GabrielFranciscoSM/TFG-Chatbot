@@ -4,7 +4,7 @@ Entry point for running the RAG service locally.
 Usage from project root:
     cd rag_service && uv run python __main__.py
 
-For Docker/Podman:
+For Docker:
     uvicorn rag_service.api:app --host 0.0.0.0 --port 8081
 """
 

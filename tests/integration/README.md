@@ -18,11 +18,11 @@ tests/integration/
 
 Los tests de integración requieren que todos los servicios estén corriendo. Antes de ejecutar los tests:
 
-1. **Levantar los servicios con Podman Compose:**
+1. **Levantar los servicios con Docker Compose:**
 
 ```bash
 # Desde el directorio raíz del proyecto
-podman-compose up -d
+docker compose up -d
 ```
 
 2. **Verificar que los servicios estén disponibles:**

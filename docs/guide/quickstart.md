@@ -17,10 +17,10 @@ This is the fastest way to get all services running:
 
 ```bash
 # 1. Start all services
-podman-compose up -d
+docker compose up -d
 
 # 2. Wait for services to be healthy (check logs)
-podman-compose logs -f
+docker compose logs -f
 
 # 3. Initialize Ollama with embeddings model (first time only)
 ./scripts/init_ollama.sh
@@ -56,7 +56,7 @@ For development with hot-reloading:
 
 ```bash
 # Start MongoDB, Qdrant, and Ollama containers only
-podman-compose up -d mongo qdrant ollama
+docker compose up -d mongo qdrant ollama
 ```
 
 ### Start Backend Services
@@ -119,7 +119,7 @@ curl http://localhost:8081/health
 ### Check Container Status
 
 ```bash
-podman-compose ps
+docker compose ps
 ```
 
 Expected output:
@@ -170,10 +170,10 @@ curl -X POST http://localhost:8081/index \
 
 ```bash
 # Stop all containers
-podman-compose down
+docker compose down
 
 # Stop and remove volumes (clean reset)
-podman-compose down -v
+docker compose down -v
 ```
 
 ---

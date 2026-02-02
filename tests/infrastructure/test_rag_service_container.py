@@ -13,7 +13,7 @@ from tests.infrastructure.conftest import (
 )
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 
 def test_rag_service_container_is_running():

@@ -10,7 +10,7 @@ import requests
 from tests.infrastructure.conftest import BACKEND_URL, DEFAULT_TIMEOUT, LLM_TIMEOUT
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 
 def _register_user(username: str, password: str, email: str) -> dict:

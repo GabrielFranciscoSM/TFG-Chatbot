@@ -9,7 +9,7 @@ from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from tests.infrastructure.conftest import MONGO_HOST, MONGO_PORT
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 
 def test_mongo_container_is_running(mongo_client):

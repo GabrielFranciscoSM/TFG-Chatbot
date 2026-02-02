@@ -14,9 +14,9 @@ from tests.infrastructure.conftest import DEFAULT_TIMEOUT, LLM_TIMEOUT, VLLM_MOD
 # Skip vLLM infra tests unless LLM_PROVIDER is explicitly set to 'vllm'
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "vllm")
 
-# Aplicar markers: podman_container + skipif
+# Aplicar markers: container + skipif
 pytestmark = [
-    pytest.mark.podman_container,
+    pytest.mark.container,
     pytest.mark.skipif(
         LLM_PROVIDER.lower() != "vllm",
         reason="Skipping vLLM infra tests because LLM_PROVIDER != vllm",

@@ -20,18 +20,27 @@ TFG-Chatbot is a dual-degree thesis project (Computer Science + Mathematics) fro
 
 The system follows a microservices architecture:
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Frontend   │────▶│   Backend    │────▶│   Chatbot    │────▶│ RAG Service  │
-│  (React/TS)  │     │  (Gateway)   │     │  (LangGraph) │     │  (Semantic)  │
-└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
-      :3000               :8000               :8080               :8081
-                             │                   │                    │
-                             ▼                   ▼                    ▼
-                      ┌──────────┐        ┌──────────┐        ┌────────────────┐
-                      │ MongoDB  │        │   LLM    │        │ Qdrant + Ollama│
-                      └──────────┘        │ (Gemini) │        └────────────────┘
-                          :27017          └──────────┘           :6333   :11434
+```mermaid
+flowchart LR
+    subgraph Services
+        FE[Frontend<br/>React/TS<br/>:3000]
+        BE[Backend<br/>Gateway<br/>:8000]
+        CB[Chatbot<br/>LangGraph<br/>:8080]
+        RAG[RAG Service<br/>Semantic<br/>:8081]
+    end
+
+    subgraph Infrastructure
+        MONGO[(MongoDB<br/>:27017)]
+        LLM[LLM<br/>Gemini]
+        QDRANT[(Qdrant<br/>:6333)]
+        OLLAMA[Ollama<br/>:11434]
+    end
+
+    FE --> BE --> CB --> RAG
+    BE --> MONGO
+    CB --> LLM
+    RAG --> QDRANT
+    RAG --> OLLAMA
 ```
 
 ## Quick Links
@@ -43,6 +52,8 @@ The system follows a microservices architecture:
 | [Scripts](scripts.html) | Utility scripts reference |
 | [Testing](testing.html) | Testing strategies and commands |
 | [Configuration](configuration.html) | Environment variables and settings |
+| [Monitoring](monitoring.html) | Grafana, Phoenix, and observability |
+| [User Guide](user-guide.html) | How to use the web interface |
 | [Troubleshooting](troubleshooting.html) | Common issues and solutions |
 
 ## Key Technologies
@@ -54,4 +65,6 @@ The system follows a microservices architecture:
 | **Chatbot Agent** | LangChain, LangGraph, Gemini/vLLM |
 | **RAG Service** | FastAPI, Sentence Transformers, Qdrant |
 | **Databases** | MongoDB (data), Qdrant (vectors), SQLite (checkpoints) |
-| **Infrastructure** | Podman/Docker Compose, GitHub Actions |
+| **Observability** | Grafana, Prometheus, Loki, Phoenix |
+| **Infrastructure** | Docker Compose, GitHub Actions |
+

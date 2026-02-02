@@ -12,7 +12,7 @@ import requests
 from tests.infrastructure.conftest import BACKEND_URL, DEFAULT_TIMEOUT, FRONTEND_URL
 
 # Aplicar marker a todos los tests de este módulo
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 
 class TestFrontendContainerBasic:

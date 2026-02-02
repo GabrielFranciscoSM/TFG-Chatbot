@@ -27,10 +27,10 @@ Todos los contenedores deben estar corriendo:
 
 ```bash
 # Levantar todos los servicios
-podman-compose up -d
+docker compose up -d
 
 # Verificar que están corriendo
-podman-compose ps
+docker compose ps
 ```
 
 ## Ejecución de Tests
@@ -44,8 +44,8 @@ pytest tests/infrastructure/ -v
 # Con output en tiempo real
 pytest tests/infrastructure/ -s
 
-# Usando el marker podman_container
-pytest -m podman_container -v
+# Usando el marker container
+pytest -m container -v
 ```
 
 ### Ejecutar Tests de un Servicio Específico

@@ -4,7 +4,7 @@ Entry point for running the chatbot service locally.
 Usage from project root:
     cd chatbot && uv run python __main__.py
 
-For Docker/Podman:
+For Docker:
     uvicorn chatbot.api:app --host 0.0.0.0 --port 8080
 """
 

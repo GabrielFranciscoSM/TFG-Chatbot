@@ -19,7 +19,7 @@ The project has four levels of tests:
 |------|----------|--------|-------|----------|
 | **Unit** | `*/tests/` | `@pytest.mark.unit` | ~50 | Nothing |
 | **Integration** | `tests/integration/` | `@pytest.mark.integration` | 29 | Services running |
-| **Infrastructure** | `tests/infrastructure/` | `@pytest.mark.podman_container` | 69 | Containers running |
+| **Infrastructure** | `tests/infrastructure/` | `@pytest.mark.container` | 69 | Containers running |
 | **Math Investigation** | `math_investigation/` | - | 41 | Nothing |
 
 ---
@@ -54,7 +54,7 @@ Integration tests require all services to be running:
 
 ```bash
 # 1. Start services
-podman-compose up -d
+docker compose up -d
 
 # 2. Wait for health checks
 curl http://localhost:8000/health
@@ -99,15 +99,15 @@ Infrastructure tests verify container health:
 
 ```bash
 # All containers must be running
-podman-compose up -d
-podman-compose ps
+docker compose up -d
+docker compose ps
 ```
 
 ### Execute Tests
 
 ```bash
 # All infrastructure tests
-uv run pytest tests/infrastructure/ -m podman_container -v
+uv run pytest tests/infrastructure/ -m container -v
 
 # Specific service tests
 uv run pytest tests/infrastructure/test_mongo_container.py -v
@@ -226,7 +226,7 @@ def test_chat_endpoint(auth_headers):
 # tests/infrastructure/test_mongo_container.py
 import pytest
 
-pytestmark = pytest.mark.podman_container
+pytestmark = pytest.mark.container
 
 def test_mongo_connection(mongo_client):
     """Test MongoDB is accessible."""
@@ -294,7 +294,7 @@ Available pytest markers:
 |--------|---------|
 | `@pytest.mark.unit` | Unit tests (no external deps) |
 | `@pytest.mark.integration` | Integration tests (requires services) |
-| `@pytest.mark.podman_container` | Infrastructure tests (requires containers) |
+| `@pytest.mark.container` | Infrastructure tests (requires containers) |
 | `@pytest.mark.slow` | Slow tests (skip with `-m "not slow"`) |
 
 ### Using Markers

@@ -3,6 +3,7 @@ layout: default
 title: RAG Service
 parent: Services
 nav_order: 3
+nav_exclude: false
 ---
 
 # RAG Service

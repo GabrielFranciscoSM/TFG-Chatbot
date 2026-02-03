@@ -3,6 +3,7 @@ layout: default
 title: Backend Gateway
 parent: Services
 nav_order: 1
+nav_exclude: false
 ---
 
 # Backend Service Documentation

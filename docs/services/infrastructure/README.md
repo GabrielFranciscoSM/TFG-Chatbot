@@ -3,6 +3,7 @@ layout: default
 title: Infrastructure
 parent: Services
 nav_order: 5
+nav_exclude: false
 ---
 
 # Infrastructure Documentation

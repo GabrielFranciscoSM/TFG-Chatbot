@@ -3,6 +3,7 @@ layout: default
 title: Frontend
 parent: Services
 nav_order: 4
+nav_exclude: false
 ---
 
 # Frontend Service

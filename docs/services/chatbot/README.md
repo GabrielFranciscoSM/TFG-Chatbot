@@ -3,6 +3,7 @@ layout: default
 title: Chatbot Agent
 parent: Services
 nav_order: 2
+nav_exclude: false
 ---
 
 # Chatbot Service

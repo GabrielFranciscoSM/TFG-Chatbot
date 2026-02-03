@@ -3,6 +3,7 @@ layout: default
 title: DevLog
 nav_order: 4
 has_children: true
+permalink: /devlog/
 ---
 
 # Development Log

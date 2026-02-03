@@ -1,3 +1,10 @@
+---
+layout: default
+title: Chatbot Agent
+parent: Services
+nav_order: 2
+---
+
 # Chatbot Service
 
 The **Chatbot Service** is the AI orchestration layer of the TFG-Chatbot platform. It implements a LangGraph-powered conversational agent that provides intelligent, pedagogically-aware responses to students studying university courses.

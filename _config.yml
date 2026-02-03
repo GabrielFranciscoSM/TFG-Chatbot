@@ -46,7 +46,7 @@ mermaid:
 
 # Default front matter for files without explicit front matter
 defaults:
-  # Exclude service subdirectory files from navigation (they lack proper front matter)
+  # Exclude other service subdirectory files (non-README) from navigation
   - scope:
       path: "docs/services/backend"
     values:

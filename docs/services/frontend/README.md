@@ -1,3 +1,10 @@
+---
+layout: default
+title: Frontend
+parent: Services
+nav_order: 4
+---
+
 # Frontend Service
 
 The **Frontend Service** is the user-facing React application for the TFG Pedagogical Chatbot. Built with React 19, TypeScript, and modern tooling, it provides an intuitive interface for students to interact with the AI tutor, professors to manage their courses, and administrators to oversee the platform.

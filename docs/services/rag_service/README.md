@@ -1,3 +1,10 @@
+---
+layout: default
+title: RAG Service
+parent: Services
+nav_order: 3
+---
+
 # RAG Service
 
 Retrieval-Augmented Generation service for the TFG educational chatbot. Provides document management, semantic search, and vector storage using Qdrant and Ollama embeddings.

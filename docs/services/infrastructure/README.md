@@ -1,3 +1,10 @@
+---
+layout: default
+title: Infrastructure
+parent: Services
+nav_order: 5
+---
+
 # Infrastructure Documentation
 
 This documentation covers the infrastructure components of the TFG-Chatbot platform, including Docker orchestration, monitoring, logging, alerting, and CI/CD pipelines.

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Backend Gateway
+parent: Services
+nav_order: 1
+---
+
 # Backend Service Documentation
 
 The **Backend Service** (also known as the API Gateway) is the central entry point for all client requests in the TFG-Chatbot system. It handles authentication, authorization, session management, and routes requests to the appropriate microservices.

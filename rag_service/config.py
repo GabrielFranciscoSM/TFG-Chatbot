@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     # API configuration
     api_host: str = "0.0.0.0"
     api_port: int = 8081
+    cors_origins: list[str] = ["*"]
 
     # Documents storage
     documents_path: str = "/app/documents"

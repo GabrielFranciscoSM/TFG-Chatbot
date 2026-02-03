@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Sprint Retrospectives
+title: Sprints
 parent: DevLog
 nav_order: 2
 has_children: true
 ---
 
-# Sprint Retrospectives
+# Sprints (Planning & Retrospectives)
 
 Retrospectivas detalladas al finalizar cada sprint.
 

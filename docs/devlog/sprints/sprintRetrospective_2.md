@@ -1,8 +1,9 @@
 ---
 layout: default
-title: Sprint 2
-parent: Sprint Retrospectives
+title: Sprint Retrospective 2
+parent: Sprints
 grand_parent: DevLog
+nav_order: 12
 ---
 
 # Retrospectiva - Sprint 2 (14 Oct 2025 — 28 Oct 2025)

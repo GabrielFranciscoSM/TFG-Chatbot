@@ -8,6 +8,8 @@ has_children: true
 
 # Sprints (Planning & Retrospectives)
 
+Documentación de planificación y retrospectivas de cada sprint.
+
 Retrospectivas detalladas al finalizar cada sprint.
 
 Cada Sprint Review incluye:

@@ -1,8 +1,9 @@
 ---
 layout: default
-title: Sprint 1
-parent: Sprint Retrospectives
+title: Sprint Retrospective 1
+parent: Sprints
 grand_parent: DevLog
+nav_order: 11
 ---
 
 # Sprint Review - Sprint 1

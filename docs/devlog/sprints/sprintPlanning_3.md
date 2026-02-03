@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Sprint Planning 3
-parent: Sprint Planning
+parent: Sprints
 grand_parent: DevLog
+nav_order: 3
 ---
 
 # Sprint Planning - Sprint 3

@@ -1,8 +1,9 @@
 ---
 layout: default
-title: Sprint 4
-parent: Sprint Retrospectives
+title: Sprint Retrospective 4
+parent: Sprints
 grand_parent: DevLog
+nav_order: 14
 ---
 
 # Retrospectiva - Sprint 4 (25 Nov 2025 — 15 Dic 2025)

@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Sprint Planning 6 - Razonamiento, Adaptación y Clustering Textual
-parent: Sprint Planning
+parent: Sprints
 grand_parent: DevLog
+nav_order: 6
 ---
 
 # Sprint Planning - Sprint 6 (Razonamiento, Adaptación y Clustering Textual)

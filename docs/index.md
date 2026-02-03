@@ -14,12 +14,12 @@ Information about how the system works, how to install it, and detailed service 
 
 - **[Installation Guide](guide/installation.md)**: How to get the project running.
 - **[Project Structure](guide/project-structure.md)**: Overview of the repository layout.
-- **[Services Documentation](services/backend.md)**: Detailed technical guides for each microservice:
-    - [Backend Gateway](services/backend.md)
-    - [Chatbot Agent](services/chatbot.md)
-    - [RAG Service](services/rag_service.md)
-    - [Frontend](services/frontend.md)
-    - [Infrastructure & Monitoring](services/infrastructure.md)
+- **[Services Documentation](services/)**: Detailed technical guides for each microservice:
+    - [Backend Gateway](services/backend/README.md)
+    - [Chatbot Agent](services/chatbot/README.md)
+    - [RAG Service](services/rag_service/README.md)
+    - [Frontend](services/frontend/README.md)
+    - [Infrastructure & Monitoring](services/infrastructure/README.md)
 
 ## 🪵 DevLog (Development Log)
 

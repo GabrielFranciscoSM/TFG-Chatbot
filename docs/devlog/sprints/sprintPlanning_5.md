@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Sprint Planning 5 - Logs y Monitorización
-parent: Sprint Planning
+parent: Sprints
 grand_parent: DevLog
+nav_order: 5
 ---
 
 # Sprint Planning - Sprint 5 (Logs y Monitorización)

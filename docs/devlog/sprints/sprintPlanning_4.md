@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Sprint Planning 4 - UI Frontend
-parent: Sprint Planning
+parent: Sprints
 grand_parent: DevLog
+nav_order: 4
 ---
 
 # Sprint Planning - Sprint 4 (UI Frontend)

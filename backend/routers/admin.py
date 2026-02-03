@@ -2,60 +2,30 @@ from datetime import UTC, datetime, timedelta
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
 
 from backend.config import settings
 from backend.dependencies import (
     get_sessions_collection,
     get_subjects_collection,
     get_users_collection,
+    require_admin,
     require_admin_or_professor,
 )
-from backend.models import AdminEnrollmentRequest, UserInDB, UserRole
+from backend.models import (
+    AdminEnrollmentRequest,
+    AdminStats,
+    AssignSubjectRequest,
+    BatchEnrollmentRequest,
+    PromoteUserRequest,
+    UserInDB,
+    UserInfo,
+    UserRole,
+)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
-# --- Request/Response Models ---
-
-
-class AssignSubjectRequest(BaseModel):
-    username: str
-    subject: str
-
-
-class BatchEnrollmentRequest(BaseModel):
-    usernames: list[str]
-    subject: str
-
-
-class PromoteUserRequest(BaseModel):
-    username: str
-    new_role: UserRole
-
-
-class UserInfo(BaseModel):
-    username: str
-    email: str
-    role: UserRole
-    subjects: list[str]
-
-
-class AdminStats(BaseModel):
-    total_students: int
-    total_professors: int
-    total_admins: int
-    total_sessions: int
-    total_subjects: int
-    sessions_last_7_days: list[dict]
-
-
 # --- Helper to check admin only ---
-
-
-def require_admin(user: UserInDB):
-    if user.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Admin access required")
 
 
 # --- Endpoints ---
@@ -63,14 +33,13 @@ def require_admin(user: UserInDB):
 
 @router.get("/stats", response_model=AdminStats)
 async def get_admin_stats(
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
     sessions_collection=Depends(get_sessions_collection),
 ):
     """
     Get global system statistics. Admin only.
     """
-    require_admin(user)
 
     # Count users by role
     total_students = users_collection.count_documents({"role": UserRole.STUDENT})
@@ -111,13 +80,12 @@ async def get_admin_stats(
 @router.get("/users", response_model=list[UserInfo])
 async def list_users(
     role: UserRole | None = None,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     List all users. Admin only. Optionally filter by role.
     """
-    require_admin(user)
 
     query = {}
     if role:
@@ -311,14 +279,13 @@ async def admin_unenroll(
 @router.post("/assign-subject")
 async def assign_subject_to_professor(
     request: AssignSubjectRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
     subjects_collection=Depends(get_subjects_collection),
 ):
     """
     Assign a subject to a professor. Admin only.
     """
-    require_admin(user)
 
     # Validate subject exists
     subject_doc = subjects_collection.find_one({"name": request.subject})
@@ -351,13 +318,12 @@ async def assign_subject_to_professor(
 @router.post("/remove-subject")
 async def remove_subject_from_professor(
     request: AssignSubjectRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     Remove a subject from a professor. Admin only.
     """
-    require_admin(user)
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
@@ -377,13 +343,12 @@ async def remove_subject_from_professor(
 @router.post("/promote")
 async def promote_user(
     request: PromoteUserRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     Change a user's role. Admin only.
     """
-    require_admin(user)
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})

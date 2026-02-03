@@ -2,6 +2,8 @@ import importlib
 
 import requests
 
+import chatbot.logic.tools.rag as rag_module
+
 tools = importlib.import_module("chatbot.logic.tools.tools")
 
 
@@ -26,7 +28,8 @@ def test_rag_search_success(monkeypatch):
             }
         )
 
-    monkeypatch.setattr(tools.requests, "post", fake_post)
+    # Mock requests.post in the modular rag module
+    monkeypatch.setattr(rag_module.requests, "post", fake_post)
 
     result = tools.rag_search.invoke(
         {"query": "prueba", "asignatura": "TFG Test", "top_k": 1}
@@ -43,7 +46,8 @@ def test_rag_search_handles_request_exception(monkeypatch):
     def raise_exc(url, json=None, timeout=None):
         raise requests.exceptions.RequestException("connect error")
 
-    monkeypatch.setattr(tools.requests, "post", raise_exc)
+    # Mock requests.post in the modular rag module
+    monkeypatch.setattr(rag_module.requests, "post", raise_exc)
 
     result = tools.rag_search.invoke({"query": "prueba"})
     assert isinstance(result, dict)

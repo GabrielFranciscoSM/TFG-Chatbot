@@ -5,6 +5,39 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.7.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.6.0...v0.7.0) (2026-02-03)
+
+
+### Features
+
+* **api:** add /system/info endpoint for LLM configuration ([1681cc3](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/1681cc3c3db6c59fa157451ae72c75807c41a4d1))
+* **backend:** add user preferences for test configuration ([a327b28](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/a327b28ac8ffd82865a2ef4512e8b9e5829ea6bb))
+* **chatbot:** use professor preferences for test generation ([9947a32](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/9947a32a7c40c1a83d114c47170917e3630a1e6a))
+* **frontend:** add hooks for user preferences and system info ([e67fdc6](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e67fdc6d70a876a7224c53e3eeefa9de8759e4c0))
+* **frontend:** restrict chat access to students only ([e559a88](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e559a883e35e8e8988c4c9fcce46be059b50dc10))
+* **rag:** improve CORS configuration ([f0eaa24](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/f0eaa24082ae1f3073f450398d94333f00a75834))
+* **scripts:** add remove_seed_users.py utility ([9f11a29](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/9f11a295506615e97b639c2974fff33491387e6a))
+
+
+### Bug Fixes
+
+* **backend:** filter test users from professor views ([8a59207](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8a59207f295cc13729ebe088496c3e02a74bae46))
+* **docs:** add Jekyll front matter to service README files ([af9d395](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/af9d395ccbf530d3576016ff03bfbfb64cf99197))
+* **docs:** add nav_exclude: false to override directory defaults ([49d946e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/49d946e9b9958e98f29c80610f7d7e7bbea9a6e0))
+* **docs:** correct Jekyll navigation hierarchy and broken links ([ce8469c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ce8469c5cf8343c2c08a20f1fc3cd3d3a2adb812))
+* exclude ADR template from Jekyll build ([e5b420d](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e5b420d1c9ec815b26f71cf3168bda24155e1c76))
+* **frontend:** improve dashboard layout ([7d52ffb](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/7d52ffbe88a285226a6aca6640292720934244f0))
+* use StrEnum and quote date placeholder ([2d3346e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2d3346e7c3f414b417b969316601a5b938e39f22))
+
+
+### Documentation
+
+* add comprehensive services documentation ([366c3cd](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/366c3cd5ba121e1dbd9c4436e265d47ccf569383))
+* add developer guide and improve test infrastructure ([500230f](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/500230f97a02272c0bb27440b1b40b0c65ae4533))
+* add monitoring and user guide documentation ([e03328e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e03328eb8205242a275d8399770250c737c8918f))
+* fix mermaid rendering and navigation structure ([d953e0e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/d953e0ee8888edc808a9b90818690712005e1ebe))
+* update user guide with new features ([3d2ef63](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3d2ef63a698ebf993f6dd99a01c1a3fc3d708ca8))
+
 ## [0.6.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.6.0...v0.6.0) (2026-02-02)
 
 

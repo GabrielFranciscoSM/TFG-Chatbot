@@ -54,4 +54,5 @@ exclude:
   - "*.pyc"
   - __pycache__/
   - docs/ADR/adr-template.md
+  - docs/devlog/adr/adr-template.md
   - docs/notas/

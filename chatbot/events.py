@@ -25,7 +25,7 @@ Example:
 
 import logging
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from chatbot.db.mongo import MongoDBClient
@@ -33,7 +33,7 @@ from chatbot.db.mongo import MongoDBClient
 logger = logging.getLogger(__name__)
 
 
-class EventType(str, Enum):
+class EventType(StrEnum):
     """Types of pedagogical events tracked by the system."""
 
     QUESTION_ASKED = "question_asked"

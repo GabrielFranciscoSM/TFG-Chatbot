@@ -1,7 +1,7 @@
 ---
 adr: 0000
 title: "ADR template"
-date: YYYY-MM-DD
+date: "YYYY-MM-DD"
 status: Proposed
 parent: Architecture Decision Records
 nav_order: 0 # replace with a numeric order (e.g. 1)

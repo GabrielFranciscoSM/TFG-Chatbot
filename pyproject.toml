@@ -40,6 +40,9 @@ dependencies = [
   "sentence-transformers>=2.2.2",
   "pypdf>=3.17.0",
   "langchain-mistralai>=1.0.1",
+  "matplotlib>=3.10.8",
+  "seaborn>=0.13.2",
+  "stop-words>=2025.11.4",
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,350 @@
+{
+  "experiment_id": "studychat_faq_20260205_175633",
+  "dataset": "StudyChat",
+  "method": "K-Means",
+  "n_clusters": 15,
+  "n_prompts": 2000,
+  "metrics": {
+    "sse": 1620.8209544696842,
+    "silhouette": 0.045581473712202364
+  },
+  "clusters": {
+    "cluster_0": {
+      "size": 73,
+      "top_topics": {
+        "a3": 32,
+        "a4": 22,
+        "a7": 7,
+        "a5": 6,
+        "a1": 4
+      },
+      "top_types": {
+        "conceptual_questions": 45,
+        "contextual_questions": 22,
+        "writing_request": 5,
+        "verification": 1
+      },
+      "representative_prompts": [
+        "how to test a made up data point'",
+        "How to use get_dummies to transform the data set to change categorical data but not get rid of numerical data",
+        "how to print all data",
+        "how do I use the astype(int) on columns from a given index to the end of the data frame",
+        "Provided a set of data, could you convert the data into a well-formatted markdown document-- free from hallucinations?"
+      ]
+    },
+    "cluster_1": {
+      "size": 45,
+      "top_topics": {
+        "a3": 12,
+        "a2": 10,
+        "a4": 8,
+        "a7": 5,
+        "a6": 5
+      },
+      "top_types": {
+        "contextual_questions": 23,
+        "conceptual_questions": 22
+      },
+      "representative_prompts": [
+        "speficically explain why axis=1? why 1 not any other numbers?",
+        "explain heappush",
+        "Could you explain this requirement and give me an example?",
+        "Explain moores law",
+        "explain drop_first in simpler terms"
+      ]
+    },
+    "cluster_2": {
+      "size": 109,
+      "top_topics": {
+        "a4": 73,
+        "a5": 21,
+        "a7": 12,
+        "a6": 3
+      },
+      "top_types": {
+        "conceptual_questions": 47,
+        "contextual_questions": 41,
+        "writing_request": 11,
+        "verification": 10
+      },
+      "representative_prompts": [
+        "it is a regression model so what should it be?",
+        "can you do part 5\nPart 1. Equation of a Slime\nHow many late days are you using for this assignment?\n\n# Imports section\nimport pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_",
+        "# Use sklearn to train a model on the training set\nmodel = LinearRegression( fit_intercept=True, copy_X=True, n_jobs=None, positive=False)\nmodel.fit(Xtrain, ytrain)\n# Create a sample datapoint and pre",
+        "model = Sequential([\n    Dense(16, input_dim=X_train.shape[1], activation='relu'),\n    Dense(8, activation='relu'),\n    Dense(1, activation='sigmoid')\n])\n\ndoes this work?",
+        "how do you initiate the model"
+      ]
+    },
+    "cluster_3": {
+      "size": 67,
+      "top_topics": {
+        "a3": 51,
+        "a1": 7,
+        "a2": 4,
+        "a5": 3,
+        "a6": 2
+      },
+      "top_types": {
+        "conceptual_questions": 47,
+        "contextual_questions": 14,
+        "writing_request": 3,
+        "verification": 1,
+        "provide_context": 1
+      },
+      "representative_prompts": [
+        "but for rows?",
+        "How do you stack rows together in pandas. For example df1 has 3 rows, df2 has 2 rows sp the rows go df1a df1b df1c df2a df2b",
+        "# For the numerical dataset, check if there are duplicate rows in the dataset. If yes, print total number of duplicate rows\nnumerical_dup = numerical[numerical.duplicated()]\nprint(\"numerical duplicate",
+        "how do I find the percent of rows that contain at least 1 missing value",
+        "get the length of a dataset by rows"
+      ]
+    },
+    "cluster_4": {
+      "size": 20,
+      "top_topics": {
+        "a2": 7,
+        "a1": 4,
+        "a6": 3,
+        "a3": 3,
+        "a5": 2
+      },
+      "top_types": {
+        "conceptual_questions": 17,
+        "writing_request": 1,
+        "editing_request": 1,
+        "contextual_questions": 1
+      },
+      "representative_prompts": [
+        "how to add a line between the 2",
+        "it should add to 11 not 5",
+        "conda command to add tkinter",
+        "def plot_result_graph(results, name, x):\n    scatter = plt.scatter(results[0], results[1], c=results[2], cmap='Greens')  # Use custom colormap\n    plt.colorbar(scatter)  # Add a color bar\n    plt.titl",
+        "How to add file codespaces"
+      ]
+    },
+    "cluster_5": {
+      "size": 30,
+      "top_topics": {
+        "a3": 12,
+        "a5": 6,
+        "a4": 6,
+        "a2": 2,
+        "a1": 2
+      },
+      "top_types": {
+        "conceptual_questions": 25,
+        "contextual_questions": 3,
+        "writing_request": 2
+      },
+      "representative_prompts": [
+        "export jupyter notebook as a pdf",
+        "making pdf from jupyter notebook",
+        "jupyter notebook latex cutoff in pdf export",
+        "how to print the whole dataset in jupyter notebook?",
+        "convert jupyter notebook to pdf jupyter nb convert"
+      ]
+    },
+    "cluster_6": {
+      "size": 68,
+      "top_topics": {
+        "a5": 36,
+        "a4": 30,
+        "a3": 2
+      },
+      "top_types": {
+        "contextual_questions": 37,
+        "conceptual_questions": 19,
+        "writing_request": 8,
+        "verification": 3,
+        "provide_context": 1
+      },
+      "representative_prompts": [
+        "what about .score",
+        "what does this score measures",
+        "what is R2 score",
+        "i got an r^2 score of .86 whats this mean",
+        "how can i get the r^2 score"
+      ]
+    },
+    "cluster_7": {
+      "size": 1079,
+      "top_topics": {
+        "a5": 183,
+        "a4": 169,
+        "a6": 167,
+        "a7": 162,
+        "a2": 155
+      },
+      "top_types": {
+        "conceptual_questions": 654,
+        "contextual_questions": 309,
+        "writing_request": 71,
+        "verification": 15,
+        "off_topic": 13
+      },
+      "representative_prompts": [
+        "what is make pipeline",
+        "isn't this the same?\nfreq_tables[order - 1][char][ngram] += 1",
+        "So a duque can't have key-value pairs",
+        "What does this line ask? batch_targets.size(0)",
+        "what does @ do"
+      ]
+    },
+    "cluster_8": {
+      "size": 73,
+      "top_topics": {
+        "a2": 52,
+        "a1": 17,
+        "a3": 3,
+        "a6": 1
+      },
+      "top_types": {
+        "contextual_questions": 41,
+        "conceptual_questions": 20,
+        "verification": 6,
+        "writing_request": 3,
+        "provide_context": 2
+      },
+      "representative_prompts": [
+        "from collections import deque\nimport heapq\nimport random\nimport string\n\n\nclass Node:\n    #TODO\n    def __init__(self):\n        self.children = {}\n\nclass Autocomplete():\n    def __init__(self, parent=N",
+        "def build_tree(self, document):\n        for word in document.split():\n            node = self.root\n            for char in word:\n                if char not in node.children:\n                    node.",
+        "do that based on this file now: from collections import deque, defaultdict\nimport heapq\nimport random\nimport string\n\n\nclass Node:\n    def __init__(self):\n        self.children = {}\n        self.is_wor",
+        "def suggest_ucs(self, prefix):\n        node = self.root\n        results = []\n\n        # Traverse down the tree to find the prefix\n        for char in prefix:\n            if char in node.children:\n    ",
+        "from collections import deque\nimport heapq\nimport random\nimport string\n\n\nclass Node:\n    #TODO\n    def __init__(self):\n        self.children = {}\n        self.isword = False\n        \n\nclass Autocomple"
+      ]
+    },
+    "cluster_9": {
+      "size": 121,
+      "top_topics": {
+        "a7": 52,
+        "a3": 23,
+        "a2": 19,
+        "a6": 11,
+        "a5": 8
+      },
+      "top_types": {
+        "contextual_questions": 56,
+        "conceptual_questions": 43,
+        "writing_request": 14,
+        "verification": 5,
+        "editing_request": 2
+      },
+      "representative_prompts": [
+        "how would i test this code",
+        "what would be the corrected code",
+        "should i put test code into main.oy",
+        "How can I test to make sure that code you just provided is actually doing what it says its doing",
+        "can you just do it for me (no code needed)"
+      ]
+    },
+    "cluster_10": {
+      "size": 43,
+      "top_topics": {
+        "a5": 31,
+        "a7": 12
+      },
+      "top_types": {
+        "conceptual_questions": 27,
+        "contextual_questions": 13,
+        "verification": 2,
+        "writing_request": 1
+      },
+      "representative_prompts": [
+        "what is a tensor",
+        "tensor to int",
+        "a = torch.tensor([[1], [2], [3]])  # shape (3, 1)\nb = torch.tensor([10, 20])         # shape (2,)\nresult = a + b\nprint(result)\nTensor from list:\n tensor([[1, 2],\n        [3, 4]]) \n\nTensor from NumPy a",
+        "tensor = torch.ones(4, 4) print the first column of the tensor",
+        "# Reshaping\n\nx = torch.randn(4, 4)\nprint(\"Original tensor shape:\", x.shape)\ny = x.view(-1)  # TODO: Reshape to a 1D tensor\nif y:\n  print(\"Reshaped tensor shape:\", y.shape)\n\nz = y.view(2, 8)  # TODO: R"
+      ]
+    },
+    "cluster_11": {
+      "size": 105,
+      "top_topics": {
+        "a3": 65,
+        "a4": 19,
+        "a5": 11,
+        "a1": 4,
+        "a7": 3
+      },
+      "top_types": {
+        "conceptual_questions": 65,
+        "contextual_questions": 23,
+        "writing_request": 11,
+        "verification": 6
+      },
+      "representative_prompts": [
+        "this is the file in which i am doung work:\n# Imports and pip installations (if needed)\n\n     \nPart 1: Load the dataset\n\n# Load the given datasets\n\n\n# Print the data\n\n     \nPart 2: Analyze the Dataset\n",
+        "How many late days are you using for this assignment?\n\n\n# Imports and pip installations (if needed)\n\n     \nPart 1: Load the dataset\n\n# Load the given datasets\n\n\n# Print the data\n\n     \nPart 2: Analyze",
+        "Are there any columns in this dataset which are not appropriate for modeling and predictions? Which column(s)? Justify their exclusion and remove them #Remove that column\n\n# Print the dataset",
+        "Are there any columns in this dataset which are not appropriate for modeling and predictions? Which column(s)? Justify their exclusion and remove them\n\n#Remove that column\n\n# Print the dataset",
+        "Are there any columns in this dataset which are not appropriate for modeling and predictions? Which column(s)? Justify their exclusion and remove them\n\n#Remove that column\n\n# Print the dataset"
+      ]
+    },
+    "cluster_12": {
+      "size": 80,
+      "top_topics": {
+        "a3": 45,
+        "a5": 12,
+        "a4": 11,
+        "a6": 4,
+        "a7": 3
+      },
+      "top_types": {
+        "conceptual_questions": 64,
+        "contextual_questions": 13,
+        "writing_request": 3
+      },
+      "representative_prompts": [
+        "do it with column headers",
+        "first column",
+        "can i make the column empty temporarily?",
+        "df['Age'] = df['Age'].fillna(df['Age'].median()) does this work for the whole column?",
+        "How to do this: In the example we went through above, another solution is to have a single column for the binary variable. In the downstream modeling would this be equivalent? What effect would this h"
+      ]
+    },
+    "cluster_13": {
+      "size": 68,
+      "top_topics": {
+        "a6": 48,
+        "a5": 11,
+        "a7": 8,
+        "a2": 1
+      },
+      "top_types": {
+        "contextual_questions": 38,
+        "conceptual_questions": 13,
+        "verification": 10,
+        "writing_request": 7
+      },
+      "representative_prompts": [
+        "import pandas as pd\n\ndef create_frequency_tables(document, n):\n    \"\"\"\n    This function constructs a list of `n` frequency tables for an n-gram model, each table capturing character frequencies with ",
+        "Is this code correct? ef create_frequency_tables(document, n):\n    \"\"\"\n    This function constructs a list of `n` frequency tables for an n-gram model, each table capturing character frequencies with ",
+        "is this code right (def create_frequency_tables(document, n):\n    \"\"\"\n    This function constructs a list of `n` frequency tables for an n-gram model, each table capturing character frequencies with i",
+        "is my code correct? from collections import defaultdict\n\ndef create_frequency_tables(document, n):\n    \"\"\"\n    This function constructs a list of `n` frequency tables for an n-gram model, each table c",
+        "does my new code look right? from collections import defaultdict\n\ndef create_frequency_tables(document, n):\n    \"\"\"\n    This function constructs a list of `n` frequency tables for an n-gram model, eac"
+      ]
+    },
+    "cluster_14": {
+      "size": 19,
+      "top_topics": {
+        "a4": 10,
+        "a7": 3,
+        "a3": 2,
+        "a2": 2,
+        "a6": 1
+      },
+      "top_types": {
+        "contextual_questions": 16,
+        "verification": 2,
+        "conceptual_questions": 1
+      },
+      "representative_prompts": [
+        "X = slime[\"Temperature °C\", \"Mols KCL\"]\ny = slime[\"Size nm^3\"]\ngets keyerror, why?",
+        "Temperature °C\tMols KCL\tSize nm^3\n469\t647\t624474.2571\n403\t694\t577961.0286\n302\t975\t619684.7143\n779\t916\t1460449.029\n901\t18\t43257.25714\n545\t637\t712463.4\n660\t519\t700696.0286\n143\t869\t271826.0286\n89\t461\t891",
+        "R^2 Score of Polynomial Regression: 1.0\n1: 0.0\nTemperature °C: 12.000000031015336\nMols KCL: -1.1096808565265459e-07\nTemperature °C^2: -3.453060060110147e-11\nTemperature °C Mols KCL: 1.9999999999914868",
+        "0   Temperature °C  1000 non-null   int64  \n 1   Mols KCL        1000 non-null   int64  \n 2   Size nm^3       1000 non-null   float64\n\nWhat is the best way to split this into into our features (X) and",
+        "Traceback (most recent call last):\n  File \"c:\\Users\\<redacted>\\Desktop\\CS 383\\Assignment 7\\assignment-7-neural-complete-<redacted>\\rnn_complete.py\", line 282, in <module>   \n    completed_text = gener"
+      ]
+    }
+  }
+}

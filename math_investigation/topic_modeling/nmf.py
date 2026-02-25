@@ -49,7 +49,24 @@ class NMF:
         self.reconstruction_errors_: list[float] = []
 
     def _initialize(self, V: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Initialize W and H matrices with random non-negative values."""
+        """Initialize W and H matrices with random non-negative values.
+
+        Uses data-adaptive scaling: avg = sqrt(mean(|V|) / k)
+
+        Mathematical justification:
+        Given V ≈ W @ H, each element V[i,j] = Σ(l=1 to k) W[i,l] × H[l,j]
+
+        If mean(W) = mean(H) = μ, then on average:
+            mean(V) ≈ k × μ²
+
+        Setting μ = sqrt(mean(V) / k) ensures:
+            mean(V) ≈ k × (sqrt(mean(V) / k))² = k × mean(V)/k = mean(V)
+
+        This provides a balanced starting point where the initial reconstruction WH
+        has the same order of magnitude as the input V.
+
+        (Read scikit-learn's NMF implementation for more details on initialization strategies.)
+        """
         if self.random_state is not None:
             np.random.seed(self.random_state)
 
@@ -86,7 +103,11 @@ class NMF:
     def _update_kl(
         self, V: np.ndarray, W: np.ndarray, H: np.ndarray
     ) -> tuple[np.ndarray, np.ndarray]:
-        """Multiplicative update for KL-divergence."""
+        """Multiplicative update for KL-divergence.
+
+        H_ij ← H_ij × (W^T (V / WH))_ij / Σ_k W_kj
+        W_ij ← W_ij × ((V / WH) H^T)_ij / Σ_k H_jk
+        """
         eps = 1e-10
         WH = W @ H + eps
 

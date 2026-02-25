@@ -204,7 +204,7 @@ def analyze_fuzzy_documents(
     Returns:
         List of dicts with document info and their multi-cluster memberships
     """
-    n_clusters, n_samples = membership.shape
+    _, n_samples = membership.shape
     fuzzy_docs = []
 
     for i in range(n_samples):

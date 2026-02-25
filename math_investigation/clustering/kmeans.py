@@ -55,6 +55,7 @@ class KMeans:
         proportional to squared distance from nearest existing centroid.
 
         Reference: Arthur & Vassilvitskii (2007)
+        Optimized to compute distances incrementally rather than recomputing all.
         """
         n_samples, n_features = X.shape
         centroids = np.zeros((self.n_clusters, n_features))
@@ -64,25 +65,26 @@ class KMeans:
         first_idx = rng.integers(0, n_samples)
         centroids[0] = X[first_idx]
 
+        # Track minimum squared distance to any existing centroid for each point
+        min_distances = np.full(n_samples, np.inf)
+
         # Choose remaining centroids
         for c in range(1, self.n_clusters):
-            # Compute squared distances to nearest centroid
-            distances = np.zeros(n_samples)
-            for i in range(n_samples):
-                min_dist = float("inf")
-                for j in range(c):
-                    dist = np.sum((X[i] - centroids[j]) ** 2)
-                    if dist < min_dist:
-                        min_dist = dist
-                distances[i] = min_dist
+            # Only compute distances to the newly added centroid
+            new_centroid = centroids[c - 1]
+            # More efficient: avoid intermediate diff array
+            distances_to_new = np.sum((X - new_centroid) ** 2, axis=1)
+
+            # Update minimum distances
+            min_distances = np.minimum(min_distances, distances_to_new)
 
             # Choose next centroid with probability proportional to D(x)²
-            prob_sum = distances.sum()
+            prob_sum = min_distances.sum()
             if prob_sum == 0:
                 # If all points are equally distant (or 0), choose randomly
                 probabilities = np.ones(n_samples) / n_samples
             else:
-                probabilities = distances / prob_sum
+                probabilities = min_distances / prob_sum
 
             next_idx = rng.choice(n_samples, p=probabilities)
             centroids[c] = X[next_idx]
@@ -95,49 +97,82 @@ class KMeans:
         indices = rng.choice(X.shape[0], size=self.n_clusters, replace=False)
         return X[indices].copy()
 
-    def _assign_clusters(self, X: np.ndarray) -> np.ndarray:
+    def _assign_clusters(self, X: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Assignment step: assign each point to nearest centroid.
 
         S_i = {x ∈ X | ||x - c_i|| ≤ ||x - c_j|| ∀j ≠ i}
-        """
-        n_samples = X.shape[0]
-        labels = np.zeros(n_samples, dtype=int)
 
-        for i in range(n_samples):
-            # Distance from x_i to all centroids
-            assert self.centroids_ is not None
-            dist = np.sum((X[i] - self.centroids_) ** 2, axis=1)
-            labels[i] = np.argmin(dist)
-        return labels
+        Uses distance expansion: ||x-c||² = ||x||² + ||c||² - 2⟨x,c⟩
+        This avoids creating large intermediate arrays and uses optimized BLAS.
+
+        Returns:
+            labels: Cluster assignment for each point
+            distances: Distance matrix (n_samples, n_clusters) for reuse
+        """
+        assert self.centroids_ is not None
+        # Compute ||x||² for each sample (n_samples,)
+        x_squared = np.sum(X**2, axis=1, keepdims=True)
+        # Compute ||c||² for each centroid (n_clusters,)
+        c_squared = np.sum(self.centroids_**2, axis=1)
+        # Compute -2⟨x,c⟩ using matrix multiplication (n_samples, n_clusters)
+        cross_term = -2 * np.dot(X, self.centroids_.T)
+        # Combine: ||x-c||² = ||x||² + ||c||² - 2⟨x,c⟩
+        distances = x_squared + c_squared + cross_term
+        # Get index of nearest centroid for each sample
+        labels = np.argmin(distances, axis=1)
+        return labels, distances
 
     def _update_centroids(self, X: np.ndarray, labels: np.ndarray) -> np.ndarray:
         """Update step: recalculate centroids as mean of assigned points.
 
         c_i = (1/|S_i|) Σ_{x ∈ S_i} x
-        """
-        new_centroids = np.zeros_like(self.centroids_)
 
-        for j in range(self.n_clusters):
-            cluster_points = X[labels == j]
-            if len(cluster_points) > 0:
-                new_centroids[j] = cluster_points.mean(axis=0)
-            else:
-                # Empty cluster: reinitialize with random point
-                new_centroids[j] = X[np.random.randint(0, X.shape[0])]
+        Fully vectorized using np.add.at for optimal performance.
+        """
+        n_samples, n_features = X.shape
+        new_centroids = np.zeros((self.n_clusters, n_features))
+
+        # Count points per cluster
+        counts = np.bincount(labels, minlength=self.n_clusters)
+
+        # Sum all points for each cluster (vectorized accumulation)
+        np.add.at(new_centroids, labels, X)
+
+        # Divide by counts to get means (handle empty clusters)
+        empty_clusters = counts == 0
+        counts[empty_clusters] = 1  # Avoid division by zero
+        new_centroids /= counts[:, np.newaxis]
+
+        # Reinitialize empty clusters with random points
+        if np.any(empty_clusters):
+            rng = np.random.default_rng(self.random_state)
+            for j in np.where(empty_clusters)[0]:
+                new_centroids[j] = X[rng.integers(0, n_samples)]
 
         return new_centroids
 
-    def _compute_sse(self, X: np.ndarray, labels: np.ndarray) -> float:
+    def _compute_sse(
+        self, X: np.ndarray, labels: np.ndarray, distances: np.ndarray | None = None
+    ) -> float:
         """Compute Sum of Squared Errors (SSE).
 
         SSE(S, C) = Σ_{i=1}^{k} Σ_{x ∈ S_i} ||x - c_i||²
+
+        Args:
+            X: Data matrix
+            labels: Cluster assignments
+            distances: Optional precomputed distance matrix from assignment step
+
+        Fully vectorized for efficiency.
         """
-        sse = 0.0
-        for j in range(self.n_clusters):
-            cluster_points = X[labels == j]
-            if len(cluster_points) > 0:
-                assert self.centroids_ is not None
-                sse += np.sum((cluster_points - self.centroids_[j]) ** 2)
+        if distances is not None:
+            # Use precomputed distances from assignment step
+            return np.sum(distances[np.arange(len(labels)), labels])
+
+        # Fallback: compute from scratch
+        assert self.centroids_ is not None
+        diffs = X - self.centroids_[labels]
+        sse = np.sum(diffs**2)
         return sse
 
     def fit(self, X: np.ndarray) -> "KMeans":
@@ -161,14 +196,14 @@ class KMeans:
         prev_sse = float("inf")
 
         for iteration in range(self.max_iter):
-            # Assignment step
-            self.labels_ = self._assign_clusters(X)
+            # Assignment step (returns labels and distances)
+            self.labels_, distances = self._assign_clusters(X)
 
             # Update step
             self.centroids_ = self._update_centroids(X, self.labels_)
 
-            # Compute SSE
-            sse = self._compute_sse(X, self.labels_)
+            # Compute SSE (reuse distances from assignment)
+            sse = self._compute_sse(X, self.labels_, distances)
             self.sse_history_.append(sse)
 
             # Check convergence (Proposition 3.2: SSE is monotonically non-increasing)
@@ -189,7 +224,8 @@ class KMeans:
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Predict cluster labels for new data."""
         assert self.centroids_ is not None
-        return self._assign_clusters(X)
+        labels, _ = self._assign_clusters(X)
+        return labels
 
     def fit_predict(self, X: np.ndarray) -> np.ndarray:
         """Fit and return cluster labels."""

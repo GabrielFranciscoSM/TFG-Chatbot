@@ -119,6 +119,7 @@ exclude = [
     "local",
     ".git",
     "*.egg-info",
+    "*.ipynb",
 ]
 
 [tool.ruff.lint]

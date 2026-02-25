@@ -8,7 +8,7 @@ from collections import Counter
 
 import numpy as np
 
-from math_investigation.nlp.stopwords import STOPWORDS
+from math_investigation.nlp.utils import tokenize
 
 logger = logging.getLogger(__name__)
 
@@ -30,15 +30,6 @@ def uci_coherence(
     Returns:
         Dictionary of topic_idx -> coherence score
     """
-    import re
-    import string
-
-    def tokenize(text: str) -> list[str]:
-        text = text.lower()
-        text = text.translate(str.maketrans("", "", string.punctuation))
-        tokens = re.findall(r"\b[a-z]{2,}\b", text)
-        return [t for t in tokens if t not in STOPWORDS]
-
     # Build vocabulary from topics
     vocab = set()
     for words in topics.values():

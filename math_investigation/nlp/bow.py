@@ -1,13 +1,11 @@
 """Bag of Words (BoW) vectorizer implementation."""
 
 import logging
-import re
-import string
 from collections import Counter
 
 import numpy as np
 
-from math_investigation.nlp.stopwords import STOPWORDS
+from math_investigation.nlp.utils import tokenize
 
 logger = logging.getLogger(__name__)
 
@@ -32,14 +30,6 @@ class BoWVectorizer:
         self.vocabulary_: dict[str, int] = {}
         self.feature_names_: list[str] = []
 
-    def _tokenize(self, text: str) -> list[str]:
-        """Tokenize and normalize text."""
-        text = text.lower()
-        text = text.translate(str.maketrans("", "", string.punctuation))
-        tokens = re.findall(r"\b[a-z]{2,}\b", text)
-        tokens = [t for t in tokens if t not in STOPWORDS]
-        return tokens
-
     def _build_vocabulary(self, tokenized_docs: list[list[str]]) -> None:
         """Build vocabulary from tokenized documents."""
         df_counts: Counter = Counter()
@@ -63,7 +53,7 @@ class BoWVectorizer:
         Returns:
             BoW matrix of shape (n_docs, n_features), L2 normalized
         """
-        tokenized_docs = [self._tokenize(doc) for doc in documents]
+        tokenized_docs = [tokenize(doc) for doc in documents]
         self._build_vocabulary(tokenized_docs)
 
         n_docs = len(documents)

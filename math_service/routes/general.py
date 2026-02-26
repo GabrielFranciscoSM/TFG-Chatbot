@@ -62,10 +62,24 @@ async def health_check():
     except Exception as e:
         logger.warning(f"Ollama health check failed: {e}")
 
-    overall = "healthy" if (mongo_ok and ollama_ok) else "degraded"
+    # Check RAG Service connectivity
+    rag_ok = False
+    try:
+        import httpx
+
+        resp = httpx.get(
+            f"{settings.rag_service_url}/health",
+            timeout=2.0,
+        )
+        rag_ok = resp.status_code == 200
+    except Exception as e:
+        logger.warning(f"RAG service health check failed: {e}")
+
+    overall = "healthy" if (mongo_ok and ollama_ok and rag_ok) else "degraded"
     return HealthCheckResponse(
         status=overall,
         mongo_connected=mongo_ok,
         ollama_connected=ollama_ok,
-        message=f"MongoDB: {'OK' if mongo_ok else 'FAIL'}, Ollama: {'OK' if ollama_ok else 'FAIL'}",
+        rag_service_connected=rag_ok,
+        message=f"MongoDB: {'OK' if mongo_ok else 'FAIL'}, Ollama: {'OK' if ollama_ok else 'FAIL'}, RAG: {'OK' if rag_ok else 'FAIL'}",
     )

@@ -1,14 +1,11 @@
+"""Configuration for Math service."""
+
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """Backend gateway configuration settings."""
-
-    chatbot_service_url: str = "http://chatbot:8080"
-    rag_service_url: str = "http://rag_service:8081"
-    math_service_url: str = "http://math_service:8083"
-    chatbot_timeout: float = 120.0  # Timeout for LLM requests (can be slow)
+    """Math Service configuration settings."""
 
     # MongoDB configuration
     mongo_uri: SecretStr | None = None
@@ -19,11 +16,18 @@ class Settings(BaseSettings):
     mongo_auth_db: str | None = None
     db_name: str = "tfg_chatbot"
 
-    # Auth configuration
-    # IMPORTANT: Override SECRET_KEY in production! Never use the default.
-    secret_key: SecretStr = SecretStr("dev-only-secret-key-change-in-production")
-    algorithm: str = "HS256"
-    access_token_expire_minutes: int = 30
+    # Ollama configuration
+    ollama_host: str = "ollama"
+    ollama_port: int = 11434
+    ollama_model: str = "nomic-embed-text"
+
+    # RAG Service
+    rag_service_url: str = "http://rag_service:8081"
+
+    # API configuration
+    api_host: str = "0.0.0.0"
+    api_port: int = 8083
+    cors_origins: list[str] = ["*"]
 
     model_config = SettingsConfigDict(
         env_file=".env",

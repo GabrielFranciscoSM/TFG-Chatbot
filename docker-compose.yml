@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   vllm-openai:
@@ -135,6 +134,28 @@ services:
     depends_on:
       - qdrant
       - ollama
+    restart: unless-stopped
+
+  # Math Service
+  math_service:
+    build:
+      context: .
+      dockerfile: math_service/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
+    container_name: math-service
+    env_file:
+      - .env
+    environment:
+      MONGO_HOSTNAME: mongo
+      OLLAMA_HOST: ollama
+      RAG_SERVICE_URL: http://rag_service:8081
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo
+      - ollama
+      - rag_service
     restart: unless-stopped
 
   backend:

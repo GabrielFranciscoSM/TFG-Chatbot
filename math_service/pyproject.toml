@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tfg-chatbot-math-service"
+version = "1.0.0"
+description = "Mathematical analysis service for TFG Chatbot"
+authors = [ { name = "Gabriel Francisco" } ]
+dependencies = [
+  "fastapi>=0.110.0",
+  "uvicorn[standard]>=0.27.0",
+  "pydantic>=2.0.0,<3.0.0",
+  "pydantic-settings>=2.0.0,<3.0.0",
+  "python-dotenv>=1.0.0",
+  "python-json-logger>=2.0.0",
+  "prometheus-fastapi-instrumentator>=7.0.0",
+  "pymongo>=4.6.0",
+  "httpx>=0.27.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0.0",
+  "pytest-cov>=4.0.0",
+  "pytest-asyncio>=0.21.0",
+  "httpx>=0.27.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*"]

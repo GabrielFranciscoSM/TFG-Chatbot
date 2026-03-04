@@ -8,9 +8,13 @@ for the FAQ generation pipeline (clustering and NLP).
 import logging
 from typing import Any
 
+import numpy as np
 from pymongo import MongoClient
 
 from math_service.config import settings
+from math_service.services.clustering import get_closest_to_centroid, get_optimal_k
+from math_service.services.fcm import SphericalFuzzyCMeans
+from math_service.services.nlp_client import OllamaClient
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +35,8 @@ class FAQService:
 
         self.db = self.client[settings.db_name]
         self.collection = self.db[self.CONVERSATIONS_COLLECTION]
+        self.faq_collection = self.db["faqs"]
+        self.nlp_client = OllamaClient()
 
     def close(self):
         """Close the database client if owned."""
@@ -112,12 +118,60 @@ class FAQService:
                 "message": "No questions found to generate FAQs from.",
             }
 
-        # TODO: Integrate with math_investigation NLP/Clustering here
+        logger.info(f"Generating FAQs from {len(questions)} questions...")
+
+        # 1. Fetch embeddings for all questions
+        embeddings = self.nlp_client.get_embeddings_batch(questions)
+        if embeddings.shape[0] == 0:
+            return {"status": "error", "message": "Failed to get embeddings"}
+
+        # 2. Determine optimal k
+        optimal_k = get_optimal_k(embeddings, max_k=min(15, len(questions) - 1))
+        logger.info(f"Optimal number of clusters determined: {optimal_k}")
+
+        # 3. Cluster the questions. Try SphericalFuzzyCMeans.
+        fcm = SphericalFuzzyCMeans(n_clusters=optimal_k, random_state=42)
+        fcm.fit(embeddings)
+
+        # 4. Find the representative question for each cluster
+        representative_indices = get_closest_to_centroid(
+            X=embeddings, labels=fcm.labels_, centroids=fcm.centroids_
+        )
+
+        generated_faqs = []
+        for i, idx in enumerate(representative_indices):
+            # For now, we just select the representative question and leave answer empty
+            # to be filled by a subject-matter expert or another system later.
+            representative_question = questions[idx]
+
+            # Count how many questions fell into this cluster
+            cluster_size = int(np.sum(fcm.labels_ == i))
+
+            faq_doc = {
+                "question": representative_question,
+                "answer": "",  # Answer extraction/generation could be added later
+                "subject": subject or "general",
+                "cluster_size": cluster_size,
+                "created_at": __import__("datetime").datetime.now(
+                    tz=__import__("datetime").timezone.utc
+                ),
+                "status": "draft",  # Needs review
+            }
+            generated_faqs.append(faq_doc)
+
+        # 5. Save generated FAQs to MongoDB
+        if generated_faqs:
+            try:
+                result = self.faq_collection.insert_many(generated_faqs)
+                logger.info(f"Inserted {len(result.inserted_ids)} FAQs into MongoDB.")
+            except Exception as e:
+                logger.error(f"Failed to persist FAQs to MongoDB: {e}")
 
         return {
             "status": "success",
             "subject": subject,
             "questions_analyzed": len(questions),
-            "faqs": [],  # Placeholder for actual generated FAQs
-            "message": "FAQ generation pipeline initiated (clustering stubbed)",
+            "clusters_formed": optimal_k,
+            "faqs_generated": len(generated_faqs),
+            "faqs": [f["question"] for f in generated_faqs],
         }

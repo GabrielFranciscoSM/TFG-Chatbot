@@ -94,7 +94,9 @@ class FAQService:
             logger.error(f"Error extracting student questions: {e}")
             return []
 
-    def generate_faqs(self, subject: str | None = None) -> dict[str, Any]:
+    def generate_faqs(
+        self, subject: str | None = None, min_cluster_size: int = 3
+    ) -> dict[str, Any]:
         """
         Full FAQ pipeline entrypoint (stub).
 
@@ -121,7 +123,12 @@ class FAQService:
         logger.info(f"Generating FAQs from {len(questions)} questions...")
 
         # 1. Fetch embeddings for all questions
-        embeddings = self.nlp_client.get_embeddings_batch(questions)
+        try:
+            embeddings = self.nlp_client.get_embeddings_batch(questions)
+        except Exception as e:
+            logger.error(f"NLP service unavailable: {e}")
+            return {"status": "error", "message": f"NLP service error: {e}"}
+
         if embeddings.shape[0] == 0:
             return {"status": "error", "message": "Failed to get embeddings"}
 
@@ -146,6 +153,12 @@ class FAQService:
 
             # Count how many questions fell into this cluster
             cluster_size = int(np.sum(fcm.labels_ == i))
+
+            if cluster_size < min_cluster_size:
+                logger.info(
+                    f"Skipping cluster {i} because size {cluster_size} < {min_cluster_size}"
+                )
+                continue
 
             faq_doc = {
                 "question": representative_question,

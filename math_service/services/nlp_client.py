@@ -46,8 +46,7 @@ class OllamaClient:
                 return np.array(result["embedding"])
         except urllib.error.URLError as e:
             logger.error(f"Ollama embedding failed for '{text[:20]}...': {e}")
-            # Fallback to zeros (assuming 768 dims for nomic)
-            return np.zeros(768)
+            raise ConnectionError(f"Ollama embedding failed: {e}") from e
 
     def get_embeddings_batch(self, texts: list[str]) -> np.ndarray:
         """Fetch embeddings for a batch of texts.

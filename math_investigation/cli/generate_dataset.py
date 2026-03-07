@@ -9,6 +9,7 @@ import json
 import logging
 import random
 import time
+import typing
 
 # Try to use existing chatbot config, fallback to environment if not available
 try:
@@ -28,7 +29,7 @@ except ImportError:
         def get_mistral_api_key(self):
             return "MOCK"
 
-    settings: any = MockSettings()
+    settings: typing.Any = MockSettings()  # type: ignore
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI

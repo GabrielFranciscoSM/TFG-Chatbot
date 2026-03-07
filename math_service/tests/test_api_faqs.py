@@ -65,8 +65,8 @@ def test_get_faqs_by_subject(mock_service_cls):
 
     mock_cursor = MagicMock()
     mock_cursor.sort.return_value = [
-        {"question": "What is 1+1?", "cluster_size": 10},
-        {"question": "How to do integrals?", "cluster_size": 5},
+        {"_id": "1", "question": "What is 1+1?", "cluster_size": 10},
+        {"_id": "2", "question": "How to do integrals?", "cluster_size": 5},
     ]
     mock_service_instance.faq_collection.find.return_value = mock_cursor
 
@@ -79,6 +79,6 @@ def test_get_faqs_by_subject(mock_service_cls):
     assert data[1]["question"] == "How to do integrals?"
 
     mock_service_instance.faq_collection.find.assert_called_once_with(
-        {"subject": "Math"}, {"_id": 0}
+        {"subject": "Math"}
     )
     mock_service_instance.close.assert_called_once()

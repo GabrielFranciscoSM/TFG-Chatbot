@@ -80,7 +80,7 @@ def test_get_topics_by_subject(mock_service_cls):
     mock_service_cls.return_value = mock_service_instance
 
     mock_cursor = MagicMock()
-    mock_cursor.sort.return_value = [{"subject": "Math", "topics": []}]
+    mock_cursor.sort.return_value = [{"_id": "1", "subject": "Math", "topics": []}]
     mock_service_instance.collection.find.return_value = mock_cursor
 
     response = client.get("/topics/Math")
@@ -90,7 +90,5 @@ def test_get_topics_by_subject(mock_service_cls):
     assert len(data) == 1
     assert data[0]["subject"] == "Math"
 
-    mock_service_instance.collection.find.assert_called_once_with(
-        {"subject": "Math"}, {"_id": 0}
-    )
+    mock_service_instance.collection.find.assert_called_once_with({"subject": "Math"})
     mock_service_instance.close.assert_called_once()

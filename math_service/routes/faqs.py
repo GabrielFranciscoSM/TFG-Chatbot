@@ -47,7 +47,7 @@ def get_faqs_by_subject(subject_id: str) -> list[dict]:
         # Sort by cluster size descending to show most common first
         faqs = []
         for doc in cursor.sort("cluster_size", -1):
-            doc["_id"] = str(doc["_id"])
+            doc["id"] = str(doc.pop("_id", ""))
             faqs.append(doc)
         return faqs
     finally:

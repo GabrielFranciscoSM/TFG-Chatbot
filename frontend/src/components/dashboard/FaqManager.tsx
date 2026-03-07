@@ -11,8 +11,17 @@ interface FaqManagerProps {
 }
 
 export function FaqManager({ subject }: FaqManagerProps) {
-  const { faqs, isLoading, isGenerating, error, generateFaqs, updateFaq, deleteFaq, publishFaq } =
-    useFaqs(subject);
+  const {
+    faqs,
+    isLoading,
+    isGenerating,
+    error,
+    generateFaqs,
+    updateFaq,
+    deleteFaq,
+    publishFaq,
+    unpublishFaq,
+  } = useFaqs(subject);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editQuestion, setEditQuestion] = useState("");
   const [editAnswer, setEditAnswer] = useState("");
@@ -37,7 +46,7 @@ export function FaqManager({ subject }: FaqManagerProps) {
     try {
       await updateFaq(id, updateData);
       setEditingId(null);
-    } catch (e) {
+    } catch (_e) {
       // Error is handled in the hook
     }
   };
@@ -152,7 +161,7 @@ export function FaqManager({ subject }: FaqManagerProps) {
                     <p className="text-sm text-foreground whitespace-pre-wrap">{faq.answer}</p>
                   </CardContent>
                   <CardFooter className="justify-end space-x-2 bg-muted/20 py-3">
-                    {faq.status !== "published" && (
+                    {faq.status !== "published" ? (
                       <Button
                         variant="outline"
                         size="sm"
@@ -160,6 +169,15 @@ export function FaqManager({ subject }: FaqManagerProps) {
                         className="text-primary border-primary/50 hover:bg-primary/10"
                       >
                         <Globe className="h-4 w-4 mr-1" /> Publicar
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => unpublishFaq(faq.id)}
+                        className="text-amber-600 border-amber-600/50 hover:bg-amber-600/10 dark:text-amber-500 dark:border-amber-500/50 dark:hover:bg-amber-500/10"
+                      >
+                        <X className="h-4 w-4 mr-1" /> Ocultar
                       </Button>
                     )}
                     <Button variant="ghost" size="sm" onClick={() => handleEditClick(faq)}>

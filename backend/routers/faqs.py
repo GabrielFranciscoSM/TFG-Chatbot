@@ -158,6 +158,33 @@ async def publish_faq(
     return response.json()
 
 
+@router.patch("/{faq_id}/unpublish")
+async def unpublish_faq(
+    subject_id: str, faq_id: str, user: UserInDB = Depends(require_admin_or_professor)
+):
+    """Unpublish an FAQ. Proxies to math_service."""
+    if subject_id not in user.subjects:
+        raise HTTPException(status_code=403, detail="You don't teach this subject")
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.patch(
+                f"{settings.math_service_url}/faqs/{subject_id}/{faq_id}/unpublish"
+            )
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Math service unavailable: {e}"
+        ) from e
+
+    if response.status_code != 200:
+        try:
+            detail = response.json()
+        except Exception:
+            detail = {"error": response.text or "Unknown error in math service"}
+        raise HTTPException(status_code=response.status_code, detail=detail)
+    return response.json()
+
+
 @public_router.get("")
 async def get_public_faqs(subject_id: str):
     """Get published FAQs for a subject. Proxies to math_service and filters."""

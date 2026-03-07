@@ -99,6 +99,24 @@ export function useFaqs(subject: string | null) {
     [subject, fetchFaqs],
   );
 
+  const unpublishFaq = useCallback(
+    async (faqId: string) => {
+      if (!subject) return;
+      setError(null);
+      try {
+        await api.patch(
+          `/professor/subjects/${encodeURIComponent(subject)}/faqs/${encodeURIComponent(faqId)}/unpublish`,
+        );
+        await fetchFaqs();
+      } catch (err) {
+        console.error("Error unpublishing FAQ:", err);
+        setError("Error al ocultar la FAQ");
+        throw err;
+      }
+    },
+    [subject, fetchFaqs],
+  );
+
   useEffect(() => {
     if (subject) {
       fetchFaqs();
@@ -117,5 +135,6 @@ export function useFaqs(subject: string | null) {
     updateFaq,
     deleteFaq,
     publishFaq,
+    unpublishFaq,
   };
 }

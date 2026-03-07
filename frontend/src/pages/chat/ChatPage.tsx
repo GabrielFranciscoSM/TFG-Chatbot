@@ -73,6 +73,7 @@ export default function ChatPage() {
           onNewSession={handleNewSession}
           onDeleteSession={handleDeleteSession}
         />
+
         {activeSession && (
           <span className="text-sm text-muted-foreground">{activeSession.subject}</span>
         )}

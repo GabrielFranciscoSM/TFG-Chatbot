@@ -1,4 +1,11 @@
+import { useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { cn } from "@/lib/utils";
+
 import {
+  BookOpen,
   GraduationCap,
   LayoutDashboard,
   LogOut,
@@ -7,17 +14,11 @@ import {
   Settings,
   X,
 } from "lucide-react";
-import { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/AuthContext";
-import { cn } from "@/lib/utils";
 
 // Navigation items with visibility rules
-// roles: which roles can see this item (undefined = all)
-// requiresSubjects: if true, user must have subjects assigned
 const navItems = [
   { to: "/chat", label: "Chat", icon: MessageSquare, roles: ["student"] },
+  { to: "/faqs", label: "FAQs", icon: BookOpen, roles: ["student"] },
   {
     to: "/dashboard",
     label: "Mis Clases",

@@ -13,6 +13,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import ChatPage from "@/pages/chat/ChatPage";
+import StudentFaqPage from "@/pages/chat/StudentFaqPage";
 import DashboardPage from "@/pages/dashboard/DashboardPage";
 import SettingsPage from "@/pages/settings/SettingsPage";
 
@@ -36,6 +37,7 @@ function App() {
                 {/* Student-only routes */}
                 <Route element={<RequireStudent />}>
                   <Route path="/chat" element={<ChatPage />} />
+                  <Route path="/faqs" element={<StudentFaqPage />} />
                 </Route>
 
                 <Route path="/settings" element={<SettingsPage />} />

@@ -95,6 +95,25 @@ def publish_faq(subject_id: str, faq_id: str) -> dict:
         service.close()
 
 
+@router.patch("/{subject_id}/{faq_id}/unpublish")
+def unpublish_faq(subject_id: str, faq_id: str) -> dict:
+    """Unpublish an FAQ by setting its status back to draft."""
+    service = FAQService()
+    try:
+        if not ObjectId.is_valid(faq_id):
+            raise HTTPException(status_code=400, detail="Invalid FAQ ID")
+
+        result = service.faq_collection.update_one(
+            {"_id": ObjectId(faq_id), "subject": subject_id},
+            {"$set": {"status": "draft"}},
+        )
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="FAQ not found")
+        return {"status": "success", "message": "FAQ unpublished"}
+    finally:
+        service.close()
+
+
 @router.delete("/{subject_id}/{faq_id}")
 def delete_faq(subject_id: str, faq_id: str) -> dict:
     """Delete an FAQ."""

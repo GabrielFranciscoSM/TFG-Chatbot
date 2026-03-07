@@ -33,7 +33,9 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from math_service.config import settings
 from math_service.logging_config import CorrelationIdMiddleware, setup_logging
+from math_service.routes.faqs import router as faqs_router
 from math_service.routes.general import router as general_router
+from math_service.routes.topics import router as topics_router
 
 # Create FastAPI app
 app = FastAPI(
@@ -61,6 +63,8 @@ app.add_middleware(
 )
 
 app.include_router(general_router)
+app.include_router(faqs_router)
+app.include_router(topics_router)
 
 
 if __name__ == "__main__":

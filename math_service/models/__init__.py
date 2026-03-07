@@ -1,5 +1,7 @@
 """Pydantic models for the Math service."""
 
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -39,3 +41,55 @@ class FAQGenerateResponse(BaseModel):
     clusters_formed: int = 0
     faqs_generated: int = 0
     faqs: list[str] = []
+
+
+class TopicExtractRequest(BaseModel):
+    """Request model for extracting topics."""
+
+    subject: str
+    vectorizer_type: str = "tfidf"
+
+
+class ConceptNode(BaseModel):
+    """A node in the concept map."""
+
+    id: str
+    group: str
+    label: str
+
+
+class ConceptLink(BaseModel):
+    """A link in the concept map."""
+
+    source: str
+    target: str
+    value: float
+
+
+class ConceptMap(BaseModel):
+    """A concept map containing nodes and links."""
+
+    nodes: list[ConceptNode]
+    links: list[ConceptLink]
+
+
+class TopicDetails(BaseModel):
+    """Details of an extracted topic."""
+
+    cluster: int
+    topic_name: str
+    terms: list[str]
+    weight: float
+
+
+class TopicResult(BaseModel):
+    """Response model for topic extraction."""
+
+    status: str
+    subject: str | None = None
+    clusters_formed: int = 0
+    topics: list[TopicDetails] = []
+    concept_map: ConceptMap | None = None
+    created_at: datetime | None = None
+    source_chunks: int = 0
+    message: str | None = None

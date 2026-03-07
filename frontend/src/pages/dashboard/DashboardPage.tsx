@@ -2,6 +2,7 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
+import { FaqManager } from "@/components/dashboard/FaqManager";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
 import { StudentList } from "@/components/dashboard/StudentList";
 import { StudentProgressView } from "@/components/dashboard/StudentProgressView";
@@ -10,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDocuments, useStats, useStudents, useSubjects } from "@/hooks/useDashboard";
 
-type View = "overview" | "students" | "documents" | "progress";
+type View = "overview" | "students" | "documents" | "progress" | "faqs";
 
 export default function DashboardPage() {
   const [currentView, setCurrentView] = useState<View>("overview");
@@ -41,6 +42,11 @@ export default function DashboardPage() {
   const handleViewDocuments = (subject: string) => {
     setSelectedSubject(subject);
     setCurrentView("documents");
+  };
+
+  const handleViewFaqs = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("faqs");
   };
 
   const handleViewProgress = (subject: string) => {
@@ -96,6 +102,8 @@ export default function DashboardPage() {
               onDelete={deleteDocument}
             />
           )}
+
+          {currentView === "faqs" && <FaqManager subject={selectedSubject} />}
         </div>
       </div>
     );
@@ -145,6 +153,7 @@ export default function DashboardPage() {
                     onViewDocuments={handleViewDocuments}
                     onEnrollStudent={handleEnrollStudent}
                     onViewProgress={handleViewProgress}
+                    onViewFaqs={handleViewFaqs}
                   />
                 ))}
               </div>

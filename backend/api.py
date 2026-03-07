@@ -5,7 +5,17 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from backend.config import settings
 from backend.logging_config import CorrelationIdMiddleware, setup_logging
-from backend.routers import admin, auth, chat, professor, sessions, subjects, users
+from backend.routers import (
+    admin,
+    auth,
+    chat,
+    faqs,
+    professor,
+    sessions,
+    subjects,
+    topics,
+    users,
+)
 
 # Initialize structured logging
 setup_logging()
@@ -38,6 +48,9 @@ app.include_router(subjects.public_router)
 app.include_router(professor.router)
 app.include_router(sessions.router)
 app.include_router(chat.router)
+app.include_router(faqs.router)
+app.include_router(faqs.public_router)
+app.include_router(topics.router)
 
 
 @app.get("/health")

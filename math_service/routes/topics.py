@@ -41,9 +41,13 @@ def get_topics_by_subject(subject_id: str) -> list[dict]:
     try:
         # Fetch topic results for the given subject from MongoDB
         # Return them sorted by creation time descending (latest first)
-        cursor = service.collection.find({"subject": subject_id}, {"_id": 0}).sort(
-            "created_at", -1
-        )
-        return list(cursor)
+        cursor = service.collection.find({"subject": subject_id})
+
+        topics = []
+        for doc in cursor.sort("created_at", -1):
+            doc["_id"] = str(doc["_id"])
+            topics.append(doc)
+
+        return topics
     finally:
         service.close()

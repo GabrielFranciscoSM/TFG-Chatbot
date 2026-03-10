@@ -20,6 +20,7 @@ from math_service.services.clustering import get_optimal_k
 from math_service.services.nlp.bow import BoWVectorizer
 from math_service.services.nlp.nmf import NMF
 from math_service.services.nlp.tfidf import TFIDFVectorizer
+from math_service.services.nlp_client import MistralClient, OllamaClient
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,8 @@ class TopicService:
 
         self.db = self.client[settings.db_name]
         self.collection = self.db["topic_results"]
+        self.nlp_client = OllamaClient()
+        self.mistral_client = MistralClient()
 
     def close(self):
         """Close the database client if owned."""
@@ -56,7 +59,7 @@ class TopicService:
         Returns:
             A list of text chunks.
         """
-        url = f"{self.rag_url}/api/v1/search"
+        url = f"{self.rag_url}/search"
         payload = {
             "query": "conceptos clave temario",  # Dummy query to get semantic matches
             "asignatura": subject,
@@ -159,36 +162,57 @@ class TopicService:
             top_indices = row.argsort()[-5:][::-1]
             top_terms = [feature_names[idx] for idx in top_indices if row[idx] > 0]
 
-            topic_id = f"Tópico {i+1}"
-            if top_terms:
-                topics.append(
-                    {
-                        "cluster": i,
-                        "topic_name": topic_id,
-                        "terms": top_terms,
-                        "weight": float(
-                            np.sum(W[:, i])
-                        ),  # Total importance of topic across docs
-                    }
-                )
+            if not top_terms:
+                continue
 
-                # Add topic to concept map
-                nodes.append({"id": topic_id, "group": "topic", "label": topic_id})
-                links.append({"source": subject, "target": topic_id, "value": 1.0})
+            prompt = (
+                f"Instrucciones: Genera un título corto y representativo para el tema que agrupa las siguientes palabras clave.\n"
+                f"- El título debe tener entre 1 y 5 palabras.\n"
+                f"- Debe ser muy descriptivo, claro y capturar la esencia de los términos.\n"
+                f"- Devuelve SOLO el título, sin comillas, ni explicaciones, ni texto extra.\n\n"
+                f"Ejemplos:\n"
+                f"Palabras clave: álgebra, ecuaciones, polinomios, raíces, variables\n"
+                f"Álgebra Básica\n\n"
+                f"Palabras clave: derivada, integral, límite, función, tangente\n"
+                f"Cálculo Diferencial e Integral\n\n"
+                f"Palabras clave: {', '.join(top_terms)}\n"
+            )
 
-                # Add terms and links
-                for term_idx in top_indices:
-                    term = feature_names[term_idx]
-                    weight = float(row[term_idx])
-                    if weight > 0:
-                        term_id = f"term_{term}"
-                        if not any(n["id"] == term_id for n in nodes):
-                            nodes.append(
-                                {"id": term_id, "group": "term", "label": term}
-                            )
-                        links.append(
-                            {"source": topic_id, "target": term_id, "value": weight}
-                        )
+            try:
+                # Ask Mistral for a nice title
+                topic_id = self.mistral_client.generate_text(prompt)
+                if not topic_id:
+                    topic_id = f"Tópico {i+1}"
+            except Exception as e:
+                logger.warning(f"Failed to generate title for topic {i+1}: {e}")
+                topic_id = f"Tópico {i+1}"
+
+            topics.append(
+                {
+                    "cluster": i,
+                    "topic_name": topic_id,
+                    "terms": top_terms,
+                    "weight": float(
+                        np.sum(W[:, i])
+                    ),  # Total importance of topic across docs
+                }
+            )
+
+            # Add topic to concept map
+            nodes.append({"id": topic_id, "group": "topic", "label": topic_id})
+            links.append({"source": subject, "target": topic_id, "value": 1.0})
+
+            # Add terms and links
+            for term_idx in top_indices:
+                term = feature_names[term_idx]
+                weight = float(row[term_idx])
+                if weight > 0:
+                    term_id = f"term_{term}"
+                    if not any(n["id"] == term_id for n in nodes):
+                        nodes.append({"id": term_id, "group": "term", "label": term})
+                    links.append(
+                        {"source": topic_id, "target": term_id, "value": weight}
+                    )
 
         concept_map = {"nodes": nodes, "links": links}
 

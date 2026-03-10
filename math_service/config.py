@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     ollama_host: str = "ollama"
     ollama_port: int = 11434
     ollama_model: str = "nomic-embed-text"
+    ollama_generation_model: str = "qwen3.5:0.8b"
+
+    # Mistral configuration
+    mistral_api_key: SecretStr | None = None
+    mistral_model: str = "mistral-small-latest"
 
     # RAG Service
     rag_service_url: str = "http://rag_service:8081"

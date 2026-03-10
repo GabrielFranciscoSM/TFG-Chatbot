@@ -23,7 +23,10 @@ def extract_topics(request: TopicExtractRequest) -> TopicResult:
     service = TopicService()
     try:
         result = service.extract_topics(
-            subject=request.subject, vectorizer_type=request.vectorizer_type
+            subject=request.subject,
+            vectorizer_type=request.vectorizer_type,
+            k=request.k,
+            cost_function=request.cost_function,
         )
 
         if result.get("status") == "error":

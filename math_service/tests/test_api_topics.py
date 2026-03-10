@@ -49,7 +49,7 @@ def test_extract_topics_success(mock_service_cls):
     assert data["concept_map"]["nodes"][0]["id"] == "Math"
 
     mock_service_instance.extract_topics.assert_called_once_with(
-        subject="Math", vectorizer_type="tfidf"
+        subject="Math", vectorizer_type="tfidf", k=None, cost_function="frobenius"
     )
     mock_service_instance.close.assert_called_once()
 

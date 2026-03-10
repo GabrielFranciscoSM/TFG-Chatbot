@@ -48,6 +48,8 @@ class TopicExtractRequest(BaseModel):
 
     subject: str
     vectorizer_type: str = "tfidf"
+    k: int | None = None
+    cost_function: str = "frobenius"
 
 
 class ConceptNode(BaseModel):

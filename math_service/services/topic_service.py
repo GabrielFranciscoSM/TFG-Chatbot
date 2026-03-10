@@ -85,7 +85,11 @@ class TopicService:
             return []
 
     def extract_topics(
-        self, subject: str, vectorizer_type: str = "tfidf"
+        self,
+        subject: str,
+        vectorizer_type: str = "tfidf",
+        k: int | None = None,
+        cost_function: str = "frobenius",
     ) -> dict[str, Any]:
         """
         Extract representative topics for a subject from its chunks.
@@ -99,6 +103,8 @@ class TopicService:
         Args:
             subject: The subject to extract topics from.
             vectorizer_type: 'tfidf' or 'bow' for feature extraction. Default is 'tfidf'.
+            k: Optional number of topics. If not provided, determines optimal k.
+            cost_function: Cost function for NMF ('frobenius' or 'kl').
 
         Returns:
             A dictionary containing topic metadata and extracted terms.
@@ -125,14 +131,19 @@ class TopicService:
             return {"status": "error", "message": "Could not extract vocabulary"}
 
         # 2. Optimal K determination
-        try:
-            optimal_k = get_optimal_k(feature_matrix, max_k=min(10, len(chunks) - 1))
-        except ValueError:
-            optimal_k = 1
+        if k is not None and k > 0:
+            optimal_k = min(k, len(chunks))
+        else:
+            try:
+                optimal_k = get_optimal_k(
+                    feature_matrix, max_k=min(10, len(chunks) - 1)
+                )
+            except ValueError:
+                optimal_k = 1
 
         # 3. NMF Topic Modeling
         # BoW values are >= 0 and TF-IDF are >= 0, so both work well with NMF KL and Frobenius.
-        nmf = NMF(n_components=optimal_k, random_state=42)
+        nmf = NMF(n_components=optimal_k, random_state=42, cost=cost_function)
         W, H = nmf.fit(feature_matrix)
 
         # 4. Extract top terms and build concept map

@@ -6,6 +6,7 @@ import {
   UserPlus,
   Users,
   MessageSquare,
+  BarChart2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +25,7 @@ interface SubjectCardProps {
   onEnrollStudent: (subject: string) => void;
   onViewProgress?: (subject: string) => void;
   onViewFaqs?: (subject: string) => void;
+  onViewTopics?: (subject: string) => void;
 }
 
 export function SubjectCard({
@@ -33,6 +35,7 @@ export function SubjectCard({
   onEnrollStudent,
   onViewProgress,
   onViewFaqs,
+  onViewTopics,
 }: SubjectCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -60,6 +63,12 @@ export function SubjectCard({
               <DropdownMenuItem onClick={() => onViewFaqs(subject.name)}>
                 <FileText className="mr-2 h-4 w-4" />
                 Gestionar FAQs
+              </DropdownMenuItem>
+            )}
+            {onViewTopics && (
+              <DropdownMenuItem onClick={() => onViewTopics(subject.name)}>
+                <BarChart2 className="mr-2 h-4 w-4" />
+                Extraer Tópicos
               </DropdownMenuItem>
             )}
             <DropdownMenuItem onClick={() => onEnrollStudent(subject.name)}>
@@ -97,7 +106,7 @@ export function SubjectCard({
           </div>
         </div>
         <div
-          className={`mt-4 grid gap-2 ${onViewFaqs ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}
+          className={`mt-4 grid gap-2 ${onViewFaqs || onViewTopics ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}
         >
           <Button
             variant="outline"
@@ -126,6 +135,17 @@ export function SubjectCard({
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               FAQs
+            </Button>
+          )}
+          {onViewTopics && (
+            <Button
+              variant="outline"
+              size="default"
+              className="w-full justify-start"
+              onClick={() => onViewTopics(subject.name)}
+            >
+              <BarChart2 className="h-4 w-4 mr-2" />
+              Tópicos
             </Button>
           )}
           {onViewProgress && (

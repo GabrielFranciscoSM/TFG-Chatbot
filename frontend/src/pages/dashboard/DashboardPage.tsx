@@ -3,6 +3,7 @@ import { useState } from "react";
 import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
 import { FaqManager } from "@/components/dashboard/FaqManager";
+import { TopicsDashboard } from "@/components/dashboard/TopicsDashboard";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
 import { StudentList } from "@/components/dashboard/StudentList";
 import { StudentProgressView } from "@/components/dashboard/StudentProgressView";
@@ -11,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDocuments, useStats, useStudents, useSubjects } from "@/hooks/useDashboard";
 
-type View = "overview" | "students" | "documents" | "progress" | "faqs";
+type View = "overview" | "students" | "documents" | "progress" | "faqs" | "topics";
 
 export default function DashboardPage() {
   const [currentView, setCurrentView] = useState<View>("overview");
@@ -47,6 +48,11 @@ export default function DashboardPage() {
   const handleViewFaqs = (subject: string) => {
     setSelectedSubject(subject);
     setCurrentView("faqs");
+  };
+
+  const handleViewTopics = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("topics");
   };
 
   const handleViewProgress = (subject: string) => {
@@ -104,6 +110,8 @@ export default function DashboardPage() {
           )}
 
           {currentView === "faqs" && <FaqManager subject={selectedSubject} />}
+
+          {currentView === "topics" && <TopicsDashboard subject={selectedSubject} />}
         </div>
       </div>
     );
@@ -154,6 +162,7 @@ export default function DashboardPage() {
                     onEnrollStudent={handleEnrollStudent}
                     onViewProgress={handleViewProgress}
                     onViewFaqs={handleViewFaqs}
+                    onViewTopics={handleViewTopics}
                   />
                 ))}
               </div>

@@ -64,6 +64,10 @@ defaults:
     values:
       nav_exclude: true
   - scope:
+      path: "docs/services/math_service"
+    values:
+      nav_exclude: true
+  - scope:
       path: "docs/services/infrastructure"
     values:
       nav_exclude: true

@@ -22,6 +22,26 @@ def test_generate_faqs_success(mock_client_cls, client, professor_token):
 
 
 @patch("backend.routers.faqs.httpx.AsyncClient")
+def test_create_faq_success(mock_client_cls, client, professor_token):
+    mock_instance = AsyncMock()
+    mock_client_cls.return_value.__aenter__.return_value = mock_instance
+
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"id": "1", "question": "test?"}
+    mock_instance.post.return_value = mock_response
+
+    response = client.post(
+        "/professor/subjects/iv/faqs",
+        json={"question": "test?", "answer": "", "status": "draft"},
+        headers={"Authorization": f"Bearer {professor_token}"},
+    )
+    assert response.status_code == 200
+    assert response.json()["question"] == "test?"
+    mock_instance.post.assert_awaited_once()
+
+
+@patch("backend.routers.faqs.httpx.AsyncClient")
 def test_get_professor_faqs(mock_client_cls, client, professor_token):
     mock_instance = AsyncMock()
     mock_client_cls.return_value.__aenter__.return_value = mock_instance

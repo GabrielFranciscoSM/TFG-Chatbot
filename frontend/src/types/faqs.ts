@@ -16,3 +16,9 @@ export interface FaqUpdate {
   answer?: string;
   status?: FaqStatus;
 }
+
+export interface FaqCreate {
+  question: string;
+  answer?: string;
+  status?: FaqStatus;
+}

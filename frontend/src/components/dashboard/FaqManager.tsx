@@ -3,8 +3,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useFaqs } from "@/hooks/useFaqs";
-import type { Faq, FaqUpdate } from "@/types/faqs";
+import type { Faq, FaqCreate, FaqStatus, FaqUpdate } from "@/types/faqs";
 
 interface FaqManagerProps {
   subject: string | null;
@@ -15,8 +22,10 @@ export function FaqManager({ subject }: FaqManagerProps) {
     faqs,
     isLoading,
     isGenerating,
+    isCreating,
     error,
     generateFaqs,
+    createFaq,
     updateFaq,
     deleteFaq,
     publishFaq,
@@ -25,6 +34,9 @@ export function FaqManager({ subject }: FaqManagerProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editQuestion, setEditQuestion] = useState("");
   const [editAnswer, setEditAnswer] = useState("");
+  const [newQuestion, setNewQuestion] = useState("");
+  const [newAnswer, setNewAnswer] = useState("");
+  const [newStatus, setNewStatus] = useState<FaqStatus>("draft");
 
   const handleEditClick = (faq: Faq) => {
     setEditingId(faq.id);
@@ -57,6 +69,26 @@ export function FaqManager({ subject }: FaqManagerProps) {
     }
   };
 
+  const handleCreate = async () => {
+    const question = newQuestion.trim();
+    if (!question) return;
+
+    const payload: FaqCreate = {
+      question,
+      answer: newAnswer,
+      status: newStatus,
+    };
+
+    try {
+      await createFaq(payload);
+      setNewQuestion("");
+      setNewAnswer("");
+      setNewStatus("draft");
+    } catch (_e) {
+      // Error is handled in the hook
+    }
+  };
+
   if (!subject) return null;
 
   return (
@@ -84,6 +116,63 @@ export function FaqManager({ subject }: FaqManagerProps) {
       </div>
 
       {error && <div className="bg-destructive/15 text-destructive p-4 rounded-md">{error}</div>}
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Crear FAQ manual</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="faq-question">
+              Pregunta
+            </label>
+            <Input
+              id="faq-question"
+              value={newQuestion}
+              onChange={(e) => setNewQuestion(e.target.value)}
+              placeholder="Escribe la pregunta"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="faq-answer">
+              Respuesta (opcional)
+            </label>
+            <textarea
+              id="faq-answer"
+              value={newAnswer}
+              onChange={(e) => setNewAnswer(e.target.value)}
+              placeholder="Escribe la respuesta si quieres"
+              className="w-full min-h-[120px] flex rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="faq-status">
+              Estado
+            </label>
+            <Select value={newStatus} onValueChange={(value) => setNewStatus(value as FaqStatus)}>
+              <SelectTrigger id="faq-status" className="w-[220px]">
+                <SelectValue placeholder="Selecciona un estado" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="draft">Borrador</SelectItem>
+                <SelectItem value="published">Publicada</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+        <CardFooter className="justify-end">
+          <Button onClick={handleCreate} disabled={isCreating || !newQuestion.trim()}>
+            {isCreating ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creando...
+              </>
+            ) : (
+              <>Crear FAQ</>
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
 
       {isLoading ? (
         <div className="flex justify-center p-8">

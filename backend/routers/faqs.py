@@ -44,6 +44,37 @@ async def generate_faqs(
     return response.json()
 
 
+@router.post("")
+async def create_faq(
+    subject_id: str,
+    request: Request,
+    user: UserInDB = Depends(require_admin_or_professor),
+):
+    """Create a manual FAQ for a subject. Proxies to math_service."""
+    if subject_id not in user.subjects:
+        raise HTTPException(status_code=403, detail="You don't teach this subject")
+
+    json_data = await request.json()
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                f"{settings.math_service_url}/faqs/{subject_id}", json=json_data
+            )
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Math service unavailable: {e}"
+        ) from e
+
+    if response.status_code != 200:
+        try:
+            detail = response.json()
+        except Exception:
+            detail = {"error": response.text or "Unknown error in math service"}
+        raise HTTPException(status_code=response.status_code, detail=detail)
+    return response.json()
+
+
 @router.get("")
 async def get_professor_faqs(
     subject_id: str, user: UserInDB = Depends(require_admin_or_professor)

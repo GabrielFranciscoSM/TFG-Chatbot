@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+from bson import ObjectId
 from fastapi.testclient import TestClient
 
 from math_service.api import app
@@ -81,4 +82,67 @@ def test_get_faqs_by_subject(mock_service_cls):
     mock_service_instance.faq_collection.find.assert_called_once_with(
         {"subject": "Math"}
     )
+    mock_service_instance.close.assert_called_once()
+
+
+@patch("math_service.routes.faqs.FAQService")
+def test_create_faq_success(mock_service_cls):
+    """Test creating a manual FAQ successfully."""
+    mock_service_instance = MagicMock()
+    mock_service_cls.return_value = mock_service_instance
+
+    inserted_id = ObjectId("65f1a2b3c4d5e6f7a8b9c0d1")
+    mock_service_instance.faq_collection.insert_one.return_value.inserted_id = (
+        inserted_id
+    )
+
+    response = client.post(
+        "/faqs/Math",
+        json={"question": "What is 1+1?", "answer": "", "status": "draft"},
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == str(inserted_id)
+    assert data["question"] == "What is 1+1?"
+    assert data["answer"] == ""
+    assert data["status"] == "draft"
+    assert data["subject"] == "Math"
+    assert data["cluster_size"] == 0
+    assert "created_at" in data
+    assert "updated_at" in data
+
+    mock_service_instance.faq_collection.insert_one.assert_called_once()
+    mock_service_instance.close.assert_called_once()
+
+
+@patch("math_service.routes.faqs.FAQService")
+def test_create_faq_invalid_status(mock_service_cls):
+    """Test creating a manual FAQ with invalid status."""
+    mock_service_instance = MagicMock()
+    mock_service_cls.return_value = mock_service_instance
+
+    response = client.post(
+        "/faqs/Math",
+        json={"question": "What is 1+1?", "status": "archived"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Invalid FAQ status"
+    mock_service_instance.close.assert_called_once()
+
+
+@patch("math_service.routes.faqs.FAQService")
+def test_create_faq_empty_question(mock_service_cls):
+    """Test creating a manual FAQ with an empty question."""
+    mock_service_instance = MagicMock()
+    mock_service_cls.return_value = mock_service_instance
+
+    response = client.post(
+        "/faqs/Math",
+        json={"question": "   ", "status": "draft"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Question cannot be empty"
     mock_service_instance.close.assert_called_once()

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/api";
-import type { Faq, FaqUpdate } from "@/types/faqs";
+import type { Faq, FaqCreate, FaqUpdate } from "@/types/faqs";
 
 export function useFaqs(subject: string | null) {
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchFaqs = useCallback(async () => {
@@ -43,6 +44,25 @@ export function useFaqs(subject: string | null) {
       setIsGenerating(false);
     }
   }, [subject, fetchFaqs]);
+
+  const createFaq = useCallback(
+    async (data: FaqCreate) => {
+      if (!subject) return;
+      setIsCreating(true);
+      setError(null);
+      try {
+        await api.post(`/professor/subjects/${encodeURIComponent(subject)}/faqs`, data);
+        await fetchFaqs();
+      } catch (err) {
+        console.error("Error creating FAQ:", err);
+        setError("Error al crear la FAQ");
+        throw err;
+      } finally {
+        setIsCreating(false);
+      }
+    },
+    [subject, fetchFaqs],
+  );
 
   const updateFaq = useCallback(
     async (faqId: string, data: FaqUpdate) => {
@@ -129,9 +149,11 @@ export function useFaqs(subject: string | null) {
     faqs,
     isLoading,
     isGenerating,
+    isCreating,
     error,
     refetch: fetchFaqs,
     generateFaqs,
+    createFaq,
     updateFaq,
     deleteFaq,
     publishFaq,

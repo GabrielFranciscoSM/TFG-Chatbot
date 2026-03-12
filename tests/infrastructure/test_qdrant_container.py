@@ -3,156 +3,149 @@ Tests para verificar el funcionamiento del contenedor de Qdrant.
 Estos tests verifican que Qdrant está corriendo y puede realizar operaciones básicas.
 """
 
-import os
-
 import pytest
 import requests
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, PointStruct, VectorParams
+from qdrant_client.http.exceptions import UnexpectedResponse
+from qdrant_client.models import (
+    Distance,
+    FieldCondition,
+    Filter,
+    MatchValue,
+    PointStruct,
+    VectorParams,
+)
 
-QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
-QDRANT_PORT = int(os.getenv("QDRANT_PORT", "6333"))
-QDRANT_URL = os.getenv("QDRANT_URL", f"http://{QDRANT_HOST}:{QDRANT_PORT}")
+from tests.infrastructure.conftest import DEFAULT_TIMEOUT, QDRANT_URL
+
+# Aplicar marker a todos los tests de este módulo
+pytestmark = pytest.mark.container
+
+# Dimensión de vectores para tests
+TEST_VECTOR_SIZE = 128
 
 
 def test_qdrant_container_is_running():
     """Verifica que el contenedor de Qdrant está corriendo y responde."""
     try:
-        resp = requests.get(f"{QDRANT_URL}/", timeout=5)
+        resp = requests.get(f"{QDRANT_URL}/", timeout=DEFAULT_TIMEOUT)
         assert resp.status_code == 200
         data = resp.json()
         assert "title" in data
         assert data["title"] == "qdrant - vector search engine"
     except requests.exceptions.ConnectionError:
-        pytest.fail(
-            "El contenedor de Qdrant no está disponible en http://localhost:6333"
-        )
+        pytest.fail(f"El contenedor de Qdrant no está disponible en {QDRANT_URL}")
 
 
 def test_qdrant_health_endpoint():
     """Verifica que el endpoint de health de Qdrant responde correctamente."""
-    resp = requests.get(f"{QDRANT_URL}/healthz", timeout=5)
+    resp = requests.get(f"{QDRANT_URL}/healthz", timeout=DEFAULT_TIMEOUT)
     assert resp.status_code == 200
 
 
-def test_qdrant_can_create_collection():
+def test_qdrant_can_create_collection(qdrant_client):
     """Verifica que Qdrant puede crear colecciones."""
-    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-
     collection_name = "test_infrastructure_collection"
 
     # Eliminar la colección si ya existe (cleanup)
     try:
-        client.delete_collection(collection_name=collection_name)
-    except Exception:
-        pass  # La colección no existe, continuar
+        qdrant_client.delete_collection(collection_name=collection_name)
+    except UnexpectedResponse:
+        pass  # La colección no existe
 
     # Crear una nueva colección
-    client.create_collection(
+    qdrant_client.create_collection(
         collection_name=collection_name,
-        vectors_config=VectorParams(size=128, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=TEST_VECTOR_SIZE, distance=Distance.COSINE),
     )
 
     # Verificar que la colección fue creada
-    collections = client.get_collections()
+    collections = qdrant_client.get_collections()
     collection_names = [col.name for col in collections.collections]
     assert collection_name in collection_names
 
-    # Cleanup
-    client.delete_collection(collection_name=collection_name)
 
-
-def test_qdrant_can_insert_and_search_vectors():
+def test_qdrant_can_insert_and_search_vectors(qdrant_client):
     """Verifica que Qdrant puede insertar y buscar vectores."""
-    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-
     collection_name = "test_search_collection"
 
     # Eliminar la colección si ya existe
     try:
-        client.delete_collection(collection_name=collection_name)
-    except Exception:
+        qdrant_client.delete_collection(collection_name=collection_name)
+    except UnexpectedResponse:
         pass
 
     # Crear colección
-    client.create_collection(
+    qdrant_client.create_collection(
         collection_name=collection_name,
-        vectors_config=VectorParams(size=128, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=TEST_VECTOR_SIZE, distance=Distance.COSINE),
     )
 
     # Insertar algunos puntos
     points = [
         PointStruct(
             id=1,
-            vector=[0.1] * 128,
+            vector=[0.1] * TEST_VECTOR_SIZE,
             payload={"text": "documento 1", "asignatura": "IA"},
         ),
         PointStruct(
             id=2,
-            vector=[0.2] * 128,
+            vector=[0.2] * TEST_VECTOR_SIZE,
             payload={"text": "documento 2", "asignatura": "BD"},
         ),
     ]
 
-    client.upsert(collection_name=collection_name, points=points)
+    qdrant_client.upsert(collection_name=collection_name, points=points)
 
     # Realizar una búsqueda
-    search_result = client.query_points(
-        collection_name=collection_name, query=[0.15] * 128, limit=2
+    search_result = qdrant_client.query_points(
+        collection_name=collection_name, query=[0.15] * TEST_VECTOR_SIZE, limit=2
     )
 
     assert len(search_result.points) > 0
     assert search_result.points[0].payload is not None
 
-    # Cleanup
-    client.delete_collection(collection_name=collection_name)
 
-
-def test_qdrant_can_filter_by_metadata():
+def test_qdrant_can_filter_by_metadata(qdrant_client):
     """Verifica que Qdrant puede filtrar resultados por metadata."""
-    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-
     collection_name = "test_filter_collection"
 
     # Eliminar la colección si ya existe
     try:
-        client.delete_collection(collection_name=collection_name)
-    except Exception:
+        qdrant_client.delete_collection(collection_name=collection_name)
+    except UnexpectedResponse:
         pass
 
     # Crear colección
-    client.create_collection(
+    qdrant_client.create_collection(
         collection_name=collection_name,
-        vectors_config=VectorParams(size=128, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=TEST_VECTOR_SIZE, distance=Distance.COSINE),
     )
 
     # Insertar puntos con diferentes metadata
     points = [
         PointStruct(
             id=1,
-            vector=[0.1] * 128,
+            vector=[0.1] * TEST_VECTOR_SIZE,
             payload={"text": "apuntes IA", "asignatura": "IA", "tipo": "apuntes"},
         ),
         PointStruct(
             id=2,
-            vector=[0.1] * 128,
+            vector=[0.1] * TEST_VECTOR_SIZE,
             payload={"text": "examen IA", "asignatura": "IA", "tipo": "examen"},
         ),
         PointStruct(
             id=3,
-            vector=[0.1] * 128,
+            vector=[0.1] * TEST_VECTOR_SIZE,
             payload={"text": "apuntes BD", "asignatura": "BD", "tipo": "apuntes"},
         ),
     ]
 
-    client.upsert(collection_name=collection_name, points=points)
+    qdrant_client.upsert(collection_name=collection_name, points=points)
 
     # Buscar solo documentos de tipo "apuntes"
-    from qdrant_client.models import FieldCondition, Filter, MatchValue
-
-    search_result = client.query_points(
+    search_result = qdrant_client.query_points(
         collection_name=collection_name,
-        query=[0.1] * 128,
+        query=[0.1] * TEST_VECTOR_SIZE,
         query_filter=Filter(
             must=[FieldCondition(key="tipo", match=MatchValue(value="apuntes"))]
         ),
@@ -164,45 +157,33 @@ def test_qdrant_can_filter_by_metadata():
     for result in search_result.points:
         assert result.payload["tipo"] == "apuntes"
 
-    # Cleanup
-    client.delete_collection(collection_name=collection_name)
 
-
-def test_qdrant_collection_info():
+def test_qdrant_collection_info(qdrant_client):
     """Verifica que Qdrant puede proporcionar información de una colección."""
-    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-
     collection_name = "test_info_collection"
 
     # Eliminar la colección si ya existe
     try:
-        client.delete_collection(collection_name=collection_name)
-    except Exception:
+        qdrant_client.delete_collection(collection_name=collection_name)
+    except UnexpectedResponse:
         pass
 
     # Crear colección
-    client.create_collection(
+    qdrant_client.create_collection(
         collection_name=collection_name,
-        vectors_config=VectorParams(size=128, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=TEST_VECTOR_SIZE, distance=Distance.COSINE),
     )
 
     # Obtener información de la colección
-    collection_info = client.get_collection(collection_name=collection_name)
+    collection_info = qdrant_client.get_collection(collection_name=collection_name)
 
     assert collection_info.status == "green"
-    # vectors_count puede ser None en algunas versiones de Qdrant
     assert collection_info.points_count == 0  # Recién creada, sin puntos
 
-    # Cleanup
-    client.delete_collection(collection_name=collection_name)
 
-
-def test_qdrant_list_collections():
+def test_qdrant_list_collections(qdrant_client):
     """Verifica que Qdrant puede listar todas las colecciones."""
-    client = QdrantClient(host="localhost", port=6333)
-
-    # Obtener lista de colecciones
-    collections = client.get_collections()
+    collections = qdrant_client.get_collections()
 
     assert hasattr(collections, "collections")
     assert isinstance(collections.collections, list)
@@ -210,7 +191,7 @@ def test_qdrant_list_collections():
 
 def test_qdrant_rest_api_collections():
     """Verifica que la REST API de Qdrant funciona correctamente."""
-    resp = requests.get(f"{QDRANT_URL}/collections", timeout=5)
+    resp = requests.get(f"{QDRANT_URL}/collections", timeout=DEFAULT_TIMEOUT)
     assert resp.status_code == 200
 
     data = resp.json()

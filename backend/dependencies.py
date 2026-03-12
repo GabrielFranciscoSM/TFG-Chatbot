@@ -18,6 +18,10 @@ def get_sessions_collection():
     return mongo_client.get_collection("sessions")
 
 
+def get_subjects_collection():
+    return mongo_client.get_collection("subjects")
+
+
 async def get_user(username: str, users_collection):
     user_dict = users_collection.find_one({"username": username})
     if user_dict:
@@ -59,4 +63,10 @@ async def get_current_user(
 async def require_admin_or_professor(user: UserInDB = Depends(get_current_user)):
     if user.role not in [UserRole.PROFESSOR, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Not authorized")
+    return user
+
+
+async def require_admin(user: UserInDB = Depends(get_current_user)):
+    if user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Admin access required")
     return user

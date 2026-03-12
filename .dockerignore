@@ -1,0 +1,117 @@
+# ===========================================
+# Python (** matches in any subdirectory)
+# ===========================================
+**/.venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+**/*.egg-info/
+**/dist/
+**/build/
+eggs/
+.eggs/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===========================================
+# Node.js / Frontend
+# ===========================================
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ===========================================
+# Large directories (ML models, data)
+# ===========================================
+models/
+data/
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# ===========================================
+# IDE and editors
+# ===========================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ===========================================
+# Git
+# ===========================================
+.git/
+.gitignore
+
+# ===========================================
+# Testing and coverage
+# ===========================================
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# ===========================================
+# Documentation
+# ===========================================
+docs/
+*.md
+!README.md
+LICENSE
+
+# ===========================================
+# Local development
+# ===========================================
+local/
+.env.local
+.env.*.local
+*.local
+
+# ===========================================
+# Docker (don't send docker files to context)
+# ===========================================
+Dockerfile*
+docker-compose*.yml
+.docker/
+
+# ===========================================
+# Misc
+# ===========================================
+.DS_Store
+Thumbs.db
+*.log
+tmp/
+temp/
+.cache/
+
+# ===========================================
+# Project specific
+# ===========================================
+notebooks/
+tests/
+*.ipynb
+grafana/
+prometheus.yml
+promtail-config.yml

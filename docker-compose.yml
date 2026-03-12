@@ -1,37 +1,36 @@
-version: '3.8'
 
 services:
-  # vllm-openai:
-  #   image: docker.io/vllm/vllm-openai:latest
-  #   container_name: vllm-service
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             device_ids: ['0']
-  #             capabilities:
-  #               - gpu
-  #   volumes:
-  #       - "./models:/models"
-  #       - "vllm_cache:/root/.cache/vllm"
-  #   env_file:
-  #     - .env
-  #   environment:
-  #       HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
-  #       TORCH_CUDA_ARCH_LIST: "8.9"
-  #   ports:
-  #       - 8000:8000
-  #   command: >
-  #     --model ${MODEL_PATH}
-  #     --max-num-seqs 4
-  #     --max-model-len 2048
-  #     --gpu-memory-utilization 0.6
-  #     --port ${VLLM_MAIN_PORT}
-  #     --tool-call-parser hermes
-  #     --enable-auto-tool-choice
-  #     --swap-space 3
-  #   restart: unless-stopped
+  vllm-openai:
+    image: docker.io/vllm/vllm-openai:latest
+    container_name: vllm-service
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities:
+                - gpu
+    volumes:
+        - "./models:/models"
+        - "vllm_cache:/root/.cache/vllm"
+    env_file:
+      - .env
+    environment:
+        HUGGING_FACE_HUB_TOKEN: ${HF_TOKEN}
+        TORCH_CUDA_ARCH_LIST: "8.9"
+    ports:
+        - 8001:8000  # External port 8001 to avoid conflict with backend
+    command: >
+      --model ${MODEL_PATH}
+      --max-num-seqs 4
+      --max-model-len 2048
+      --gpu-memory-utilization 0.6
+      --port ${VLLM_MAIN_PORT}
+      --tool-call-parser hermes
+      --enable-auto-tool-choice
+      --swap-space 3
+    restart: unless-stopped
 
   chatbot:
     build:
@@ -44,11 +43,15 @@ services:
       - .env
     environment:
       VLLM_HOST: vllm-openai
+      PHOENIX_HOST: phoenix
+      PHOENIX_PORT: "6006"
+      PHOENIX_PROJECT_NAME: tfg-chatbot
     ports:
       - "8080:8080"
     depends_on:
       # - vllm-openai
       - rag_service
+      - phoenix
     restart: unless-stopped
 
   mongo:
@@ -133,6 +136,28 @@ services:
       - ollama
     restart: unless-stopped
 
+  # Math Service
+  math_service:
+    build:
+      context: .
+      dockerfile: math_service/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
+    container_name: math-service
+    env_file:
+      - .env
+    environment:
+      MONGO_HOSTNAME: mongo
+      OLLAMA_HOST: ollama
+      RAG_SERVICE_URL: http://rag_service:8081
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo
+      - ollama
+      - rag_service
+    restart: unless-stopped
+
   backend:
     build:
       context: .
@@ -161,7 +186,92 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-      
+
+  # Phoenix - LLM Observability (Arize AI)
+  phoenix:
+    image: docker.io/arizephoenix/phoenix:latest
+    container_name: phoenix
+    ports:
+      - "6006:6006"  # Web UI
+      - "4317:4317"  # OTLP gRPC
+    environment:
+      PHOENIX_WORKING_DIR: /data
+    volumes:
+      - phoenix_data:/data
+    restart: unless-stopped
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9093:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alertmanager/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  loki:
+    image: docker.io/grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki_data:/loki
+    restart: unless-stopped
+
+  promtail:
+    image: docker.io/grafana/promtail:latest
+    container_name: promtail
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yml
+    restart: unless-stopped
+
+  alertmanager:
+    image: docker.io/prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9094:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+
+  grafana:
+    image: docker.io/grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      prometheus:
+        condition: service_healthy
+      loki:
+        condition: service_started
+    restart: unless-stopped
 
 volumes:
   mongodb_data:
@@ -169,3 +279,7 @@ volumes:
   ollama_models:
   rag_documents:
   vllm_cache:
+  phoenix_data:
+  prometheus_data:
+  loki_data:
+  grafana_data:

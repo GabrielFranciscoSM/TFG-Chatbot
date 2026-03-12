@@ -3,10 +3,10 @@ import { useAuth } from "@/context/AuthContext";
 
 /**
  * PublicRoute - Wrapper for public pages (login, register)
- * Redirects authenticated users to /chat
+ * Redirects authenticated users to their role-appropriate page
  */
 export default function PublicRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -16,7 +16,16 @@ export default function PublicRoute() {
     );
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && user) {
+    // Redirect based on role
+    if (user.role === "admin") {
+      return <Navigate to="/admin" replace />;
+    }
+    if (user.role === "professor") {
+      const hasSubjects = user.subjects && user.subjects.length > 0;
+      return <Navigate to={hasSubjects ? "/dashboard" : "/settings"} replace />;
+    }
+    // Students go to chat
     return <Navigate to="/chat" replace />;
   }
 

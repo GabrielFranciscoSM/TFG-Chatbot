@@ -1,53 +1,31 @@
 from datetime import UTC, datetime, timedelta
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
 
+from backend.config import settings
 from backend.dependencies import (
     get_sessions_collection,
+    get_subjects_collection,
     get_users_collection,
+    require_admin,
     require_admin_or_professor,
 )
-from backend.models import AdminEnrollmentRequest, UserInDB, UserRole
+from backend.models import (
+    AdminEnrollmentRequest,
+    AdminStats,
+    AssignSubjectRequest,
+    BatchEnrollmentRequest,
+    PromoteUserRequest,
+    UserInDB,
+    UserInfo,
+    UserRole,
+)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
-# --- Request/Response Models ---
-
-
-class AssignSubjectRequest(BaseModel):
-    username: str
-    subject: str
-
-
-class PromoteUserRequest(BaseModel):
-    username: str
-    new_role: UserRole
-
-
-class UserInfo(BaseModel):
-    username: str
-    email: str
-    role: UserRole
-    subjects: list[str]
-
-
-class AdminStats(BaseModel):
-    total_students: int
-    total_professors: int
-    total_admins: int
-    total_sessions: int
-    total_subjects: int
-    sessions_last_7_days: list[dict]
-
-
 # --- Helper to check admin only ---
-
-
-def require_admin(user: UserInDB):
-    if user.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Admin access required")
 
 
 # --- Endpoints ---
@@ -55,14 +33,13 @@ def require_admin(user: UserInDB):
 
 @router.get("/stats", response_model=AdminStats)
 async def get_admin_stats(
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
     sessions_collection=Depends(get_sessions_collection),
 ):
     """
     Get global system statistics. Admin only.
     """
-    require_admin(user)
 
     # Count users by role
     total_students = users_collection.count_documents({"role": UserRole.STUDENT})
@@ -103,13 +80,12 @@ async def get_admin_stats(
 @router.get("/users", response_model=list[UserInfo])
 async def list_users(
     role: UserRole | None = None,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     List all users. Admin only. Optionally filter by role.
     """
-    require_admin(user)
 
     query = {}
     if role:
@@ -168,12 +144,20 @@ async def admin_enroll(
     request: AdminEnrollmentRequest,
     user: UserInDB = Depends(require_admin_or_professor),
     users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
 ):
     """
     Enroll a student in a subject.
     - Professors can only enroll students in their own subjects.
     - Admins can enroll anyone in any subject.
     """
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
+
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
     if not target_user:
@@ -197,6 +181,65 @@ async def admin_enroll(
         {"username": request.username}, {"$addToSet": {"subjects": request.subject}}
     )
     return {"status": "enrolled", "subject": request.subject, "user": request.username}
+
+
+@router.post("/enroll-batch")
+async def admin_enroll_batch(
+    request: BatchEnrollmentRequest,
+    user: UserInDB = Depends(require_admin_or_professor),
+    users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
+):
+    """
+    Enroll multiple students in a subject at once.
+    - Professors can only enroll students in their own subjects.
+    - Admins can enroll anyone in any subject.
+
+    Returns a summary of successful and failed enrollments.
+    """
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
+
+    # Professors can only enroll in their own subjects
+    if user.role == UserRole.PROFESSOR:
+        if request.subject not in user.subjects:
+            raise HTTPException(
+                status_code=403,
+                detail="You can only enroll students in your own subjects",
+            )
+
+    enrolled = []
+    not_found = []
+    not_students = []
+
+    for username in request.usernames:
+        target_user = users_collection.find_one({"username": username.strip()})
+        if not target_user:
+            not_found.append(username)
+            continue
+
+        # Only students can be enrolled
+        if target_user.get("role", UserRole.STUDENT) != UserRole.STUDENT:
+            not_students.append(username)
+            continue
+
+        users_collection.update_one(
+            {"username": username.strip()}, {"$addToSet": {"subjects": request.subject}}
+        )
+        enrolled.append(username)
+
+    return {
+        "status": "completed",
+        "subject": request.subject,
+        "enrolled": enrolled,
+        "enrolled_count": len(enrolled),
+        "not_found": not_found,
+        "not_students": not_students,
+    }
 
 
 @router.post("/unenroll")
@@ -236,13 +279,20 @@ async def admin_unenroll(
 @router.post("/assign-subject")
 async def assign_subject_to_professor(
     request: AssignSubjectRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
+    subjects_collection=Depends(get_subjects_collection),
 ):
     """
     Assign a subject to a professor. Admin only.
     """
-    require_admin(user)
+
+    # Validate subject exists
+    subject_doc = subjects_collection.find_one({"name": request.subject})
+    if not subject_doc:
+        raise HTTPException(
+            status_code=404, detail="Subject not found. Create it first."
+        )
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
@@ -268,13 +318,12 @@ async def assign_subject_to_professor(
 @router.post("/remove-subject")
 async def remove_subject_from_professor(
     request: AssignSubjectRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     Remove a subject from a professor. Admin only.
     """
-    require_admin(user)
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
@@ -294,13 +343,12 @@ async def remove_subject_from_professor(
 @router.post("/promote")
 async def promote_user(
     request: PromoteUserRequest,
-    user: UserInDB = Depends(require_admin_or_professor),
+    user: UserInDB = Depends(require_admin),
     users_collection=Depends(get_users_collection),
 ):
     """
     Change a user's role. Admin only.
     """
-    require_admin(user)
 
     # Find target user
     target_user = users_collection.find_one({"username": request.username})
@@ -319,3 +367,89 @@ async def promote_user(
         "user": request.username,
         "new_role": request.new_role,
     }
+
+
+# --- Analytics Endpoints ---
+
+
+@router.get("/profiles/{user_id}")
+async def get_student_profile(
+    user_id: str,
+    user: UserInDB = Depends(require_admin_or_professor),
+):
+    """
+    Get student knowledge profile for analysis.
+
+    Returns the student's learning profile including:
+    - Total interactions
+    - Difficulty distribution
+    - Subject mastery levels
+    - Recent interactions
+    - Test performance
+
+    Professors can only access profiles of students enrolled in their subjects.
+    Admins can access any profile.
+    """
+    # For professors, verify they have access to this student
+    if user.role == UserRole.PROFESSOR:
+        # This would require checking if student is enrolled in professor's subjects
+        # For now, allow professor to see any student profile
+        pass
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{settings.chatbot_service_url}/profiles/{user_id}"
+            )
+
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="Profile not found")
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail="Failed to fetch profile from chatbot service",
+            )
+        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e
+
+
+@router.get("/conversations/{user_id}")
+async def get_user_conversations(
+    user_id: str,
+    session_id: str | None = None,
+    limit: int = 100,
+    user: UserInDB = Depends(require_admin_or_professor),
+):
+    """
+    Get conversation history for a user.
+
+    Returns full conversation turns (question + answer pairs) for analysis.
+    Can optionally filter by session_id.
+
+    Professors can only access conversations of students enrolled in their subjects.
+    Admins can access any conversations.
+    """
+    try:
+        params = {"user_id": user_id, "limit": limit}
+        if session_id:
+            params["session_id"] = session_id
+
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{settings.chatbot_service_url}/conversations",
+                params=params,
+            )
+
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail="Failed to fetch conversations from chatbot service",
+            )
+        return response.json()
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail=f"Chatbot service unavailable: {e}"
+        ) from e

@@ -1,17 +1,34 @@
 ---
 layout: default
-title: DevLog
-nav_order: 3
-has_children: true
+title: Home
+nav_order: 1
 ---
 
-# DevLog
+# TFG-Chatbot Documentation
 
-Registro de desarrollo del proyecto siguiendo metodología Scrum.
+Welcome to the documentation for the **TFG-Chatbot** project. This documentation is split into two main sections: **Guides** (how to use and develop the system) and the **DevLog** (the history of the development process).
 
-## Estructura
+## 📖 Guides & Technical Documentation
 
-- **Daily Scrums**: Registro diario de avances, tareas y obstáculos
-- **Sprint Reviews**: Retrospectivas y análisis de incrementos al finalizar cada sprint
+Information about how the system works, how to install it, and detailed service descriptions.
 
-Esta sección documenta el proceso de desarrollo ágil del proyecto, proporcionando transparencia y trazabilidad del trabajo realizado.
+- **[Installation Guide](guide/installation.md)**: How to get the project running.
+- **[Project Structure](guide/project-structure.md)**: Overview of the repository layout.
+- **[Services Documentation](services/)**: Detailed technical guides for each microservice:
+    - [Backend Gateway](services/backend/README.md)
+    - [Chatbot Agent](services/chatbot/README.md)
+    - [RAG Service](services/rag_service/README.md)
+    - [Frontend](services/frontend/README.md)
+    - [Infrastructure & Monitoring](services/infrastructure/README.md)
+
+## 🪵 DevLog (Development Log)
+
+The chronological record of the development process following the Scrum methodology.
+
+- **[ADRs (Architecture Decision Records)](devlog/adr/)**: Documentation of 30+ key architectural decisions.
+- **[Daily Scrums](devlog/dailies/)**: Daily logs of progress and impediments.
+- **[Sprints](devlog/sprints/)**: Planning and retrospectives for each sprint.
+
+---
+
+*This project is a Bachelor's Thesis (TFG) for the Double Degree in Computer Science and Mathematics at the University of Granada.*

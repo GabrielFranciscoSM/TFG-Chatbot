@@ -59,12 +59,14 @@ from typing import Any, Literal
 
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, MessagesState, StateGraph
 
 from chatbot.config import settings
-from chatbot.logic.prompts import SYSTEM_PROMPT_V3
+from chatbot.logic.difficulty import DifficultyLevel, classify_difficulty_detailed
+from chatbot.logic.prompts import SYSTEM_PROMPT_COT, get_adaptive_prompt
 from chatbot.logic.tools.tools import get_tools
 
 logger = logging.getLogger(__name__)
@@ -98,6 +100,10 @@ class SubjectState(MessagesState):
     asignatura: str | None
     # `context` will hold a list of document snippets returned by RAG tools
     context: list[dict[str, Any]] | None
+    # Chain-of-Thought reasoning from last response (if CoT was used)
+    thinking: str | None
+    # Classified difficulty level of the current query
+    query_difficulty: str | None
 
     # Test session fields (shared with test subgraph)
     topic: str | None
@@ -108,6 +114,7 @@ class SubjectState(MessagesState):
     user_answers: list[str] | None
     feedback_history: list[str] | None
     scores: list[bool] | None
+    pending_feedback: str | None
 
 
 class GraphAgent:
@@ -134,23 +141,27 @@ class GraphAgent:
     def __init__(
         self,
         *,
-        llm_provider: Literal["vllm", "gemini"] = "vllm",
+        llm_provider: Literal["vllm", "gemini", "mistral"] = "vllm",
         vllm_port: str | None = None,
         model_dir: str | None = None,
         openai_api_key: str = "EMPTY",
         gemini_api_key: str | None = None,
-        gemini_model: str = "gemini-2.0-flash",
+        gemini_model: str | None = None,
+        mistral_api_key: str | None = None,
+        mistral_model: str | None = None,
         temperature: float = 0.1,
     ):
         """Initialize GraphAgent with configurable LLM provider.
 
         Args:
-            llm_provider: Either "vllm" (local vLLM) or "gemini" (Google Gemini)
+            llm_provider: "vllm" (local), "gemini" (Google), or "mistral" (Mistral AI)
             vllm_port: Port for vLLM service (only for vllm provider)
             model_dir: Model directory (only for vllm provider)
             openai_api_key: API key for vLLM OpenAI-compatible endpoint
             gemini_api_key: Google Gemini API key (only for gemini provider)
-            gemini_model: Gemini model name (default: gemini-1.5-flash)
+            gemini_model: Gemini model name (default: gemini-2.5-flash)
+            mistral_api_key: Mistral AI API key (only for mistral provider)
+            mistral_model: Mistral model name (default: mistral-large-latest)
             temperature: LLM temperature
         """
         self.llm_provider = llm_provider
@@ -163,9 +174,13 @@ class GraphAgent:
 
         # Gemini configuration
         self.gemini_api_key = gemini_api_key or settings.get_gemini_api_key()
-        self.gemini_model = gemini_model
+        self.gemini_model = gemini_model or settings.gemini_model
         if self.gemini_api_key:
             os.environ["GOOGLE_API_KEY"] = self.gemini_api_key
+
+        # Mistral configuration
+        self.mistral_api_key = mistral_api_key or settings.get_mistral_api_key()
+        self.mistral_model = mistral_model or settings.mistral_model
 
         # Cache interno del grafo compilado
         self._graph = None
@@ -177,7 +192,7 @@ class GraphAgent:
             temperature: Override temperature (uses instance default if None)
 
         Returns:
-            Configured LLM instance (ChatOpenAI or ChatGoogleGenerativeAI)
+            Configured LLM instance (ChatOpenAI, ChatGoogleGenerativeAI, or ChatMistralAI)
         """
         temp = temperature if temperature is not None else self.temperature
 
@@ -191,6 +206,16 @@ class GraphAgent:
                 google_api_key=self.gemini_api_key,
                 temperature=temp,
             )
+        elif self.llm_provider == "mistral":
+            if not self.mistral_api_key:
+                raise ValueError(
+                    "MISTRAL_API_KEY not found. Set it in .env or pass mistral_api_key parameter."
+                )
+            return ChatMistralAI(
+                model=self.mistral_model,
+                mistral_api_key=self.mistral_api_key,
+                temperature=temp,
+            )
         else:  # vllm
             return ChatOpenAI(
                 model=self.model_name,
@@ -201,12 +226,12 @@ class GraphAgent:
 
     def think(self, state: SubjectState):
         """
-        Main reasoning node of the agent.
+        Main reasoning node of the agent with adaptive Chain-of-Thought.
 
         This node is the brain of the agent. It receives the conversation state,
-        analyzes the user's query, and decides whether to:
-        - Answer directly
-        - Call a tool (rag_search, get_guia, test_session)
+        classifies the query complexity, and decides whether to:
+        - Use simple prompt for straightforward queries (lower latency)
+        - Use CoT prompt for complex queries (better reasoning)
 
         The LLM is bound with tools, enabling automatic tool selection based on
         the query content and conversation context.
@@ -215,24 +240,86 @@ class GraphAgent:
             state: Current conversation state with messages and context
 
         Returns:
-            Dict with updated messages including the agent's response or tool calls
+            Dict with updated messages and optional thinking field
         """
-        tools = get_tools()
+        import re
 
-        # Include the current subject in the system prompt
+        tools = get_tools()
         asignatura = state.get("asignatura") or "general"
-        system_prompt = SYSTEM_PROMPT_V3.format(asignatura=asignatura)
+        messages = state["messages"]
+
+        # Get the last user message for classification
+        last_user_message = None
+        for msg in reversed(messages):
+            if isinstance(msg, HumanMessage):
+                last_user_message = msg.content
+                break
+
+        # Classify query difficulty level (used for both prompt adaptation and CoT decision)
+        query_difficulty = None
+        use_cot = False
+        if last_user_message:
+            difficulty_result = classify_difficulty_detailed(last_user_message)
+            query_difficulty = difficulty_result.level.value
+            # Use Chain-of-Thought for advanced queries (need deeper reasoning)
+            use_cot = difficulty_result.level == DifficultyLevel.ADVANCED
+            logger.debug(
+                f"Query difficulty: {query_difficulty} "
+                f"(confidence: {difficulty_result.confidence:.2f}, "
+                f"method: {difficulty_result.method}, use_cot: {use_cot})"
+            )
+
+        # Select appropriate prompt based on difficulty level (HU #17)
+        if use_cot:
+            # CoT prompt for advanced/complex queries (deeper reasoning)
+            system_prompt = SYSTEM_PROMPT_COT.format(asignatura=asignatura)
+        elif query_difficulty:
+            # Adaptive prompt based on difficulty level
+            system_prompt = get_adaptive_prompt(query_difficulty, asignatura)
+        else:
+            # Fallback to intermediate prompt
+            system_prompt = get_adaptive_prompt("intermediate", asignatura)
+
         system_message = SystemMessage(content=system_prompt)
 
-        messages = state["messages"]
         if not messages or not isinstance(messages[0], SystemMessage):
             messages = [system_message] + messages
 
         llm = self._get_llm().bind_tools(tools)
-
         response = llm.invoke(messages)
 
-        return {"messages": [response]}
+        # Parse CoT response if applicable
+        result: dict[str, Any] = {
+            "messages": [response],
+            "query_difficulty": query_difficulty,
+        }
+
+        if use_cot and hasattr(response, "content") and response.content:
+            content = response.content
+
+            # Extract thinking section
+            thinking_match = re.search(
+                r"<thinking>(.*?)</thinking>", content, re.DOTALL
+            )
+            if thinking_match:
+                result["thinking"] = thinking_match.group(1).strip()
+                logger.debug(f"Extracted thinking: {result['thinking'][:100]}...")
+
+            # Extract answer section and update response content
+            answer_match = re.search(r"<answer>(.*?)</answer>", content, re.DOTALL)
+            if answer_match:
+                # Update the response content to only show the answer
+                from langchain_core.messages import AIMessage
+
+                clean_answer = answer_match.group(1).strip()
+                result["messages"] = [
+                    AIMessage(
+                        content=clean_answer,
+                        tool_calls=getattr(response, "tool_calls", []),
+                    )
+                ]
+
+        return result
 
     def rag_search(self, state: SubjectState):
         """
@@ -260,25 +347,41 @@ class GraphAgent:
         tool_calls = getattr(last_message, "tool_calls", [])
         if not tool_calls:
             # No hay llamadas a herramientas, no hacer nada
-            state.context = []
-            return state
+            return {"context": []}
 
-        args = tool_calls[0]["args"]
-        tool_call_id = tool_calls[0]["id"]
+        tool_messages = []
 
-        rag_result = rag_tool.invoke(args)
+        for tc in tool_calls:
+            if tc["name"] == "rag_search":
+                tool_call_id = tc["id"]
+                args = tc["args"]
 
-        results = rag_result.get("results", [])
+                # Execute tool
+                rag_result = rag_tool.invoke(args)
+                results = rag_result.get("results", [])
 
-        content = "This is chunks of context:\n"
+                content = "This is chunks of context:\n"
+                for result in results:
+                    content += f"\n- {result['content']}\n"
+                    # Store both content and metadata
+                    if state.get("context") is None:
+                        state["context"] = []
+                    state["context"].append(
+                        {"content": result["content"], "metadata": result["metadata"]}
+                    )
+                tool_messages.append(
+                    ToolMessage(content=content, tool_call_id=tool_call_id)
+                )
+            else:
+                # Placeholder response for other tool calls to satisfy Mistral
+                tool_messages.append(
+                    ToolMessage(
+                        content="Procesando...",
+                        tool_call_id=tc["id"],
+                    )
+                )
 
-        for result in results:
-            content += f"\n- {result['content']}\n"
-            state["context"].append(result["metadata"])
-
-        tool_message = ToolMessage(content=content, tool_call_id=tool_call_id)
-
-        return {"messages": [tool_message]}
+        return {"messages": tool_messages}
 
     def get_guia(self, state: SubjectState):
         """
@@ -308,16 +411,26 @@ class GraphAgent:
             # No hay llamadas a herramientas, no hacer nada
             return state
 
-        args = tool_calls[0]["args"]
-        args["asignatura"] = state.get("asignatura")
+        tool_messages = []
+        for tc in tool_calls:
+            if tc["name"] == "get_guia":
+                tool_call_id = tc["id"]
+                args = tc["args"]
+                args["asignatura"] = state.get("asignatura")
 
-        tool_call_id = tool_calls[0]["id"]
+                content = guia_tool.invoke(args)
+                tool_messages.append(
+                    ToolMessage(content=content, tool_call_id=tool_call_id)
+                )
+            else:
+                tool_messages.append(
+                    ToolMessage(
+                        content="Procesando...",
+                        tool_call_id=tc["id"],
+                    )
+                )
 
-        guia_result = guia_tool.invoke(args)
-
-        tool_message = ToolMessage(content=guia_result, tool_call_id=tool_call_id)
-
-        return {"messages": [tool_message]}
+        return {"messages": tool_messages}
 
     def should_continue(self, state: SubjectState):
         """Decide si el agente debe continuar o terminar."""
@@ -346,6 +459,8 @@ class GraphAgent:
             openai_api_key=self.openai_api_key,
             gemini_api_key=self.gemini_api_key,
             gemini_model=self.gemini_model,
+            mistral_api_key=self.mistral_api_key,
+            mistral_model=self.mistral_model,
             temperature=0.7,  # Higher temperature for test evaluation
         )
 
@@ -372,7 +487,7 @@ class GraphAgent:
         )
         graph_builder.add_edge("rag_search", "agent")
         graph_builder.add_edge("get_guia", "agent")
-        graph_builder.add_edge("test_session", "agent")  # Subgraph returns to agent
+        graph_builder.add_edge("test_session", END)  # Finalize after test session
 
         # Preparar persistencia
         storage_dir = os.path.join(os.path.dirname(__file__), "..", "storage")

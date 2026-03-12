@@ -6,15 +6,20 @@ Este directorio contiene tests de infraestructura que verifican que cada contene
 
 ```
 tests/infrastructure/
-├── test_backend_container.py      # Tests del contenedor backend/FastAPI (4 tests)
+├── conftest.py                     # Configuración y fixtures compartidos
+├── test_backend_container.py       # Tests del contenedor backend/FastAPI (4 tests)
+├── test_chatbot_container.py       # Tests del contenedor chatbot (3 tests)
+├── test_frontend_container.py      # Tests del contenedor frontend/Nginx (16 tests)
 ├── test_mongo_container.py         # Tests del contenedor MongoDB (10 tests)
 ├── test_ollama_container.py        # Tests del contenedor Ollama (12 tests)
 ├── test_qdrant_container.py        # Tests del contenedor Qdrant (8 tests)
 ├── test_rag_service_container.py   # Tests del contenedor RAG Service (10 tests)
-└── test_vllm_container.py          # Tests del contenedor vLLM (6 tests)
+└── test_vllm_container.py          # Tests del contenedor vLLM (6 tests, condicional)
 ```
 
-**Total: 50 tests de infraestructura**
+**Total: 69 tests de infraestructura**
+
+> **Nota:** Los tests de vLLM solo se ejecutan si `LLM_PROVIDER=vllm`.
 
 ## Requisitos Previos
 
@@ -22,10 +27,10 @@ Todos los contenedores deben estar corriendo:
 
 ```bash
 # Levantar todos los servicios
-docker-compose up -d
+docker compose up -d
 
 # Verificar que están corriendo
-docker-compose ps
+docker compose ps
 ```
 
 ## Ejecución de Tests
@@ -38,6 +43,9 @@ pytest tests/infrastructure/ -v
 
 # Con output en tiempo real
 pytest tests/infrastructure/ -s
+
+# Usando el marker container
+pytest -m container -v
 ```
 
 ### Ejecutar Tests de un Servicio Específico
@@ -58,8 +66,8 @@ pytest tests/infrastructure/test_qdrant_container.py -v
 # Tests del servicio RAG
 pytest tests/infrastructure/test_rag_service_container.py -v
 
-# Tests de vLLM
-pytest tests/infrastructure/test_vllm_container.py -v
+# Tests de vLLM (solo si LLM_PROVIDER=vllm)
+LLM_PROVIDER=vllm pytest tests/infrastructure/test_vllm_container.py -v
 ```
 
 ## Tests del Backend (`test_backend_container.py`)
@@ -67,11 +75,11 @@ pytest tests/infrastructure/test_vllm_container.py -v
 Validan que el contenedor del backend está funcionando:
 
 - ✅ Contenedor está corriendo y responde al health check
-- ✅ Endpoint raíz retorna información de la API
-- ✅ Acepta peticiones de chat
-- ✅ Valida payloads correctamente (retorna 422 para datos inválidos)
+- ✅ Flujo de autenticación (registro + login)
+- ✅ Endpoint de chat requiere autenticación
+- ✅ Flujo completo de chat con autenticación
 
-**URL:** `http://localhost:8080`
+**URL:** `http://localhost:8000`
 
 ## Tests de MongoDB (`test_mongo_container.py`)
 

@@ -1,6 +1,8 @@
 import importlib
 import json
 
+import chatbot.logic.tools.guia as guia_module
+
 # Import the tools module using importlib to avoid name collisions with
 # `chatbot.logic.tools` attribute exported in `chatbot.logic.__init__`.
 tools = importlib.import_module("chatbot.logic.tools.tools")
@@ -18,8 +20,11 @@ def test_get_guia_with_key_returns_value(monkeypatch, dummy_mongo_client_class):
         "asignatura": "TFG Test",
         "prerrequisitos_o_recomendaciones": ["Req1", "Req2"],
     }
+    # Mock MongoDBClient in the modular guia module
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=doc),
     )
 
     # Request a specific key; pydantic should accept the key value string
@@ -38,7 +43,9 @@ def test_get_guia_no_subject_returns_message(monkeypatch, dummy_mongo_client_cla
     # Ensure that when no subject is provided and injected state is absent,
     # the tool returns a clear error message.
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=None)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=None),
     )
 
     result = tools.get_guia.invoke({})

@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
+import { useSubjectsPublic } from "@/hooks/useAdmin";
 
 interface NewSessionDialogProps {
   open: boolean;
@@ -25,17 +26,13 @@ interface NewSessionDialogProps {
   onCreateSession: (title: string, subject: string) => void;
 }
 
-// Available subjects - stored in lowercase to match backend
-const AVAILABLE_SUBJECTS = [
-  { value: "iv", label: "Infraestructura Virtual" },
-  { value: "tfg", label: "Trabajo Fin de Grado" },
-  { value: "general", label: "General" },
-];
-
 export function NewSessionDialog({ open, onOpenChange, onCreateSession }: NewSessionDialogProps) {
   const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
+
+  // Fetch subjects from API
+  const { data: allSubjects = [], isLoading: subjectsLoading } = useSubjectsPublic();
 
   // Filter subjects based on user enrollment (for students)
   // Students can only see "general" + subjects they're enrolled in
@@ -44,10 +41,10 @@ export function NewSessionDialog({ open, onOpenChange, onCreateSession }: NewSes
   const userSubjects = user?.subjects?.map((s) => s.toLowerCase()) ?? [];
   const availableSubjects =
     user?.role === "student"
-      ? AVAILABLE_SUBJECTS.filter(
-          (s) => s.value === "general" || userSubjects.includes(s.value.toLowerCase()),
+      ? allSubjects.filter(
+          (s) => s.name === "general" || userSubjects.includes(s.name.toLowerCase()),
         )
-      : AVAILABLE_SUBJECTS;
+      : allSubjects;
 
   const handleSubmit = () => {
     if (title.trim() && subject) {
@@ -89,12 +86,14 @@ export function NewSessionDialog({ open, onOpenChange, onCreateSession }: NewSes
             <Label htmlFor="subject">Asignatura</Label>
             <Select value={subject} onValueChange={setSubject}>
               <SelectTrigger id="subject">
-                <SelectValue placeholder="Selecciona una asignatura" />
+                <SelectValue
+                  placeholder={subjectsLoading ? "Cargando..." : "Selecciona una asignatura"}
+                />
               </SelectTrigger>
               <SelectContent>
                 {availableSubjects.map((s) => (
-                  <SelectItem key={s.value} value={s.value}>
-                    {s.label}
+                  <SelectItem key={s.name} value={s.name}>
+                    {s.display_name}
                   </SelectItem>
                 ))}
               </SelectContent>

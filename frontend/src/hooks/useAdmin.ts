@@ -127,3 +127,87 @@ export function usePromoteUser() {
     },
   });
 }
+
+// --- Subject management hooks ---
+
+import type {
+  BatchEnrollRequest,
+  BatchEnrollResponse,
+  CreateSubjectRequest,
+  SubjectInfo,
+  SubjectPublic,
+} from "@/types/admin";
+
+// Fetch all subjects (admin view with full info)
+export function useSubjects() {
+  return useQuery<{ subjects: SubjectInfo[]; total: number }>({
+    queryKey: ["admin", "subjects"],
+    queryFn: async () => {
+      const response = await api.get("/admin/subjects");
+      return response.data;
+    },
+  });
+}
+
+// Fetch public subjects list (no auth required)
+export function useSubjectsPublic() {
+  return useQuery<SubjectPublic[]>({
+    queryKey: ["subjects", "public"],
+    queryFn: async () => {
+      const response = await api.get("/subjects");
+      return response.data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Create subject
+export function useCreateSubject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateSubjectRequest) => {
+      const response = await api.post<SubjectInfo>("/admin/subjects", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "subjects"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
+      queryClient.invalidateQueries({ queryKey: ["subjects", "public"] });
+    },
+  });
+}
+
+// Delete subject
+export function useDeleteSubject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ subjectName, force }: { subjectName: string; force?: boolean }) => {
+      const params = force ? { force: "true" } : {};
+      const response = await api.delete(`/admin/subjects/${subjectName}`, { params });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "subjects"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
+      queryClient.invalidateQueries({ queryKey: ["subjects", "public"] });
+    },
+  });
+}
+
+// Batch enroll students
+export function useBatchEnroll() {
+  const queryClient = useQueryClient();
+
+  return useMutation<BatchEnrollResponse, Error, BatchEnrollRequest>({
+    mutationFn: async (data: BatchEnrollRequest) => {
+      const response = await api.post<BatchEnrollResponse>("/admin/enroll-batch", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "subjects"] });
+    },
+  });
+}

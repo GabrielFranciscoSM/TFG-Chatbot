@@ -38,6 +38,36 @@ search:
 # Navigation
 nav_sort: case_insensitive
 
+# Mermaid diagrams support
+mermaid:
+  # Version of mermaid library
+  # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
+  version: "11"
+
+# Default front matter for files without explicit front matter
+defaults:
+  # Exclude other service subdirectory files (non-README) from navigation
+  - scope:
+      path: "docs/services/backend"
+    values:
+      nav_exclude: true
+  - scope:
+      path: "docs/services/chatbot"
+    values:
+      nav_exclude: true
+  - scope:
+      path: "docs/services/frontend"
+    values:
+      nav_exclude: true
+  - scope:
+      path: "docs/services/rag_service"
+    values:
+      nav_exclude: true
+  - scope:
+      path: "docs/services/infrastructure"
+    values:
+      nav_exclude: true
+
 # Exclude files from processing
 exclude:
   - backend/
@@ -54,4 +84,5 @@ exclude:
   - "*.pyc"
   - __pycache__/
   - docs/ADR/adr-template.md
+  - docs/devlog/adr/adr-template.md
   - docs/notas/

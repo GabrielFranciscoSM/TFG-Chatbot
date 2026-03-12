@@ -2,14 +2,17 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { EnrollStudentDialog } from "@/components/admin/EnrollStudentDialog";
 import { DocumentManager } from "@/components/dashboard/DocumentManager";
+import { FaqManager } from "@/components/dashboard/FaqManager";
 import { StatsOverview } from "@/components/dashboard/StatsOverview";
 import { StudentList } from "@/components/dashboard/StudentList";
+import { StudentProgressView } from "@/components/dashboard/StudentProgressView";
 import { SubjectCard } from "@/components/dashboard/SubjectCard";
+import { TopicsDashboard } from "@/components/dashboard/TopicsDashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDocuments, useStats, useStudents, useSubjects } from "@/hooks/useDashboard";
 
-type View = "overview" | "students" | "documents";
+type View = "overview" | "students" | "documents" | "progress" | "faqs" | "topics";
 
 export default function DashboardPage() {
   const [currentView, setCurrentView] = useState<View>("overview");
@@ -42,6 +45,21 @@ export default function DashboardPage() {
     setCurrentView("documents");
   };
 
+  const handleViewFaqs = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("faqs");
+  };
+
+  const handleViewTopics = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("topics");
+  };
+
+  const handleViewProgress = (subject: string) => {
+    setSelectedSubject(subject);
+    setCurrentView("progress");
+  };
+
   const handleEnrollStudent = (subject: string) => {
     setEnrollSubject(subject);
     setEnrollDialogOpen(true);
@@ -54,6 +72,11 @@ export default function DashboardPage() {
 
   // Show subject detail view
   if (currentView !== "overview" && selectedSubject) {
+    // Progress view has its own layout
+    if (currentView === "progress") {
+      return <StudentProgressView subject={selectedSubject} onBack={handleBack} />;
+    }
+
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto py-6 px-4 max-w-6xl">
@@ -85,6 +108,10 @@ export default function DashboardPage() {
               onDelete={deleteDocument}
             />
           )}
+
+          {currentView === "faqs" && <FaqManager subject={selectedSubject} />}
+
+          {currentView === "topics" && <TopicsDashboard subject={selectedSubject} />}
         </div>
       </div>
     );
@@ -111,9 +138,9 @@ export default function DashboardPage() {
           {/* Subjects Tab */}
           <TabsContent value="subjects" className="space-y-6">
             {loadingSubjects ? (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-48 rounded-lg bg-muted animate-pulse" />
+              <div className="grid gap-6 md:grid-cols-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-56 rounded-lg bg-muted animate-pulse" />
                 ))}
               </div>
             ) : subjects.length === 0 ? (
@@ -125,7 +152,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2">
                 {subjects.map((subject) => (
                   <SubjectCard
                     key={subject.name}
@@ -133,6 +160,9 @@ export default function DashboardPage() {
                     onViewStudents={handleViewStudents}
                     onViewDocuments={handleViewDocuments}
                     onEnrollStudent={handleEnrollStudent}
+                    onViewProgress={handleViewProgress}
+                    onViewFaqs={handleViewFaqs}
+                    onViewTopics={handleViewTopics}
                   />
                 ))}
               </div>

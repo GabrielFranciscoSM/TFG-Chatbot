@@ -1,6 +1,8 @@
 import importlib
 import json
 
+import chatbot.logic.tools.guia as guia_module
+
 # Import the tools module using importlib to avoid name collisions with
 # `chatbot.logic.tools` attribute exported in `chatbot.logic.__init__`.
 tools = importlib.import_module("chatbot.logic.tools.tools")
@@ -14,7 +16,9 @@ def test_get_guia_with_key(monkeypatch, dummy_mongo_client_class):
     }
     # Replace MongoDBClient with a dummy that returns our document
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=doc),
     )
 
     # pass the argument name expected by the tool schema (`asignatura`)
@@ -37,7 +41,9 @@ def test_get_guia_no_key(monkeypatch, dummy_mongo_client_class):
         "breve_descripción_de_contenidos": ["One", "Two", "Three", "Four"],
     }
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=doc),
     )
 
     result = tools.get_guia.invoke({"asignatura": "TFG Test"})
@@ -55,7 +61,9 @@ def test_get_guia_no_key(monkeypatch, dummy_mongo_client_class):
 def test_get_guia_no_subject(monkeypatch, dummy_mongo_client_class):
     # When no document exists, the tool should return a helpful message
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=None)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=None),
     )
 
     result = tools.get_guia.invoke({})
@@ -67,7 +75,9 @@ def test_get_guia_key_not_present(monkeypatch, dummy_mongo_client_class):
     # Document exists but requested key is missing
     doc = {"asignatura": "TFG Test", "alguna_clave": "valor"}
     monkeypatch.setattr(
-        tools, "MongoDBClient", lambda: dummy_mongo_client_class(doc=doc)
+        guia_module,
+        "MongoDBClient",
+        lambda: dummy_mongo_client_class(doc=doc),
     )
 
     result = tools.get_guia.invoke(

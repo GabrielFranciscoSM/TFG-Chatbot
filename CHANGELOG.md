@@ -5,6 +5,49 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.8.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.7.0...v0.8.0) (2026-03-12)
+
+
+### Features
+
+* **#129,#130:** polish Topics Dashboard UX and add math_service integration tests ([549eb4e](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/549eb4e5904b982475c10387703ebddd249841a0))
+* **#129:** implement interactive topics graph and dashboard polish ([faa0a47](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/faa0a471c66d6f6157185d24b56840f0c5d309ea))
+* add FAQ generation notebooks, datasets and topic modeling experiments ([8518c6a](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8518c6ab86a423a2dcc1071097882b3820791c72))
+* **dashboard:** implement TopicsDashboard and update scrum log ([e1069bc](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e1069bc69560cb533c72b81bcb269bd2b424c326))
+* **faqs:** add global access to student FAQs via sidebar ([ef0fdfd](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ef0fdfd67bb9adb679b81fb9c1c2303d0e594648))
+* **faqs:** add manual FAQ creation flow ([d5047d5](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/d5047d5f6c176c81d645365542acc4cf8b0678b6))
+* **frontend:** implement Professor FAQ Panel ([#127](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/127)) ([f86e3a4](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/f86e3a460f1840ebe5b687dc8f29a127627af1c6))
+* implement gateway proxy for math service FAQs and topics ([3380c5d](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/3380c5d52d4c747f9d2f7c21cdcd9d2dd9c3bcfb))
+* **math_service:** add FAQ service with student question extraction ([23a924c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/23a924c48127e63cd45fab1e7b68cf7b3c0b9779))
+* **math_service:** add rag_service connectivity to health check ([ec5c95a](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ec5c95a4e00292e5cba0614dcd842883f883685e))
+* **math_service:** implement API endpoints for FAQs and topics extraction ([bfd4dfd](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/bfd4dfde62e0175c14ec61d81210514e97d0fc5c))
+* **math_service:** integrate NMF and BoW for topic extraction ([6969888](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/69698887827691bf160ac61d5811717d2e4bd2ff))
+* **math_service:** integrate Spherical FCM and KMeans for FAQ generation clustering ([6138de2](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/6138de2d818abe084d2fb5186b7f9e64f87b3092))
+* **math:** add configurable k and cost function parameters to topic extraction ([880f58c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/880f58c0d654fba9131ba765d58a1a18940ae88a))
+* **math:** check for empty clusters and handle NLP connection errors in FAQ generation ([50e6189](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/50e6189441c3a01ed16b318e9a3cc9fe137636b8))
+* **math:** scaffold topic extraction pipeline with tf-idf and update sprint 7 log ([502eb35](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/502eb3531326c560f02653bd8e09f61b58d8047c))
+* scaffold math_service microservice ([df46503](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/df46503d538da4178d6b16d7b07df1f8431489e9)), closes [#122](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/122)
+
+
+### Bug Fixes
+
+* centralize tokenization and add multilingual stopwords support ([8630373](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/8630373257a6c95983aeed483b11a2307aab018b))
+* **math_service:** resolve FAQ identifier mismatch ([#127](https://github.com/GabrielFranciscoSM/TFG-Chatbot/issues/127)) ([e51db58](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/e51db5805485475214019212b8d6b09b6650eb32))
+* scope gitignore models/ rule to root directory only ([ac543c6](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ac543c68e79710cdf9e82509f3e8b18116d60188))
+
+
+### Performance Improvements
+
+* optimize KMeans with vectorized operations and improve NMF docs ([c8efb18](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/c8efb18c2e429ad24e8dc0ab005bf9bf0c106fb0))
+
+
+### Documentation
+
+* **#131:** add math service ADRs and docs ([78da7aa](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/78da7aa158fd36e916402c19e645be30019ea940))
+* add Sprint 7 planning and daily scrums ([6da5aaf](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/6da5aaf0e4cdec2dc910d8fb8a58a653b68d07d4))
+* add sprint retrospective 6, investigation metrics, and remove draft daily ([c9b7077](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/c9b70774756eb1220bbe84a1704669c7525ba62f))
+* mark scaffolding and FAQ pipeline as completed in daily scrum ([0cc28af](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/0cc28af0c92b05f261974a631892b8c32e1220cd))
+
 ## [0.7.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.6.0...v0.7.0) (2026-02-03)
 
 

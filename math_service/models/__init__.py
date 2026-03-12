@@ -92,6 +92,7 @@ class TopicResult(BaseModel):
     clusters_formed: int = 0
     topics: list[TopicDetails] = []
     concept_map: ConceptMap | None = None
+    doc_topic_matrix: list[list[float]] | None = None
     created_at: datetime | None = None
     source_chunks: int = 0
     message: str | None = None

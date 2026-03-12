@@ -11,17 +11,17 @@ interface TopicsGraphProps {
 }
 
 const COLORS = [
-  "#ef4444", // red
-  "#f97316", // orange
-  "#f59e0b", // amber
-  "#84cc16", // lime
-  "#22c55e", // green
-  "#10b981", // emerald
-  "#06b6d4", // cyan
   "#3b82f6", // blue
-  "#6366f1", // indigo
+  "#10b981", // emerald
+  "#f59e0b", // amber
   "#8b5cf6", // violet
+  "#ef4444", // red
+  "#06b6d4", // cyan
+  "#f97316", // orange
+  "#6366f1", // indigo
+  "#84cc16", // lime
   "#d946ef", // fuchsia
+  "#14b8a6", // teal
   "#f43f5e", // rose
 ];
 
@@ -153,20 +153,37 @@ export function TopicsGraph({ conceptMap, topics }: TopicsGraphProps) {
   );
 
   return (
-    <Card className="w-full flex flex-col overflow-hidden border bg-white shadow-sm">
-      <div className="p-4 border-b bg-muted/20 flex flex-wrap gap-2 items-center">
-        <span className="text-sm font-medium mr-2">Leyenda:</span>
-        <Badge className="bg-[#0f172a] hover:bg-[#0f172a]">Asignatura</Badge>
-        <Badge variant="outline" className="border-gray-400">
-          Tópico
-        </Badge>
-        <Badge variant="secondary" className="bg-gray-100 text-gray-500">
-          Término
-        </Badge>
-        <span className="text-xs text-muted-foreground ml-auto flex items-center">
+    <Card
+      className="w-full flex flex-col overflow-hidden border bg-white shadow-sm"
+      style={{ animation: "fadeIn 0.5s ease-out" }}
+    >
+      <div className="p-4 border-b bg-muted/20">
+        <div className="flex flex-wrap gap-2 items-center mb-2">
+          <span className="text-sm font-medium mr-2">Leyenda:</span>
+          <Badge className="bg-[#0f172a] hover:bg-[#0f172a]">Asignatura</Badge>
+          {topics.map((topic, i) => (
+            <Badge
+              key={topic.topic_name}
+              style={{
+                backgroundColor: `${COLORS[i % COLORS.length]}22`,
+                color: COLORS[i % COLORS.length],
+                borderColor: COLORS[i % COLORS.length],
+              }}
+              variant="outline"
+              className="text-xs"
+            >
+              {topic.topic_name}
+            </Badge>
+          ))}
+          <Badge variant="secondary" className="bg-gray-100 text-gray-500">
+            Término
+          </Badge>
+        </div>
+        <span className="text-xs text-muted-foreground flex items-center">
           Ratón: Arrastrar (pan) • Rueda: Zoom • Click y arrastrar nodo: Fijar
         </span>
       </div>
+      <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
       <div
         ref={containerRef}
         className="w-full relative bg-slate-50/50"

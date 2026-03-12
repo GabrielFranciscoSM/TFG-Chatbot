@@ -216,11 +216,17 @@ class TopicService:
 
         concept_map = {"nodes": nodes, "links": links}
 
+        # Build the doc-topic distribution matrix (W), normalized per document
+        row_sums = W.sum(axis=1, keepdims=True)
+        row_sums[row_sums == 0] = 1.0
+        W_normalized = W / row_sums
+
         result_doc = {
             "subject": subject,
             "clusters_formed": optimal_k,
             "topics": topics,
             "concept_map": concept_map,
+            "doc_topic_matrix": W_normalized.tolist(),
             "created_at": datetime.datetime.now(tz=datetime.UTC),
             "source_chunks": len(chunks),
         }

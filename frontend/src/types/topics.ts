@@ -29,6 +29,7 @@ export interface TopicResult {
   clusters_formed: number;
   topics: TopicDetails[];
   concept_map?: ConceptMap;
+  doc_topic_matrix?: number[][];
   created_at?: string;
   source_chunks: number;
   message?: string;

@@ -1,4 +1,4 @@
-import { BarChart2, Loader2, Settings2 } from "lucide-react";
+import { AlertTriangle, BarChart2, Grid3X3, Loader2, Network, Settings2, Tag } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTopics } from "@/hooks/useTopics";
 import type { TopicExtractRequest } from "@/types/topics";
 import { TopicsGraph } from "./TopicsGraph";
+import { TopicsHeatmap } from "./TopicsHeatmap";
 
 interface TopicsDashboardProps {
   subject: string | null;
@@ -40,12 +41,11 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
 
   if (!subject) return null;
 
-  // The topics array from backend returns a list of extractions.
-  // We'll show the most recent extraction (which is the first one).
   const latestExtraction = topics.length > 0 ? topics[0] : null;
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Dashboard de Tópicos</h2>
@@ -55,10 +55,11 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
         </div>
       </div>
 
-      <Card>
+      {/* Configuration Card */}
+      <Card className="border-2 border-dashed border-muted hover:border-primary/30 transition-colors duration-300">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg flex items-center gap-2">
-            <Settings2 className="h-5 w-5" />
+            <Settings2 className="h-5 w-5 text-primary" />
             Configuración de Extracción
           </CardTitle>
           <CardDescription>Ajusta los parámetros para el modelado de tópicos (NMF)</CardDescription>
@@ -131,57 +132,119 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
         </CardContent>
       </Card>
 
-      {error && <div className="bg-destructive/15 text-destructive p-4 rounded-md">{error}</div>}
+      {/* Extracting overlay */}
+      {isExtracting && (
+        <Card className="border-primary/30 bg-primary/5 animate-in fade-in duration-300">
+          <CardContent className="py-8 flex flex-col items-center gap-3">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <p className="text-sm font-medium text-primary">Analizando documentos...</p>
+            <p className="text-xs text-muted-foreground text-center max-w-md">
+              Extrayendo vocabulario, calculando TF-IDF y aplicando NMF para encontrar los tópicos
+              latentes. Esto puede tardar unos segundos.
+            </p>
+            <div className="w-full max-w-xs mt-2">
+              <div className="h-1.5 bg-primary/20 rounded-full overflow-hidden">
+                <div className="h-full bg-primary rounded-full animate-pulse w-2/3" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
+      {/* Error state */}
+      {error && (
+        <Card className="border-destructive/50 bg-destructive/5 animate-in fade-in duration-300">
+          <CardContent className="py-6 flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-destructive">Error en la extracción</p>
+              <p className="text-sm text-destructive/80 mt-1">{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading state */}
       {isLoading ? (
         <div className="flex justify-center p-8">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : !latestExtraction ? (
-        <Card className="flex items-center justify-center p-12 text-center text-muted-foreground">
+        /* Empty state */
+        <Card className="flex items-center justify-center p-16 text-center text-muted-foreground bg-gradient-to-b from-muted/30 to-transparent animate-in fade-in duration-500">
           <div className="flex flex-col items-center">
-            <BarChart2 className="h-12 w-12 mb-4 opacity-20" />
-            <p className="text-lg">No hay tópicos extraídos para esta asignatura.</p>
-            <p className="text-sm">
-              Usa el botón "Extraer Tópicos" para generarlos a partir de los documentos.
+            <div className="p-4 bg-muted/50 rounded-full mb-4">
+              <BarChart2 className="h-12 w-12 opacity-30" />
+            </div>
+            <p className="text-lg font-medium">No hay tópicos extraídos</p>
+            <p className="text-sm mt-1 max-w-sm">
+              Usa el botón &quot;Extraer Tópicos&quot; para analizar los documentos y descubrir los
+              temas latentes de la asignatura.
             </p>
           </div>
         </Card>
       ) : (
-        <div className="space-y-4">
-          <div className="flex gap-2 items-center">
+        /* Results */
+        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          {/* Results header badges */}
+          <div className="flex flex-wrap gap-2 items-center">
             <h3 className="text-lg font-semibold">Resultados de la Extracción</h3>
-            <Badge variant="outline">
+            <Badge variant="outline" className="gap-1">
+              <Tag className="h-3 w-3" />
               {new Date(latestExtraction.created_at || "").toLocaleDateString()}
             </Badge>
-            <Badge variant="secondary">Chunks analizados: {latestExtraction.source_chunks}</Badge>
+            <Badge variant="secondary" className="gap-1">
+              <BarChart2 className="h-3 w-3" />
+              {latestExtraction.topics.length} tópicos
+            </Badge>
+            <Badge variant="secondary" className="gap-1 bg-blue-100 text-blue-700 border-0">
+              Chunks: {latestExtraction.source_chunks}
+            </Badge>
           </div>
 
           <Tabs defaultValue="tarjetas" className="w-full">
             <TabsList className="mb-4">
-              <TabsTrigger value="tarjetas">Tarjetas</TabsTrigger>
-              <TabsTrigger value="grafo">Grafo de Conceptos</TabsTrigger>
+              <TabsTrigger value="tarjetas" className="gap-1.5">
+                <Tag className="h-3.5 w-3.5" />
+                Tarjetas
+              </TabsTrigger>
+              <TabsTrigger value="heatmap" className="gap-1.5">
+                <Grid3X3 className="h-3.5 w-3.5" />
+                Heatmap
+              </TabsTrigger>
+              <TabsTrigger value="grafo" className="gap-1.5">
+                <Network className="h-3.5 w-3.5" />
+                Grafo de Conceptos
+              </TabsTrigger>
             </TabsList>
 
+            {/* Cards tab */}
             <TabsContent value="tarjetas" className="mt-0 outline-none">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {latestExtraction.topics.map((topic, index) => (
-                  <Card key={`topic-${topic.topic_name}-${index}`} className="flex flex-col h-full">
+                  <Card
+                    key={`topic-${topic.topic_name}-${index}`}
+                    className="flex flex-col h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+                    style={{
+                      animationDelay: `${index * 80}ms`,
+                      animation: "fadeSlideIn 0.4s ease-out backwards",
+                    }}
+                  >
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
                         <CardTitle className="text-md font-semibold">{topic.topic_name}</CardTitle>
-                        <Badge className="bg-primary/20 text-primary border-0">
-                          Peso: {topic.weight.toFixed(2)}
+                        <Badge className="bg-primary/15 text-primary border-0 font-mono text-xs">
+                          {topic.weight.toFixed(2)}
                         </Badge>
                       </div>
                     </CardHeader>
                     <CardContent className="flex-1">
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5">
                         {topic.terms.map((term) => (
                           <Badge
                             key={`term-${term}`}
                             variant="secondary"
-                            className="font-normal text-sm"
+                            className="font-normal text-xs hover:bg-primary/10 transition-colors duration-200"
                           >
                             {term}
                           </Badge>
@@ -193,6 +256,25 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
               </div>
             </TabsContent>
 
+            {/* Heatmap tab */}
+            <TabsContent value="heatmap" className="mt-0 outline-none">
+              {latestExtraction.doc_topic_matrix ? (
+                <TopicsHeatmap
+                  docTopicMatrix={latestExtraction.doc_topic_matrix}
+                  topics={latestExtraction.topics}
+                />
+              ) : (
+                <Card className="flex items-center justify-center p-12 text-center text-muted-foreground w-full">
+                  <div className="flex flex-col items-center gap-2">
+                    <Grid3X3 className="h-8 w-8 opacity-20" />
+                    <p>La distribución documento-tópico no está disponible para esta extracción.</p>
+                    <p className="text-xs">Re-ejecuta la extracción para generar los datos.</p>
+                  </div>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* Graph tab */}
             <TabsContent value="grafo" className="mt-0 outline-none">
               {latestExtraction.concept_map ? (
                 <TopicsGraph
@@ -201,13 +283,30 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
                 />
               ) : (
                 <Card className="flex items-center justify-center p-12 text-center text-muted-foreground w-full">
-                  <p>El mapa de conceptos no está disponible para esta extracción.</p>
+                  <div className="flex flex-col items-center gap-2">
+                    <Network className="h-8 w-8 opacity-20" />
+                    <p>El mapa de conceptos no está disponible para esta extracción.</p>
+                  </div>
                 </Card>
               )}
             </TabsContent>
           </Tabs>
         </div>
       )}
+
+      {/* Global CSS keyframes for stagger animation */}
+      <style>{`
+        @keyframes fadeSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

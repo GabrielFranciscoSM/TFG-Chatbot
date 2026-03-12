@@ -109,6 +109,8 @@ Investigación teórica y práctica de algoritmos de clustering aplicados a docu
 - Clasificación automática de preguntas por tema
 - Estimación de dificultad basada en clustering
 - Mejora del sistema RAG mediante agrupación semántica
+- **Generación de FAQs automáticas** a partir de preguntas históricas de estudiantes (via `math_service`)
+- **Extracción de tópicos** y mapas conceptuales de los documentos de una asignatura (via `math_service`)
 
 ---
 
@@ -131,11 +133,15 @@ flowchart TB
     end
     
     subgraph MongoDB["🗄️ MongoDB"]
-        MDB["Usuarios, Sesiones<br/>Puerto: 27017"]
+        MDB["Usuarios, Sesiones, FAQs<br/>Puerto: 27017"]
     end
     
     subgraph RAG["📚 RAG Service"]
         RS["Document Processing<br/>Puerto: 8081"]
+    end
+    
+    subgraph MathSvc["📐 Math Service"]
+        MS["Clustering + NMF<br/>Puerto: 8083"]
     end
     
     subgraph Qdrant["🔍 Qdrant"]
@@ -149,7 +155,11 @@ flowchart TB
     Frontend --> Gateway
     Gateway --> Chatbot
     Gateway --> MongoDB
+    Gateway --> MathSvc
     Chatbot --> RAG
+    MathSvc --> RAG
+    MathSvc --> MongoDB
+    MathSvc --> Ollama
     RAG --> Qdrant
     RAG --> Ollama
 ```
@@ -162,9 +172,10 @@ flowchart TB
 | **Backend Gateway** | FastAPI, PyMongo, JWT | API REST, autenticación RBAC, proxy a servicios |
 | **Chatbot** | FastAPI, LangChain, LangGraph | Agente conversacional con herramientas pedagógicas |
 | **RAG Service** | FastAPI, Sentence Transformers | Procesamiento de documentos y búsqueda semántica |
+| **Math Service** | FastAPI, NumPy, math_investigation | Generación de FAQs (FCM) y extracción de tópicos (NMF) |
 | **Qdrant** | Vector Database | Almacenamiento de embeddings para RAG |
 | **Ollama** | LLM Server | Servicio de embeddings local |
-| **MongoDB** | NoSQL Database | Persistencia de usuarios, sesiones y guías docentes |
+| **MongoDB** | NoSQL Database | Persistencia de usuarios, sesiones, guías docentes, FAQs y tópicos |
 
 ---
 
@@ -352,6 +363,11 @@ TFG-Chatbot/
 │   │   ├── hooks/        # Custom hooks
 │   │   └── context/      # React Context (Auth)
 │   └── Dockerfile
+├── math_service/         # Microservicio de análisis matemático
+│   ├── routes/           # Endpoints (FAQs, tópicos, health)
+│   ├── services/         # Lógica de negocio (FAQ, Topics, Clustering)
+│   ├── models/           # Modelos Pydantic
+│   └── Dockerfile
 ├── tests/                # Tests de integración/infraestructura
 ├── docs/                 # Documentación del TFG
 │   ├── ADR/              # Architecture Decision Records
@@ -389,7 +405,7 @@ Este es un proyecto académico (TFG), pero las contribuciones son bienvenidas:
    git clone https://github.com/GabrielFranciscoSM/TFG-Chatbot.git
    cd TFG-Chatbot
    uv venv && source .venv/bin/activate
-   uv pip install -e ./backend -e ./rag_service -e ./chatbot -e .
+   uv pip install -e ./backend -e ./rag_service -e ./chatbot -e ./math_service -e .
    
    # Pre-commit hooks
    pre-commit install
@@ -397,7 +413,7 @@ Este es un proyecto académico (TFG), pero las contribuciones son bienvenidas:
 
 3. **Ejecuta los tests antes de hacer cambios**:
    ```bash
-   uv run pytest backend/tests/ chatbot/tests/ rag_service/tests/ -v
+   uv run pytest backend/tests/ chatbot/tests/ rag_service/tests/ math_service/tests/ -v
    ```
 
 ### Workflow de contribución

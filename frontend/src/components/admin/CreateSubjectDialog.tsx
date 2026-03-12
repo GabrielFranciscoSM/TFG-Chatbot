@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { BookOpen, ExternalLink, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Plus, BookOpen, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

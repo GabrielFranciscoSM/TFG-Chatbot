@@ -25,18 +25,25 @@ flowchart LR
     subgraph AI["AI Layer"]
         Chatbot[Chatbot :8080]
         RAG[RAG Service :8081]
+        Math[Math Service :8083]
     end
     
     subgraph Data
         MongoDB[(MongoDB :27017)]
         Qdrant[(Qdrant :6333)]
+        Ollama[Ollama :11434]
     end
     
     UI --> API
     API --> Chatbot
+    API --> Math
     Chatbot --> RAG
     Chatbot --> MongoDB
+    Math --> RAG
+    Math --> MongoDB
+    Math --> Ollama
     RAG --> Qdrant
+    RAG --> Ollama
     API --> MongoDB
 ```
 
@@ -155,6 +162,35 @@ flowchart LR
 
 ---
 
+### 📐 Math Service (NEW!)
+
+**Microservicio de análisis matemático: generación de FAQs automáticas y extracción de tópicos.**
+
+- **Port**: 8083
+- **Documentation**: [math_service/](math_service/)
+- **Quick Start**: [math_service/README.md](math_service/README.md)
+
+| Document | Description |
+|----------|-------------|
+| [README](math_service/README.md) | Overview and quick start |
+| [Architecture](math_service/architecture.md) | System design, components, data flow |
+| [API Endpoints](math_service/api-endpoints.md) | Complete API reference with examples |
+| [Algorithms](math_service/algorithms.md) | FCM, NMF, TF-IDF — mathematical foundations |
+| [Configuration](math_service/configuration.md) | Environment variables and settings |
+| [Development](math_service/development.md) | Local setup, tests, debugging |
+| [Deployment](math_service/deployment.md) | Docker, monitoring, production |
+| [INDEX](math_service/INDEX.md) | Complete documentation index |
+
+**Key Features**:
+- 🔍 FAQ generation via Fuzzy C-Means clustering of student questions
+- 📊 Topic extraction with NMF over RAG documents
+- 🗺️ Concept map generation for professor dashboard
+- 📐 Integrates `math_investigation/` algorithms (implemented from scratch)
+- 📈 Prometheus metrics + structured JSON logging
+- 🔎 Detailed health check (MongoDB, Ollama, RAG Service)
+
+---
+
 ### 🏗️ Infrastructure (NEW!)
 
 **Docker orchestration, monitoring, logging, alerting, and CI/CD pipelines.**
@@ -191,6 +227,7 @@ flowchart LR
 | Chatbot | ✅ Complete | 9 files |
 | Frontend | ✅ Complete | 8 files |
 | RAG Service | ✅ Complete | 10 files |
+| Math Service | ✅ Complete | 1 file |
 | Infrastructure | ✅ Complete | 7 files |
 
 ## Quick Links
@@ -213,3 +250,4 @@ flowchart LR
 
 - [Backend API Reference](backend/api-endpoints.md)
 - [Chatbot API Reference](chatbot/api-endpoints.md)
+- [Math Service API Reference](math_service.md#api-endpoints)

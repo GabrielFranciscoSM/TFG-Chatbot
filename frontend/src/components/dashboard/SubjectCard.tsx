@@ -1,4 +1,13 @@
-import { FileText, FolderOpen, MoreVertical, TrendingUp, UserPlus, Users } from "lucide-react";
+import {
+  BarChart2,
+  FileText,
+  FolderOpen,
+  MessageSquare,
+  MoreVertical,
+  TrendingUp,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,6 +24,8 @@ interface SubjectCardProps {
   onViewDocuments: (subject: string) => void;
   onEnrollStudent: (subject: string) => void;
   onViewProgress?: (subject: string) => void;
+  onViewFaqs?: (subject: string) => void;
+  onViewTopics?: (subject: string) => void;
 }
 
 export function SubjectCard({
@@ -23,6 +34,8 @@ export function SubjectCard({
   onViewDocuments,
   onEnrollStudent,
   onViewProgress,
+  onViewFaqs,
+  onViewTopics,
 }: SubjectCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -46,6 +59,18 @@ export function SubjectCard({
               <FolderOpen className="mr-2 h-4 w-4" />
               Gestionar documentos
             </DropdownMenuItem>
+            {onViewFaqs && (
+              <DropdownMenuItem onClick={() => onViewFaqs(subject.name)}>
+                <FileText className="mr-2 h-4 w-4" />
+                Gestionar FAQs
+              </DropdownMenuItem>
+            )}
+            {onViewTopics && (
+              <DropdownMenuItem onClick={() => onViewTopics(subject.name)}>
+                <BarChart2 className="mr-2 h-4 w-4" />
+                Extraer Tópicos
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem onClick={() => onEnrollStudent(subject.name)}>
               <UserPlus className="mr-2 h-4 w-4" />
               Matricular estudiante
@@ -80,7 +105,9 @@ export function SubjectCard({
             </div>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div
+          className={`mt-4 grid gap-2 ${onViewFaqs || onViewTopics ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}
+        >
           <Button
             variant="outline"
             size="default"
@@ -96,14 +123,36 @@ export function SubjectCard({
             className="w-full justify-start"
             onClick={() => onViewDocuments(subject.name)}
           >
-            <FileText className="h-4 w-4 mr-2" />
+            <FolderOpen className="h-4 w-4 mr-2" />
             Documentos
           </Button>
+          {onViewFaqs && (
+            <Button
+              variant="outline"
+              size="default"
+              className="w-full justify-start"
+              onClick={() => onViewFaqs(subject.name)}
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              FAQs
+            </Button>
+          )}
+          {onViewTopics && (
+            <Button
+              variant="outline"
+              size="default"
+              className="w-full justify-start"
+              onClick={() => onViewTopics(subject.name)}
+            >
+              <BarChart2 className="h-4 w-4 mr-2" />
+              Tópicos
+            </Button>
+          )}
           {onViewProgress && (
             <Button
               variant="default"
               size="default"
-              className="col-span-2 w-full justify-center"
+              className={`w-full justify-center ${onViewFaqs ? "col-span-2 md:col-span-1" : "col-span-2"}`}
               onClick={() => onViewProgress(subject.name)}
             >
               <TrendingUp className="h-4 w-4 mr-2" />

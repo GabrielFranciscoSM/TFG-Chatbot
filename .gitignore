@@ -210,7 +210,7 @@ __marimo__/
 
 local
 storage
-models/
+/models/
 tmp/
 # Test reports
 test-reports/

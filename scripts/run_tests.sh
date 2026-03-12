@@ -8,6 +8,7 @@
 #   chatbot    - Run chatbot service tests (tfg-chatbot container)
 #   rag        - Run RAG service tests (rag-service container)
 #   backend    - Run backend/gateway tests (tfg-gateway container)
+#   math       - Run math service tests (math-service container)
 #   all        - Run tests for all services
 #
 # Options:
@@ -254,6 +255,50 @@ run_backend_tests() {
     return $exit_code
 }
 
+run_math_tests() {
+    local extra_args="$*"
+    print_section "Running Math Service Tests (math-service)"
+    write_to_report "## Math Service Tests"
+    write_to_report ""
+    
+    rebuild_container "math_service" "math-service"
+    
+    local output
+    local exit_code=0
+    
+    output=$(docker compose exec -T math_service python -m pytest math_service/tests/ \
+        --tb=short \
+        --no-header \
+        -q \
+        $extra_args 2>&1) || exit_code=$?
+    
+    echo "$output"
+    RAW_OUTPUT["math"]="$output"
+    
+    # Save to report
+    write_to_report '```'
+    write_to_report "$output"
+    write_to_report '```'
+    write_to_report ""
+    
+    # Parse results
+    if echo "$output" | grep -qE "passed|failed|error"; then
+        local passed=$(echo "$output" | grep -oE "[0-9]+ passed" | grep -oE "[0-9]+" || echo "0")
+        local failed=$(echo "$output" | grep -oE "[0-9]+ failed" | grep -oE "[0-9]+" || echo "0")
+        local errors=$(echo "$output" | grep -oE "[0-9]+ error" | grep -oE "[0-9]+" || echo "0")
+        
+        RESULTS["math"]="passed:${passed:-0},failed:${failed:-0},errors:${errors:-0}"
+        TOTAL_PASSED=$((TOTAL_PASSED + ${passed:-0}))
+        TOTAL_FAILED=$((TOTAL_FAILED + ${failed:-0}))
+        TOTAL_ERRORS=$((TOTAL_ERRORS + ${errors:-0}))
+    else
+        RESULTS["math"]="passed:0,failed:0,errors:1"
+        TOTAL_ERRORS=$((TOTAL_ERRORS + 1))
+    fi
+    
+    return $exit_code
+}
+
 # ============================================================================
 # Summary Report
 # ============================================================================
@@ -369,14 +414,18 @@ main() {
         backend)
             run_backend_tests $extra_args || exit_code=1
             ;;
+        math)
+            run_math_tests $extra_args || exit_code=1
+            ;;
         all)
             run_chatbot_tests $extra_args || exit_code=1
             run_rag_tests $extra_args || exit_code=1
             run_backend_tests $extra_args || exit_code=1
+            run_math_tests $extra_args || exit_code=1
             ;;
         *)
             print_error "Unknown service: $service"
-            echo "Valid services: chatbot, rag, backend, all"
+            echo "Valid services: chatbot, rag, backend, math, all"
             exit 1
             ;;
     esac

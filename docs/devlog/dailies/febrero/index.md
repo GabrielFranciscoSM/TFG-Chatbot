@@ -8,4 +8,4 @@ nav_order: 7
 
 # Daily Scrums — Febrero 2026
 
-Registros del Sprint 6 (Razonamiento, Adaptación y Clustering Textual).
+Registros del Sprint 6 (Razonamiento, Adaptación y Clustering Textual) y Sprint 7 (Integración Matemática en Plataforma).

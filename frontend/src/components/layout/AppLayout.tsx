@@ -1,9 +1,3 @@
-import { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/AuthContext";
-import { cn } from "@/lib/utils";
-
 import {
   BookOpen,
   GraduationCap,
@@ -14,6 +8,11 @@ import {
   Settings,
   X,
 } from "lucide-react";
+import { useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { cn } from "@/lib/utils";
 
 // Navigation items with visibility rules
 const navItems = [

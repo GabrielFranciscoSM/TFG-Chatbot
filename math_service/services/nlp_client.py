@@ -6,7 +6,6 @@ import urllib.error
 import urllib.request
 
 import numpy as np
-from torch.cuda import err
 
 from math_service.config import settings
 
@@ -91,7 +90,7 @@ class MistralClient:
     def generate_text(self, prompt: str) -> str:
         """Generate text from a prompt using Mistral."""
         if not self.api_key:
-            raise RuntimeError("Mistral API key is not configured") from err
+            raise RuntimeError("Mistral API key is not configured")
 
         url = f"{self.base_url}/chat/completions"
         payload = json.dumps(
@@ -122,4 +121,4 @@ class MistralClient:
                 return ""
         except urllib.error.URLError as e:
             logger.error(f"Failed to generate text from Mistral: {e}")
-            raise RuntimeError(f"Mistral text generation failed: {e}") from err
+            raise RuntimeError(f"Mistral text generation failed: {e}") from e

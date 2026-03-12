@@ -1,7 +1,8 @@
+import { BarChart2, Loader2, Settings2 } from "lucide-react";
 import { useState } from "react";
-import { Loader2, Settings2, BarChart2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -9,9 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTopics } from "@/hooks/useTopics";
 import type { TopicExtractRequest } from "@/types/topics";
+import { TopicsGraph } from "./TopicsGraph";
 
 interface TopicsDashboardProps {
   subject: string | null;
@@ -155,33 +157,55 @@ export function TopicsDashboard({ subject }: TopicsDashboardProps) {
             <Badge variant="secondary">Chunks analizados: {latestExtraction.source_chunks}</Badge>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {latestExtraction.topics.map((topic, index) => (
-              <Card key={`topic-${topic.topic_name}-${index}`} className="flex flex-col h-full">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-md font-semibold">{topic.topic_name}</CardTitle>
-                    <Badge className="bg-primary/20 text-primary border-0">
-                      Peso: {topic.weight.toFixed(2)}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="flex flex-wrap gap-2">
-                    {topic.terms.map((term) => (
-                      <Badge
-                        key={`term-${term}`}
-                        variant="secondary"
-                        className="font-normal text-sm"
-                      >
-                        {term}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Tabs defaultValue="tarjetas" className="w-full">
+            <TabsList className="mb-4">
+              <TabsTrigger value="tarjetas">Tarjetas</TabsTrigger>
+              <TabsTrigger value="grafo">Grafo de Conceptos</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="tarjetas" className="mt-0 outline-none">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {latestExtraction.topics.map((topic, index) => (
+                  <Card key={`topic-${topic.topic_name}-${index}`} className="flex flex-col h-full">
+                    <CardHeader className="pb-3">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-md font-semibold">{topic.topic_name}</CardTitle>
+                        <Badge className="bg-primary/20 text-primary border-0">
+                          Peso: {topic.weight.toFixed(2)}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex-1">
+                      <div className="flex flex-wrap gap-2">
+                        {topic.terms.map((term) => (
+                          <Badge
+                            key={`term-${term}`}
+                            variant="secondary"
+                            className="font-normal text-sm"
+                          >
+                            {term}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="grafo" className="mt-0 outline-none">
+              {latestExtraction.concept_map ? (
+                <TopicsGraph
+                  conceptMap={latestExtraction.concept_map}
+                  topics={latestExtraction.topics}
+                />
+              ) : (
+                <Card className="flex items-center justify-center p-12 text-center text-muted-foreground w-full">
+                  <p>El mapa de conceptos no está disponible para esta extracción.</p>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       )}
     </div>

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import { Loader2, MessageCircleQuestion } from "lucide-react";
-import api from "@/lib/api";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import api from "@/lib/api";
 import type { Faq } from "@/types/faqs";
 
 interface FaqSectionProps {

@@ -1,5 +1,5 @@
+import { CheckCircle, Copy, Edit2, Globe, Loader2, Save, Trash2, X } from "lucide-react";
 import { useState } from "react";
-import { Copy, Edit2, Loader2, Save, Trash2, X, CheckCircle, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

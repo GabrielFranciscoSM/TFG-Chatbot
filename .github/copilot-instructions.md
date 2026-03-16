@@ -1,206 +1,82 @@
 # Copilot Instructions for TFG-Chatbot
 
-## Project Overview
+## Project Guidelines
 
-This is a **dual degree TFG (Trabajo Fin de Grado)** for Computer Science and Mathematics at University of Granada:
+### Scope
 
-- **Computer Science TFG**: Pedagogical chatbot using LangGraph for AI orchestration with microservices architecture
-- **Mathematics TFG**: Document clustering research (K-Means, Fuzzy C-Means, NMF) to enhance the chatbot's question classification
+This workspace combines two coordinated lines of work:
 
-## Architecture Overview
+- Computer Science TFG: an educational chatbot platform with microservices.
+- Mathematics TFG: from-scratch document clustering and topic modeling in `math_investigation/`.
 
-### Chatbot Microservices (Computer Science)
+### Architecture
 
-Four containerized services (Docker) communicate via HTTP:
+Core runtime services are orchestrated with Docker Compose:
 
-```
-Frontend → Backend (gateway) → Chatbot (AI agent) → RAG Service
-                  ↓                    ↓                 ↓
-                MongoDB              LLM           Qdrant + Ollama
-```
+- `frontend/` (React + Vite) on port 3000.
+- `backend/` (FastAPI gateway) on port 8000.
+- `chatbot/` (LangGraph agent) on port 8080.
+- `rag_service/` (retrieval/indexing) on port 8081.
+- `math_service/` (FAQ/topic pipelines) on port 8083.
+- Supporting infrastructure: MongoDB, Qdrant, Ollama, vLLM, Phoenix, Prometheus, Grafana.
 
-- **backend/** - FastAPI gateway handling auth, sessions, and routing to chatbot
-- **chatbot/** - LangGraph agent with tools (RAG, guía docente, web search, test generation)
-- **rag_service/** - Document indexing and semantic search via Qdrant/Ollama
-- **frontend/** - Vite + React + TypeScript + TailwindCSS + shadcn/ui (in active development)
+Primary service flow:
 
-**LLM Inference**: Gemini API for development, vLLM for production deployment. Configured via `LLM_PROVIDER` env var.
+- Frontend -> Backend -> Chatbot/RAG/Math Service.
+- Chatbot uses RAG for retrieval.
+- Math Service integrates with MongoDB, RAG, and Ollama.
 
-### Math Investigation Module (Mathematics)
+### Build And Test
 
-The `math_investigation/` module contains from-scratch implementations of clustering algorithms:
-
-```
-math_investigation/
-├── clustering/           # K-Means, FCM implementations
-│   ├── kmeans.py         # K-Means with K-Means++ init
-│   ├── fcm.py            # Fuzzy C-Means with fuzziness m
-│   └── metrics.py        # Silhouette, ARI, NMI, FPC
-├── topic_modeling/       # NMF for topic discovery
-│   ├── nmf.py            # Multiplicative update rules
-│   └── coherence.py      # Topic coherence metrics
-├── nlp/                  # Text vectorization
-│   ├── tfidf.py          # TF-IDF from scratch
-│   ├── bow.py            # Bag of Words
-│   └── embeddings.py     # Ollama embeddings wrapper
-├── visualization/        # Matplotlib plots
-└── cli/                  # Experiment runners
-```
-
-**Mathematical foundations** (documented in TFG thesis):
-- K-Means: Minimizes SSE(S,C) = Σ_{i=1}^{k} Σ_{x ∈ S_i} ||x - c_i||²
-- FCM: Minimizes J_m(U,C) = Σ Σ (μ_ji)^m ||x_i - c_j||² where m > 1
-- NMF: Factorizes V ≈ WH with non-negativity constraints
-
-### Integration: Math Investigation ↔ Chatbot
-The clustering algorithms enhance the chatbot in several ways:
-- **Question classification**: K-Means/FCM cluster student questions by topic
-- **Difficulty estimation**: Cluster centroids trained on labeled questions predict difficulty
-- **RAG improvement**: NMF topic modeling helps organize and retrieve documents
-- Scripts like `scripts/train_difficulty_centroids.py` bridge the two components
-
-## Project Methodology
-
-This project follows **SCRUM** methodology. Key documentation in `docs/`:
-- **ADRs** (`docs/ADR/`) - Architecture Decision Records for all technical choices
-- **Sprint artifacts** - `sprint planing/`, `sprint retrospective/`, `daily scrum/`
-- When making architectural decisions, document them as ADRs following `docs/ADR/adr-template.md`
-
-## Key Patterns
-
-### LangGraph Agent Structure (chatbot/logic/graph.py)
-The agent uses `StateGraph` with nodes for each tool. State includes `asignatura` (subject) and `context`. Tool routing happens via `should_continue()` which returns the tool name from `tool_calls[0]["name"]`.
-
-```python
-# Pattern: Add new tools
-1. Create tool with @tool decorator in chatbot/logic/tools/tools.py
-2. Add to AVAILABLE_TOOLS list
-3. Add node in GraphAgent.build_graph()
-4. Add edge mapping in should_continue routing
-```
-
-### Service Communication
-Services use environment-based URLs defaulting to Docker Compose service names:
-- Backend → Chatbot: `CHATBOT_SERVICE_URL` (default: `http://chatbot:8080`)
-- Chatbot → RAG: `RAG_SERVICE_URL` (default: `http://rag_service:8081`)
-
-### Configuration Pattern
-- Use `pydantic_settings.BaseSettings` for type-safe config (see `rag_service/config.py`)
-- Backend uses simpler class-based `Settings` (see `backend/config.py`)
-- All configs load from `.env` with sensible defaults for Docker Compose
-
-### Test Session Flow (chatbot/logic/testGraph.py)
-Interactive tests use LangGraph interrupts:
-1. `generate_test` tool creates questions
-2. Subgraph presents questions via `interrupt()` 
-3. `/resume_chat` endpoint resumes with user answer
-4. State tracks `current_question_index`, `scores`, `user_answers`
-
-## Development Commands
+Use `uv` for local Python workflows.
 
 ```bash
-# Environment setup with uv (preferred)
-uv venv                                        # Create virtual environment
-source .venv/bin/activate                      # Activate venv
-uv pip install -e ./backend -e ./rag_service -e ./chatbot  # Install packages
+# Local environment
+uv venv
+source .venv/bin/activate
+uv pip install -e ./backend -e ./rag_service -e ./chatbot -e ./math_service -e .
 
-# Run tests (use markers for filtering)
-pytest backend/tests/ -m unit -v              # Backend unit tests
-pytest rag_service/tests/ -m unit -v          # RAG service tests  
-pytest tests/infrastructure/ -m container  # Requires containers
+# Main test run
+uv run pytest backend/tests/ chatbot/tests/ rag_service/tests/ math_service/tests/ -v
 
-# Math investigation experiments
-python -m math_investigation.cli.run_clustering --k 5 --vectorizer tfidf
-python -m math_investigation.cli.run_topic_modeling --n-topics 5
-python -m math_investigation.cli.compare --k-range 3,10
+# Docker-based dev run
+docker compose up -d
 
-# Linting (pre-commit installed)
+# Container tests need dev dependencies in images
+INSTALL_DEV=true docker compose build
+./scripts/run_tests.sh all
+
+# Python lint/format
 ruff check . && black . && isort .
-
-# Docker development
-docker compose up -d                           # Start all services
-INSTALL_DEV=true docker compose build          # Build with dev deps
 ```
 
-## Test Patterns
+### Conventions
 
-- **Mocking**: Use `mongomock` for MongoDB (see `backend/tests/conftest.py`)
-- **Fixtures**: Create `test_user`, `test_professor` with hashed passwords
-- **Token Auth**: Generate tokens via `create_access_token()` for authenticated tests
-- **Markers**: `@pytest.mark.unit`, `@pytest.mark.integration`, `@pytest.mark.infrastructure`
+- Use `pydantic-settings` style typed settings with `.env` support for service config.
+- Keep gateway boundaries in `backend/routers/` and avoid embedding orchestration logic in unrelated layers.
+- For LangGraph tool execution in `chatbot/logic/graph.py`, every `ToolMessage` must include `tool_call_id`.
+- For backend session access, always validate both session existence and ownership (`user_id`).
+- Normalize RAG responses before downstream use; do not assume one fixed payload shape.
+- Keep math algorithms educational and from scratch in `math_investigation/` (no scikit-learn implementations for core algorithms).
 
-## Important Conventions
+### Key Patterns
 
-1. **User roles**: `UserRole.STUDENT` and `UserRole.PROFESSOR` with subject-based access
-2. **Session ownership**: Sessions are tied to `user_id`, validated in `chat.py` router
-3. **LLM Provider**: Gemini (dev) / vLLM (prod) via `LLM_PROVIDER` env var
-4. **Guía Docente**: UGR teaching guides stored in MongoDB via scraper tool
-5. **Thread IDs**: LangGraph uses `thread_id` from request `id` for checkpointing
-6. **Containerization**: Use Docker Compose for container orchestration
+- Add chatbot tools by updating both tool registration and graph routing:
+    1. Create/update tool in `chatbot/logic/tools/`.
+    2. Ensure it is included in `AVAILABLE_TOOLS`.
+    3. Add graph node/edge wiring in `chatbot/logic/graph.py`.
+- Use `httpx.AsyncClient` for service-to-service calls with explicit timeouts.
+- Keep integration tests aligned with markers in repo/service `pytest.ini` files.
 
-## File Organization
+### Documentation And Decisions
 
-```
-chatbot/logic/
-├── graph.py        # Main GraphAgent with tool nodes
-├── testGraph.py    # Test session subgraph with interrupts
-├── prompts.py      # System prompts and LLM prompt templates
-├── models.py       # Pydantic models for tools/state
-└── tools/tools.py  # All @tool decorated functions
+- Architecture and service docs live under `docs/services/`.
+- Scrum/devlog artifacts and ADRs live under `docs/devlog/` and `docs/devlog/adr/`.
+- When changing architecture or cross-service contracts, record the decision as an ADR.
 
-math_investigation/
-├── clustering/     # K-Means, FCM with full implementations
-│   ├── kmeans.py   # K-Means++ init, SSE minimization
-│   ├── fcm.py      # Fuzzy membership, J_m minimization
-│   └── metrics.py  # External + internal validation metrics
-├── topic_modeling/ # NMF-based topic modeling
-├── nlp/            # Vectorizers (TF-IDF, BoW, embeddings)
-├── cli/            # Command-line experiment runners
-└── visualization/  # Matplotlib plotting utilities
+### Pitfalls To Avoid
 
-docs/
-├── ADR/            # Architecture Decision Records (critical!)
-├── sprint planing/ # SCRUM sprint planning docs
-├── sprint retrospective/
-└── daily scrum/
-```
-
-## Common Mistakes to Avoid
-
-- Don't create new `GraphAgent` per request - use single instance for checkpoint consistency
-- Always add `tool_call_id` when returning `ToolMessage` from tool nodes
-- RAG results need normalization - check `_normalize_rag_results()` pattern
-- Session validation requires checking both existence AND ownership
-- Document architectural decisions in ADRs, not just in code comments
-
-## Math Investigation Patterns
-
-### Algorithm Implementation Rules
-- All algorithms implemented **from scratch** without scikit-learn (educational purpose)
-- NumPy is the only allowed numerical library
-- Each algorithm has docstrings referencing the TFG thesis section
-- Convergence tracking: store `sse_history_` (K-Means) or `jm_history_` (FCM)
-
-### Vectorizer Interface
-All vectorizers in `math_investigation/nlp/` follow this interface:
-```python
-class Vectorizer:
-    def fit(self, documents: list[str]) -> "Vectorizer": ...
-    def transform(self, documents: list[str]) -> np.ndarray: ...
-    def fit_transform(self, documents: list[str]) -> np.ndarray: ...
-```
-
-### Clustering Interface
-Both K-Means and FCM follow scikit-learn-like interface:
-```python
-class Clusterer:
-    def fit(self, X: np.ndarray) -> "Clusterer": ...
-    def predict(self, X: np.ndarray) -> np.ndarray: ...
-    def fit_predict(self, X: np.ndarray) -> np.ndarray: ...
-```
-
-### Adding New Metrics
-Metrics go in `math_investigation/clustering/metrics.py`:
-- Internal metrics (no ground truth): silhouette, Davies-Bouldin, elbow
-- External metrics (require labels): ARI, NMI
-- FCM-specific: Fuzzy Partition Coefficient (FPC)
+- Do not create a new graph agent instance per request when checkpoint continuity is required.
+- Do not skip `INSTALL_DEV=true` before container test runs.
+- Do not assume chatbot Docker Python version matches other services; verify version compatibility when touching dependencies.
+- Do not bypass ownership checks when reading or mutating chat sessions.

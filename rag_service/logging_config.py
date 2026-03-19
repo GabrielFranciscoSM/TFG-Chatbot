@@ -26,7 +26,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         # Add correlation ID from context
         log_record["correlation_id"] = correlation_id_ctx.get()
         # Add service name
-        log_record["service"] = "rag-service"
+        log_record["service"] = "rag_service"
 
 
 def setup_logging(level=logging.INFO):

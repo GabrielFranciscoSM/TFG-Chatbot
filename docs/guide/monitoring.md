@@ -197,9 +197,9 @@ scrape_configs:
     static_configs:
       - targets: ['backend:8000']
 
-  - job_name: 'rag-service'
+  - job_name: 'rag_service'
     static_configs:
-      - targets: ['rag-service:8081']
+      - targets: ['rag_service:8081']
 
   - job_name: 'chatbot'
     static_configs:

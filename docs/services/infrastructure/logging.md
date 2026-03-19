@@ -169,7 +169,7 @@ LogQL is Loki's query language, similar to PromQL.
 {container="tfg-chatbot", stream="stderr"}
 
 # Multiple containers
-{container=~"tfg-chatbot|tfg-gateway|rag-service"}
+{container=~"tfg-chatbot|tfg-backend|tfg-rag-service"}
 ```
 
 #### Filtering Logs

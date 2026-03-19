@@ -44,11 +44,11 @@ rag_service/
 
 ### Con Docker Compose (recomendado para desarrollo)
 
-Run Qdrant, Ollama and rag-service together using the top-level compose file:
+Run Qdrant, Ollama and rag_service together using the top-level compose file:
 
 ```bash
 # From repository root
-docker-compose up --build qdrant ollama rag-service
+docker compose up --build qdrant ollama rag_service
 ```
 
 # Desarrollo local (sin Docker)
@@ -127,10 +127,10 @@ curl -X POST http://localhost:8081/load-file -H "Content-Type: application/json"
 
 ```bash
 # Copiar un archivo al volumen del contenedor
-docker cp mi_documento.pdf rag-service:/app/documents/
+docker cp mi_documento.pdf tfg-rag-service:/app/documents/
 
 # Listar archivos en el contenedor
-docker exec rag-service ls -la /app/documents/
+docker exec tfg-rag-service ls -la /app/documents/
 ```
 
 ## Configuración

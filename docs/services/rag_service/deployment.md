@@ -309,7 +309,7 @@ Available metrics:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'rag-service'
+  - job_name: 'rag_service'
     static_configs:
       - targets: ['rag_service:8081']
     metrics_path: /metrics

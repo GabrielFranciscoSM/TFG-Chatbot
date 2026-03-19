@@ -6,7 +6,7 @@
 #
 # Services:
 #   chatbot    - Run chatbot service tests (tfg-chatbot container)
-#   rag        - Run RAG service tests (rag-service container)
+#   rag        - Run RAG service tests (tfg-rag-service container)
 #   backend    - Run backend/gateway tests (tfg-gateway container)
 #   math       - Run math service tests (math-service container)
 #   all        - Run tests for all services
@@ -169,11 +169,11 @@ run_chatbot_tests() {
 
 run_rag_tests() {
     local extra_args="$*"
-    print_section "Running RAG Service Tests (rag-service)"
+    print_section "Running RAG Service Tests (tfg-rag-service)"
     write_to_report "## RAG Service Tests"
     write_to_report ""
     
-    rebuild_container "rag_service" "rag-service"
+    rebuild_container "rag_service" "tfg-rag-service"
     
     local output
     local exit_code=0

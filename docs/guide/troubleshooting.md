@@ -283,7 +283,7 @@ docker network inspect tfg-chatbot_default
 
 ```bash
 # Use IP instead of hostname for testing
-docker inspect rag-service | grep IPAddress
+docker inspect tfg-rag-service | grep IPAddress
 
 # Restart containers
 docker compose down && docker compose up -d

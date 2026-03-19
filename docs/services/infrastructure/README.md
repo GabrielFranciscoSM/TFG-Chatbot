@@ -83,7 +83,7 @@ graph TB
 | Frontend | tfg-frontend | 3000 | React SPA with nginx |
 | Backend | tfg-gateway | 8000 | FastAPI gateway |
 | Chatbot | tfg-chatbot | 8080 | LangGraph agent |
-| RAG Service | rag-service | 8081 | Document search |
+| RAG Service | rag_service | 8081 | Document search |
 
 ### AI Services
 

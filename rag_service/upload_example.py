@@ -121,7 +121,7 @@ def upload_document(
         print("\n❌ ERROR: No se puede conectar con el servicio RAG")
         print(f"   URL: {url}")
         print("   ¿Está el servicio corriendo?")
-        print("   Ejecuta: docker-compose up rag-service\n")
+        print("   Ejecuta: docker compose up rag_service\n")
         return None
     except Exception as e:
         print(f"\n❌ EXCEPCIÓN: {e}\n")
@@ -275,9 +275,9 @@ def check_health():
         print(f"{'=' * 60}")
         print(f"No se puede conectar con: {url}")
         print("\nVerifica que el servicio esté corriendo:")
-        print("  docker ps | grep rag-service")
+        print("  docker ps | grep tfg-rag-service")
         print("\nO inícialo con:")
-        print("  docker-compose up rag-service")
+        print("  docker compose up rag_service")
         print(f"{'=' * 60}\n")
         return False
 

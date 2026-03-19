@@ -137,7 +137,7 @@ rag_service:
     dockerfile: rag_service/Dockerfile
     args:
       INSTALL_DEV: ${INSTALL_DEV:-false}
-  container_name: rag-service
+  container_name: tfg-rag-service
   env_file:
     - .env
   environment:

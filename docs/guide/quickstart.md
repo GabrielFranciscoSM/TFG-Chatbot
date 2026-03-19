@@ -127,7 +127,7 @@ Expected output:
 NAME             STATUS          PORTS
 tfg-gateway      Up (healthy)    0.0.0.0:8000->8000/tcp
 tfg-chatbot      Up (healthy)    0.0.0.0:8080->8080/tcp
-rag-service      Up (healthy)    0.0.0.0:8081->8081/tcp
+tfg-rag-service      Up (healthy)    0.0.0.0:8081->8081/tcp
 frontend         Up              0.0.0.0:3000->80/tcp
 mongo-service    Up              0.0.0.0:27017->27017/tcp
 qdrant-service   Up              0.0.0.0:6333->6333/tcp

@@ -304,7 +304,7 @@ View the current LLM model being used by the chatbot (e.g., `gemini-2.0-flash-li
 ### Documents not appearing in search
 
 1. Wait 30 seconds for indexing
-2. Check RAG service logs: `docker logs rag-service`
+2. Check RAG service logs: `docker logs tfg-rag-service`
 3. Verify Ollama is running: `docker logs ollama-service`
 
 ### Slow responses

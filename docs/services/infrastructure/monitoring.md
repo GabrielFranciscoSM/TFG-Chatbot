@@ -53,9 +53,9 @@ scrape_configs:
     static_configs:
       - targets: ['backend:8000']
 
-  - job_name: 'rag-service'
+  - job_name: 'rag_service'
     static_configs:
-      - targets: ['rag-service:8081']
+      - targets: ['rag_service:8081']
 
   - job_name: 'chatbot'
     static_configs:
@@ -68,7 +68,7 @@ scrape_configs:
 |----------|--------|------------------|
 | `prometheus` | localhost:9090 | Self-monitoring |
 | `backend-gateway` | backend:8000 | `/metrics` |
-| `rag-service` | rag-service:8081 | `/metrics` |
+| `rag_service` | rag_service:8081 | `/metrics` |
 | `chatbot` | tfg-chatbot:8080 | `/metrics` |
 
 ### Accessing Prometheus

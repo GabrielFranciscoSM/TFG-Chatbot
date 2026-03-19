@@ -158,7 +158,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "up{job=\"rag-service\"}",
+                    "expr": "up{job=\"rag_service\"}",
                     "refId": "A"
                 }
             ],
@@ -335,7 +335,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "rate(http_requests_total{job=\"rag-service\"}[5m])",
+                    "expr": "rate(http_requests_total{job=\"rag_service\"}[5m])",
                     "legendFormat": "RAG",
                     "refId": "B"
                 }
@@ -548,7 +548,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "rate(http_requests_total{job=\"rag-service\", status=~\"5..\"}[5m]) / rate(http_requests_total{job=\"rag-service\"}[5m])",
+                    "expr": "rate(http_requests_total{job=\"rag_service\", status=~\"5..\"}[5m]) / rate(http_requests_total{job=\"rag_service\"}[5m])",
                     "legendFormat": "RAG Error Rate",
                     "refId": "B"
                 }

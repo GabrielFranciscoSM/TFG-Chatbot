@@ -27,3 +27,7 @@ scrape_configs:
   - job_name: 'chatbot'
     static_configs:
       - targets: ['tfg-chatbot:8080']
+
+  - job_name: 'math_service'
+    static_configs:
+      - targets: ['math_service:8083']

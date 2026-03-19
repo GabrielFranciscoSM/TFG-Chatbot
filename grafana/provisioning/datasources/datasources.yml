@@ -27,3 +27,12 @@ datasources:
     editable: true
     jsonData:
       maxLines: 1000
+
+  - name: AlertManager
+    type: alertmanager
+    uid: alertmanager
+    access: proxy
+    url: http://alertmanager:9093
+    editable: true
+    jsonData:
+      handleGrafanaManagedAlerts: true

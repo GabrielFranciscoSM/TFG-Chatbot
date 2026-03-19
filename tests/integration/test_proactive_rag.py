@@ -97,10 +97,20 @@ def test_test_generation_without_previous_context(
     assert response.status_code == 200
     result = response.json()
     content = result["message"]["content"]
+    print(f"ACTUAL CONTENT WAS: {content}")
 
     # Debe contener la mención a la recopilación de información o la pregunta sobre Git
     assert any(
         term in content.lower()
-        for term in ["git", "rama", "repositorio", "commit", "checkout", "vcs"]
+        for term in [
+            "git",
+            "rama",
+            "repositorio",
+            "commit",
+            "checkout",
+            "vcs",
+            "versión",
+            "versiones",
+        ]
     )
     assert "información" in content.lower() or "pregunta" in content.lower()

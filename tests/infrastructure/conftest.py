@@ -32,7 +32,7 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 CHATBOT_URL = os.getenv("CHATBOT_URL", "http://localhost:8080")
 RAG_SERVICE_URL = os.getenv("RAG_SERVICE_URL", "http://localhost:8081")
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11435")
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 VLLM_URL = os.getenv("VLLM_URL", "http://localhost:8001")
 

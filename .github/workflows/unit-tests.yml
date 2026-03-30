@@ -106,7 +106,7 @@ jobs:
           pytest tests/ -v --tb=short --cov=. --cov-report=xml --cov-report=term
 
       - name: Upload backend coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           file: ./backend/coverage.xml
           flags: backend
@@ -147,7 +147,7 @@ jobs:
           pytest tests/ -m "not integration" -v --tb=short --cov=. --cov-report=xml --cov-report=term
 
       - name: Upload rag_service coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           file: ./rag_service/coverage.xml
           flags: rag-service
@@ -187,7 +187,7 @@ jobs:
           pytest tests/ -v --tb=short --cov=. --cov-report=xml --cov-report=term
 
       - name: Upload chatbot coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           file: ./chatbot/coverage.xml
           flags: chatbot

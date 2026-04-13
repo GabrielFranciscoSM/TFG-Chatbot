@@ -51,7 +51,7 @@ test = [
   "pytest-asyncio>=0.21.0",
   "pytest-cov>=4.1.0",
   "testinfra>=6.0.0",
-  "requests>=2.31.0",
+  "requests>=2.33.1",
   "dotenv",
 ]
 quality = [
@@ -80,7 +80,7 @@ dev = [
   "pytest-asyncio>=0.21.0",
   "pytest-cov>=4.1.0",
   "testinfra>=6.0.0",
-  "requests>=2.31.0",
+  "requests>=2.33.1",
   "dotenv",
   # Code quality tools
   "ruff>=0.1.0",

@@ -59,7 +59,7 @@ quality = [
   "black>=23.0.0",
   "isort>=5.12.0",
   "mypy>=1.7.0",
-  "pre-commit>=3.5.0",
+  "pre-commit>=4.5.1",
 ]
 
 ai = [
@@ -87,7 +87,7 @@ dev = [
   "black>=23.0.0",
   "isort>=5.12.0",
   "mypy>=1.7.0",
-  "pre-commit>=3.5.0",
+  "pre-commit>=4.5.1",
   # AI/ML tools
   "qdrant-client>=1.15.1",
   "huggingface-hub>=0.18.0",

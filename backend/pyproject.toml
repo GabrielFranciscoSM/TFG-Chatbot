@@ -17,7 +17,7 @@ dependencies = [
   "python-multipart",
   "bcrypt>=5.0.0",
   "pymongo",
-  "python-json-logger>=2.0.0",
+  "python-json-logger>=4.1.0",
   "prometheus-fastapi-instrumentator>=7.0.0"
 ]
 

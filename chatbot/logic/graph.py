@@ -481,13 +481,13 @@ class GraphAgent:
             {
                 "rag_search": "rag_search",
                 "get_guia": "get_guia",
-                "generate_test": "test_session",  # Route to subgraph node!
+                "generate_test": "test_session",
                 END: END,
             },
         )
         graph_builder.add_edge("rag_search", "agent")
         graph_builder.add_edge("get_guia", "agent")
-        graph_builder.add_edge("test_session", END)  # Finalize after test session
+        graph_builder.add_edge("test_session", END)
 
         # Preparar persistencia
         storage_dir = os.path.join(os.path.dirname(__file__), "..", "storage")

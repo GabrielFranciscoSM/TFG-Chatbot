@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "tfg-chatbot"
@@ -23,12 +23,14 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
+  # LLM and Agent Frameworks
   "langchain",
   "langchain-openai",
   "langchain-google-genai",
   "langchain-community",
   "langchain-core",
   "langgraph",
+  # Configuration and API
   "python-dotenv",
   "pymongo",
   "duckduckgo-search",
@@ -36,13 +38,24 @@ dependencies = [
   "langgraph-checkpoint-sqlite",
   "fastapi",
   "uvicorn[standard]",
+  # Text Processing
   "beautifulsoup4>=4.12.2",
   "sentence-transformers>=2.2.2",
   "pypdf>=3.17.0",
   "langchain-mistralai>=1.0.1",
+  # Visualization
   "matplotlib>=3.10.8",
   "seaborn>=0.13.2",
   "stop-words>=2025.11.4",
+  # Validation and Clustering
+  "numpy>=1.23.0",
+  "scipy>=1.9.0",
+  "scikit-learn>=1.2.0",
+  "pandas>=1.5.0",
+  "umap-learn>=0.5.3",
+  "scikit-fuzzy>=0.4.2",
+  "datasets>=2.10.0",
+  "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
@@ -73,6 +86,14 @@ ai = [
   "langgraph",
   "umap-learn>=0.5.5",
 ]
+
+experiments = [
+  "jupyter>=1.0",
+  "jupyterlab>=4.0",
+  "notebook>=7.0",
+  "gensim>=4.2.0",
+]
+
 # Dev includes all development dependencies
 dev = [
   # Testing dependencies
@@ -97,11 +118,29 @@ dev = [
   "langchain_google_genai",
   "langchain_openai",
   "langgraph",
+  # Jupyter for experiments
+  "jupyter>=1.0",
+  "jupyterlab>=4.0",
+  "notebook>=7.0",
+  "gensim>=4.2.0",
 ]
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["tests*", "docs*", "models*", "local*", "backend*", "rag_service*", "scripts*"]
+exclude = ["tests*", "docs*", "models*", "local*", "backend*", "rag_service*", "scripts*", "validation/.venv*"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend", "rag_service", "validation"]
+
+[tool.hatch.build.targets.wheel.force-include]
+validation = "validation"
+
+[tool.uv]
+# uv configuration for fast Python package management
+# Supported Python versions for this project
+python-versions = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+# Allow prerelease versions for development
+allow-prereleases = true
 
 [tool.ruff]
 line-length = 88
@@ -208,6 +247,11 @@ module = [
     "partial_json_parser.*",
     "transformers.*",
     "vllm.*",
+    "skfuzzy.*",
+    "sentence_transformers.*",
+    "datasets.*",
+    "gensim.*",
+    "umap.*",
 ]
 ignore_missing_imports = true
 

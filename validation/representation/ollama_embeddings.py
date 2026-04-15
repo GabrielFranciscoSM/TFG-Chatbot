@@ -17,7 +17,7 @@ class OllamaEmbeddings:
     def __init__(
         self,
         model: str = "nomic-embed-text",
-        host: str = "localhost",
+        host: str = "172.19.80.1",
         port: int = 11434,
         timeout: float = 30.0,
     ):

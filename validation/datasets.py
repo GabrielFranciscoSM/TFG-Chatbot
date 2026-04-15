@@ -8,7 +8,7 @@ class DatasetLoader:
     def load_dialogsum(self):
         # DialogSum: Conversations with clear topics
         print("Loading DialogSum...")
-        ds = load_dataset("knkarthick/dialogsum", split="train", trust_remote_code=True)
+        ds = load_dataset("knkarthick/dialogsum", split="train")
         df = pd.DataFrame(ds)
         # We use 'dialogue' as the text and 'topic' as the ground truth label
         return df[["dialogue", "topic"]].rename(
@@ -16,24 +16,40 @@ class DatasetLoader:
         )
 
     def load_stackoverflow(self, limit=5000):
-        # Stack Overflow: Technical Q&A
-        # Using a cleaned subset for efficiency
+        # Technical code/documentation corpus (CodeSearchNet Python subset)
         print("Loading Stack Overflow subset...")
-        ds = load_dataset(
-            "codesearchnet", "python", split="train", trust_remote_code=True
-        )
+        ds = load_dataset("code_search_net", "python", split="train")
         df = pd.DataFrame(ds).head(limit)
-        # Using docstrings/comments as the technical text
-        return (
-            df[["docstring"]]
-            .rename(columns={"docstring": "text"})
-            .assign(label="Technical")
+        # Keep compatibility across schema versions
+        text_col = next(
+            (
+                c
+                for c in [
+                    "func_documentation_string",
+                    "docstring",
+                    "whole_func_string",
+                    "func_code_string",
+                ]
+                if c in df.columns
+            ),
+            None,
         )
+        if text_col is None:
+            raise ValueError(
+                f"No text-like column found in code_search_net columns: {list(df.columns)}"
+            )
+
+        out = (
+            df[[text_col]].rename(columns={text_col: "text"}).assign(label="Technical")
+        )
+        out = out.dropna(subset=["text"])
+        out = out[out["text"].astype(str).str.strip().str.len() > 0]
+        return out.reset_index(drop=True)
 
     def load_esquad(self):
-        # ESQAD: Spanish Education Q&A
+        # Spanish QA fallback with stable parquet-backed source
         print("Loading ESQAD (Spanish)...")
-        ds = load_dataset("mrm8488/es_quad", split="train", trust_remote_code=True)
+        ds = load_dataset("google/xquad", "xquad.es", split="validation")
         df = pd.DataFrame(ds)
         # Using the 'question' field for clustering
         return (

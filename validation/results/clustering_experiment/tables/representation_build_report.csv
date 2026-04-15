@@ -1,0 +1,10 @@
+dataset,representation,shape,build_sec
+dialogsum,bow,"(1200, 1200)",0.16898491000029026
+dialogsum,tfidf,"(1200, 1200)",0.17254964200037648
+dialogsum,nomic,"(1200, 768)",241.5257166650008
+stackoverflow,bow,"(1125, 1200)",0.03350666700134752
+stackoverflow,tfidf,"(1125, 1200)",0.03160895499968319
+stackoverflow,nomic,"(1125, 768)",71.16399230899697
+esquad,bow,"(1184, 1200)",0.01817123999717296
+esquad,tfidf,"(1184, 1200)",0.016087068001070293
+esquad,nomic,"(1184, 768)",44.60721976199784

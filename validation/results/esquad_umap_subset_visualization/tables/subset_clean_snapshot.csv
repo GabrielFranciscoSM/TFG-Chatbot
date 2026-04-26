@@ -1,0 +1,501 @@
+text,label,char_len,tok_len,char_len_recomputed,tok_len_recomputed,char_len_match,tok_len_match
+"En Estados Unidos, ¿cuál es la velocidad habitual de una turbina con 60 Hertz de potencia?",Education_ES,90,16,90,16,True,True
+¿Cuándo visitó Obama a Kenia finalmente?,Education_ES,40,6,40,6,True,True
+¿Como qué libro fueron publicadas las siete conferencias en inglés de Iqbal?,Education_ES,76,12,76,12,True,True
+¿Qué porcentaje de la población de Varsovia era protestante en 1901?,Education_ES,68,11,68,11,True,True
+¿Qué sucedió cuando se asimilaron las cianobacterias?,Education_ES,53,7,53,7,True,True
+¿Cuánto pueden comer los ctenóforos en un día?,Education_ES,46,8,46,8,True,True
+¿Cómo se llama la zona cerca de la garganta del Rin con castillos de la Edad Media?,Education_ES,83,17,83,17,True,True
+¿Qué puesto ocupa Kenia en la escala en 2012?,Education_ES,45,9,45,9,True,True
+¿Qué investigador usó por primera vez la palabra oxígeno?,Education_ES,57,9,57,9,True,True
+¿Qué coche más grande inventó Toyota cuando los compradores se lamentaron de los compactos de tamaño pequeño?,Education_ES,109,17,109,17,True,True
+¿En qué año tuvo lugar la expulsión temporal de uno de los dos equipos de fútbol?,Education_ES,81,16,81,16,True,True
+¿De quién era Iqbal crítico?,Education_ES,28,5,28,5,True,True
+"Históricamente, ¿qué movimiento ha apoyado la Iglesia Metodista?",Education_ES,64,8,64,8,True,True
+¿Cuáles son dos ejemplos de vertebrados primitivos sin mandíbula?,Education_ES,65,9,65,9,True,True
+¿Cuáles eran las tarifas anuales de transporte para los canales?,Education_ES,64,10,64,10,True,True
+¿Cómo se llama un maestro en el budismo tibetano?,Education_ES,49,9,49,9,True,True
+¿Qué clase de francés emitió esta declaración?,Education_ES,46,7,46,7,True,True
+¿A qué se limita el compromiso de un gobierno incompetente con la justicia social?,Education_ES,82,14,82,14,True,True
+¿Quién cuestiona la noción de la hipótesis de la curva de Kuznets?,Education_ES,66,12,66,12,True,True
+¿Qué descendiente de Genghis Khan saqueó Bagdad?,Education_ES,48,7,48,7,True,True
+¿Cómo se abrevia el ADN del cloroplasto?,Education_ES,40,7,40,7,True,True
+¿Qué ancho de vía de ferrocarril utilizan dos líneas turísticas?,Education_ES,64,10,64,10,True,True
+"La desobediencia civil revolucionaria hacia la cultura se pone de relieve con el ejemplo de, ¿quién?",Education_ES,100,16,100,16,True,True
+"Aunque California del Sur consta de un entorno urbano muy desarrollado, ¿qué parte de este estado se ha dejado sin desarrollar?",Education_ES,127,21,127,21,True,True
+¿Cuáles son los medicamentos antiinflamatorios más potentes?,Education_ES,60,7,60,7,True,True
+¿Cuál es la fuente de calor habitual para hacer hervir el agua en la máquina de vapor?,Education_ES,86,17,86,17,True,True
+¿Quién fue contratado para ser el subdirector de la Oficina de Vuelo Espacial Tripulado?,Education_ES,88,14,88,14,True,True
+"Desde 2005, ¿cuál es el sexo del principal compañero de viaje de Doctor Who?",Education_ES,76,14,76,14,True,True
+¿A quién controlan los gurús?,Education_ES,29,5,29,5,True,True
+¿Quién era el segundo mayor productor de petróleo del mundo?,Education_ES,60,10,60,10,True,True
+"¿Cuánto más alta fue la tasa de deforestación de 2000 a 2005, en comparación con 1995 a 2000?",Education_ES,93,18,93,18,True,True
+¿En qué línea de yarda empezó Carolina con 4 min 51 s de tiempo restante en el marcador?,Education_ES,88,18,88,18,True,True
+¿Quién supervisa a un técnico farmacéutico en el Reino Unido?,Education_ES,61,10,61,10,True,True
+¿Cuánto más pesado es el oxígeno 18 que el oxígeno 16?,Education_ES,54,11,54,11,True,True
+¿Cómo controla Kenia la corrupción?,Education_ES,35,5,35,5,True,True
+¿A quiénes derrotaron los Broncos en el partido divisional?,Education_ES,59,9,59,9,True,True
+¿Quién dirigió el ataque de la colonia francesa en 1565?,Education_ES,56,10,56,10,True,True
+¿Qué tienen los ctenóforos actuales que los fósiles encontrados no tenían?,Education_ES,74,11,74,11,True,True
+¿Cómo se llamaba la creación de Du Pont sobre la pólvora?,Education_ES,57,11,57,11,True,True
+¿Cuántas naciones controlan esta región en total?,Education_ES,49,7,49,7,True,True
+¿Con qué estado inesperado había muchos chinos?,Education_ES,47,7,47,7,True,True
+¿Qué presentó Stiglitz en 2009 con respecto a la desigualdad mundial?,Education_ES,69,11,69,11,True,True
+¿Cuál fue la fuente del error?,Education_ES,30,6,30,6,True,True
+¿Qué comparte el ser Miembro del Parlamento de Escocia con la Cámara de los Comunes?,Education_ES,84,15,84,15,True,True
+¿Qué carece el Estado islámico de la comunidad internacional?,Education_ES,61,9,61,9,True,True
+¿Qué tradujo Marlee Matlin?,Education_ES,27,4,27,4,True,True
+¿Cuántas veces se produjo la peste en Venecia?,Education_ES,46,8,46,8,True,True
+¿Qué trató de abordar el Protocolo de Kyoto?,Education_ES,44,8,44,8,True,True
+"¿Cuál es el apellido del jugador que, en el último cuarto de partido, recuperó finalmente el balón perdido por Newton?",Education_ES,118,20,118,20,True,True
+¿En qué año fue lanzada la canción Fog on the Tyne?,Education_ES,51,11,51,11,True,True
+¿Quién recibió una propuesta en 1915?,Education_ES,37,6,37,6,True,True
+¿Qué tipo de seres se lleva el Doctor Who en sus viajes?,Education_ES,56,12,56,12,True,True
+¿Cuándo anunció Holden que cerraría su planta de Victoria?,Education_ES,58,9,58,9,True,True
+¿Cuándo alcanzaron su máximo los ataques a docentes?,Education_ES,52,8,52,8,True,True
+¿Cuál es el segundo aeropuerto más concurrido de Estados Unidos?,Education_ES,64,10,64,10,True,True
+¿Qué financiaron Lane y Vail?,Education_ES,29,5,29,5,True,True
+¿Qué porcentaje votó a favor de una Asamblea escocesa?,Education_ES,54,9,54,9,True,True
+¿En qué dirección se encuentra el barrio West Side de Fresno en la autopista 99?,Education_ES,80,15,80,15,True,True
+¿Qué estrella de cine reprodujo la lengua de signos para el himno nacional estadounidense en la Super Bowl 50?,Education_ES,110,19,110,19,True,True
+"¿Dónde se encuentran las Facultades de Medicina, Odontología y Salud Pública de Harvard?",Education_ES,88,13,88,13,True,True
+¿Cuál es generalmente la meta de aceptar un acuerdo de culpabilidad?,Education_ES,68,11,68,11,True,True
+"De acuerdo con lo que dice el texto, ¿cuántos premios Grammy ha ganado Lady Gaga?",Education_ES,81,15,81,15,True,True
+¿Cuántas juntas de examen existen en la India?,Education_ES,46,8,46,8,True,True
+"DEC originalmente tenía tres capas, pero ¿a cuántas capas evolucionó?",Education_ES,69,10,69,10,True,True
+¿Qué dos órganos rectores tienen poder de veto legislativo?,Education_ES,59,9,59,9,True,True
+¿Cuánto duró la lucha en la Guerra de los Siete Años?,Education_ES,53,11,53,11,True,True
+¿Cuál es el proceso de construcción de un edificio o infraestructura?,Education_ES,69,11,69,11,True,True
+¿Qué evidencia hay de que los cloroplastos descienden de las cianobacterias endosimbióticas?,Education_ES,92,12,92,12,True,True
+¿Cuál es un ejemplo de un virus que utiliza variación antigénica?,Education_ES,65,11,65,11,True,True
+¿Cuántas especies de árboles se pueden encontrar en la selva amazónica?,Education_ES,71,11,71,11,True,True
+¿Cuántos invitados asistieron a la cena de inauguración del Mercado del Grainger?,Education_ES,81,12,81,12,True,True
+¿En qué grupo pueden inscribirse los docentes en Gales?,Education_ES,55,9,55,9,True,True
+"¿A qué le dio el nombre de Tesla, la Conferencia General de Pesos y Medidas en 1960?",Education_ES,84,17,84,17,True,True
+¿A quién se considera el primer geólogo moderno?,Education_ES,48,8,48,8,True,True
+¿A quién se debe el nombre de Kearney Boulevard?,Education_ES,48,9,48,9,True,True
+¿Qué pasó durante la prueba de desconexión durante el retraso del olor del traje espacial?,Education_ES,90,15,90,15,True,True
+¿Cómo se documenta la apertura del Mercado del Grainger en la Galería de Arte Laing?,Education_ES,84,15,84,15,True,True
+¿Qué tipo de atmósfera ayudó a alimentar el fuego en toda la cabina?,Education_ES,68,13,68,13,True,True
+¿En qué se convirtió la fase II de DECnet?,Education_ES,42,9,42,9,True,True
+¿Cuál era la reputación de Tesla en la cultura popular?,Education_ES,55,10,55,10,True,True
+¿Cuál es el único divisor además de 1 que puede tener un número primo?,Education_ES,70,14,70,14,True,True
+¿Cuál fue el nombre dado a una sección de Kearney Boulevard en un esfuerzo por cambiar la imagen de la zona?,Education_ES,108,21,108,21,True,True
+¿Qué principio se basa en la aparición de fósiles en las rocas sedimentarias?,Education_ES,77,13,77,13,True,True
+¿Dónde se encuentra la sede del Polonia?,Education_ES,40,7,40,7,True,True
+¿En qué zona de esta colonia británica se encontraban las concesiones de tierras de los hugonotes?,Education_ES,98,16,98,16,True,True
+¿Cuándo se construyó el Centro de Atletismo Gerald Ratner?,Education_ES,58,9,58,9,True,True
+Diga el nombre de un extra que se añadió a la producción de los compactos.,Education_ES,74,15,74,15,True,True
+¿En qué año publicó James Hutton una versión de dos volúmenes de sus teorías?,Education_ES,77,14,77,14,True,True
+¿Como producto de qué se puede representar cualquier número mayor que 1?,Education_ES,72,12,72,12,True,True
+"El hecho de que no todos los fósiles puedan encontrarse globalmente al mismo tiempo hace que el principio se convierta en, ¿qué?",Education_ES,128,22,128,22,True,True
+¿Qué provoca el castigo físico en un estudiante?,Education_ES,48,8,48,8,True,True
+¿Por qué se disculpó el IPCC?,Education_ES,29,6,29,6,True,True
+¿En qué tipo de clima tiene mayores niveles de oxígeno 18 el agua de mar?,Education_ES,73,15,73,15,True,True
+¿Cuánto come un ctenóforo en un día?,Education_ES,36,7,36,7,True,True
+¿Qué ayudó al lama a decidir renacer?,Education_ES,37,7,37,7,True,True
+¿La proclamación de qué chamán ayudó al ascenso de Temujin?,Education_ES,59,10,59,10,True,True
+¿Qué porcentaje del producto interior bruto comprende la construcción?,Education_ES,70,9,70,9,True,True
+¿Cuál es un sinónimo de cloroplasto de ADN?,Education_ES,43,8,43,8,True,True
+¿A quién no beneficia la construcción de un proyecto que no se ajuste a los códigos?,Education_ES,84,16,84,16,True,True
+¿Cuándo se reflexionó sobre el complejo político-militar en el ámbito de la comprensión del imperialismo?,Education_ES,105,16,105,16,True,True
+¿Quién era el líder cuando los francos se adentraron en el valle del Éufrates?,Education_ES,78,14,78,14,True,True
+¿Cuál fue el spin-off de Happy Days que debutó en la década de 1980 en ABC?,Education_ES,75,17,75,17,True,True
+¿Qué dos compuestos diferenció Al-Muwaffaq?,Education_ES,43,6,43,6,True,True
+¿Cómo se llamaba la obra representada en los años 70?,Education_ES,53,10,53,10,True,True
+¿Cuándo renunció Pachauri como presidente del IPCC?,Education_ES,51,7,51,7,True,True
+¿Qué edad tenía Manning cuando jugó la Super Bowl 50?,Education_ES,53,10,53,10,True,True
+¿Qué selva tropical cubre la mayor parte de la cuenca del Amazonas en Sudamérica?,Education_ES,81,14,81,14,True,True
+¿Cómo se llama cuando hay un intento activo de derrocar un gobierno o un sistema de creencias?,Education_ES,94,17,94,17,True,True
+¿Dónde gobernó la dinastía Tran?,Education_ES,32,5,32,5,True,True
+¿Cuándo anunció BSkyB su intención de reemplazar sus canales digitales de emisión en abierto?,Education_ES,93,14,93,14,True,True
+"La desigualdad en presencia de las imperfecciones del mercado crediticio, ¿qué tipo de efecto tiene sobre la formación de capital humano?",Education_ES,137,21,137,21,True,True
+¿Qué tipo de cloroplastos tienen las diatomeas?,Education_ES,47,7,47,7,True,True
+¿Qué antiguo alumno de Harvard fue primer ministro palestino?,Education_ES,61,9,61,9,True,True
+¿De qué parte del sistema inmunológico se produjo la evolución en el antepasado evolutivo de los vertebrados maxilares?,Education_ES,119,18,119,18,True,True
+¿Qué tipo de oxígeno adquieren los animales marinos en mayor cantidad durante las condiciones climáticas más frías?,Education_ES,115,17,115,17,True,True
+¿Quién cantó el himno nacional estadounidense?,Education_ES,46,6,46,6,True,True
+¿En qué sentido se debe estar observando la curvatura del espacio-tiempo?,Education_ES,73,12,73,12,True,True
+¿Qué programa estadounidense cambió la visión de los rumanos durante la guerra fría?,Education_ES,84,13,84,13,True,True
+¿Cómo se llama el puente que une partes del campus del río Charles?,Education_ES,67,13,67,13,True,True
+¿Cuántos canales de radio y televisión podía tener el nuevo servicio digital?,Education_ES,77,12,77,12,True,True
+¿Qué cantidad de carbono del mundo se almacena en la selva amazónica?,Education_ES,69,12,69,12,True,True
+¿Qué lugar ocupa el Aeropuerto Internacional de Los Ángeles en la clasificación de los aeropuertos más concurridos en volumen de pasajeros internacionales?,Education_ES,155,22,155,22,True,True
+¿De qué manera se pueden codificar los gráficos?,Education_ES,48,8,48,8,True,True
+¿Cuándo se firmó el Tratado de Maastrich?,Education_ES,41,7,41,7,True,True
+¿Por qué los Hermanos Musulmanes han facilitado ceremonias de matrimonio en masa de bajo coste?,Education_ES,95,15,95,15,True,True
+¿En qué año recibió el V&A la colección Talbot Hughes?,Education_ES,54,11,54,11,True,True
+¿Cómo construyó Turabi una base económica sólida?,Education_ES,49,7,49,7,True,True
+¿Cuál es la medida que se usa para determinar lo concurridos que son los aeropuertos?,Education_ES,85,15,85,15,True,True
+¿Cuál es otro nombre para la autopista Yosemite?,Education_ES,48,8,48,8,True,True
+¿Qué es para los comités obtener pruebas de los testigos?,Education_ES,57,10,57,10,True,True
+"¿Cuál es la temperatura de entrada de la turbina de vapor, en grados centígrados?",Education_ES,81,14,81,14,True,True
+¿Cómo se enrutan los paquetes?,Education_ES,30,5,30,5,True,True
+¿Qué asesor del primer ministro británico también es miembro de la universidad?,Education_ES,79,12,79,12,True,True
+¿Dónde se sitúa la megalópolis de California del Sur en términos de población a escala nacional?,Education_ES,96,16,96,16,True,True
+¿Dónde está ubicada la Hyde Park Day School?,Education_ES,44,8,44,8,True,True
+¿Durante cuánto tiempo los hugonotes siguieron usando nombres franceses?,Education_ES,72,9,72,9,True,True
+"En China, ¿cómo se llamaba la persona que infirió que la tierra estaba formada por la erosión de las montañas y por la deposición de limo?",Education_ES,138,26,138,26,True,True
+¿Qué fue lo que se hizo para simular en el LC-34?,Education_ES,49,12,49,12,True,True
+¿Qué director general de Goldman Sachs también es alumno de la Universidad de Chicago?,Education_ES,86,14,86,14,True,True
+¿Qué informe tenía la fecha correcta?,Education_ES,37,6,37,6,True,True
+¿Qué equipo se expulsó temporalmente de la MLS?,Education_ES,47,8,47,8,True,True
+¿En qué año experimentó la Amazonia una sequía que puede haber sido más extrema que en 2005?,Education_ES,92,17,92,17,True,True
+¿De qué colores fue el logotipo de ABC de 2001?,Education_ES,47,10,47,10,True,True
+¿Qué debe tener un docente de la escuela pública como mínimo?,Education_ES,61,11,61,11,True,True
+¿Quién es el nuevo compañero para la 10.ª serie del resurgimiento?,Education_ES,66,12,66,12,True,True
+¿De qué dependen cada vez más los técnicos farmacéuticos?,Education_ES,57,9,57,9,True,True
+¿Qué es Internet2?,Education_ES,18,3,18,3,True,True
+"¿Por qué al grupo de estudiantes se le llamaba ""los metodistas""?",Education_ES,64,11,64,11,True,True
+¿Qué porcentaje de la población con derecho a voto de Escocia no votó realmente?,Education_ES,80,14,80,14,True,True
+"¿Quién, a su llegada, proporcionó una identidad común a los primeros colonos vikingos?",Education_ES,86,13,86,13,True,True
+¿Cuál es la ciudad importante de EE. UU. en la que se encuentra la universidad?,Education_ES,79,15,79,15,True,True
+¿Cuántos años tenía John Elway cuando jugó la Super Bowl XXXIII?,Education_ES,64,11,64,11,True,True
+¿El nuevo acuerdo incluye el vídeo bajo demanda y la alta definición?,Education_ES,69,12,69,12,True,True
+¿Hacia o desde qué pueden transferirse los campos globales generales?,Education_ES,69,10,69,10,True,True
+¿Cuál es la temperatura aproximada del condensador en una turbina?,Education_ES,66,10,66,10,True,True
+¿Cuál fue la primera batalla en 1754?,Education_ES,37,7,37,7,True,True
+"Aproximadamente, ¿cuántos nombres fueron firmados en una petición en línea en el sitio web del Parlamento en respuesta al cierre de la galería de instrumentos musicales?",Education_ES,169,26,169,26,True,True
+¿Quién fue el último Primer Ministro de Alemania del Este?,Education_ES,58,10,58,10,True,True
+"En el año 2000, ¿cuántos kilómetros cuadrados de la selva amazónica se habían perdido?",Education_ES,86,14,86,14,True,True
+¿Qué nombre también se usa para describir la selva amazónica en inglés?,Education_ES,71,12,71,12,True,True
+¿Cuál es la unidad básica de división territorial en Polonia?,Education_ES,61,10,61,10,True,True
+¿Qué tipo de grupo es el Estado Islámico?,Education_ES,41,8,41,8,True,True
+¿Qué himno escribió Lutero después del martirio de Esch y Voes?,Education_ES,63,11,63,11,True,True
+¿Qué escuchó el Parlamento del Reino Unido que era una suscripción a BSkyB?,Education_ES,75,13,75,13,True,True
+¿Qué organismo de la India proporciona directrices de política a las escuelas?,Education_ES,78,12,78,12,True,True
+¿Qué significa que un nudo se considere indescomponible?,Education_ES,56,8,56,8,True,True
+¿Cómo evolucionaron las creencias religiosas de los hugonotes en el Nuevo Mundo?,Education_ES,80,12,80,12,True,True
+¿Cuándo se desarrolló el oxígeno líquido para uso comercial?,Education_ES,60,9,60,9,True,True
+¿Por qué los ctenóforos son extremadamente raros como fósiles?,Education_ES,62,9,62,9,True,True
+¿Cuántos años tiene una persona para solicitar ser Miembro del Parlamento de Escocia?,Education_ES,85,13,85,13,True,True
+¿Quién escribió sobre la destilación del agua potable del agua de mar?,Education_ES,70,12,70,12,True,True
+¿Para qué nación reclamó Ribault inicialmente lo que ahora es Jacksonville?,Education_ES,75,11,75,11,True,True
+¿Qué director general de Microsoft es también un exalumno de la Universidad de Chicago?,Education_ES,87,14,87,14,True,True
+¿Qué ayuda a ejecutar el Urban Education Institute?,Education_ES,51,8,51,8,True,True
+"En la temporada 2015, ¿cuántas intercepciones consiguió la defensa de los Panthers?",Education_ES,83,12,83,12,True,True
+¿Cómo se llaman los tentáculos que han llamado los cidípidos?,Education_ES,61,10,61,10,True,True
+¿En qué otro lugar hizo pruebas el Apolo 1 además del Centro Espacial Kennedy?,Education_ES,78,14,78,14,True,True
+"De acuerdo con una revisión de 1955, ¿cuáles eran los ahorros que los ricos pensaban compensar?",Education_ES,95,16,95,16,True,True
+¿Quién perdió el balón en el tercer down a 9 yardas?,Education_ES,52,11,52,11,True,True
+¿Cuál es un ejemplo de un parásito que utiliza la estrategia de variación antigénica para evadir la destrucción?,Education_ES,112,18,112,18,True,True
+¿Qué poeta alemán era descendiente de hugonotes?,Education_ES,48,7,48,7,True,True
+¿Cuántos pasajeros al año transporta la red ferroviaria de Newcastle?,Education_ES,69,10,69,10,True,True
+¿Qué directiva mencionada se creó en 1994?,Education_ES,42,7,42,7,True,True
+¿Dónde se centraban las poblaciones en las colonias?,Education_ES,52,8,52,8,True,True
+¿Cuándo se sometió Renania al Tratado de Versalles?,Education_ES,51,8,51,8,True,True
+¿Cómo se llamaba el episodio de la primera partitura de Doctor Who de Simpson?,Education_ES,78,14,78,14,True,True
+¿Qué nombre le pusieron a la mitad occidental de la colonia?,Education_ES,60,11,60,11,True,True
+"La tendencia moderna en el diseño es hacia la integración, ¿de qué?",Education_ES,67,12,67,12,True,True
+¿Qué son Branko Milanovic y Joseph Stiglitz?,Education_ES,44,7,44,7,True,True
+¿Qué proceso de soldadura se demostró en 1901?,Education_ES,46,8,46,8,True,True
+¿Por qué razón los anarquistas no quieren aceptar el castigo?,Education_ES,61,10,61,10,True,True
+¿Cómo apoyaban las sociedades geográficas de Europa a determinados viajeros?,Education_ES,76,10,76,10,True,True
+¿Cuántos kilómetros cuadrados de selva tropical están cubiertos en la cuenca?,Education_ES,77,11,77,11,True,True
+¿Qué nos muestran los cloroplastos perdidos?,Education_ES,44,6,44,6,True,True
+"En 2005, ¿cuál era la condición de su planeta natal?",Education_ES,52,10,52,10,True,True
+¿Cuál es la eficiencia teórica de Carnot de una turbina?,Education_ES,56,10,56,10,True,True
+¿Cuántas especies se encontraron en el esquisto de Burgess?,Education_ES,59,9,59,9,True,True
+"Aproximadamente, ¿cuántos instrumentos musicales fueron prestados al Museo Horniman?",Education_ES,84,9,84,9,True,True
+¿Para quién fue escrito el informe médico?,Education_ES,42,7,42,7,True,True
+¿Cuál es el nombre de un algoritmo útil para probar adecuadamente la primalidad de los números grandes?,Education_ES,103,17,103,17,True,True
+¿Quién detuvo el avance de Hulagu Khan a través del Medio Oriente?,Education_ES,66,12,66,12,True,True
+¿Quién era el hijo de Ayurbarwada?,Education_ES,34,6,34,6,True,True
+¿Qué prueban los genes donados?,Education_ES,31,5,31,5,True,True
+¿Por qué se creó esta organización a corto plazo?,Education_ES,49,9,49,9,True,True
+¿Qué entidades han tenido que desarrollar principios dedicados a la resolución de conflictos entre leyes de diferentes sistemas?,Education_ES,128,18,128,18,True,True
+¿Quién fue contratado para producir la identidad 2001-02 de ABC?,Education_ES,64,11,64,11,True,True
+¿Cómo se conoce al conjunto de receptores de los primitivos vertebrados sin mandíbula?,Education_ES,86,13,86,13,True,True
+¿Qué tipo de ciudad ha sido siempre Varsovia desde su existencia?,Education_ES,65,11,65,11,True,True
+¿Cómo se llama el grupo que no está de acuerdo con el gobierno en absoluto?,Education_ES,75,15,75,15,True,True
+¿Qué son las comisiones del Parlamento escocés en comparación con otros sistemas?,Education_ES,81,12,81,12,True,True
+¿Cuáles son dos ejemplos de medicamentos citotóxicos o inmunosupresores?,Education_ES,72,9,72,9,True,True
+¿En qué año Tesla recibió una propuesta para el premio Nobel?,Education_ES,61,11,61,11,True,True
+¿Cómo se llama la primera serie de Doctor Who?,Education_ES,46,9,46,9,True,True
+¿Qué herramienta utilizan los estratigrafistas para ver sus datos en tres dimensiones?,Education_ES,86,12,86,12,True,True
+¿En qué años se incorporaron España y Portugal a la Unión Europea?,Education_ES,66,12,66,12,True,True
+"¿Qué había originalmente en los trajes espaciales antes del casco transparente ""pecera""?",Education_ES,88,12,88,12,True,True
+"Inspirada por Shelley, ¿cómo se llamaba la doctrina de Gandhi?",Education_ES,62,10,62,10,True,True
+¿Por qué se necesita la segunda línea de tiempo?,Education_ES,48,9,48,9,True,True
+¿Qué drama de Aaron Spelling debutó en ABC en los años 80?,Education_ES,58,12,58,12,True,True
+¿Qué tienden a ser las sociedades extremadamente desiguales?,Education_ES,60,8,60,8,True,True
+¿En qué año reconoció Joseph Priestley el oxígeno?,Education_ES,50,8,50,8,True,True
+¿Cuál fue el primer cabaret literario de Varsovia?,Education_ES,50,8,50,8,True,True
+¿De qué tipo de protesta se considera su poema pionero?,Education_ES,55,10,55,10,True,True
+¿De qué otra manera se puede llamar a la cadena de una instancia?,Education_ES,65,13,65,13,True,True
+¿Cuál es el término para un sistema inmunológico hiperactivo que ataca los tejidos normales?,Education_ES,92,14,92,14,True,True
+¿Qué mar bordeaba el imperio de Genghis Khan al este cuando murió?,Education_ES,66,12,66,12,True,True
+¿Durante qué década el campus comenzó a parecer más moderno?,Education_ES,60,10,60,10,True,True
+¿Quién sustrajo el balón a Newton en el tercer down a nueve yardas?,Education_ES,67,13,67,13,True,True
+¿Cómo puede ser reformulado un problema de función?,Education_ES,51,8,51,8,True,True
+¿Cuál es la teoría más reciente y más ampliamente aceptada para la propagación de la plaga?,Education_ES,91,16,91,16,True,True
+¿Cuáles son ejemplos de células efectoras diferenciadas que alcanzan su punto máximo durante los períodos de vigilia?,Education_ES,117,17,117,17,True,True
+¿Cuánto tiempo tardan las nuevas zonas en tener una producción de petróleo significativa?,Education_ES,89,13,89,13,True,True
+"En cuanto a la codificación de objetos matemáticos, ¿De qué manera se expresan normalmente los números enteros?",Education_ES,111,17,111,17,True,True
+¿Cuándo terminó el último glaciar?,Education_ES,34,5,34,5,True,True
+¿Qué significa rodófito?,Education_ES,24,3,24,3,True,True
+¿Qué bandas sonoras opcionales incluyen también Sky Movies y Sky Box Office?,Education_ES,76,12,76,12,True,True
+¿Qué autor famoso usó la similitud y semejanza de Percy Shelly en sus escritos?,Education_ES,79,14,79,14,True,True
+¿Quién es el presidente del IPCC?,Education_ES,33,6,33,6,True,True
+"Junto con el calor residual de la energía nuclear, geotérmica y de los motores de combustión interna, ¿qué tipo de energía podría suministrar el calor para una máquina de vapor?",Education_ES,177,30,177,30,True,True
+¿De qué puede contrarrestar la melatonina activamente su producción?,Education_ES,68,9,68,9,True,True
+¿Qué batalla perdió Temujin contra Jamukha poco después de su elección como khan?,Education_ES,81,13,81,13,True,True
+¿Cuántos hugonotes habían huido de Francia a principios del siglo XVIII?,Education_ES,72,11,72,11,True,True
+¿Qué ganó la Universidad de Newcastle en 2000?,Education_ES,46,8,46,8,True,True
+¿Quién fue el primer mariscal de campo en llevar a dos equipos a más de una Super Bowl?,Education_ES,87,18,87,18,True,True
+¿Qué indican las pruebas que no son los cidípidos?,Education_ES,50,9,50,9,True,True
+¿Qué tipo de papel busca el islamismo para convertirlo en un concepto algo controvertido?,Education_ES,89,14,89,14,True,True
+¿Qué ocurre después de una inmersión en la que un buzo se descomprime demasiado rápido?,Education_ES,87,15,87,15,True,True
+¿Qué término se utiliza para definir una tarea que puede ser resuelta por un ordenador?,Education_ES,87,15,87,15,True,True
+¿Durante qué periodo tiene lugar el Pleistoceno?,Education_ES,48,7,48,7,True,True
+¿Quién ganó la Ekstraklasa en el año 2000?,Education_ES,42,8,42,8,True,True
+¿Qué religión difundieron los franceses junto con su imperialismo?,Education_ES,66,9,66,9,True,True
+¿Qué les dijo Lutero a los monjes y las monjas sobre sus votos?,Education_ES,63,13,63,13,True,True
+¿De qué manera argumenta Brownlee que las personas se comportan a veces para que se escuche su problema?,Education_ES,104,18,104,18,True,True
+¿Cuándo se publicaron algunas de las obras más conocidas de Lutero?,Education_ES,67,11,67,11,True,True
+¿Qué sucede cuando el sistema inmunológico está menos activo de lo normal?,Education_ES,74,12,74,12,True,True
+¿Por qué motivo se estaban celebrando actuaciones judiciales ante el tribunal superior?,Education_ES,87,12,87,12,True,True
+¿Cuál es una forma simple de desobediencia civil?,Education_ES,49,8,49,8,True,True
+¿Qué tema suelen tener las proposiciones de ley?,Education_ES,48,8,48,8,True,True
+¿Quién diseñó el nuevo diseño gráfico de ABC para 1998?,Education_ES,55,10,55,10,True,True
+¿Como suma de qué se escribe la fuerza electrostática y magnética?,Education_ES,66,11,66,11,True,True
+¿Qué tipo de bosque es la selva amazónica?,Education_ES,42,8,42,8,True,True
+¿En qué batalla fueron derrotados los mongoles por los Tran?,Education_ES,60,10,60,10,True,True
+¿Cuál fue el último episodio de Doctor Who para el que Dudley Simpson escribió música?,Education_ES,86,15,86,15,True,True
+¿En qué año John Sheepshanks donó una gran colección de pinturas?,Education_ES,65,11,65,11,True,True
+¿Qué significa 'plástido'?,Education_ES,26,3,26,3,True,True
+¿Qué hay que hacer para asegurar que los miembros más pobres de la sociedad puedan participar en el crecimiento económico?,Education_ES,122,20,122,20,True,True
+¿A cuántos equipos diferentes llevo Peyton Manning a la Super Bowl?,Education_ES,67,11,67,11,True,True
+¿Quién tenía el récord anterior de ser el mariscal de campo más longevo en jugar la Super Bowl?,Education_ES,95,18,95,18,True,True
+¿Qué pensaba la agencia de prestaciones que significaban los canales de deportes en la factura de la suscripción a la televisión?,Education_ES,129,21,129,21,True,True
+¿Cuándo se estableció el Convenio Europeo de Derechos Humanos?,Education_ES,62,9,62,9,True,True
+"En un problema computacional, ¿qué es lo que se describe como un cadena de elementos de un alfabeto?",Education_ES,100,18,100,18,True,True
+¿Cuál fue el resultado de las elecciones de 2007?,Education_ES,49,9,49,9,True,True
+¿Cuáles fueron los años en que se originaron dos Reglamentos que entraron en conflicto con una ley italiana en el caso Simmenthal SpA?,Education_ES,134,23,134,23,True,True
+¿Cuántos balones interceptó Josh Norman?,Education_ES,40,5,40,5,True,True
+¿Qué porcentaje de tierra despejada en la Amazonía se utiliza para el cultivo de ganado?,Education_ES,88,15,88,15,True,True
+¿De qué grupo es exguitarrista principal el oriundo de Newcastle Andy Taylor?,Education_ES,77,12,77,12,True,True
+"¿Qué es un ""primo gemelo""?",Education_ES,26,5,26,5,True,True
+¿Qué río corre a lo largo de Jacksonville?,Education_ES,42,8,42,8,True,True
+"La desagregación escolar en Estados Unidos condujo a un aumento en el número de estudiantes en las escuelas públicas, ¿de qué etnia?",Education_ES,132,22,132,22,True,True
+¿Quién influyó en la promoción del uso de compuestos químicos como medicamentos?,Education_ES,80,12,80,12,True,True
+¿Cuál es la palabra holandesa para referirse a la selva amazónica?,Education_ES,66,11,66,11,True,True
+¿Cuándo fue elegido por Nixon?,Education_ES,30,5,30,5,True,True
+¿Qué tipo de modelos autoconsistentes están tratando de hacer los físicos para crear una teoría de todo?,Education_ES,104,17,104,17,True,True
+¿Qué barrio se encuentra al oeste de la autopista 41?,Education_ES,53,10,53,10,True,True
+¿Cuál era el nombre del castillo normando?,Education_ES,42,7,42,7,True,True
+¿Quién es el autor de Liber Servitoris?,Education_ES,39,7,39,7,True,True
+¿Para qué se usan los cilios?,Education_ES,29,6,29,6,True,True
+¿Qué tribus temían los romanos que invadieran desde el Norte?,Education_ES,61,10,61,10,True,True
+¿En qué año se aprobó la Ley de Escuelas de Sudáfrica?,Education_ES,54,11,54,11,True,True
+¿Qué nombre se le daría al fuerte que se estaba construyendo?,Education_ES,61,11,61,11,True,True
+¿Qué significa cloroplástida?,Education_ES,29,3,29,3,True,True
+¿Qué fuerza magnética y eléctrica actúan sobre una carga?,Education_ES,57,9,57,9,True,True
+¿Qué estándar usa la mayor parte del material en alta definición?,Education_ES,65,11,65,11,True,True
+¿Qué presidente de Columbia fue a Harvard?,Education_ES,42,7,42,7,True,True
+¿Qué se incluye con cada etiqueta de paquete?,Education_ES,45,8,45,8,True,True
+¿De qué nacionalidad eran los artistas de las pinturas donadas por John Sheepshanks?,Education_ES,84,13,84,13,True,True
+Nombre una división de lujo de Toyota.,Education_ES,38,7,38,7,True,True
+¿Qué jugador de los Panthers cometió un penalti que dio a los Broncos una nueva serie de downs?,Education_ES,95,18,95,18,True,True
+¿Cuánto tiempo quedaba de partido cuando Denver puso el resultado en 24-10?,Education_ES,75,13,75,13,True,True
+¿Quién es el vicepresidente del IPCC?,Education_ES,37,6,37,6,True,True
+¿Qué aeropuerto alberga la pista única más concurrida del mundo?,Education_ES,64,10,64,10,True,True
+¿Quién fue el líder en derribos de los Panthers en 2015?,Education_ES,56,11,56,11,True,True
+¿Cómo se llaman los pelos de los ctenóforos?,Education_ES,44,8,44,8,True,True
+¿Dónde está la sintonía de cuatro notas de ABC todavía en uso?,Education_ES,62,12,62,12,True,True
+¿Qué tipo de elemento calefactor se utiliza a menudo en las máquinas de vapor de juguete?,Education_ES,89,16,89,16,True,True
+¿Cuántas naciones hay en la cuenca del Amazonas?,Education_ES,48,8,48,8,True,True
+Nombre una forma en la que la organización de Plowshares cerró temporalmente GCSB Waihopai.,Education_ES,91,14,91,14,True,True
+¿Cómo fue en 1979 el intento de establecer una Asamblea escocesa descentralizada?,Education_ES,81,12,81,12,True,True
+¿Qué tipo de castigo se ofrece a veces a los desobedientes civiles?,Education_ES,67,12,67,12,True,True
+¿Cómo se llamaba la primera red de Internet2?,Education_ES,45,8,45,8,True,True
+¿Qué significa ctenóforo en griego?,Education_ES,35,5,35,5,True,True
+¿Cuándo se celebraron las primeras elecciones directas?,Education_ES,55,7,55,7,True,True
+¿Quién no puede tratar los temas que se tratan en Westminster?,Education_ES,62,11,62,11,True,True
+¿En qué país se encuentra la mayor parte de la selva amazónica?,Education_ES,63,12,63,12,True,True
+¿Dónde nació Friedrich Ratzel?,Education_ES,30,4,30,4,True,True
+¿Quién ayudó a diseñar los cuadrángulos principales?,Education_ES,52,7,52,7,True,True
+¿Qué porcentaje representa el Amazonas en las selvas tropicales del planeta?,Education_ES,76,11,76,11,True,True
+¿Cuándo fue declarado este edicto?,Education_ES,34,5,34,5,True,True
+¿Quién dirige el Estado Islámico?,Education_ES,33,5,33,5,True,True
+¿Qué incluye la cartera de deporte de BSkyB?,Education_ES,44,8,44,8,True,True
+¿Cuál es el proceso por el cual se evade el sistema inmunológico adaptativo mediante el encadenamiento de los llamados epítopos no esenciales?,Education_ES,142,22,142,22,True,True
+¿Cuántos derribos se anotó Luke Kuechly?,Education_ES,40,6,40,6,True,True
+¿Quién lideró a los Panthers en capturas?,Education_ES,41,7,41,7,True,True
+¿Dónde tiene su sede Energiprojekt AB?,Education_ES,38,6,38,6,True,True
+¿Qué teorema define el papel principal de los primos en la teoría de números?,Education_ES,77,14,77,14,True,True
+¿Cuál es el tiempo de cambio de carga eléctrica?,Education_ES,48,9,48,9,True,True
+¿Cuántas escuelas públicas chárter lleva la universidad?,Education_ES,56,7,56,7,True,True
+¿A qué deporte se dedican Los Angeles Angels of Anaheim?,Education_ES,56,10,56,10,True,True
+"Se critica que las políticas energéticas son soluciones rápidas y costosas que ignoran, ¿qué hechos?",Education_ES,100,15,100,15,True,True
+¿A quiénes derrotaron los Broncos para convertirse en los campeones de la AFC?,Education_ES,78,13,78,13,True,True
+"La Iglesia apoya a las personas que se oponen concienzudamente, ¿a qué?",Education_ES,71,12,71,12,True,True
+¿Qué término se refiere a los ciudadanos de clase media que abandonan los suburbios?,Education_ES,84,14,84,14,True,True
+¿Con qué se asocian los períodos de crecimiento más prolongados?,Education_ES,64,10,64,10,True,True
+¿Qué compila y presenta datos sobre el tamaño de las empresas de diseño y construcción?,Education_ES,87,15,87,15,True,True
+"¿Cuántas personas, como mucho, han muerto de peste en Bagdad?",Education_ES,61,10,61,10,True,True
+¿Cuántos kilómetros cuadrados de la selva amazónica se perdieron en 1991?,Education_ES,73,11,73,11,True,True
+"Después de la masacre de Peterloo, ¿qué poeta escribió La masacre de la anarquía?",Education_ES,81,14,81,14,True,True
+¿Cuándo fue el último brote de la plaga?,Education_ES,40,8,40,8,True,True
+¿Por qué es conocida la garganta del Rin?,Education_ES,41,8,41,8,True,True
+¿Cuál era la población blanca de Jacksonville en 2010?,Education_ES,54,9,54,9,True,True
+¿Cuáles son las excepciones de la Constitución que requieren consideraciones especiales para ser enmendadas?,Education_ES,108,14,108,14,True,True
+¿Qué gobernante alemán invitó a la inmigración hugonote?,Education_ES,56,8,56,8,True,True
+¿A quiénes derrotaron los Broncos en el Campeonato de la AFC?,Education_ES,61,11,61,11,True,True
+¿Desde dónde les gustaría a los científicos medir el resplandor de la vegetación?,Education_ES,81,13,81,13,True,True
+¿Qué tipo de profesional se considera un técnico de farmacia?,Education_ES,61,10,61,10,True,True
+¿Qué cantó Lady Gaga?,Education_ES,21,4,21,4,True,True
+¿A qué se conectan los estatores?,Education_ES,33,6,33,6,True,True
+¿Dónde vivió Tesla la mayor parte de su vida?,Education_ES,45,9,45,9,True,True
+¿Quién interpretó el himno nacional de Estados Unidos en la Super Bowl 50?,Education_ES,74,13,74,13,True,True
+¿Cuántas personas murieron de peste en París en 1466?,Education_ES,53,9,53,9,True,True
+¿De qué tipo de equipo deportivo son un ejemplo Los Angeles Rams?,Education_ES,65,12,65,12,True,True
+¿Qué hacia Tesla Electric Light & Manufacturing?,Education_ES,48,6,48,6,True,True
+¿Cuántas personas fallecieron en Argel entre 1620 y 1621?,Education_ES,57,9,57,9,True,True
+¿Quién fue el primer estadounidense en ganar el Premio Nobel de Ciencias Económicas?,Education_ES,84,13,84,13,True,True
+¿Quién es el presidente de TUMAS?,Education_ES,33,6,33,6,True,True
+¿Cuál es el apellido del jugador que anotó un touchdown de 2 yardas en el último cuarto?,Education_ES,88,17,88,17,True,True
+¿Cuántas fases abrió el Metro entre 1980 y 1984?,Education_ES,48,9,48,9,True,True
+¿Bajo la dirección de qué persona los húngaros llevaron a cabo esta desobediencia civil?,Education_ES,88,14,88,14,True,True
+"Antes de la llegada de los franceses, la zona ahora conocida como Jacksonville estaba habitada anteriormente por ¿qué pueblo?",Education_ES,125,19,125,19,True,True
+¿Cuánto duró la peste en el imperio otomano?,Education_ES,44,8,44,8,True,True
+¿Qué enemigo del Doctor Who también es un Señor del Tiempo?,Education_ES,59,11,59,11,True,True
+¿Qué tipo de modelo de física no logró hacer Einstein?,Education_ES,54,10,54,10,True,True
+¿Cuál era la teoría de Norman Cantor sobre la peste?,Education_ES,52,10,52,10,True,True
+¿Cómo se llamaba el trabajo de Ghandi?,Education_ES,38,7,38,7,True,True
+¿Cuándo tuvo lugar Costa contra ENEL?,Education_ES,37,6,37,6,True,True
+¿Qué grupo de personas cometió desobediencia civil revolucionaria contra el gobierno austriaco?,Education_ES,95,12,95,12,True,True
+¿Cómo se llaman los números mayores de 1 que se pueden dividir por 3 o más números?,Education_ES,83,17,83,17,True,True
+¿Qué escuela de política pública encontró su hogar en el edificio que diseñó Ludwig Mies van der Rohe?,Education_ES,102,18,102,18,True,True
+"En una turbina de vapor, ¿en qué se montan los rotores?",Education_ES,55,11,55,11,True,True
+¿En qué episodio Dudley Simpson interpretó a un director musical?,Education_ES,65,10,65,10,True,True
+¿De qué vicecónsul sudafricano bloquearon los estudiantes de Harvard el discurso?,Education_ES,81,11,81,11,True,True
+"¿Cómo se llamaba la esposa de Temujin, el primer hijo de Börte?",Education_ES,63,12,63,12,True,True
+¿Con qué organismo debe registrarse un técnico farmacéutico?,Education_ES,60,8,60,8,True,True
+¿Cuántos tratados originales por los que se estableció la UE protegían los derechos fundamentales?,Education_ES,98,14,98,14,True,True
+¿Qué son los clades?,Education_ES,20,4,20,4,True,True
+¿Qué jugador de los Panthers fue amonestado por agarrón en el tercer down?,Education_ES,74,13,74,13,True,True
+"Además del Mar del Norte y el Canal de Irlanda, ¿qué más se redujo en la última fase fría?",Education_ES,90,19,90,19,True,True
+¿Qué sucedió para que la Bolsa de Valores de Varsovia parara su actividad?,Education_ES,74,13,74,13,True,True
+¿Quién fue responsable de los nuevos proyectos de construcción en Jacksonville?,Education_ES,79,11,79,11,True,True
+¿Qué pasó con la tripulación a bordo durante la prueba de desconexión?,Education_ES,70,12,70,12,True,True
+"La crisis del petróleo hizo que las compañías petroleras aumentaran el suministro de petróleo, ¿en qué zona?",Education_ES,108,17,108,17,True,True
+¿Qué tipo de división de poder tenía el gobierno de Kublai?,Education_ES,59,11,59,11,True,True
+¿Cuándo se naturalizaron estos colonos como colonos ingleses?,Education_ES,61,8,61,8,True,True
+¿Cómo y cuándo entró en Europa la primera variante de y. pestis?,Education_ES,64,12,64,12,True,True
+¿Quién apoyó las políticas que tienen soluciones que suenan bien pero que tienen malas perspectivas?,Education_ES,100,15,100,15,True,True
+¿Qué cepas de y. pestis se encontraron en las fosas comunes?,Education_ES,60,11,60,11,True,True
+¿Adónde fue transferido el V&A desde su ubicación original en Marlborough House?,Education_ES,80,13,80,13,True,True
+¿Cuánta comida toma un ctenóforo en un día?,Education_ES,43,8,43,8,True,True
+¿Qué moléculas del sistema inmunológico adaptativo solo existen en los vertebrados maxilares?,Education_ES,93,12,93,12,True,True
+¿Cómo llamó Lutero a la misa en vez de sacrificio?,Education_ES,50,10,50,10,True,True
+¿Cuál es el apodo del logotipo de la campaña de 2000 de ABC?,Education_ES,60,13,60,13,True,True
+¿De dónde nombró el presidente a los miembros del gabinete?,Education_ES,59,10,59,10,True,True
+¿Cuándo volvió la gente a interesarse otra vez por Tesla?,Education_ES,57,10,57,10,True,True
+¿Qué llevaban los astronautas durante la misión dual AS-278?,Education_ES,60,10,60,10,True,True
+¿Qué podría comprarse con el Programa suplementario de asistencia nutricional?,Education_ES,78,10,78,10,True,True
+¿Qué puede derivarse de los trastornos del sistema inmunológico?,Education_ES,64,9,64,9,True,True
+¿Qué miembro del Parlamento explicó cómo el museo preservaría la colección y la mantendría a disposición del público?,Education_ES,117,18,117,18,True,True
+¿Qué mercado anterior sustituyó el Mercado del Grainger?,Education_ES,56,8,56,8,True,True
+¿Qué enfermedades creen muchos científicos que contribuyeron a la pandemia de peste?,Education_ES,84,12,84,12,True,True
+¿Adónde fue la descarga de los glaciares en Europa en la última Edad de Hielo?,Education_ES,78,15,78,15,True,True
+¿Cuándo cerrarán las plantas de fabricación de Ford?,Education_ES,52,8,52,8,True,True
+¿Por qué la colección está dominada por ropa de moda hecha para ocasiones especiales?,Education_ES,85,14,85,14,True,True
+¿Qué tipo de súplica se toma a veces como un acto de desobediencia?,Education_ES,67,13,67,13,True,True
+¿Qué dispositivo se utiliza para tratar diversas afecciones como la intoxicación por monóxido de carbono?,Education_ES,105,15,105,15,True,True
+¿Cómo se financian las ergänzungsschulen?,Education_ES,41,5,41,5,True,True
+¿Cuántos de los electores escoceses tendrían que votar a favor en el referéndum?,Education_ES,80,13,80,13,True,True
+¿Cuál es el secreto del crecimiento económico?,Education_ES,46,7,46,7,True,True
+"Tras rechazar la confesión obligatoria, ¿qué propugnó Lutero?",Education_ES,61,8,61,8,True,True
+¿Cómo se llama el alfabeto usado normalmente en una instancia?,Education_ES,62,10,62,10,True,True
+¿De qué son miembros los ancianos en conexión plena?,Education_ES,52,9,52,9,True,True
+¿Qué proporción de médicos se estima que administran medicamentos por su cuenta?,Education_ES,80,12,80,12,True,True
+¿Cuántos linajes de cloroplastos hay?,Education_ES,37,5,37,5,True,True
+¿Cuántas veces ganó la copa el Polonia?,Education_ES,39,7,39,7,True,True
+¿Cuándo se fundó la Oficina de Medicina Occidental?,Education_ES,51,8,51,8,True,True
+¿A qué se opone la UMC por ser incompatible con la enseñanza de las Escrituras?,Education_ES,79,15,79,15,True,True
+¿Qué efecto secundario de este tipo de protestas es desafortunado?,Education_ES,66,10,66,10,True,True
+¿Cuántos años tenía Peyton Manning cuando jugó la Super Bowl 50?,Education_ES,64,11,64,11,True,True
+¿Qué exigía la Directiva sobre el comité de empresa?,Education_ES,52,9,52,9,True,True
+¿Qué normas puede exigir un colegio subvencionado que cumplan los docentes para tener una elevada cualificación?,Education_ES,112,16,112,16,True,True
+¿Qué partido político tiene más apoyo en la periferia de clase trabajadora de Melbourne?,Education_ES,88,14,88,14,True,True
+¿Cuál es el límite de fluencia de 565 °C?,Education_ES,41,9,41,9,True,True
+¿Qué productor de petróleo es un aliado cercano de los Estados Unidos?,Education_ES,70,12,70,12,True,True
+¿A qué longitud de onda llegan las bandas espectrofotométricas?,Education_ES,63,9,63,9,True,True
+¿Qué otro líder protestante europeo fue educado en la Universidad de París?,Education_ES,75,12,75,12,True,True
+¿Qué culturas formaron parte de la administración de Kublai?,Education_ES,60,9,60,9,True,True
+¿Cuántas universidades tiene Newcastle?,Education_ES,39,4,39,4,True,True
+¿Cuál ha sido la razón principal del cambio a la opinión de que la desigualdad de ingresos perjudica el crecimiento?,Education_ES,116,20,116,20,True,True
+"Para un campo F que contenga 0 y 1, ¿cuál sería el campo primario?",Education_ES,66,14,66,14,True,True
+¿Qué Doctor Who fue escrito sin el Doctor Who en él?,Education_ES,52,11,52,11,True,True
+¿Qué banda se considera a menudo como el primer grupo de folk metal?,Education_ES,68,13,68,13,True,True
+¿En qué año el nieto de Genghis Khan invadió Kievan Rus'?,Education_ES,57,11,57,11,True,True
+¿En qué exposición mundial tiene su origen el V&A?,Education_ES,50,10,50,10,True,True
+¿Cuál es el término para una escuela privada india?,Education_ES,51,9,51,9,True,True
+¿Cuáles fueron los desarrollos en los que los científicos influyeron en la creación de la farmacología en el Islam medieval?,Education_ES,124,20,124,20,True,True
+¿Qué jugador fue criticado por no saltar a la pila para recuperar el balón?,Education_ES,75,14,75,14,True,True
+¿Cuándo empezó a calentarse lentamente Europa desde la última Edad de Hielo?,Education_ES,76,12,76,12,True,True
+¿Qué aspecto de la medicina occidental no les gustaba a los chinos?,Education_ES,67,12,67,12,True,True
+"Después de 1935, ¿a quién se le prohibiría entrar en Renania?",Education_ES,61,11,61,11,True,True
+¿Quién decide cómo se permite el uso de la tierra o de la propiedad?,Education_ES,68,14,68,14,True,True
+¿Qué tratan de separar los progresistas moderados del Islam?,Education_ES,60,9,60,9,True,True
+¿Qué compañía desarrolló el indicador de motor de vapor más exitoso?,Education_ES,68,11,68,11,True,True
+¿En qué se basa la Constitución de Victoria?,Education_ES,44,8,44,8,True,True
+¿Qué filosofías subyacen a la medicina china?,Education_ES,45,7,45,7,True,True
+¿Quién fue el fundador de Oracle Corporation?,Education_ES,45,7,45,7,True,True
+¿Cuántos cilindros tiene el motor Energiprojekt AB?,Education_ES,51,7,51,7,True,True
+¿Qué tipo de red utiliza la X.25?,Education_ES,33,8,33,8,True,True
+¿Cómo se llamaba el estadio en el que jugaron los equipos?,Education_ES,58,11,58,11,True,True
+¿Cómo surgieron los principales tratados que conforman la Unión Europea?,Education_ES,72,10,72,10,True,True
+¿Qué plataforma planeaba lanzar Setanta Sports?,Education_ES,47,6,47,6,True,True
+¿En qué siglo establecieron los misioneros escuelas eclesiásticas en Sudáfrica?,Education_ES,79,10,79,10,True,True
+¿Qué usan los beroides como dientes?,Education_ES,36,6,36,6,True,True
+¿Cuál es el trabajo de Thomas Piketty?,Education_ES,38,7,38,7,True,True
+¿Qué limita la eficiencia del ciclo Rankine?,Education_ES,44,7,44,7,True,True
+¿Quién era el líder del régimen islamista en Sudán?,Education_ES,51,9,51,9,True,True
+¿Qué les faltaba a los fósiles encontrados en el esquisto de Burgess?,Education_ES,69,12,69,12,True,True
+"Cuando se detiene a mucha gente, ¿cuál es una táctica común de negociación?",Education_ES,75,13,75,13,True,True
+¿Cuál fue el nombre del famoso sermón de Wesley en el que advirtió contra los peligros de la bebida?,Education_ES,100,19,100,19,True,True
+¿Cómo argumentaba Hobson para librar al mundo del imperialismo?,Education_ES,63,9,63,9,True,True
+¿Qué partido tiene más apoyo en las zonas acomodadas de Melbourne?,Education_ES,66,11,66,11,True,True
+¿Qué tarda más tiempo en lograr un país con alta desigualdad?,Education_ES,61,11,61,11,True,True
+¿Cuándo abrió el primer mercado interior de Newcastle?,Education_ES,54,8,54,8,True,True
+¿Cuántas jugadas se mantuvo Denver fuera de la zona de anotación tras recibir el balón perdido por Newton?,Education_ES,106,18,106,18,True,True
+¿Cuántas sociedades cotizaban en la Bolsa de Valores de Varsovia en agosto de 2009?,Education_ES,83,14,83,14,True,True
+¿Cómo se conoce oficialmente la teoría del aire viciado?,Education_ES,56,9,56,9,True,True
+¿Para quién jugaba John Elway en la Super Bowl XXXIII?,Education_ES,54,10,54,10,True,True
+¿Con qué velocidad soplaron los vientos alrededor de San Agustín en el huracán de 1964?,Education_ES,87,15,87,15,True,True
+¿Para qué tipos de extracción intentan localizar zonas los estratigrafistas?,Education_ES,76,10,76,10,True,True
+¿Qué preocupa perder a los ambientalistas en la selva amazónica?,Education_ES,64,10,64,10,True,True
+¿De cuántas millas cuadradas por año fue la tasa de tala de bosques entre 2000 y 2005?,Education_ES,86,17,86,17,True,True
+¿Cuándo ha dicho Toyota que cerrará su planta de Victoria?,Education_ES,58,10,58,10,True,True
+¿Cuántas áreas metropolitanas extendidas hay?,Education_ES,45,5,45,5,True,True
+¿La presencia o ausencia de qué se puede utilizar para determinar la edad relativa de las formaciones en las que se encuentra?,Education_ES,126,22,126,22,True,True
+¿Dónde se encuentra el estadio de Harvard?,Education_ES,42,7,42,7,True,True
+¿Qué es lo que la incapacidad de separar el Islam del islamismo lleva a muchos en Occidente a apoyar?,Education_ES,101,19,101,19,True,True
+¿Cuándo estableció Seaman este comité?,Education_ES,38,5,38,5,True,True
+¿En qué año la consolidación hizo que Jacksonville se integrara en el Condado de Duval?,Education_ES,87,15,87,15,True,True
+¿Qué teatro fue el mejor ejemplo de «teatro monumental polaco»?,Education_ES,63,10,63,10,True,True
+¿Cuál era la población de Varsovia en 1901?,Education_ES,43,8,43,8,True,True
+¿Con quién se asoció Internet2?,Education_ES,31,5,31,5,True,True
+¿Por qué el Polonia fue relegado de la máxima categoría del país en 2013?,Education_ES,73,14,73,14,True,True
+¿Cuántas toneladas de carbono se absorben en la Amazonía en un año normal?,Education_ES,74,13,74,13,True,True
+¿Cómo se llama la derivada del impulso cambiante de un objeto?,Education_ES,62,11,62,11,True,True
+¿Qué son los directores de construcción?,Education_ES,40,6,40,6,True,True
+¿Qué ley sudafricana reconoce dos tipos de escuelas?,Education_ES,52,8,52,8,True,True
+"Gandhi a menudo hacía referencia al poema de Shelley en sus esfuerzos por hacer, ¿qué?",Education_ES,86,15,86,15,True,True
+¿Qué nación contiene la mayor parte de la selva amazónica?,Education_ES,58,10,58,10,True,True
+¿Qué es la septicemia?,Education_ES,22,4,22,4,True,True
+¿Cuándo llegó Y. pestis a Inglaterra?,Education_ES,37,6,37,6,True,True
+¿En qué año se cerró la galería de instrumentos musicales?,Education_ES,58,10,58,10,True,True
+¿Qué problema tiene efectos tanto inflacionarios como deflacionarios?,Education_ES,69,8,69,8,True,True
+¿En qué idioma estaba escrita la mayor parte de esta declaración?,Education_ES,65,11,65,11,True,True
+¿Qué usan los beroides costeros como dientes?,Education_ES,45,7,45,7,True,True
+¿Por qué tipo de ayuda a los estudiantes de fuera de la ciudad son conocidos los Hermanos Musulmanes?,Education_ES,101,18,101,18,True,True
+¿Cuántas intercepciones se le atribuyen a la defensa de los Panthers en 2015?,Education_ES,77,13,77,13,True,True
+¿Qué empresa moderna lleva trabajando notablemente en una máquina de vapor con materiales modernos?,Education_ES,99,14,99,14,True,True
+¿Qué entidades tienen poderes de enmienda y veto durante el proceso legislativo?,Education_ES,80,12,80,12,True,True
+¿Qué fluye entre Bingen y Bonn?,Education_ES,31,6,31,6,True,True
+"¿En octubre de 1954, Goldenson propuso una fusión entre UPT y qué red?",Education_ES,70,13,70,13,True,True
+¿En qué año murió Tesla?,Education_ES,24,5,24,5,True,True
+¿Cómo se llamaba el líder a quien Enrique III concedió un título nobiliario?,Education_ES,76,13,76,13,True,True

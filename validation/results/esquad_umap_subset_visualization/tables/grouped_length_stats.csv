@@ -1,0 +1,4 @@
+,char_len,char_len,char_len,char_len,char_len,char_len,tok_len,tok_len,tok_len,tok_len,tok_len,tok_len
+,count,mean,median,std,min,max,count,mean,median,std,min,max
+label,,,,,,,,,,,,
+Education_ES,500,66.288,63.0,23.930448988214877,18,177,500,11.05,11.0,4.043290292915605,3,30

@@ -1,0 +1,6 @@
+metric,value
+rows_after_cleaning,500.0
+duplicate_rows,0.0
+duplicate_text,0.0
+char_len_match_rate,1.0
+tok_len_match_rate,1.0

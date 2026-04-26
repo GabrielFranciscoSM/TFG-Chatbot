@@ -1,0 +1,1177 @@
+text,label,char_len,tok_len,representation,umap_1,umap_2
+I am still waiting on my card?,card_arrival,30,7,qwen3,15.113413,1.577316
+What can I do if my card still hasn't arrived after 2 weeks?,card_arrival,60,14,qwen3,14.547341,1.1889104
+I have been waiting over a week. Is the card still coming?,card_arrival,58,12,qwen3,14.937931,1.281059
+Can I track my card while it is in the process of delivery?,card_arrival,59,13,qwen3,15.7814045,2.9656234
+"How do I know if I will get my card, or if it is lost?",card_arrival,54,15,qwen3,15.454168,2.0296218
+When did you send me my new card?,card_arrival,33,8,qwen3,15.989657,1.5892577
+Do you have info about the card on delivery?,card_arrival,44,9,qwen3,15.785366,2.7753522
+What do I do if I still have not received my new card?,card_arrival,54,13,qwen3,14.671192,1.9028643
+Does the package with my card have tracking?,card_arrival,44,8,qwen3,15.767072,3.538874
+I ordered my card but it still isn't here,card_arrival,41,10,qwen3,14.498169,1.253176
+Why has my new card still not come?,card_arrival,35,8,qwen3,14.637807,1.8290374
+"I still haven't received my card after two weeks, is it lost?",card_arrival,61,13,qwen3,14.685622,1.1545017
+Can you track my card for me?,card_arrival,29,7,qwen3,15.518004,3.4151738
+Is there a way to track the delivery of my card?,card_arrival,48,11,qwen3,15.716047,2.98312
+It's been a week since I ordered my card and it's not here. Please help?,card_arrival,72,17,qwen3,14.533,1.0196654
+Will I be able to track the card that was sent to me?,card_arrival,53,13,qwen3,15.599336,3.5214548
+I don't have my card in 1 week.  Should I be worried?,card_arrival,53,13,qwen3,14.738875,1.1053213
+How do I know when my new card is going to arrive?,card_arrival,50,12,qwen3,16.05114,1.5052876
+My new card has not been delivered to my home yet. What is going on?,card_arrival,68,15,qwen3,14.537906,1.5815934
+It's been a week since you issued me a card and I still didn't get it. Should I keep waiting?,card_arrival,93,22,qwen3,14.882656,1.1737342
+"On the card that is coming, what's the tracking info?",card_arrival,53,11,qwen3,15.717707,3.6709309
+What is the status of my card's delivery?,card_arrival,41,9,qwen3,15.683032,2.6692245
+Have you sent out my card yet?,card_arrival,30,7,qwen3,15.159184,2.2076583
+My card isn't here yet.,card_arrival,23,6,qwen3,14.440929,1.7193819
+where is my new card?,card_arrival,21,5,qwen3,15.06764,2.6468892
+It's been a week since you sent my card and I still don't have it.,card_arrival,66,17,qwen3,14.70758,1.0793585
+How do I track the card you sent me?,card_arrival,36,9,qwen3,15.527228,3.4202862
+When will I recieve my new card?,card_arrival,32,7,qwen3,16.124569,1.5822636
+When will I get my new card?,card_arrival,28,7,qwen3,16.217474,1.596126
+What is the expected delivery date for my card?,card_arrival,47,9,qwen3,16.672335,1.768799
+Is there a tracking number for the card you sent me?,card_arrival,52,11,qwen3,15.707764,3.8092203
+I would like to track the card you sent to me.,card_arrival,46,11,qwen3,15.329113,3.6004543
+Has my card been lost in delivery?,card_arrival,34,7,qwen3,15.664215,2.6429038
+My new card hasn't came in.,card_arrival,27,7,qwen3,14.4418,1.6586224
+Where is the card I ordered 2 weeks ago?,card_arrival,40,9,qwen3,14.507709,1.1932999
+Can I get an update on my replacement card?,card_arrival,43,9,qwen3,15.282108,2.8057108
+How long does it take for a new card to ship?,card_arrival,45,11,qwen3,16.09427,0.8383779
+What's the tracking on the card you sent?,card_arrival,41,9,qwen3,15.672438,3.6441712
+I haven't received my card and am worried it is lost.,card_arrival,53,12,qwen3,14.754118,1.8998262
+My card still hasn't been delivered,card_arrival,35,7,qwen3,14.296642,1.4119116
+I need to find out where the card is that I ordered.,card_arrival,52,12,qwen3,15.026578,2.6985304
+Where is my credit card that was to be mailed?,card_arrival,46,10,qwen3,15.405646,3.309435
+I ordered my card but it hasn't been delivered yet,card_arrival,50,11,qwen3,14.481019,1.2692002
+Am I able to track the card that was just sent to me?,card_arrival,53,13,qwen3,15.424449,3.5806012
+Can you tell me why I haven't received my new card?,card_arrival,51,12,qwen3,14.693516,1.9687046
+I'm still waiting for my new card.,card_arrival,34,8,qwen3,15.090397,1.5874887
+Is my card lost? I am still waiting for it to be delivered.,card_arrival,59,13,qwen3,15.197313,1.786957
+Should I keep waiting for my card to be delivered?,card_arrival,50,10,qwen3,15.678054,1.8576136
+Can I track when my card will be delivered?,card_arrival,43,9,qwen3,16.4994,2.1365159
+How can I check on the status of my new card?,card_arrival,45,11,qwen3,15.290861,2.7331831
+"A card has been sent to me, how do I track it?",card_arrival,46,12,qwen3,15.555126,3.5824347
+Is there a way I can get my card expedited?,card_arrival,43,10,qwen3,17.129349,0.30592316
+What can I do to track the card you sent me?,card_arrival,44,11,qwen3,15.504098,3.4000165
+why hasnt my card come in yet?,card_arrival,30,7,qwen3,14.418342,1.5337406
+How can I periodically check the delivery of the card you sent?,card_arrival,63,12,qwen3,15.726291,2.8392215
+What's the reason my new card hasn't come?,card_arrival,42,10,qwen3,14.628973,1.8149414
+How long does it take for me to get my new card?,card_arrival,48,12,qwen3,16.111547,0.8256384
+I don't have my card after 1 week. What are my next steps?,card_arrival,58,14,qwen3,14.775527,1.1032798
+I know I'm getting a new card but would like know when I can expect to receive it.,card_arrival,82,19,qwen3,15.890017,1.3866749
+I want to find out what happened to my new card?,card_arrival,48,11,qwen3,15.191914,2.7736528
+Was there a way for me to get tracking for that?,card_arrival,48,11,qwen3,15.742287,3.7486727
+I am still waiting for my card.,card_arrival,31,7,qwen3,15.042665,1.5562334
+My card hasn't arrived.,card_arrival,23,5,qwen3,14.196165,1.555594
+Can I track the card you sent to me?,card_arrival,36,9,qwen3,15.549881,3.4605842
+I haven't gotten my new card.,card_arrival,29,7,qwen3,14.673254,1.969912
+How long should it take for my new card to arrive in them mail? What should I do if I never receive it?,card_arrival,103,23,qwen3,15.29509,1.1997083
+Will I have to wait much longer for my new card to arrive?,card_arrival,58,13,qwen3,16.097923,0.92534965
+how to track the card you sent,card_arrival,30,7,qwen3,15.40084,3.6223195
+2 weeks ago I ordered my new card.  It isn't here.  What should I do?,card_arrival,69,16,qwen3,14.559424,1.1824275
+How can I check on the delivery status of my card?,card_arrival,50,11,qwen3,15.695203,2.8689928
+"My card has not been delivered yet and its been a week since I ordered it, please help",card_arrival,86,18,qwen3,14.385459,1.2166402
+What's the expected wait time to recieve my new card?,card_arrival,53,11,qwen3,16.008135,0.9048903
+How can I see the progress of delivery of the card that was sent?,card_arrival,65,14,qwen3,15.701436,2.9421833
+"My card was supposed to arrive, but hasn't?",card_arrival,43,9,qwen3,14.249161,1.487679
+I ordered a card and would like to know how to track the delivery progress of it.,card_arrival,81,17,qwen3,15.7767935,2.8815448
+How long will it take for me to get my card?,card_arrival,44,11,qwen3,16.412386,0.86562407
+My card hasn't shown up yet.,card_arrival,28,7,qwen3,14.344745,1.6182342
+Does the card you sent have a tracking number?,card_arrival,46,9,qwen3,15.752472,3.7844746
+My card hasn't arrived in the mail yet. I ordered it two weeks ago. What can I do?,card_arrival,82,19,qwen3,14.381951,1.1506593
+maximum how many days get the courier?,card_arrival,38,7,qwen3,18.751705,2.1707518
+Is there a reason my new card hasn't arrived yet?,card_arrival,49,11,qwen3,14.681711,1.5613968
+"I've been waiting a while for my card, is there a way to know when it will arrive?",card_arrival,82,19,qwen3,16.330343,1.5953071
+How can I track my card's delivery?,card_arrival,35,8,qwen3,15.840092,2.9079616
+Can I track the card that was just sent to me?,card_arrival,46,11,qwen3,15.370494,3.6286936
+"If I ordered my new card last week, how much longer should I wait to receive it?",card_arrival,80,17,qwen3,15.719681,1.0113441
+"What's go on, where is my new card?",card_arrival,35,9,qwen3,15.0841,2.6619182
+Where is my new card if I haven't received it yet?,card_arrival,50,12,qwen3,14.805202,2.1598337
+Where is my card?,card_arrival,17,4,qwen3,15.107778,2.8704972
+Can you tell me why I haven't received my new card yet?,card_arrival,55,13,qwen3,14.740655,1.7265136
+Is there a way to track my card?,card_arrival,32,8,qwen3,15.403309,3.339389
+Is there a way to track the new card you sent me?,card_arrival,49,12,qwen3,15.4567175,3.4794729
+I'm still waiting for my card.,card_arrival,30,7,qwen3,15.038091,1.5305774
+What do I need to do to get my new card which I have requested 2 weeks ago?,card_arrival,75,18,qwen3,14.940798,1.1526465
+WHAT IS THE SOLUTION OF THIS PROBLEM,card_arrival,36,7,qwen3,5.739609,9.685111
+Could I get tracking on the card?,card_arrival,33,7,qwen3,15.795844,3.5835469
+Can you help me track my card?,card_arrival,30,7,qwen3,15.409289,3.445882
+Shouldn't my new card be here by now?,card_arrival,37,9,qwen3,14.966757,2.3945258
+Is there a reason my new card hasn't arrived?,card_arrival,45,10,qwen3,14.60612,1.5909778
+"I would like to track a card sent to me, how do I do that?",card_arrival,58,15,qwen3,15.338039,3.6098008
+Is there a tracking number for the card?,card_arrival,40,8,qwen3,15.7066,3.7649128
+can you share card tracking number?,card_arrival,35,6,qwen3,15.721061,3.7686114
+"I have not received my card and it's been a week, what do I do?",card_arrival,63,16,qwen3,14.784992,1.1043001
+Is there a way I can check on the card on route to me?,card_arrival,54,14,qwen3,15.4301,3.4607525
+When will my new card arrive?,card_arrival,29,6,qwen3,16.245594,1.4835346
+Why haven't I received my new card yet?,card_arrival,39,9,qwen3,14.7164955,1.8491305
+What is the expected delivery date of my card?,card_arrival,46,9,qwen3,16.690716,1.8145826
+My card hasn't came in the mail yet?,card_arrival,36,9,qwen3,14.238751,1.595347
+I haven't received my card.,card_arrival,27,6,qwen3,14.674432,1.95862
+Is it possible for me to track the card is was mailed to me?,card_arrival,60,14,qwen3,15.567215,3.4591908
+When will my new card be delivered?,card_arrival,35,7,qwen3,16.407036,1.7105427
+I was issued a card about a week ago. why hasn't it come in yet?,card_arrival,64,16,qwen3,14.611991,1.3498279
+Can you please tell me where my card is? I ordered it 2 weeks ago!,card_arrival,66,15,qwen3,14.544126,1.1530961
+I still haven't received my card in the mail,card_arrival,44,10,qwen3,14.342379,1.6649286
+I'm still waiting for my card that was issued a week ago. What should I do?,card_arrival,75,17,qwen3,14.905506,1.1995133
+I still haven't gotten my new card.  When will it get here?,card_arrival,59,13,qwen3,15.375999,1.2723963
+Do you have a tracking number for the card I was sent?,card_arrival,54,12,qwen3,15.707834,3.761635
+How do I track the card you sent to me?,card_arrival,39,10,qwen3,15.519552,3.4744463
+Is my new bank card on the way and is there a way to track it?,card_arrival,62,16,qwen3,15.47392,3.3868384
+Could you send me and up date on the arrival of my card?,card_arrival,56,13,qwen3,15.52606,2.604786
+How long does it take to recieve my new card?,card_arrival,45,10,qwen3,16.07595,0.89834756
+My card has not come in the mail yet.,card_arrival,37,9,qwen3,14.214125,1.5954617
+What's the card you sent me's tracking number?,card_arrival,46,10,qwen3,15.742214,3.7898526
+i havent got my card,card_arrival,20,5,qwen3,14.603745,2.0130653
+Why hasn't my card arrived yet?,card_arrival,31,7,qwen3,14.298914,1.525234
+I thought I would have received my new card at this point.,card_arrival,58,12,qwen3,15.407114,1.5407681
+How long until my new card gets here?,card_arrival,37,8,qwen3,16.031662,1.0563567
+How much longer until I get my new card?,card_arrival,40,9,qwen3,16.041197,0.83808815
+Am I able to track a card that has already been sent?,card_arrival,53,12,qwen3,15.453361,3.6603189
+Is it possible to track the card you sent me?,card_arrival,45,10,qwen3,15.519324,3.529279
+How long will it be to get this new card?,card_arrival,41,10,qwen3,16.139532,0.7530797
+how can i track card you sent,card_arrival,29,7,qwen3,15.275029,3.7302015
+Can the card was sen to me be tracked?,card_arrival,38,9,qwen3,15.36821,3.650283
+why have i not got my new card?,card_arrival,31,8,qwen3,14.660132,2.007027
+I need to track the card sent to me.,card_arrival,36,9,qwen3,15.363292,3.6282227
+"It's been two weeks and I haven't gotten my card, what do I do?",card_arrival,63,16,qwen3,14.739184,1.1222554
+I was expecting my new card by now.,card_arrival,35,8,qwen3,15.319421,1.5583076
+Where is the tracking number for the card?,card_arrival,42,8,qwen3,15.724237,3.741052
+I was issued a new card a week ago but still haven't received it. How long will it be until I receive it?,card_arrival,105,24,qwen3,15.139865,1.1967962
+Can I track the card that you sent me in the mail?,card_arrival,50,12,qwen3,15.546252,3.3783457
+Can you tell me if I can track the card you sent me?,card_arrival,52,13,qwen3,15.589233,3.4040947
+Why have I not gotten my new card?,card_arrival,34,8,qwen3,14.631666,1.9469407
+I'm still waiting on my new card to be delivered!,card_arrival,49,11,qwen3,15.132983,1.5747719
+My new card isn't here and it was issued a week ago.,card_arrival,52,13,qwen3,14.5865345,1.2639819
+"I was supposed to receive my new card by now, but it hasn't came in.",card_arrival,68,16,qwen3,14.601546,1.7167989
+Is a tracking number available for the card that was just sent?,card_arrival,63,12,qwen3,15.616042,3.8840547
+Why haven't I gotten my new card?,card_arrival,33,8,qwen3,14.646822,1.9396864
+Was there a number to track that I could get?,card_arrival,45,10,qwen3,15.76416,3.782734
+How much longer is it going to take to get my new card?,card_arrival,55,13,qwen3,16.083458,0.737447
+I haven't gotten my credit card in the mail.,card_arrival,44,10,qwen3,14.314691,1.6696063
+My card hasn't arrived yet. What do I do?,card_arrival,41,10,qwen3,14.1933565,1.4343134
+"My card still hasn't arrived after two weeks, now what?",card_arrival,55,11,qwen3,14.380612,1.2535495
+My card appears to have never arrived?,card_arrival,38,7,qwen3,14.149928,1.6038709
+My card never arrived.,card_arrival,22,4,qwen3,14.215169,1.5648654
+My card has been found. Is there any way for me to put it back into the app?,card_linking,76,18,qwen3,9.256452,-1.7617275
+I was able to find my card. How to I go about putting it into my app?,card_linking,69,17,qwen3,9.931641,-1.4637777
+how do I get my card to show in the app?,card_linking,40,11,qwen3,10.296115,-1.4019827
+I just got my card.  It's not linked yet--how do I do that?,card_linking,59,15,qwen3,8.296,-0.6613206
+"lost card found, want to put it back in app",card_linking,43,10,qwen3,9.2717085,-1.77991
+"I just got a card, how can I add it to the app?",card_linking,47,13,qwen3,9.711094,-1.2201353
+Is there any way to see my card in the app?,card_linking,43,11,qwen3,10.447917,-1.5174675
+If I find a card I lost do I need to dispose of it? Or can I re-active the card and continue to use it?,card_linking,103,26,qwen3,0.061296687,-1.9347875
+I found my card. How can I put it into my app?,card_linking,46,12,qwen3,9.95464,-1.4517658
+How do I make my card show up in the app?,card_linking,41,11,qwen3,10.410582,-1.2952416
+Can you show me where to link the new card?,card_linking,43,10,qwen3,8.428634,-0.6735792
+I found my old card. Can I link it back into the app?,card_linking,53,13,qwen3,8.99714,-1.4495137
+"Show me how to link the new card,",card_linking,33,8,qwen3,8.261799,-0.70335567
+How do I add an existing card to the app?,card_linking,41,10,qwen3,9.503117,-1.1518551
+I finally got my card.  Now I want to link it.  Is that something you have to do or can I do that?,card_linking,98,23,qwen3,8.158577,-0.7557851
+How do I link one of your card that I already have?,card_linking,51,12,qwen3,7.899727,-0.9379093
+If I have a physical card can I link it?,card_linking,40,10,qwen3,7.9440923,-0.9080819
+I found my lost card in my jacket pocket this morning so I'd like to reactivate it please.,card_linking,90,19,qwen3,0.27353168,-2.1698382
+Can I add a card that I just found (again) to the app?,card_linking,54,13,qwen3,9.540469,-1.2755028
+How can I make my card show up in the app?,card_linking,42,11,qwen3,10.384212,-1.3356744
+"I would like to re-activate my card, it was previously reported  lost but I found it this morning.",card_linking,98,19,qwen3,0.21162027,-2.0963013
+"Okay, I found my card, can I put it back in the app?",card_linking,52,13,qwen3,9.304752,-1.677049
+Can I reactivate a card?,card_linking,24,5,qwen3,-0.0743903,-1.7845798
+I would like to reactivate a card and wondered if that could be done?,card_linking,69,14,qwen3,-0.14052215,-1.7186673
+"I got my card now, how do I make it show up in the app?",card_linking,55,15,qwen3,10.304891,-1.3498964
+How do I link an existing card?,card_linking,31,7,qwen3,8.086331,-0.8766476
+How do I link a new card in the app?,card_linking,36,10,qwen3,8.682517,-0.866892
+"The card I thought was lost was just in my jacket, so can I reactivate it since I found it this morning?",card_linking,104,22,qwen3,0.09487936,-1.9916514
+I already have a card and want to link it,card_linking,41,10,qwen3,7.936926,-0.9153106
+Can you please reactivate my card?,card_linking,34,6,qwen3,-0.1143745,-1.7382307
+Where do I go to add a new card?,card_linking,32,9,qwen3,9.204321,-0.7812815
+I want my card I just received to show up in the app. How do I do that?,card_linking,71,18,qwen3,10.287673,-1.3708001
+"I received my card, how do I get it to show in the app?",card_linking,55,14,qwen3,10.194304,-1.4203174
+If I have a credit card with you how I get set up to link to it?,card_linking,64,17,qwen3,7.910964,-0.9147358
+How do I add my new card?,card_linking,25,7,qwen3,9.176739,-0.816604
+"I want to reactivate my card, I thought I had lost it but found it again this morning.",card_linking,86,18,qwen3,0.17282905,-2.0836196
+"I need a card reactivation, I had reported my card lost but I ran across it in my jacket.",card_linking,89,19,qwen3,0.2688629,-2.1183126
+My card is no longer lost. How do I enter it back into the app?,card_linking,63,15,qwen3,9.288249,-1.7673761
+"I want to reactivate my card, I thought I had lost it but found it again in my jacket.",card_linking,86,19,qwen3,0.23823167,-2.1744034
+"May I reactivate my card? I previously reported it lost, but have now found it safe and sound.",card_linking,94,18,qwen3,0.13458107,-2.016897
+How do I reactivate a card I thought I lost?,card_linking,44,10,qwen3,0.0020467138,-1.8673013
+Help me figure out how to link the new card.,card_linking,44,10,qwen3,8.308159,-0.7126153
+I found my lost card. Am I still able to use it?,card_linking,48,12,qwen3,0.13655369,-1.982584
+Will I need a new card or can I put my old card back into the app?,card_linking,66,17,qwen3,9.229523,-1.5941887
+Is there a way to link the card i just got?,card_linking,43,11,qwen3,8.006502,-0.856156
+How do I add a new card?,card_linking,24,7,qwen3,9.193277,-0.81125546
+"I want to reactivate my card, I found it after thinking it was lost.",card_linking,68,14,qwen3,0.121776454,-2.0347447
+Can I put my old card back in the app?,card_linking,38,10,qwen3,9.244979,-1.641919
+"I got a new card, how do I link it?",card_linking,35,10,qwen3,8.4224825,-0.5630014
+I found the card I thought I lost this morning. Can I reactivate this card?,card_linking,75,15,qwen3,0.053653818,-1.9345978
+How do i go about linking a new card?,card_linking,37,9,qwen3,8.409698,-0.711156
+how do i get the card linked,card_linking,28,7,qwen3,7.8885803,-0.9561472
+"I have one of your cards, but I don't know how to link it.",card_linking,58,15,qwen3,7.9514256,-0.89538926
+how do I link an old card?,card_linking,26,7,qwen3,8.134869,-0.8399554
+I received my card. How do I link it to the app?,card_linking,48,12,qwen3,9.097656,-1.2296402
+"Now that I have my card, how do I connect it to the app?",card_linking,56,14,qwen3,9.662126,-1.3177456
+How do I add the card I just received to show up in the app?,card_linking,60,15,qwen3,10.089573,-1.2769963
+"I want to reactivate my card, I thought I had lost it but I found it.",card_linking,69,16,qwen3,0.24237604,-2.1449904
+What do I need to do to link my new card for my account?,card_linking,56,14,qwen3,8.377948,-0.5761469
+Can I add a card to back into the app?,card_linking,38,10,qwen3,9.399364,-1.4163612
+I want to link my new card. Can you help?,card_linking,41,10,qwen3,8.117921,-0.8219347
+What is the process to link the new card?,card_linking,41,9,qwen3,8.301653,-0.73244244
+"I found my card, am I able to put it back into the app?",card_linking,55,14,qwen3,9.295922,-1.6719217
+"I have found my lost or stolen card, would I still have to activate the new card that was sent to me through the mail in order to access my account?",card_linking,148,31,qwen3,0.12257396,-2.0190256
+Where can I link a new card?,card_linking,28,7,qwen3,8.478948,-0.58955497
+How do I add a card on to the app?,card_linking,34,10,qwen3,9.503149,-1.1374149
+"I found my card in my jacket this morning, so can I reactivate it?",card_linking,66,14,qwen3,0.26918924,-2.1878047
+"I've obtained the card, how do I enable it on the app?",card_linking,54,13,qwen3,10.134079,-1.5585806
+I need to find the card I received in the app.,card_linking,46,11,qwen3,10.479688,-1.4741194
+How do I get my card on the app?,card_linking,32,9,qwen3,10.176544,-1.494772
+"In the app, how can I make it show the new card that arrived?",card_linking,61,14,qwen3,10.319221,-1.3212835
+How do I link my new card?,card_linking,26,7,qwen3,8.390445,-0.6051618
+Can I activate a card in the app?,card_linking,33,8,qwen3,10.212016,-1.5002277
+"I want to link to my card card with you, how?",card_linking,45,11,qwen3,7.875754,-0.96447355
+I would like to link my card to my account.,card_linking,43,10,qwen3,7.8734946,-1.001463
+"I thought I lost my card so I cancelled it, but recently I found it in my jacket and I would like to re-establish the card.",card_linking,123,27,qwen3,0.20782378,-2.1277604
+How can I link the new card?,card_linking,28,7,qwen3,8.450746,-0.6360069
+I got a new card and can't find where to link it.,card_linking,49,13,qwen3,8.365656,-0.6642562
+"Hey, I have my card, how do I get it to show in the app?",card_linking,56,15,qwen3,10.290474,-1.4732677
+Where in the app do I go to make my new card show up?,card_linking,53,14,qwen3,10.204612,-1.2620188
+Where do I scan my card?,card_linking,24,6,qwen3,15.134379,2.9256334
+Can I reactivate my card? I reported it lost and found it this morning in my jacket.,card_linking,84,17,qwen3,0.22122116,-2.1071177
+Can I link my card I previously received?,card_linking,41,8,qwen3,7.910262,-0.9719804
+"I want to reactivate my card, I thought I had lost it but found it again in my jacket this morning.",card_linking,99,21,qwen3,0.27340472,-2.219782
+"I'd lke my card reactivated, I was thinking it was misplaced but I discovered when I woke up that I had left it in my coat.",card_linking,123,27,qwen3,0.15899682,-2.250773
+You sent me a card and now I want to link it.,card_linking,45,12,qwen3,7.921347,-0.90722656
+How do I add my new card to the app?,card_linking,36,10,qwen3,9.516228,-1.0679331
+Can I add a card back to the app?,card_linking,33,9,qwen3,9.299894,-1.5651802
+What if I want to add a card I already have to the app?,card_linking,55,14,qwen3,9.502533,-1.2520837
+"I recently reported my card as missing/lost, and I just found it. Can I still use it?",card_linking,85,18,qwen3,0.22549276,-2.0784235
+"Could I reactivate my card please, I couldn't find it but it turns out it was in my jacket pocket.",card_linking,98,21,qwen3,0.22213608,-2.2358208
+Is there a way to link cards if I have one of yours?,card_linking,52,13,qwen3,7.9444137,-0.8825755
+If my card was lost or stolen can I re-link it?,card_linking,47,12,qwen3,8.195261,-1.0159489
+How do I link a new card to an existing one?,card_linking,44,11,qwen3,8.131956,-0.8295675
+How do I link a new payment card?,card_linking,33,8,qwen3,8.412354,-0.6176249
+I would like to reactivate my card that I previously reported lost. I located the card this morning.,card_linking,100,18,qwen3,0.19584855,-2.0957077
+"Card has been received, how will it show up on the app?",card_linking,55,12,qwen3,10.387226,-1.3899629
+Can I re-link a lost card with the app?,card_linking,39,10,qwen3,9.041959,-1.5957496
+What do I do to link my new card?,card_linking,33,9,qwen3,8.399135,-0.4911004
+Is it possible to link a new card?,card_linking,34,8,qwen3,8.152758,-0.8154326
+I deactivated my card but would like to reactivate it.,card_linking,54,10,qwen3,-0.05116416,-1.7920277
+"I found my card that I thought I had lost, I need to reactive it, please help.",card_linking,78,17,qwen3,0.30872813,-2.261568
+can I link a card of yours I already have?,card_linking,42,10,qwen3,7.9247723,-0.96233433
+Can I put my found card back into the app on my phone?,card_linking,54,13,qwen3,9.220768,-1.6723323
+"My card arrived but I need to make it work in the app, how do I do that?",card_linking,72,18,qwen3,10.056342,-1.4368304
+"I found the card that I thought I lost, and I would like to reactivate it.",card_linking,74,16,qwen3,0.0011537868,-1.8862598
+I found my card again. Can I put it back into the app?,card_linking,54,13,qwen3,9.26704,-1.6959449
+I need some help linking my new card.,card_linking,37,8,qwen3,8.089897,-0.8416437
+help me link my card,card_linking,20,5,qwen3,7.912277,-0.9465995
+How do I link my card in the app.,card_linking,33,9,qwen3,8.967456,-1.1876576
+How do I get my card into the app?,card_linking,34,9,qwen3,10.044145,-1.4926169
+I found my card! Can I link it back into the app?,card_linking,49,12,qwen3,9.096437,-1.452402
+How do I reactivate my card?,card_linking,28,6,qwen3,-0.037878033,-1.8234305
+Where do I go to get my new card linked?,card_linking,40,10,qwen3,8.474627,-0.51580924
+"I thought I lost my card but I found it today, so I would like to reactivate it.",card_linking,80,18,qwen3,0.22022319,-2.1142986
+How do I link the new card that I just got from you guys?,card_linking,57,14,qwen3,8.310389,-0.63198465
+How can I add a new card?,card_linking,25,7,qwen3,9.152093,-0.81078553
+Can you tell me how to get my card on the app?,card_linking,46,12,qwen3,10.147802,-1.6272929
+Is it possible to reactivate the card I thought I lost but found this morning in my jacket?,card_linking,91,18,qwen3,0.040563986,-1.9293076
+How do I make my card appear on the app?,card_linking,40,10,qwen3,10.330762,-1.3977311
+How do I link the new card?,card_linking,27,7,qwen3,8.383457,-0.70296335
+Where in the app do I link a new card?,card_linking,38,10,qwen3,8.71435,-0.8390741
+How do I add my card to the app once I get it?,card_linking,46,13,qwen3,9.783317,-1.2341336
+Can I link your physical card,card_linking,29,6,qwen3,7.8275733,-0.9902439
+How do I activate and link my new card?,card_linking,39,9,qwen3,8.327088,-0.6117082
+"I got a card, how do I get it in the app?",card_linking,41,12,qwen3,10.097843,-1.5729835
+I received my new card.  Where is it in the app?,card_linking,48,11,qwen3,10.520333,-1.478838
+"I found my card, how can I use it again?",card_linking,40,10,qwen3,0.3200182,-2.1480534
+"I just received a new card, where do I go to link it to my account?",card_linking,67,16,qwen3,8.444405,-0.5214728
+"found card, how to put it back in app",card_linking,37,9,qwen3,9.261443,-1.7288089
+How do I see my card in the app?,card_linking,32,9,qwen3,10.480121,-1.5358945
+"The card I thought I lost was in my jacket pocket this morning, so can I reactivate that?",card_linking,89,18,qwen3,0.083223335,-1.9770265
+I don't see my card anywhere in the app.,card_linking,40,10,qwen3,10.526662,-1.5140462
+"I received my card, how do I get it to work in the app?",card_linking,55,14,qwen3,10.076263,-1.446786
+What do I do if I already had a card with you guys?,card_linking,51,13,qwen3,7.7402453,-1.0654827
+if i found a lost card can i put it back in app,card_linking,47,13,qwen3,9.212062,-1.7276038
+I have a card that was deactivated can I reactivate it?,card_linking,55,11,qwen3,-0.08402633,-1.7453412
+"My new card isn't in my app, how do I get it in there?",card_linking,54,15,qwen3,10.479287,-1.4756532
+Help me access the card I already got so I can information from it.,card_linking,67,14,qwen3,16.83717,0.16461462
+Can it specifically be delivered on a certain date?,card_delivery_estimate,51,9,qwen3,18.867313,2.299143
+I need to get my card quickly,card_delivery_estimate,29,7,qwen3,17.115688,0.23128998
+When can I expect my card? I live in the US.,card_delivery_estimate,44,11,qwen3,16.55225,1.66331
+Help! When will the card arrive at my home?,card_delivery_estimate,43,9,qwen3,16.51535,1.4769802
+Can I get my card fast tracked?,card_delivery_estimate,31,7,qwen3,16.986038,0.48754522
+How long is the wait for my card?,card_delivery_estimate,33,8,qwen3,16.402658,0.97272664
+i need to expedite my card,card_delivery_estimate,26,6,qwen3,17.131111,0.2071684
+When should I expect to receive my card?,card_delivery_estimate,40,8,qwen3,16.507988,1.6397597
+How long until my card will get here?,card_delivery_estimate,37,8,qwen3,16.520683,1.1501101
+How long is the delivery time to the US?,card_delivery_estimate,40,9,qwen3,18.848064,-1.0643957
+Can I have it delivered on a specific date?,card_delivery_estimate,43,9,qwen3,18.812843,2.2406635
+"i am express delivering my card to the us, how long will that take",card_delivery_estimate,66,14,qwen3,17.585302,-0.012203985
+I need my card soon.,card_delivery_estimate,20,5,qwen3,17.080261,0.24116886
+Can I choose when my card is delivered?,card_delivery_estimate,39,8,qwen3,16.775337,1.9811221
+When will my card be here?,card_delivery_estimate,26,6,qwen3,16.570374,1.5459542
+How long will delivery to the US take?,card_delivery_estimate,38,8,qwen3,18.85703,-1.0359738
+When can I expect delivery?,card_delivery_estimate,27,5,qwen3,18.891504,2.3008127
+Can I specify a day for my card to be delivered?,card_delivery_estimate,48,11,qwen3,16.950518,2.0042596
+I'm worried my card might be lost in the mail? How long does it usually take to arrive?,card_delivery_estimate,87,19,qwen3,16.428543,1.1330892
+When will my card be delivered?,card_delivery_estimate,31,6,qwen3,16.680958,1.8395182
+can the delivery be specific to my needs?,card_delivery_estimate,41,8,qwen3,18.774841,2.1927114
+how long does delivery take?,card_delivery_estimate,28,5,qwen3,18.724434,-0.92827785
+"To deliver to the US, how long will it take?",card_delivery_estimate,44,10,qwen3,18.735416,-0.98602647
+How quickly can you get me my card?,card_delivery_estimate,35,8,qwen3,16.636805,0.7907754
+can I choose delivery times to suite me?,card_delivery_estimate,40,8,qwen3,18.811506,2.2224698
+Can I choose the day it's delivered?,card_delivery_estimate,36,8,qwen3,18.810957,2.236863
+How long will this take to get to me?,card_delivery_estimate,37,9,qwen3,16.782192,0.87656397
+When shipped to the US how long is delivery time?,card_delivery_estimate,49,10,qwen3,18.837881,-1.081938
+"Give me my card, I need it now!",card_delivery_estimate,31,8,qwen3,16.975142,0.14277785
+I'd like to have it delivered on Saturday.  Is that possible?,card_delivery_estimate,61,12,qwen3,18.817728,2.2376993
+How long will I have to wait for my new card?,card_delivery_estimate,45,11,qwen3,16.05561,0.9037056
+How long is a delivery to the US?,card_delivery_estimate,33,8,qwen3,18.813179,-1.0302936
+What is the delivery time to the US?,card_delivery_estimate,36,8,qwen3,18.842628,-1.1025919
+How long does it take for deliver to the US?,card_delivery_estimate,44,10,qwen3,18.776913,-1.0065238
+If I order a card when does it arrive?,card_delivery_estimate,38,9,qwen3,16.333134,1.4707543
+When can I expect my card?,card_delivery_estimate,26,6,qwen3,16.516972,1.5300447
+How long is delivery to the US?,card_delivery_estimate,31,7,qwen3,18.8934,-0.9911136
+What is your shipping policies for cards?,card_delivery_estimate,41,7,qwen3,16.0972,2.3643992
+I ordered my card and it isn't here yet. I need it ASAP. When can I expect to get it?,card_delivery_estimate,85,21,qwen3,14.735064,1.0378352
+how long should I expect to wait for my card to arrive?,card_delivery_estimate,55,12,qwen3,16.476376,1.1818331
+When will my card come? I need it as soon as possible!,card_delivery_estimate,54,12,qwen3,16.644287,1.179921
+How long should I wait for the card to arrive?,card_delivery_estimate,46,10,qwen3,16.526325,1.0980178
+What is the wait time for delivery to the US?,card_delivery_estimate,45,10,qwen3,18.81835,-1.0733281
+Can you tell me when my card will arrive?,card_delivery_estimate,41,9,qwen3,16.506884,1.6038272
+When can I expect my card to arrive?,card_delivery_estimate,36,8,qwen3,16.574327,1.6268857
+Can I have it delivered on the date I need it delivered?,card_delivery_estimate,56,12,qwen3,18.828835,2.2515008
+What is the length of time for one of these items to come to the U.S?,card_delivery_estimate,69,17,qwen3,18.789705,-1.038733
+How long will it take to have my card mailed to me?,card_delivery_estimate,51,12,qwen3,16.4954,0.9816932
+Can cards be dispatched on a specific date?,card_delivery_estimate,43,8,qwen3,16.94634,2.0216124
+Can I have it by a certain date?,card_delivery_estimate,32,8,qwen3,18.876354,2.2850902
+I need my card as quick as possible,card_delivery_estimate,35,8,qwen3,17.094055,0.19412589
+How long will it take my card to get here?,card_delivery_estimate,42,10,qwen3,16.54969,1.0550873
+Is there a specific date it can be delivered by?,card_delivery_estimate,48,10,qwen3,18.91723,2.3453455
+I need my card to be delivered fast,card_delivery_estimate,35,8,qwen3,17.258017,0.26824763
+Is there a specific date i can have it delivered?,card_delivery_estimate,49,10,qwen3,18.866533,2.3434339
+How long will it take to deliver to the US?,card_delivery_estimate,43,10,qwen3,18.835808,-1.0640541
+I need my card ASAP!,card_delivery_estimate,20,5,qwen3,17.179277,0.25479475
+How long will it take to get to the US?,card_delivery_estimate,39,10,qwen3,18.79263,-1.050544
+How soon will I get my card?,card_delivery_estimate,28,7,qwen3,16.58549,1.3341647
+What is the estimated date for delivery to US?,card_delivery_estimate,46,9,qwen3,18.892067,-1.1321905
+How long does it take for the card to come?,card_delivery_estimate,43,10,qwen3,16.46618,0.8990504
+When will I receive the card?,card_delivery_estimate,29,6,qwen3,16.450846,1.6194265
+When should I expect my card to arrive?,card_delivery_estimate,39,8,qwen3,16.585495,1.5808499
+Can I pay more to get it deliver quicker?,card_delivery_estimate,41,9,qwen3,18.69357,2.0365565
+How long is the delivery to the US?,card_delivery_estimate,35,8,qwen3,18.808197,-1.0559235
+Send me my card now! ASAP,card_delivery_estimate,25,6,qwen3,16.976759,0.16538502
+"I haven't received my card yet, how long does it normally take?",card_delivery_estimate,63,13,qwen3,15.504832,1.0688704
+How long is US delivery?,card_delivery_estimate,24,5,qwen3,18.786127,-0.99499476
+can you express my card to me?,card_delivery_estimate,30,7,qwen3,17.004646,0.13187963
+When will it get delivered?,card_delivery_estimate,27,5,qwen3,18.890316,2.3241181
+how soon will my card arrive?,card_delivery_estimate,29,6,qwen3,16.64935,1.2302086
+I ordered my card a couple weeks ago and haven't received it yet. When can I expect it?,card_delivery_estimate,87,19,qwen3,15.060214,1.019468
+How long does it take for cards to be delivered after ordering them?,card_delivery_estimate,68,13,qwen3,16.348446,1.2420521
+"If I need delivery on a certain day, is that something that could be accommodated?",card_delivery_estimate,82,15,qwen3,18.79931,2.2196946
+how much to get my card in 2 days?,card_delivery_estimate,34,9,qwen3,16.601425,0.5695298
+When are cards shipped?,card_delivery_estimate,23,4,qwen3,16.571648,1.8107136
+My card is needed soon,card_delivery_estimate,22,5,qwen3,17.14805,0.18999197
+What is the delivery time for US?,card_delivery_estimate,33,7,qwen3,18.886171,-1.1309443
+I placed my order a week ago. Is it ok that my card isn't here yet?,card_delivery_estimate,67,17,qwen3,14.524637,1.0924677
+How soon do cards arrive after I order them?,card_delivery_estimate,44,9,qwen3,16.39292,1.2432181
+How will I get my card?,card_delivery_estimate,23,6,qwen3,16.416672,1.6688814
+How long does it take to receive my card?,card_delivery_estimate,41,9,qwen3,16.386099,0.9393846
+How long until the card arrives?,card_delivery_estimate,32,6,qwen3,16.551353,1.1551906
+Can I have my card delivered on Tuesday?,card_delivery_estimate,40,8,qwen3,16.897749,1.9952734
+Can you tell me how long it takes for a new card to come?,card_delivery_estimate,57,14,qwen3,16.19783,0.7079226
+i need to add express delivery if that's an option,card_delivery_estimate,50,11,qwen3,18.8981,2.3113477
+I need my card right away.,card_delivery_estimate,26,6,qwen3,17.091452,0.18667755
+Can i choose a specific delivery date?,card_delivery_estimate,38,7,qwen3,18.841879,2.273954
+When will I get my card shipped to me?,card_delivery_estimate,38,9,qwen3,16.57972,1.7300577
+Do I have a say when it's delivered?,card_delivery_estimate,36,9,qwen3,18.673992,2.2232027
+I need my card delivered as soon as possible.,card_delivery_estimate,45,9,qwen3,17.184488,0.22177622
+I would like to make sure it is delivered on a certain date.,card_delivery_estimate,60,13,qwen3,18.845125,2.2765255
+When will I receive my card?,card_delivery_estimate,28,6,qwen3,16.54792,1.7226561
+Could I chose the date to have it delivered?,card_delivery_estimate,44,9,qwen3,18.821245,2.2404842
+How long does it take for a card to arrive?,card_delivery_estimate,43,10,qwen3,16.47175,1.049181
+Will my card be here soon?,card_delivery_estimate,26,6,qwen3,16.490278,1.4667298
+Please send my card as quickly as possible.,card_delivery_estimate,43,8,qwen3,17.160284,0.18627939
+how long does it take to get my card i am in a rush,card_delivery_estimate,51,14,qwen3,16.565481,0.6677304
+When can I expect to receive my card?,card_delivery_estimate,37,8,qwen3,16.55199,1.6585411
+Are the delivery days flexible?  My schedule only allows me to be a available on specific dates.,card_delivery_estimate,96,17,qwen3,18.799202,2.219474
+How many days to deliver to a US customer?,card_delivery_estimate,42,9,qwen3,18.871378,-1.1140684
+When can I expect my new card to get here?,card_delivery_estimate,42,10,qwen3,16.173937,1.5037684
+How long are deliveries to the US?,card_delivery_estimate,34,7,qwen3,18.85734,-1.0356121
+Can it be delivered on a certain date?,card_delivery_estimate,38,8,qwen3,18.946716,2.3773384
+What is delivery speed to the United States?,card_delivery_estimate,44,8,qwen3,18.819738,-1.0558989
+How long does it take for something to be delivered to the U.S?,card_delivery_estimate,63,14,qwen3,18.774633,-1.0416483
+How long does it take for my physical card to be delivered.,card_delivery_estimate,59,12,qwen3,16.651579,1.2281249
+what is the leadtime for a new card to show up in the mail?,card_delivery_estimate,59,14,qwen3,16.171766,0.72227067
+What's the earliest time to receive my card?,card_delivery_estimate,44,9,qwen3,16.53719,1.6203278
+are you sending me my card?,card_delivery_estimate,27,6,qwen3,15.545967,2.6075904
+I need my card immediately.,card_delivery_estimate,27,5,qwen3,17.11965,0.20082597
+When will it be delivered to the US?,card_delivery_estimate,36,8,qwen3,18.91543,-1.1574378
+I can't use my card because it is not working.,card_not_working,46,11,qwen3,1.3311312,2.310695
+I can't seem to be able to use my card,card_not_working,38,11,qwen3,1.555206,2.1750593
+"My card isn't working at all, I need assistance. It's really frustrating.",card_not_working,73,14,qwen3,0.97242135,2.4690344
+Can you tell me what the problem with my card is? It was declined at a restaurant today.,card_not_working,88,18,qwen3,1.9692516,2.605015
+How do I fix a broken card?,card_not_working,27,7,qwen3,0.41876292,0.9196812
+My card was working but now it doesn't.,card_not_working,39,9,qwen3,0.8992286,2.5459113
+I cannot seem to use my card.,card_not_working,29,7,qwen3,1.5783387,2.155595
+I think my card is broke it's not working anymore,card_not_working,49,11,qwen3,0.49852556,1.0918262
+I have not been able to use this card.,card_not_working,38,9,qwen3,1.3431611,2.1995726
+What do I do if i accidentally broke my card?,card_not_working,45,10,qwen3,0.4424462,0.99879146
+How come my card doesn't work anymore?,card_not_working,38,8,qwen3,0.9376876,2.9042315
+"For a week now, I have tried to use my card and it is still not working.",card_not_working,72,17,qwen3,1.060056,2.2377365
+My actual card isn't functioning.,card_not_working,33,6,qwen3,0.83720803,2.4172802
+I can't get the card itself to work.,card_not_working,36,9,qwen3,0.6804838,2.2318404
+What should I do if my card doesn't work?,card_not_working,41,10,qwen3,1.0398474,2.496905
+Why won't my card work.,card_not_working,23,6,qwen3,0.9064065,2.773273
+My card will not work,card_not_working,21,5,qwen3,0.9327493,2.3883893
+My card is not working.,card_not_working,23,5,qwen3,0.84743917,2.4013937
+HOW LONG THE CARD VALIDITY,card_not_working,26,5,qwen3,16.37616,0.5855504
+My card seems to not be working at all.,card_not_working,39,9,qwen3,0.8994745,2.405213
+My card gets rejected when I try to use it,card_not_working,42,10,qwen3,1.3985792,2.3368819
+I am unable to use my card for some reason.,card_not_working,43,10,qwen3,1.6298621,2.3078535
+Why can't I use my card?,card_not_working,24,7,qwen3,1.5626085,2.1427915
+I think my card is broke?,card_not_working,25,6,qwen3,0.45978293,0.9958521
+What do I do?  My card is broken.,card_not_working,33,8,qwen3,0.3936457,0.9607021
+"My Netflix subscription says that there is an issue with my card information, but I thought everything was fine. Why would it be declined?",card_not_working,138,24,qwen3,1.9026659,2.604991
+My card was declined at a restaurant today and I don't know what the problem is.,card_not_working,80,17,qwen3,1.9872802,2.5979884
+WHAT IS THE REASON FOR THAT,card_not_working,27,6,qwen3,5.7790155,9.703213
+My card is not working when I try to use it.,card_not_working,44,11,qwen3,1.1022933,2.2584233
+How do I check security settings on my card?,card_not_working,44,9,qwen3,15.218559,2.9957404
+My card isn't working at all. What happened?,card_not_working,44,9,qwen3,1.006638,2.6598845
+Today I was out eating and my card was declined. Why's that?,card_not_working,60,13,qwen3,1.9784007,2.555781
+What are ways to test why my card might not be working?,card_not_working,55,12,qwen3,1.1362383,2.6707468
+Currently my card is broken.,card_not_working,28,5,qwen3,0.46898532,1.0098037
+My card won't work at all for anything.,card_not_working,39,9,qwen3,0.8608406,2.3763487
+How do I fix my card if it is broken?,card_not_working,37,10,qwen3,0.41503906,0.9617836
+Why doesn't my card work for any transactions?,card_not_working,46,9,qwen3,0.5827274,2.868023
+"I tried using my card, but it doesn't work.",card_not_working,43,10,qwen3,1.1562986,2.1328142
+My card hasn't been working for even small transactions today.,card_not_working,62,11,qwen3,0.5769727,2.8049393
+What do I do if the machine rejects my card?,card_not_working,44,10,qwen3,0.90220284,2.8417323
+Something's wrong my card won't work.,card_not_working,37,8,qwen3,0.82828355,2.6447663
+I tried to use my card today in the restaurant but it didn't work and just got declined. What's wrong?,card_not_working,102,22,qwen3,1.9054356,2.5344214
+"Suddenly, my card won't work.",card_not_working,29,6,qwen3,0.8571191,2.573352
+My card hasn't been working when I try to use it.,card_not_working,49,12,qwen3,1.0713568,2.3650913
+My physical card is not working,card_not_working,31,6,qwen3,0.20136034,2.1734316
+Why is my physical card not working?,card_not_working,36,7,qwen3,0.13922852,2.1569612
+Help.  My card is broken.,card_not_working,25,5,qwen3,0.45908093,0.9661535
+I am unable to use my card.,card_not_working,27,7,qwen3,1.554211,2.1625063
+"No transactions are being accepted, what's wrong with my card?",card_not_working,62,11,qwen3,0.50615907,2.8920474
+Is my card frozen?,card_not_working,18,4,qwen3,3.3482966,7.623286
+My card was declined at a restaurant today and I am not sure why.,card_not_working,65,14,qwen3,1.972328,2.5720544
+What do I do now that I can't use this card?,card_not_working,44,12,qwen3,1.5269612,2.0758278
+My card doesn't seem to work anymore,card_not_working,36,8,qwen3,0.891699,2.4477756
+"Out of the blue, my card stopped working.",card_not_working,41,8,qwen3,0.94488555,2.5969079
+I can't seem to use my card. Can you help?,card_not_working,42,11,qwen3,1.5337416,2.1900387
+How do I re-order a damaged card?,card_not_working,33,8,qwen3,0.4009192,0.65963864
+Why is my card not working anymore?,card_not_working,35,7,qwen3,1.0349762,2.8133633
+I can't use my card for anything,card_not_working,32,8,qwen3,1.5727887,2.171159
+What's wrong with my card? The clerk at the grocery store said it was declined.,card_not_working,79,16,qwen3,1.8896446,2.5162587
+What should I do if I can't use my card?,card_not_working,40,11,qwen3,1.4879032,2.128977
+Can I use app to reset PIN attempts?,card_not_working,36,8,qwen3,9.27913,-1.7215401
+Please help.  The card won't work.,card_not_working,34,7,qwen3,0.66321427,2.3155255
+I wasn't able to use my card today when I went out for lunch. Wondering why that is?,card_not_working,84,19,qwen3,1.8511424,2.4675655
+My card doesn't seem to work.,card_not_working,29,7,qwen3,0.8339033,2.4311914
+Currently I can't get my card to work.,card_not_working,38,9,qwen3,0.7764217,2.2766523
+WHAT IS THE MAIN REASON OF THIS PROBLEM,card_not_working,39,8,qwen3,5.8149085,9.647196
+How do I get my card to work?,card_not_working,29,8,qwen3,0.6334201,2.4775577
+What can I do to make my physical card work?,card_not_working,44,10,qwen3,0.10605835,2.14777
+Can you tell me why I can't make any transactions?,card_not_working,50,11,qwen3,0.37907636,2.907595
+There is something wrong with my card. Tried to use it a few times today in different places and it just didn't work. The transactions I tried to make were really small so not sure what's going on,card_not_working,196,40,qwen3,0.745117,2.5997438
+Can you tell me whats going on with my card it seems to be not working?,card_not_working,71,16,qwen3,1.0907224,2.6981778
+How do I check security settings using the app?,card_not_working,47,9,qwen3,10.393579,-1.5229235
+I tried using my card at multiple vendors and now it's not working.,card_not_working,67,14,qwen3,1.0951405,2.2165058
+"Can you help me with my card, I think it's broke.",card_not_working,49,12,qwen3,0.45480525,0.961593
+The card is non-functional.,card_not_working,27,5,qwen3,0.60211146,2.2336092
+I haven't been able to complete any transactions on my card today. Do you know what's wrong?,card_not_working,92,19,qwen3,0.60518986,2.818048
+Today I used my card at a restaurant and it was declined. Why?,card_not_working,62,13,qwen3,2.0276635,2.5865874
+Did you deactivate my card it's not working anymore,card_not_working,51,10,qwen3,0.78597564,2.4308577
+Need help to get my card to work.,card_not_working,33,8,qwen3,0.61698765,2.3344893
+Why isn't my card working anymore?,card_not_working,34,7,qwen3,1.0104052,2.8471005
+Why won't my card work anymore?,card_not_working,31,7,qwen3,0.9342312,2.9520366
+Why won't the machine accept my card anymore?,card_not_working,45,9,qwen3,0.71962035,2.9170809
+When I was in a restaurant today my card was declined and payment wouldn't go through and I need help. Can you fix this?,card_not_working,120,25,qwen3,1.9703205,2.5945117
+What to do if my physical card is not working?,card_not_working,46,10,qwen3,0.09597328,2.1355853
+My card stopped working after multiple transactions. Why?,card_not_working,57,8,qwen3,0.6793817,2.7484515
+Why won't my card accept any transactions?,card_not_working,42,8,qwen3,0.523896,2.9281874
+"I think my card is broken or something. I tried using it and it wouldn't go through, please help.",card_not_working,97,20,qwen3,1.0194147,2.003522
+My card is broken,card_not_working,17,4,qwen3,0.45305145,1.0025471
+I tried to purchase airline tickets online this morning and my card information isn't working. Is there something going on with my account?,card_not_working,139,24,qwen3,0.98029727,2.533468
+My card no longer works.,card_not_working,24,5,qwen3,0.83406687,2.5829325
+I seem to be unable to make any transactions.,card_not_working,45,9,qwen3,0.3636203,2.902215
+I can't get my actual card to work,card_not_working,34,9,qwen3,0.70350355,2.3300948
+My card doesn't work when I use it.,card_not_working,35,9,qwen3,1.2275684,2.3077126
+What do I do if my card gets broken?,card_not_working,36,9,qwen3,0.43255126,1.0008271
+I am having problems with my physical card.,card_not_working,43,8,qwen3,0.14074674,2.1575456
+How can I get my card to work?,card_not_working,30,8,qwen3,0.5641853,2.4468477
+I need help with understanding why my card is not working.,card_not_working,58,11,qwen3,1.2150868,2.6539888
+Please help me!  My physical card isn't working right.,card_not_working,54,10,qwen3,0.124610625,2.1543403
+My card stopped working. How do I check if there is a freeze on it?,card_not_working,67,15,qwen3,0.8384116,2.7907934
+"I don't know what's wrong with my card, but it has not worked at multiple places today.",card_not_working,87,19,qwen3,1.0704312,2.3367693
+I need clarity on why my card is not working.,card_not_working,45,10,qwen3,1.1929343,2.6673603
+My card won't physically work.,card_not_working,30,6,qwen3,0.41974604,2.2373664
+What's going on? My card wont accept any transactions.,card_not_working,54,10,qwen3,0.49016857,2.9066825
+My card don't work.,card_not_working,19,5,qwen3,0.9058216,2.4963894
+My card won't work right now.,card_not_working,29,7,qwen3,0.6500492,2.419419
+How can it be that my Card is not functioning anymore?,card_not_working,54,11,qwen3,1.0500958,2.6582365
+What's going on with my card? I've tried multiple times and it never goes through.,card_not_working,82,17,qwen3,1.0176679,2.1374114
+HOW LONG TO TAKE THE TIME TO SOLVE,card_not_working,34,8,qwen3,16.638285,0.45030984
+What do I do if my card is not working?,card_not_working,39,10,qwen3,1.2262497,2.5125806
+What should I do if my physical card isn't working?,card_not_working,51,11,qwen3,0.09786145,2.1295948
+The card that I have isn't working. This is the physical card.,card_not_working,62,13,qwen3,0.44490868,2.1820166
+There's a payment with my card that I didn't perform. I don't know that name shown.,card_payment_not_recognised,83,19,qwen3,6.352552,7.7603464
+My statement indicates I made a payment to an unfamiliar merchant.,card_payment_not_recognised,66,11,qwen3,6.1821156,8.090137
+"There's a payment with my card that I definitely didn't do myself, never seen that name before.",card_payment_not_recognised,95,19,qwen3,6.3600345,7.7233677
+Help! In the app there is a payment that I don't remember.,card_payment_not_recognised,58,13,qwen3,7.396242,8.133407
+I don't understand where this charge came from.,card_payment_not_recognised,47,9,qwen3,6.4151926,9.38145
+there is a charge i dont recognize,card_payment_not_recognised,34,7,qwen3,6.4009385,9.153383
+"I need to figure out what these charges are on my account. They've been coming out for a couple of days. Can i get all of this money back? Also, I need to freeze my card.",card_payment_not_recognised,170,37,qwen3,3.4827206,7.542094
+Someone might have access to my card!  There are some strange payments showing up on my account.  What do I do?,card_payment_not_recognised,111,21,qwen3,8.352515,7.513546
+"There are a couple payments with my card shown in the app that i really didn't make myself. What's going on with this, does someone has access to my card?!",card_payment_not_recognised,155,32,qwen3,8.544886,7.4002914
+I'm using the app and I noticed a payment that I didn't make.,card_payment_not_recognised,61,15,qwen3,7.8148756,8.571757
+"A strange card payment, I do not recognize it.",card_payment_not_recognised,46,9,qwen3,5.793276,7.5562115
+They is a payment I don't recognize on my statement.,card_payment_not_recognised,52,11,qwen3,6.127611,8.689443
+I have an unusual payment in my statement,card_payment_not_recognised,41,8,qwen3,5.984356,8.580414
+I do not recognize the card payment.,card_payment_not_recognised,36,7,qwen3,5.7867184,7.581657
+Hi something is going on with the app.  I see some payments I didn't make?,card_payment_not_recognised,74,16,qwen3,7.9589677,8.57389
+"If I see a payment in the app that I don't recognize, what should I do?",card_payment_not_recognised,71,17,qwen3,7.3237553,8.123392
+I do not recognise the card payment.,card_payment_not_recognised,36,7,qwen3,5.7797694,7.5468383
+"There are a couple payments with my card shown in the app that i really didn't make myself. What's happenning with this, does someone has access to my card?!",card_payment_not_recognised,157,31,qwen3,8.623629,7.413521
+Just today there was a purchase on my card that wasn't done by me. Can this be reversed and my card be frozen? I can't have this continue!,card_payment_not_recognised,138,30,qwen3,3.4562466,7.610847
+I need some help now please! There are some transactions on my account that I do not remember purchasing. Can they be reversed? Can you please cancel or freeze my card so I don't keep getting charged?!,card_payment_not_recognised,201,38,qwen3,3.5651221,7.6031985
+my statement contains an unknown payment,card_payment_not_recognised,40,6,qwen3,6.415359,8.484879
+I don't recognize what this payment on my statement would be for.,card_payment_not_recognised,65,13,qwen3,6.163228,8.670666
+There has been a payment  in the App that has not be done by me.,card_payment_not_recognised,64,15,qwen3,7.744565,8.468103
+I don't recognize a purchase that was made with my card.,card_payment_not_recognised,56,12,qwen3,5.8348227,7.6359653
+I'm checking the app and I see a payment that's not mine.,card_payment_not_recognised,57,14,qwen3,7.3023677,8.100922
+I have a charge for something I didn't buy.,card_payment_not_recognised,43,10,qwen3,6.624691,9.246806
+A payment on my statement is wrong.,card_payment_not_recognised,35,7,qwen3,6.005668,8.767241
+There's a payment that isn't mine on my app,card_payment_not_recognised,43,11,qwen3,7.4722986,8.13208
+What is this strange payment in my account?,card_payment_not_recognised,43,8,qwen3,6.0186334,8.530767
+I'm not sure where this charge came from.,card_payment_not_recognised,41,9,qwen3,6.4587426,9.307542
+I looked at my statement and found a payment I and found a mistake.,card_payment_not_recognised,67,14,qwen3,6.058801,8.763588
+A payment in my account was made by someone I don't know,card_payment_not_recognised,56,13,qwen3,6.361046,7.9724774
+"I don't recognize this payment on my app, I am sure I didn't spend any money there.",card_payment_not_recognised,83,19,qwen3,7.373224,8.180943
+There are a couple of payments with my card shown in the app that in reality I didn't make. Maybe someone has access to my card?Can you check whats the issue ?,card_payment_not_recognised,159,33,qwen3,8.581753,7.467126
+There is payment showing that I didn't do.,card_payment_not_recognised,42,9,qwen3,7.3289485,8.8256235
+Payment I didn't do.,card_payment_not_recognised,20,5,qwen3,7.204542,8.712776
+Why is there a random payment in my statement?,card_payment_not_recognised,46,9,qwen3,5.9323907,8.626697
+"Hi, there is a suspicious payment from my card. I definitely do not know who this is or who could have made this payment.",card_payment_not_recognised,121,24,qwen3,6.2476935,7.8623815
+A payment I didn't do shows in my app,card_payment_not_recognised,37,10,qwen3,7.925627,8.695557
+There is  a charge I don't recognize.,card_payment_not_recognised,37,8,qwen3,6.4671865,9.216151
+I'm noticing a payment/purchase at a company that I don't recognise.,card_payment_not_recognised,68,14,qwen3,6.2667418,8.122936
+There seems to be a couple of payments listed in the app I know weren't made by me. Is there a possibility someone has access to my card? Can you find out what's going on?,card_payment_not_recognised,171,37,qwen3,8.637192,7.4778786
+I need to freeze my card as soon as possible. I just checked my account and saw that there have been several payments that I don't recognize over the course of a few days. Can we investigate and get my money back?,card_payment_not_recognised,213,43,qwen3,3.5115254,7.491338
+There are some charges that I don't recognize.  It happened days ago.  Can I get these charges back?  Should I cancel my card?,card_payment_not_recognised,126,24,qwen3,3.7611346,7.6523614
+Please help.  There is a payment in the app that isn't mine.,card_payment_not_recognised,60,13,qwen3,7.4140515,8.129689
+I am seeing in the App a payment that its not mine,card_payment_not_recognised,50,12,qwen3,7.4436913,8.164039
+There's a payment in the app I don't recognize.,card_payment_not_recognised,47,11,qwen3,7.2411942,8.222404
+"Hello, i just checked my statement and there seems to be a payment from my card that I have never seen before.",card_payment_not_recognised,110,22,qwen3,6.052128,8.193373
+There is a card payment I'm not familiar with.,card_payment_not_recognised,46,10,qwen3,5.751535,7.5326624
+There is a strange payment on my card and I don't know what to do.,card_payment_not_recognised,66,16,qwen3,6.009999,8.292504
+Is it possible someone has access to my card? I noticed that there are a couple of payments in the app I'm sure I did not make. Can you find out what's going on here?,card_payment_not_recognised,166,37,qwen3,8.652798,7.4748178
+There are some card payments that I haven't done myself. What is going on with my card and does somebody else have access to my card?,card_payment_not_recognised,133,27,qwen3,8.565721,7.446047
+I have a payment in my statement that is off,card_payment_not_recognised,44,10,qwen3,6.0034146,8.656196
+I did not do this payment,card_payment_not_recognised,25,6,qwen3,7.259862,8.718201
+I've never been to that store.  That's a fraudulent charge.,card_payment_not_recognised,59,12,qwen3,6.762734,8.785759
+"There are charges on my card from the past few day I am pretty sure I didnt make, can you please freeze it for me? How do I get my money returned since it wasnt me?",card_payment_not_recognised,164,36,qwen3,3.5024617,7.528987
+I have a payment I didnt make on my account,card_payment_not_recognised,43,10,qwen3,7.1551714,8.744554
+There were a couple of payments that I have noticed on my account with my card that I didn't make. Is it possible that somebody else has my card information?,card_payment_not_recognised,157,31,qwen3,8.463917,7.3462157
+There is an unauthorized payment in my statement.,card_payment_not_recognised,49,8,qwen3,5.977706,8.756569
+"There are a couple payments with my card shown in the app that i really make myself. What's going on with this, maybe someone has access to my card?!",card_payment_not_recognised,149,30,qwen3,8.608434,7.4680805
+I don't recognize this payment at all!  Help!,card_payment_not_recognised,45,9,qwen3,6.6802135,8.212379
+There is a record of payment I never submitted on the app.,card_payment_not_recognised,58,12,qwen3,7.8099313,8.524952
+I just looked over my statement and I don't recognize the name of a card payment.,card_payment_not_recognised,81,17,qwen3,5.764251,7.527713
+I didn't make a payment at this business.,card_payment_not_recognised,41,9,qwen3,7.23221,8.808935
+There is a payment on my card that I do not recognize.  I've never seen the name on the transaction before.,card_payment_not_recognised,107,22,qwen3,6.029522,7.786314
+Why do I have a strange payment on my statement?,card_payment_not_recognised,48,10,qwen3,5.8980913,8.613559
+i didnt do this charge,card_payment_not_recognised,22,5,qwen3,6.7461386,9.187902
+I did not charge my account for that transaction.  That's an error.,card_payment_not_recognised,67,13,qwen3,6.8515697,9.253979
+There is a payment that is not mine in the App.,card_payment_not_recognised,47,11,qwen3,7.413703,8.189124
+I see an unfamiliar payment on my statement.,card_payment_not_recognised,44,8,qwen3,6.068285,8.543843
+Why is this payment on my app,card_payment_not_recognised,29,7,qwen3,7.4722385,8.168496
+There is a payment I don't recognize,card_payment_not_recognised,36,8,qwen3,6.609619,8.339816
+This card payment isn't is recognition.,card_payment_not_recognised,39,7,qwen3,5.699901,7.464877
+why do I have an unknown payment?,card_payment_not_recognised,33,7,qwen3,6.452673,8.459668
+Payment I did not make.,card_payment_not_recognised,23,5,qwen3,7.307566,8.752218
+"I just saw some charges on my card from the past days that I dont recognize, I need to freeze the card asap! Will I be able to get my money back?",card_payment_not_recognised,145,32,qwen3,3.4738708,7.543147
+There are a couple of payments with my card shown in the app that I really didn't make myself. What's going on with this?,card_payment_not_recognised,121,26,qwen3,8.445074,7.7312303
+Why is there a payment I didn't do in my app?,card_payment_not_recognised,45,12,qwen3,7.8547997,8.632624
+I have a payment that I didn't make.,card_payment_not_recognised,36,9,qwen3,7.147183,8.778349
+The app is showing a payment I never made.,card_payment_not_recognised,42,9,qwen3,7.894156,8.630702
+I checked the app and there is a payment that I don't recognize.,card_payment_not_recognised,64,14,qwen3,7.306233,8.149185
+How do I find out how or where this transaction on my account came from?,card_payment_not_recognised,72,15,qwen3,15.0717125,3.923071
+I need to figure out who has access to my card there are some payments I didn't make that are showing on the app.  Could you please help?,card_payment_not_recognised,137,29,qwen3,8.610017,7.4579067
+There is a strange payment on my card.,card_payment_not_recognised,38,8,qwen3,6.0128746,8.381822
+I've got charges on my account I did not authorize. Can I get this money back from the last couple of days that it's been coming out? I also need to freeze my card.,card_payment_not_recognised,164,36,qwen3,3.5149083,7.5372424
+There is a payment made with my card that I don't recognize at all.,card_payment_not_recognised,67,15,qwen3,5.920856,7.7567286
+I saw a payment come out of my account for a merchant I don't remember.,card_payment_not_recognised,71,16,qwen3,6.3466578,7.9753714
+There's a payment with my card that I definitely didn't create. I don't know anyone by that name.,card_payment_not_recognised,97,21,qwen3,6.291099,7.708966
+The App shows a fraudulent payment made on my account.,card_payment_not_recognised,54,10,qwen3,7.242941,8.188612
+There's a payment in my history I don't recognize,card_payment_not_recognised,49,11,qwen3,6.5977745,8.346387
+There is a payment on my card that I do not recognize.,card_payment_not_recognised,54,12,qwen3,6.012504,7.825762
+My app shows a payment I didn't make,card_payment_not_recognised,36,9,qwen3,7.9340043,8.641443
+I don't know if I made this payment on my card.,card_payment_not_recognised,47,12,qwen3,6.4972916,7.8585877
+After looking at the app I noticed a couple of payments I know I did not make. Is it possible someone has accessed my card? What is actually going on?,card_payment_not_recognised,150,30,qwen3,8.588682,7.404122
+I do not recongize a payment in my account.,card_payment_not_recognised,43,9,qwen3,6.3831115,8.497326
+A payment shows up on the app that I never made.,card_payment_not_recognised,48,11,qwen3,7.966917,8.621979
+I swear that there are 2 payments on the app that I didn't make.  Could my card me stolen?  Please advise what I should do.,card_payment_not_recognised,123,26,qwen3,8.660725,7.5302043
+Is there any way to know how the transaction got on my account?,card_payment_not_recognised,63,13,qwen3,15.108361,3.8866613
+I did not make this payment that I see in the App.,card_payment_not_recognised,50,12,qwen3,7.740435,8.464088
+I have a card payment I didn't make,card_payment_not_recognised,35,9,qwen3,6.414307,7.76545
+i disagree with a charge,card_payment_not_recognised,24,5,qwen3,6.65237,9.188065
+I didn't make this payment!,card_payment_not_recognised,27,6,qwen3,7.2147856,8.789934
+There is a payment in the app I did not make,card_payment_not_recognised,44,11,qwen3,7.7574096,8.65092
+There is a vendor name I don't recognize on a payment from my account. I don't think I made this payment.,card_payment_not_recognised,105,23,qwen3,6.188479,8.0113325
+I don't think I made this payment that is showing up,card_payment_not_recognised,52,12,qwen3,6.9578595,8.687678
+I think there's a purchase at a store that I didn't go to.,card_payment_not_recognised,58,15,qwen3,6.730664,8.786428
+Have a payment that I haven't done.,card_payment_not_recognised,35,8,qwen3,7.403663,8.68258
+There was a purchase on my card recently to a name that I don't recognize at all. What can be done about this? I need my money back.,card_payment_not_recognised,132,29,qwen3,5.591103,7.7701674
+"One of my card payments, I don't recognise the name of the merchant.",card_payment_not_recognised,68,14,qwen3,5.829027,7.6033597
+"Hello, I noticed there is a payment from my card to a business that I am not familiar with. I definitely did not make this payment.",card_payment_not_recognised,131,26,qwen3,6.1979156,7.985014
+I do not recognise this card payment.,card_payment_not_recognised,37,7,qwen3,5.74237,7.5031514
+I have a card payment that I don't recognize. What should I do?,card_payment_not_recognised,63,14,qwen3,5.752849,7.6892366
+There are a couple payments with my card shown that I'm not responsible for. What is going on? Maybe someone has access to my account.,card_payment_not_recognised,134,26,qwen3,8.575557,7.454664
+There is a payment with my card which i definitely did not do.,card_payment_not_recognised,62,13,qwen3,6.5696325,7.8806696
+My app is displaying a payment I didn't make,card_payment_not_recognised,44,10,qwen3,7.900162,8.629359
+I just checked my account on the App and there is a payment on there that I did not make.,card_payment_not_recognised,89,20,qwen3,7.8688307,8.664445
+Could you please put a freeze on my card?  There are some payments on it that I don't know where they came from.,card_payment_not_recognised,112,24,qwen3,3.4608843,7.5753546
+In the App I see a payment that is not mine.,card_payment_not_recognised,44,11,qwen3,7.344848,8.103174
+There is a payment with my card which i definitely did not make by me .Never seen that it before.,card_payment_not_recognised,97,20,qwen3,6.398845,7.771149
+I didn't make this payment and it's on my app,card_payment_not_recognised,45,12,qwen3,7.7863927,8.486906
+Why is there an uknown charge showing on my account?,card_payment_not_recognised,52,10,qwen3,6.273528,9.313367
+I think that there is a payment on my card that I did not authorize.  I don't recognize the name attached to the transaction.,card_payment_not_recognised,125,25,qwen3,6.1519365,7.7364635
+I don't think I made this transaction on my statement,card_payment_not_recognised,53,11,qwen3,6.078262,8.867583
+There is a weird payment in my statement.,card_payment_not_recognised,41,8,qwen3,5.9908776,8.6505995
+A random charge got added to my card,card_payment_not_recognised,36,8,qwen3,6.128599,13.963392
+I need to freeze my card. There are charges on there that i did not authorize. They've been coming out for a couple of days. Can i get this money back?,card_payment_not_recognised,151,32,qwen3,3.4713829,7.5529857
+I see a strange payment in my account.,card_payment_not_recognised,38,8,qwen3,6.08109,8.478596
+where is my unknown payment from?,card_payment_not_recognised,33,6,qwen3,6.495566,8.404276
+I have just read my statement and there is a payment I don't recognise.,card_payment_not_recognised,71,15,qwen3,6.124831,8.655984
+There's a card payment I didn't make,card_payment_not_recognised,36,9,qwen3,6.390133,7.7681975
+There are a couple payments with my card displayed in the app which I didn't make. What is happening? Maybe someone has access to my card.,card_payment_not_recognised,138,27,qwen3,8.595472,7.4627357
+I'm worried that my card has been compromised because I see a payment that I didn't make.,card_payment_not_recognised,89,19,qwen3,6.2456036,7.577656
+I didn't do a payment and I have it now.,card_payment_not_recognised,40,11,qwen3,7.1897902,8.819437
+how do i dispute a payment I didnt make,card_payment_not_recognised,39,9,qwen3,7.11478,8.828004
+There is a payment in the app that I did not approve,card_payment_not_recognised,52,12,qwen3,7.5697727,8.312302
+I don't recognize a charge on my statement.,card_payment_not_recognised,43,9,qwen3,6.2113004,8.820665
+There is a strange card payment I don't recognise.,card_payment_not_recognised,50,10,qwen3,5.793419,7.5708957
+I believe there is a mistake because a payment I didn't make shows in my app.,card_payment_not_recognised,77,17,qwen3,7.950393,8.577489
+There are a couple payments with my card in the app I see that I didn't create. What is happening? Maybe someone gained access to my account.,card_payment_not_recognised,141,28,qwen3,8.625689,7.491065
+I'm not recognizing the card payment.,card_payment_not_recognised,37,7,qwen3,5.804865,7.5707417
+There's a card payment with a name I don't recognize,card_payment_not_recognised,52,12,qwen3,5.759731,7.544074
+There is a payment done with my card which i definitely did not do.Never seen that name before.,card_payment_not_recognised,95,19,qwen3,6.379757,7.734993
+Why is there a payment I didn't do?,card_payment_not_recognised,35,9,qwen3,7.306988,8.838559
+Someone else accessed my account and made a payment.,card_payment_not_recognised,52,9,qwen3,6.57848,7.9005985
+I have an odd payment in my statement,card_payment_not_recognised,37,8,qwen3,5.9207873,8.649971
+There is a fraudulent payment!,card_payment_not_recognised,30,5,qwen3,7.0107265,8.3695545
+Why is there an unknown card payment?,card_payment_not_recognised,37,7,qwen3,5.842208,7.627463
+I don't recognize this payment,card_payment_not_recognised,30,6,qwen3,6.6211677,8.207736
+I need to know where this charge is coming from?,card_payment_not_recognised,48,10,qwen3,6.4135127,9.410783
+I see a payment on my statement for  a place I didn't make a purchase at.,card_payment_not_recognised,73,17,qwen3,6.6716676,8.801108
+There is an odd payment in my statement,card_payment_not_recognised,39,8,qwen3,5.989748,8.6706
+There are a few payments in the app that I didn't make! Does someone else have my card?  What should I do?,card_payment_not_recognised,106,23,qwen3,8.473776,7.6643667
+I need help with some transactions in my account that I dont recognize or remember purchasing. Im not sure if the name is just different or what. Should my card be put on hold while the issue gets figured out to be safe or is it ok?,card_payment_not_recognised,232,47,qwen3,5.6404004,7.7295294
+I have a confusing payment appear on my statement and I don't recognise it!,card_payment_not_recognised,75,15,qwen3,6.123005,8.665772
+My statement has a payment that I do not recall making,card_payment_not_recognised,54,11,qwen3,6.692495,8.492345
+I think my card is being used by someone else to make purchases that I didn't authorize! I checked my account and see that there have been quite a few purchases over the last two days that I have no idea where they came from. We need to freeze my card now! And I need to find a way to get my money back.,card_payment_not_recognised,303,65,qwen3,3.4478533,7.568872
+"What is this card payment, I do not recognize it.",card_payment_not_recognised,49,10,qwen3,5.7720394,7.552349
+I didn't make a payment that shows in my app.,card_payment_not_recognised,45,11,qwen3,7.842296,8.561894
+What do I do if I see a transaction on my card that I don't recall making?,card_payment_not_recognised,74,18,qwen3,6.306112,7.6022263
+There's a payment in the app that I didn't authorize.,card_payment_not_recognised,53,12,qwen3,7.543486,8.27831
+I have a charge I did not make.,card_payment_not_recognised,31,8,qwen3,6.769345,9.174155
+on my statement there is a payment that I don't recognise,card_payment_not_recognised,57,12,qwen3,6.2535043,8.63939
+I need to cancel my card.  There are a few charges from a couple days ago that I didn't make.  Can I get credit for these charges?,card_payment_not_recognised,130,28,qwen3,3.8490608,7.7243824
+It is listed in my app that I made a payment which I did not actually make,card_payment_not_recognised,74,17,qwen3,7.963804,8.660138
+i dont recognize a charge on my card,card_payment_not_recognised,36,8,qwen3,5.859782,8.149829
+There are a couple of payments with my card shown in the app that I really didn't make myself. Why is it happened?,card_payment_not_recognised,114,24,qwen3,8.513259,7.6435394
+A payment that I didn't make appears in my app.,card_payment_not_recognised,47,11,qwen3,7.9722185,8.615111
+There is a card payment that I'm not recognizing.,card_payment_not_recognised,49,10,qwen3,5.780146,7.5826283
+is there something blocking me from making transfers,beneficiary_not_allowed,52,8,qwen3,-6.186571,-0.6970815
+What are the reasons for my beneficiary not being allowed?,beneficiary_not_allowed,58,10,qwen3,-3.2174718,-5.66146
+Is there something wrong with the transferring functions? I keep trying to transfer funds and only get an error message.,beneficiary_not_allowed,120,20,qwen3,-6.105978,-1.1222161
+What are the reasons a beneficiary would be denied?,beneficiary_not_allowed,51,9,qwen3,-3.0897522,-5.7745624
+A transfer to my account was denied.,beneficiary_not_allowed,36,7,qwen3,-5.0866723,0.08035528
+Why was I not allowed to do a transfer to a beneficiary?,beneficiary_not_allowed,56,12,qwen3,-4.902026,-4.1912303
+I got a message that my transfer is not possible.  What is happening?  I need this to go through please.,beneficiary_not_allowed,104,20,qwen3,-6.3316193,-0.811593
+What is the reason for my beneficiary to be disallowed?,beneficiary_not_allowed,55,10,qwen3,-3.2012691,-5.6684933
+Can someone explain why I'm getting a message on my screen saying my transfer isn't possible? I've done several in the past and haven't had a single problem until now. What's going on?,beneficiary_not_allowed,184,38,qwen3,-6.347896,-0.926542
+I tried transferring to an account but it won't let me.,beneficiary_not_allowed,55,12,qwen3,-5.146607,-0.06436213
+It's not letting me transfer money to my beneficiery.,beneficiary_not_allowed,53,10,qwen3,-4.6701946,-3.6267061
+My transfer to an account failed.,beneficiary_not_allowed,33,6,qwen3,-5.0541196,0.022360357
+Why is my beneficiary not allowed?,beneficiary_not_allowed,34,6,qwen3,-3.205488,-5.666735
+For some reason I am unable to preform a transfer to a beneficiary.,beneficiary_not_allowed,67,13,qwen3,-4.7437816,-3.9905696
+My beneficiary is not allowed?  Why?,beneficiary_not_allowed,36,6,qwen3,-3.2941084,-5.579192
+I tried to transfer funds to a beneficiary and was denied. Can you tell me why?,beneficiary_not_allowed,79,16,qwen3,-4.6625066,-3.9280255
+What is the reason I couldn't do a transfer to a beneficiary?,beneficiary_not_allowed,61,13,qwen3,-4.9179354,-4.1646833
+I got a message that I cannot name X as a beneficiary.,beneficiary_not_allowed,54,12,qwen3,-3.4763796,-5.394227
+Why am I not allowed to add a certain beneficiary?,beneficiary_not_allowed,50,10,qwen3,-3.2524083,-5.63137
+Why can't my beneficiary access my account?,beneficiary_not_allowed,43,8,qwen3,-3.310243,-5.555813
+I'm trying to purchase crypto via the app. I haven't been able to get it to go through. Am I doing something wrong?,beneficiary_not_allowed,115,25,qwen3,-5.5747724,1.8453888
+Hello - I'm on the app and trying to purchase crypto. It's not going through. What am I doing wrong?,beneficiary_not_allowed,100,21,qwen3,-5.575881,1.8459588
+My beneficiary didn't receive my transfer,beneficiary_not_allowed,41,7,qwen3,-4.9958277,-4.1310344
+why didnt a transfer to my account process,beneficiary_not_allowed,42,8,qwen3,-5.141305,-0.06598872
+Why can I not do a  transfer,beneficiary_not_allowed,28,7,qwen3,-6.216936,-0.64829284
+Why didn't my transfer to a beneficiary go through?,beneficiary_not_allowed,51,10,qwen3,-5.08787,-4.1848087
+"For some reason, I'm unable to transfer funds.",beneficiary_not_allowed,46,9,qwen3,-5.7701006,-0.98436135
+Why has my beneficiary been denied?,beneficiary_not_allowed,35,6,qwen3,-3.1297297,-5.73613
+I need to transfer to my account and cant.,beneficiary_not_allowed,42,9,qwen3,-5.1658444,-0.1140909
+Why am I not allowed to transfer money to my cryptocurrency exchange?,beneficiary_not_allowed,69,12,qwen3,-5.533929,1.6200255
+what are the reasons why you would not be able to process a payment,beneficiary_not_allowed,67,14,qwen3,7.09317,8.403465
+Why can't I transfer to another account?,beneficiary_not_allowed,40,8,qwen3,-5.2799797,-0.17557499
+Are there restrictions to transfers to certain accounts?,beneficiary_not_allowed,56,8,qwen3,-5.2702727,-0.14996745
+Please tell me why I am having problems transferring to a beneficiary.,beneficiary_not_allowed,70,12,qwen3,-5.0669804,-4.20035
+I wanted to purchase some crypto. The app will not let me. What's going on here? I really want to make this exchange.,beneficiary_not_allowed,117,24,qwen3,-5.5507507,1.8206992
+My attempted transfer keeps kicking back with an error message.  Could you please help me to resolve this?,beneficiary_not_allowed,106,18,qwen3,-6.634535,-0.895526
+i tried to do a transfer to an account but it didn't work,beneficiary_not_allowed,57,14,qwen3,-5.220002,-0.21217036
+I just got an error message saying my transfer is not possible? Why is that? I've transferred money before and it worked without problem,beneficiary_not_allowed,136,25,qwen3,-6.301933,-0.971066
+Why is my beneficiary being denies?,beneficiary_not_allowed,35,6,qwen3,-3.106721,-5.757827
+Why does my transfer keep generating an error message?,beneficiary_not_allowed,54,9,qwen3,-6.5279393,-0.9088548
+I want a reason as to why my beneficiary is not allowed?,beneficiary_not_allowed,56,12,qwen3,-3.1644669,-5.705109
+"Hi, I am interested buying crypto currency but unable to purchase it through the application. I do want to do the exchange, Could you please let me know what is the problem?",beneficiary_not_allowed,173,32,qwen3,-5.6153975,1.8765365
+Why can't a beneficiary receive a money transfer from me?,beneficiary_not_allowed,57,11,qwen3,-4.6899524,-4.1034102
+Why won't my transfer to another account work?,beneficiary_not_allowed,46,9,qwen3,-5.163882,-0.09185616
+My account transfer was not cleared.,beneficiary_not_allowed,36,6,qwen3,-5.008509,0.11973761
+"I am getting an error stating my transfer is not possible while transferring money. Let me know the issue as its the first time i am getting error, earlier it used to work.",beneficiary_not_allowed,172,33,qwen3,-6.2375345,-1.0328747
+I wasn't able to do a transfer to an account,beneficiary_not_allowed,44,11,qwen3,-5.107079,-0.035661094
+Why would a transfer to an account not be allowed?,beneficiary_not_allowed,50,10,qwen3,-5.242331,-0.10557837
+why is a transfer to beneficiary not possible?,beneficiary_not_allowed,46,8,qwen3,-4.8850393,-4.3483734
+Why did my transfer to a beneficiary fail?,beneficiary_not_allowed,42,8,qwen3,-5.0908275,-4.1492963
+Explain why I can't do a transfer to an account.,beneficiary_not_allowed,48,11,qwen3,-5.377068,-0.26128885
+Why can't my beneficiary get access?,beneficiary_not_allowed,36,7,qwen3,-3.3625393,-5.501922
+I'm suddenly getting an error while attempting a transfer that it isn't possible. Why? I've done it before.,beneficiary_not_allowed,107,21,qwen3,-6.4197817,-0.8809283
+I cannot make a transfer to another account.,beneficiary_not_allowed,44,8,qwen3,-5.3339453,-0.17126082
+Why can't I transfer money to a beneficiary,beneficiary_not_allowed,43,9,qwen3,-4.648708,-4.0591073
+why didnt my account allow a transfer,beneficiary_not_allowed,37,7,qwen3,-5.2159715,-0.005526529
+are transfers to a beneficiary possible,beneficiary_not_allowed,39,6,qwen3,-4.8966265,-4.3243613
+Why are you not accepting my transfer!! I've tried a couple times already now and it just keeps showing an error message,beneficiary_not_allowed,120,23,qwen3,-6.641756,-0.834653
+Will a beneficiary not accept a transfer?,beneficiary_not_allowed,41,7,qwen3,-5.010773,-4.3174167
+Why would a transfer to a beneficiary not go through?,beneficiary_not_allowed,53,10,qwen3,-5.1123705,-4.215957
+For what reason can I not transfer money to a beneficiary?,beneficiary_not_allowed,58,11,qwen3,-4.684527,-4.187782
+What happens when a beneficiary can't receive my transfer?,beneficiary_not_allowed,58,10,qwen3,-4.920861,-4.19687
+i tried to transfer cryptocurrency into my account but was denied,beneficiary_not_allowed,65,11,qwen3,-5.250224,0.18411711
+Why wasn't my payment to beneficiary X approved?,beneficiary_not_allowed,48,9,qwen3,-3.2822165,-5.5470705
+My transfer to a beneficiary did not go through.  Why?,beneficiary_not_allowed,54,10,qwen3,-5.0363955,-4.157233
+I really was trying to complete this exhange. I was trying to purchase some crypto but the app won't allow me to do it. Can you tell me what's going on here?,beneficiary_not_allowed,157,34,qwen3,-5.526383,1.7966645
+Why won't you let me name X as a beneficiary?,beneficiary_not_allowed,45,11,qwen3,-3.4078355,-5.4635158
+Why couldn't I transfer funds to my beneficiary?,beneficiary_not_allowed,48,9,qwen3,-4.6182137,-4.0170455
+Why can't I transfer money to a beneficiery?,beneficiary_not_allowed,44,9,qwen3,-4.659732,-3.692471
+Am I allowed to transfer money to a beneficiary?,beneficiary_not_allowed,48,9,qwen3,-4.684744,-4.255177
+Why didn't my transfer to a beneficiary happen?,beneficiary_not_allowed,47,9,qwen3,-5.102717,-4.216348
+A transfer was not allowed to an account.,beneficiary_not_allowed,41,8,qwen3,-5.2389836,-0.022647265
+Why can't I use this beneficiary?,beneficiary_not_allowed,33,7,qwen3,-3.3543005,-5.514208
+"I want to transfer money to a beneficiary, but I couldn't.",beneficiary_not_allowed,58,12,qwen3,-4.6872015,-4.007669
+My funds are not transferring to my bank. Why is this not working?,beneficiary_not_allowed,66,13,qwen3,-5.65081,-0.89573276
+Just received a message that my transfer is not possible??  What is going on.  I have done this before with no issues.,beneficiary_not_allowed,118,22,qwen3,-6.322264,-0.8204188
+I am trying  to  transfer and  it has been  stopped why is  that,beneficiary_not_allowed,64,13,qwen3,-6.506742,-0.8319071
+"This is frustrating, I'm at work and my transfers are not going through. I keep getting an error message, I do not have time for this.",beneficiary_not_allowed,134,27,qwen3,-6.601944,-0.8704822
+I am trying to complete a transfer but I keep getting an error message.,beneficiary_not_allowed,71,14,qwen3,-6.592686,-0.9074031
+"I normally have no issues making transfers, so why am I suddenly being told it is not possible?",beneficiary_not_allowed,95,18,qwen3,-6.2711153,-0.7921507
+My account did not allow the transfer.,beneficiary_not_allowed,38,7,qwen3,-5.083376,0.04823949
+"Why is my transfer not working? I tried multiple times to transfer money, and all that happens is an error message pops up.",beneficiary_not_allowed,123,23,qwen3,-6.2971087,-0.9960455
+Why was my transfer stopped ?,beneficiary_not_allowed,29,5,qwen3,-6.3239303,-0.7507217
+Why is allowance not being given to my beneficiary?,beneficiary_not_allowed,51,9,qwen3,-3.2361696,-5.6358924
+I have been trying to exchange this for crypto but the app won't work could you please help me?,beneficiary_not_allowed,95,20,qwen3,-5.572689,1.8357407
+The transfer to my account was not allowed.,beneficiary_not_allowed,43,8,qwen3,-5.1001105,0.07473311
+My beneficiary is unable to transact,beneficiary_not_allowed,36,6,qwen3,-3.6127675,-5.2456512
+I need to move money to another beneficiary. Why is it not working?,beneficiary_not_allowed,67,13,qwen3,-4.6043453,-3.92977
+I don't understand why you aren't accepting my transfer. After a couple times trying I'm still getting an error message.,beneficiary_not_allowed,120,23,qwen3,-6.7078977,-0.7968936
+the transfer to an account wasn't allowed is there any other way for me to do it,beneficiary_not_allowed,80,18,qwen3,-5.1903567,0.020740757
+I was unable to transfer money to a beneficiary.,beneficiary_not_allowed,48,9,qwen3,-4.7034993,-3.9508612
+Why can't I use my beneficiary?,beneficiary_not_allowed,31,7,qwen3,-3.4177775,-5.4522605
+Why is this beneficiary being rejected?,beneficiary_not_allowed,39,6,qwen3,-3.1237617,-5.7398458
+"I have to transfer money over to my mother, and I have tried numerous times and all that keeps happening is error messages.",beneficiary_not_allowed,123,23,qwen3,-6.152154,-1.023856
+why did my account decline a incoming transfer,beneficiary_not_allowed,46,8,qwen3,-5.036344,0.108317636
+Why will my transfer not go through?!  Keep getting an error message.,beneficiary_not_allowed,69,12,qwen3,-6.575021,-0.8802137
+My transfer to a beneficiary was rejected.,beneficiary_not_allowed,42,7,qwen3,-5.0349874,-4.193876
+The transfer to my beneficiary has not gone through,beneficiary_not_allowed,51,9,qwen3,-5.1053314,-4.210981
+I wasn't allowed to transfer to my account,beneficiary_not_allowed,42,9,qwen3,-5.159503,-0.03276982
+I was trying to purchase some crypto and the app won't allow me to do it. What's the deal with this? I really wanted to complete the exchange.,beneficiary_not_allowed,142,30,qwen3,-5.558279,1.7910454
+I have made several unsuccessful attempts to make a transfer.  I'm getting frustrated at getting error messages and it not going through.,beneficiary_not_allowed,137,23,qwen3,-6.7303677,-0.93481994
+My money didnt go through after I transferred.,beneficiary_not_allowed,46,8,qwen3,-5.6754136,-0.9022468
+I tried transferring to an account but it didn't go through. What happened?,beneficiary_not_allowed,75,14,qwen3,-5.1031384,-0.051125474
+I cant transfer money into my account,beneficiary_not_allowed,37,7,qwen3,-5.5440817,-0.74853987
+why can't my beneficiary make transactions?,beneficiary_not_allowed,43,7,qwen3,-3.450275,-5.39979
+Why can't I add any beneficiary I choose?,beneficiary_not_allowed,41,9,qwen3,-3.357483,-5.5200715
+Why am I unable to transfer money when I was able to before?,beneficiary_not_allowed,60,13,qwen3,-5.86128,-0.93320346
+"Hello I am unable to exchange the crypto currency through the app, i am very keen to buy. Please let me know the issue.    interested buying crypto currency but i am unable to purchase it through the application,i do want to do the exchange, Could you please let me know what is the problem?",beneficiary_not_allowed,291,55,qwen3,-5.5934644,1.8457837
+Why is a transfer to a beneficiary not possible?,beneficiary_not_allowed,48,9,qwen3,-4.90443,-4.2993097
+Can you please explain why my beneficiary is not allowed?,beneficiary_not_allowed,57,10,qwen3,-3.2596567,-5.6148734
+"I tried transferring money to a beneficiary, however, I was unsuccessful.",beneficiary_not_allowed,73,11,qwen3,-4.7803793,-3.9692774
+The app won't let me transfer money to a beneficiary,beneficiary_not_allowed,52,11,qwen3,-4.5918064,-3.9796195
+Why can I not do a transfer to a beneficiary?,beneficiary_not_allowed,45,10,qwen3,-4.8938303,-4.2788095
+why wasn't a transfer to account approved,beneficiary_not_allowed,41,8,qwen3,-5.182482,-0.028630264
+"I was trying to make a transfer and got an error message telling me it was not possible to make the transfer. This has never happened before, what happened?",beneficiary_not_allowed,156,29,qwen3,-6.4747696,-0.8603002
+Why is my beneficiary not being allowed to get payment services?,beneficiary_not_allowed,64,11,qwen3,-3.1686828,-5.701022
+"I have tried to submit a transfer a couple of times now, and for some reason, it continues to be unsuccessful. Do you know why this may be?",beneficiary_not_allowed,139,28,qwen3,-6.7147026,-0.84375715
+Why can't I transfer to an account?,beneficiary_not_allowed,35,8,qwen3,-5.1773243,-0.18562041
+I could not transfer funds to a beneficiary; is there a problem with your software?,beneficiary_not_allowed,83,15,qwen3,-4.6642714,-3.932392
+Why is my beneficiary not working?,beneficiary_not_allowed,34,6,qwen3,-3.438995,-5.4199443
+Why can't you allow my beneficiary?,beneficiary_not_allowed,35,7,qwen3,-3.2827015,-5.5966706
+My transfer to another account was not allowed. Why is that?,beneficiary_not_allowed,60,11,qwen3,-5.161377,0.012117656
+Why couldn't I transfer to a beneficiairy?,beneficiary_not_allowed,42,8,qwen3,-5.0021563,-4.149164
+I couldn't transfer to an account.,beneficiary_not_allowed,34,7,qwen3,-5.1641073,-0.06924076
+My transfer failed to a beneficiary,beneficiary_not_allowed,35,6,qwen3,-5.059506,-4.147314
+I was unable to transfer to another account.,beneficiary_not_allowed,44,8,qwen3,-5.040269,0.046472482
+Why was I denied the option to transfer money to a selected beneficiary?,beneficiary_not_allowed,72,13,qwen3,-4.731391,-4.0268335
+I keep getting an error message when I'm trying to transfer funds! Why aren't you accepting that?,beneficiary_not_allowed,97,19,qwen3,-6.0590696,-1.0685638
+Why is this not letting me exchange crypto? I need help making this transaction go through.,beneficiary_not_allowed,91,16,qwen3,-5.551751,1.8010609
+I could not transfer to a beneficiary,beneficiary_not_allowed,37,7,qwen3,-4.9455748,-4.127482
+Why cant I transfer to my account?,beneficiary_not_allowed,34,7,qwen3,-5.244617,-0.16723703
+Why  am I being told this  transfer will not  go thru,beneficiary_not_allowed,53,11,qwen3,-6.410663,-0.7278618
+I couldn't transfer money to a beneficiery,beneficiary_not_allowed,42,8,qwen3,-4.637441,-3.654811
+"While transferring money, its getting error out as my transfer is not possible. Please help me in this as earlier i was able to do it successfully.",beneficiary_not_allowed,147,27,qwen3,-6.148614,-1.1067444
+"Hi,  Is there any problem with app? As i am facing some issues with the exchange of crypto currency. I am extremely interested in buying.",beneficiary_not_allowed,137,25,qwen3,-5.6573796,1.9260807
+"Hi, I'm trying to by some crypto and the app isn't allowing it. I really want to exchange this, what am I doing wrong?",beneficiary_not_allowed,118,26,qwen3,-5.5371804,1.7985427
+My account transfer was blocked.,beneficiary_not_allowed,32,5,qwen3,-5.0446677,0.12341614
+What is preventing me from adding a specific beneficiary?,beneficiary_not_allowed,57,9,qwen3,-3.3157318,-5.5659523
+"I couldn't transfer money to my bank, why not?",beneficiary_not_allowed,46,10,qwen3,-5.6436367,-0.9157767
+Why cant I send money to a beneficiary?,beneficiary_not_allowed,39,8,qwen3,-4.5599527,-4.1220627
+How can I transfer money to a beneficiary?,beneficiary_not_allowed,42,8,qwen3,-4.658158,-4.1616516
+It shows that the transfer on my account wasn't allowed.,beneficiary_not_allowed,56,11,qwen3,-5.0939612,0.07453363
+Could you please explain why I received a message that my transfer is not possible? I've never had any problems making a transfer in the past.,beneficiary_not_allowed,142,27,qwen3,-6.3220778,-0.894018
+Hi i received an error message informing me about the transaction failure. I have done the money transfer before and it never failed. Please let me know what is the issue this time.,beneficiary_not_allowed,181,33,qwen3,-6.195918,-1.0479126
+Why would I receive an error that my transfer isn't possible when I've done it before?,beneficiary_not_allowed,86,18,qwen3,-6.496394,-0.9327286
+My card isn't letting me purchase something and I wanted to know why.,beneficiary_not_allowed,69,14,qwen3,1.4817901,2.5852947
+Why isn't my beneficiary allowed?,beneficiary_not_allowed,33,6,qwen3,-3.1963272,-5.6793385
+is a transfer to a beneficiary allowed?,beneficiary_not_allowed,39,7,qwen3,-4.845558,-4.35744
+What are then rules on beneficiaries?,beneficiary_not_allowed,37,6,qwen3,-3.1983166,-5.6799617
+Why can't I buy cryptocurrency on the app?,beneficiary_not_allowed,42,9,qwen3,-5.5824485,1.8521699
+Payment did not process,beneficiary_not_allowed,23,4,qwen3,7.3748093,8.612256
+I've been trying to make a transfer and it hasn't gone through. Now I am receiving an error message.  What is the problem?,beneficiary_not_allowed,122,25,qwen3,-6.702303,-0.9139807
+I am having trouble transferring money to a beneficiery.,beneficiary_not_allowed,56,9,qwen3,-4.666707,-3.696472
+"Why won't you take my transfer, I keep getting an error message.",beneficiary_not_allowed,64,13,qwen3,-6.694089,-0.83381927
+beneficiary transfer problems?,beneficiary_not_allowed,30,3,qwen3,-4.9918175,-3.978833
+Why would my beneficiary not be allowed?,beneficiary_not_allowed,40,7,qwen3,-3.2395477,-5.6355233
+I looked on the app and it says I withdrew cash.  I didn't!,cash_withdrawal_not_recognised,59,14,qwen3,0.8299911,10.963661
+I didn't withdraw the amount of cash that is showing up in the app.,cash_withdrawal_not_recognised,67,15,qwen3,0.9786243,10.855108
+"I saw on the app that a cash withdrawal was completed on my account; however, I did not complete it.",cash_withdrawal_not_recognised,100,20,qwen3,1.1343895,10.803949
+I got a notice from my app that I withdrew cash but I don't remember doing so. How do I fix this?,cash_withdrawal_not_recognised,97,23,qwen3,0.8666838,11.068646
+"Someone has a copy of my card !! I definitely still have it here but someone just made a 500£ cash withdrawal, HELP!",cash_withdrawal_not_recognised,116,22,qwen3,2.7433004,9.107591
+Why do I see a random withdrawal in my app?,cash_withdrawal_not_recognised,43,10,qwen3,0.7258525,10.844196
+"Hello, Please look into this matter urgently. As i have lost my wallet and i can see one withdrawal, now i do not want to loose more money.",cash_withdrawal_not_recognised,139,28,qwen3,2.635706,8.545719
+"Someone has a copy of my card. I have my card with me, but someone just made a 500£ cash withdrawal. Help me.",cash_withdrawal_not_recognised,109,23,qwen3,2.7958736,9.029584
+There is a withdrawal on my account that I don't remember initiating.,cash_withdrawal_not_recognised,69,13,qwen3,2.0024476,10.322902
+"I got a message saying I made a withdrawal from the bank machine, but I did not.",cash_withdrawal_not_recognised,80,17,qwen3,1.9132663,10.37823
+"Someone has copied my card. I have my card with me, but someone just made a 500£ cash withdrawal. Please help now.",cash_withdrawal_not_recognised,114,22,qwen3,2.7713513,9.052154
+"help, I see money missing I didn't take out.",cash_withdrawal_not_recognised,44,10,qwen3,1.8585398,10.818266
+My wallet was taken and I see that someone is using my card!   Please help me!,cash_withdrawal_not_recognised,78,16,qwen3,2.822329,8.50797
+I see cash withdrawal activity in the app that is not mine.,cash_withdrawal_not_recognised,59,12,qwen3,0.97165126,10.832155
+There is a withdrawal on my account I didn't make.,cash_withdrawal_not_recognised,50,11,qwen3,1.9223114,10.518646
+"A 500 pound cash withdrawal was just made from my account, but I didn't make it. I am pretty sure my card has been compromised - can you help me?",cash_withdrawal_not_recognised,145,30,qwen3,2.806679,9.006866
+I just lost my wallet and I think someone is using my card to withdraw my money. Can you please cancel or freeze my card?!!,cash_withdrawal_not_recognised,123,25,qwen3,3.3045917,7.8192716
+The app is showing a cash withdrawal that I didn't make.,cash_withdrawal_not_recognised,56,12,qwen3,0.92593,11.0917
+What is this witdrawal,cash_withdrawal_not_recognised,22,4,qwen3,2.429663,10.146218
+There's a cash withdrawal I didn't make,cash_withdrawal_not_recognised,39,9,qwen3,1.9430978,10.494588
+I think someone stole money from my card,cash_withdrawal_not_recognised,40,8,qwen3,2.8424425,8.632075
+I have a cash withdrawal on my statement that I am unsure of.,cash_withdrawal_not_recognised,61,13,qwen3,2.5600832,10.208518
+The app says I got cash from an ATM but I didn't,cash_withdrawal_not_recognised,48,13,qwen3,1.0242922,11.2296715
+I see money go out that I didn't withdraw.,cash_withdrawal_not_recognised,42,10,qwen3,1.9190449,10.639073
+I lost my wallet and I think someone is withdrawing cash with my card. Please help. It is urgent.,cash_withdrawal_not_recognised,97,19,qwen3,2.8310564,8.694526
+Somebody stole my wallet and is using my card! Can you do something so they can't keep taking my money?,cash_withdrawal_not_recognised,103,21,qwen3,2.7694561,8.484559
+"Help! I think someone has a copy of my card - I still have my card, but a five hundred pound cash withdrawal that I didn't authorize is shown on my account.",cash_withdrawal_not_recognised,156,32,qwen3,2.7116497,9.14717
+I believe my card has been compromised as there's a cash withdrawal I don't recognize.,cash_withdrawal_not_recognised,86,17,qwen3,2.8709002,9.057561
+I was checking my account when I saw a $500 cash withdraw that I know I didn't do.  I have my card so I don't understand how this happened.  Please help me.,cash_withdrawal_not_recognised,156,34,qwen3,2.6167762,9.3296995
+"Hi, Could you please help me as someone has stolen my wallet few hours ago. And a withdrawal is made, please help immediately. As i don't want to suffer more.",cash_withdrawal_not_recognised,158,31,qwen3,2.6699278,8.548638
+What should I do if I see an unauthorized withdrawal on my statement?,cash_withdrawal_not_recognised,69,13,qwen3,2.560745,10.325535
+"A WD was just made on my account, but it was not me and I still have my card.  What to do?",cash_withdrawal_not_recognised,90,22,qwen3,1.0824527,2.9899237
+Why is there extra cash in my account?,cash_withdrawal_not_recognised,38,8,qwen3,1.9110047,11.04172
+What is this cash withdrawal I don't recognize?,cash_withdrawal_not_recognised,47,9,qwen3,2.3876228,9.996883
+I believe my card has been compromised as there are funds showing that I did not receive.,cash_withdrawal_not_recognised,89,17,qwen3,3.177923,8.809721
+THere is some cash that is showing up on my app.,cash_withdrawal_not_recognised,48,11,qwen3,1.1866708,11.418575
+My wallet was just stolen and I see my account already has a withdrawal. Can you please help me.,cash_withdrawal_not_recognised,96,19,qwen3,2.660644,8.547735
+Somebody made a withdrawal from my account for 500. I have my card so how can this be? Does somebody have a duplicate card or something? Help please.,cash_withdrawal_not_recognised,149,28,qwen3,2.7286673,9.117864
+There is a cash withdrawal from an ATM listed but I don't remember making this withdrawal.,cash_withdrawal_not_recognised,90,17,qwen3,2.0948067,10.168494
+I saw there is a cash withdrawal from my account via the app which I did not complete.,cash_withdrawal_not_recognised,86,18,qwen3,0.98656744,10.8924465
+The app says I made a cash withdrawal even though I didn't.,cash_withdrawal_not_recognised,59,13,qwen3,0.9172239,11.143785
+What is this cash withdrawal on my statement?,cash_withdrawal_not_recognised,45,8,qwen3,2.6415174,10.194382
+My app shows cash I didn't get.,cash_withdrawal_not_recognised,31,8,qwen3,1.2392337,11.473712
+I see non-received cash in my app.,cash_withdrawal_not_recognised,34,8,qwen3,1.1910594,11.461608
+The app is saying I made a withdrawl but I didn't.,cash_withdrawal_not_recognised,50,12,qwen3,0.7184796,11.05079
+I see cash in my app but I did not get it.,cash_withdrawal_not_recognised,42,12,qwen3,1.2444735,11.536204
+My app statement shows I took out cash from an ATM but I did not. What can I do?,cash_withdrawal_not_recognised,80,19,qwen3,1.0756785,11.124533
+I think someone may have cloned my card or something.  My card isn't lost but I just saw a charge of $500 cash withdraw.  Can you help me?,cash_withdrawal_not_recognised,138,29,qwen3,2.7887366,9.0655575
+My card shows a cash withdrawal I don't recognize.,cash_withdrawal_not_recognised,50,10,qwen3,2.4521985,9.791633
+I got a strange cash withdrawal in my statement,cash_withdrawal_not_recognised,47,9,qwen3,2.6034849,10.273544
+Help! I just realised someone has apparently withdrawn money using my card! It's from some odd remote town where I definitely haven't been. Please freeze it immediately!,cash_withdrawal_not_recognised,169,29,qwen3,3.241941,7.8772225
+My app is showing a cash balance that I did not receive.,cash_withdrawal_not_recognised,56,12,qwen3,1.1616112,11.493231
+Help!  The app has an ATM withdrawl that I didn't make.,cash_withdrawal_not_recognised,55,12,qwen3,0.95556694,10.873989
+"I am seeing in the app, some cash witdhrawals that I did not authorize.",cash_withdrawal_not_recognised,71,14,qwen3,1.0154308,10.760308
+Some cash shows up on my app.,cash_withdrawal_not_recognised,29,7,qwen3,1.1994381,11.458181
+"I am seeing unathorized transactions in the app, on my account.",cash_withdrawal_not_recognised,63,11,qwen3,1.1287392,10.720993
+I AM MISSING CASH FROM MY BANK ACCOUNT ACCORDING TO MY APP,cash_withdrawal_not_recognised,58,12,qwen3,1.3872318,11.078248
+There are funds in my app that I did not receive.,cash_withdrawal_not_recognised,49,11,qwen3,1.2790982,11.5466175
+A cash withdrawal has been done that I didn't do.,cash_withdrawal_not_recognised,49,11,qwen3,1.9755119,10.354089
+I do not know what this cash withdrawal is,cash_withdrawal_not_recognised,42,9,qwen3,2.3908,10.085803
+There is unexpected money in my account.,cash_withdrawal_not_recognised,40,7,qwen3,1.9315722,10.968525
+I see a cash withdrawal in the app that I did not do.,cash_withdrawal_not_recognised,53,13,qwen3,0.95583904,10.798535
+Someone stole my wallet a couple of hours ago now and they have taken money from my account. Is there any way that you can help so I won't lose any more of my money.,cash_withdrawal_not_recognised,165,36,qwen3,2.7046585,8.471828
+"Hi, It's urgent, please freeze my card. As someone has withdrawn money using my card in odd remote town. Since i have not done this withdrawal. Do it fast.",cash_withdrawal_not_recognised,155,30,qwen3,3.28158,7.7976623
+The app says that I got cash in an ATM and I didn't,cash_withdrawal_not_recognised,51,14,qwen3,1.0635858,11.289922
+Please help me figure out the reason for the odd withdrawal amount from my account?,cash_withdrawal_not_recognised,83,15,qwen3,2.4949377,10.512612
+What do I do if I do not recognise a cash withdrawal?,cash_withdrawal_not_recognised,53,12,qwen3,2.3401062,10.000288
+I hope you can help me. Someone has stolen my wallet and now I have noticed that they have been taking money from my account.,cash_withdrawal_not_recognised,125,25,qwen3,2.7187731,8.484008
+"There was money taken out of my account, and I'm pretty sure I didn't do it.",cash_withdrawal_not_recognised,76,18,qwen3,2.0002701,10.544999
+I was the victim of someone stealing my wallet.  My card is being used and it isn't me.  What should I do?,cash_withdrawal_not_recognised,106,23,qwen3,2.826026,8.51169
+I think there's been an unauthorized cash withdrawal from my account.,cash_withdrawal_not_recognised,69,12,qwen3,2.2293205,10.43941
+What do I do if I see a cash withdrawal on my account that I don't remember making?,cash_withdrawal_not_recognised,83,19,qwen3,2.149955,10.099685
+I am seeing inside the App a some cash withdrawal that is not mine,cash_withdrawal_not_recognised,66,14,qwen3,0.83968353,10.99489
+My app shows a money withdrawal that I did not do.,cash_withdrawal_not_recognised,50,11,qwen3,0.81158304,10.939083
+"I was trying to use my card and it was declined, when I tried to find out what happened I found cash withdraw for $500 that I didn't do.  Can you please help figure this out?",cash_withdrawal_not_recognised,174,37,qwen3,2.6431527,9.301196
+I believe my card has been compromised because of a strange withdrawal,cash_withdrawal_not_recognised,70,12,qwen3,2.971274,8.826294
+There is money missing from my account.,cash_withdrawal_not_recognised,39,7,qwen3,1.8590081,10.869704
+"According to the app, I got cash from an ATM but I haven't made any transactions.",cash_withdrawal_not_recognised,81,17,qwen3,1.1086304,11.324671
+It is urgency. Please freeze my card now. As someone in some odd remote town has withdrawn some money by using my card. As i did not withdraw any money.,cash_withdrawal_not_recognised,152,30,qwen3,3.229092,7.890858
+I am confused why there is cash I did not accept in my account,cash_withdrawal_not_recognised,62,14,qwen3,1.7402422,10.791767
+I hope you can help me. My account has been compromised from a different town that I haven't been to. Can you please place a hold on my account until I can make it to the bank?,cash_withdrawal_not_recognised,176,38,qwen3,2.9279177,8.155421
+There is a cash withdrawal in my account that isn't mine.,cash_withdrawal_not_recognised,57,12,qwen3,2.0193985,10.458428
+There is a cash withdrawal on my statement that I did not make,cash_withdrawal_not_recognised,62,13,qwen3,2.175402,10.435844
+I am seeing in the App a some cash withdrawal that does not belong to me,cash_withdrawal_not_recognised,72,16,qwen3,0.9416263,11.03614
+"My bank app said that I got cash from an ATM, but that's a mistake.",cash_withdrawal_not_recognised,67,16,qwen3,1.0477462,11.226548
+"In the app, I see a withdrawal I didn't make.",cash_withdrawal_not_recognised,45,11,qwen3,0.9511975,10.8318615
+"There are incorrect charges on my account, there was a WD that was made by someone else.  I still have my card though.",cash_withdrawal_not_recognised,118,23,qwen3,1.3067727,3.2184043
+I did not get the cash that is showing up in my app.,cash_withdrawal_not_recognised,52,13,qwen3,1.2201949,11.447938
+"Someone withdrew money from my account, and it wasn't me.",cash_withdrawal_not_recognised,57,11,qwen3,2.0368378,10.506353
+there is money in my account that i didnt put there,cash_withdrawal_not_recognised,51,11,qwen3,1.9079273,10.835369
+Somebody is taking money out of my account without my approval in another town separate from me. Please place a freeze on my account until I can make it to the bank.,cash_withdrawal_not_recognised,165,32,qwen3,3.150054,7.934122
+My app says I withdraw money from my account from an ATM.,cash_withdrawal_not_recognised,57,12,qwen3,0.7263653,11.032068
+Can you tell me what the cash withdrawal is in my statement?,cash_withdrawal_not_recognised,60,12,qwen3,2.6375678,10.215037
+My identity has been stolen. I still have my physical card but there are charges I didn't make on my account. How do I cancel this card or dispute the charges?,cash_withdrawal_not_recognised,159,32,qwen3,3.7112274,7.8076544
+"There was just a withdrawal but it wasn't me, I've never even visited the town where the withdrawal happened.",cash_withdrawal_not_recognised,109,21,qwen3,1.9242712,10.352542
+"I am using the app, and I see cash withdrawals that I did not authorize.",cash_withdrawal_not_recognised,72,15,qwen3,0.90375495,10.7954445
+I did not make a cash withdrawal that is on my statement,cash_withdrawal_not_recognised,56,12,qwen3,2.2452805,10.502753
+The app shows a withdrawal that I did not make or authorize.,cash_withdrawal_not_recognised,60,12,qwen3,0.86189646,10.856382
+"Money was taken out without my consent,",cash_withdrawal_not_recognised,39,7,qwen3,1.9859875,10.523333
+I don't recognize this withdrawal on my statement,cash_withdrawal_not_recognised,49,9,qwen3,2.5026479,10.09885
+How do I report a cash withdrawal that wasn't me?,cash_withdrawal_not_recognised,49,11,qwen3,2.039043,10.304884
+Why is there some cash that I did not deposit in my account?,cash_withdrawal_not_recognised,60,13,qwen3,1.824852,10.800366
+There's an unauthorized cash withdraw,cash_withdrawal_not_recognised,37,6,qwen3,2.2469127,10.39702
+Help!  The app says I took out cash but I didn't!,cash_withdrawal_not_recognised,49,12,qwen3,0.9036071,11.188393
+"Hello, Just now i got to know withdrawal of money from of my account. As someone used my card to withdraw amount in any odd remote area. Since i have not been in that area, please freeze my card immediately.",cash_withdrawal_not_recognised,207,40,qwen3,3.2353508,7.866945
+There has a recent suspicious withdrawal on my bank account. Is it possible to freeze my card?,cash_withdrawal_not_recognised,94,17,qwen3,3.2440012,7.848965
+There's a cash withdrawal that  didn't make that is showing up.,cash_withdrawal_not_recognised,63,13,qwen3,1.7633647,10.599933
+I see an unauthorized withdraw.,cash_withdrawal_not_recognised,31,5,qwen3,2.2245944,10.480058
+I am seeing in the App a some cash withdrawal that I did not do,cash_withdrawal_not_recognised,63,15,qwen3,0.8799632,10.91609
+I think somebody made an unauthorized copy of my card.  My account has a cash withdrawal for 500£ that I did not make.  Please help.,cash_withdrawal_not_recognised,132,25,qwen3,2.764573,9.088431
+My account shows that I made a cash withdrawal but I cannot remember doing so!,cash_withdrawal_not_recognised,78,15,qwen3,2.1140597,10.095665
+"Someone is using my card to purchase flights to New York it's not me because I'm not going to New York, please can you cancel the card and refund the money?",cash_withdrawal_not_recognised,156,33,qwen3,1.6401626,2.7908728
+I noticed that there is a withdrawal in the app that is not mine.,cash_withdrawal_not_recognised,65,14,qwen3,0.72604275,10.764293
+"Some cash was withdrawn in the app, but I did not do it.",cash_withdrawal_not_recognised,56,13,qwen3,1.171718,10.82877
+My wallet got stolen a couple hours ago and now I've seen there already is a withdrawal. Help this is absolutely urgent I don't want to loose more money,cash_withdrawal_not_recognised,152,31,qwen3,2.6467874,8.520082
+A withdrawal is showing that I don't recognize,cash_withdrawal_not_recognised,46,9,qwen3,2.3430004,10.043225
+There's a cash withdrawal I am certain I did not make,cash_withdrawal_not_recognised,53,12,qwen3,2.041913,10.236399
+What is this withdrawal as I do not remember making it.,cash_withdrawal_not_recognised,55,11,qwen3,2.092537,10.226404
+I have my card here with me and someone has just made a withdrawal for 500. Please help!,cash_withdrawal_not_recognised,88,18,qwen3,2.7608573,9.018389
+I have a cash withdrawal that I do not recognise.,cash_withdrawal_not_recognised,49,10,qwen3,2.3300033,10.026141
+Someone else used my card to withdraw cash from an ATM,cash_withdrawal_not_recognised,54,11,qwen3,2.5284338,9.5308485
+Some cash has been withdrawn but I didn't do it.,cash_withdrawal_not_recognised,48,11,qwen3,1.72649,10.517498
+I want my card frozen right away. Money was taken out in an odd location I have never heard of.,cash_withdrawal_not_recognised,95,20,qwen3,3.2626297,7.8197894
+I need my card frozen cause it was used without my consent to take money out. It was in an odd place.,cash_withdrawal_not_recognised,101,22,qwen3,3.2882838,7.7724886
+There's a $200 withdrawal on my statement that seems fishy to me.,cash_withdrawal_not_recognised,65,13,qwen3,2.6981535,10.315127
+There's a cash withdrawal on my account that I didn't make,cash_withdrawal_not_recognised,58,13,qwen3,1.9888637,10.526723
+Why is there a cash withdrawal I didn't make?,cash_withdrawal_not_recognised,45,10,qwen3,1.8886211,10.576811
+The app says I made a cash withdrawal that I didn't make,cash_withdrawal_not_recognised,56,13,qwen3,0.9026008,11.132761
+Help! I think someone has made a cash withdrawal with my card!,cash_withdrawal_not_recognised,62,12,qwen3,2.8489165,9.000656
+What do I do when a charge has been made that I did not make?,cash_withdrawal_not_recognised,61,15,qwen3,6.886225,9.068605
+I need your help immediately.  There is a 500£ cash withdrawal that I know nothing about.  I think my account has become compromised.,cash_withdrawal_not_recognised,133,23,qwen3,2.6507576,8.710451
+Can you tell me what this cash withdrawal is?,cash_withdrawal_not_recognised,45,9,qwen3,2.5865185,10.070051
+How can I verify if a cash withdrawal was made from my account? I still have my card with me but I did not authorize the withdrawal that just occurred.,cash_withdrawal_not_recognised,151,30,qwen3,2.2521145,9.694716
+"I think someone might have a copy of my card because a 500 dollar withdrawal was made, and it wasn't me. Can you please help?",cash_withdrawal_not_recognised,125,26,qwen3,2.794873,9.117556
+"Someone has access to my card info.  I still have the card, but someone just withdrew cash.  How do I get this corrected/stopped?!",cash_withdrawal_not_recognised,130,24,qwen3,2.7947516,9.089885
+Why is my app showing me taking money that I did not take out?,cash_withdrawal_not_recognised,62,14,qwen3,0.9639967,11.207389
+"I see in the app some cash was withdrawn, but it's not mine.",cash_withdrawal_not_recognised,60,14,qwen3,0.8583042,11.149509
+There is a withdrawal in my account I didn't make.,cash_withdrawal_not_recognised,50,11,qwen3,1.9540249,10.439226
+What is the strange cash withdrawal on my statement?,cash_withdrawal_not_recognised,52,9,qwen3,2.657437,10.272637
+Why would the app show a withdrawal that I did not make?,cash_withdrawal_not_recognised,56,12,qwen3,0.79427224,10.961386
+I have a cash withdrawal in my statement. Why is that?,cash_withdrawal_not_recognised,54,11,qwen3,2.5823116,10.274073
+i didnt put that money in my account,cash_withdrawal_not_recognised,36,8,qwen3,1.9253398,10.776519
+Some cash withdrawal that I didn't make showed up in the app.,cash_withdrawal_not_recognised,61,13,qwen3,1.0500388,11.0724945
+There is a cash withdrawl I don't remember.,cash_withdrawal_not_recognised,43,9,qwen3,2.115355,10.130127
+"Someone stole my account, there's a withdrawal but it wasn't me, can we put a stop to it please?",cash_withdrawal_not_recognised,96,21,qwen3,2.6878319,8.462655
+There are funds showing in my app that I did not receive.,cash_withdrawal_not_recognised,57,12,qwen3,1.2694085,11.536666
+I didn't withdraw cash but I see that transaction on my app,cash_withdrawal_not_recognised,59,13,qwen3,0.87063736,10.857749
+I have a cash withdrawal that I don't recognize.,cash_withdrawal_not_recognised,48,10,qwen3,2.3094368,10.058203
+"My wallet was just stolen, and they've already used my card! Please help, I can't afford to lose more money!",cash_withdrawal_not_recognised,108,22,qwen3,2.7722375,8.522911
+"Please help me, its urgent. Someone has withdrawn money from my account as few hours before my wallet has been. Now i want to stop withdrawal of more money.",cash_withdrawal_not_recognised,156,29,qwen3,2.5818226,8.574816
+Help!  There is a cash withdrawl on the account that I didn't make!,cash_withdrawal_not_recognised,67,14,qwen3,2.0101886,10.503111
+There is a cash withdrawal on my statement that I don't recognize,cash_withdrawal_not_recognised,65,13,qwen3,2.443066,10.053342
+The app is showing mt withdrawals that aren't  mine.,cash_withdrawal_not_recognised,52,10,qwen3,0.7637746,11.016834
+"My app says I made a withdrawal, but I didn't.",cash_withdrawal_not_recognised,46,11,qwen3,0.7547273,10.875688
+There is random cash in my account.,cash_withdrawal_not_recognised,35,7,qwen3,1.861072,11.019815
+A cash withdrawal that I didn't authorize is shown on my account - can you please cancel my card as soon as possible?,cash_withdrawal_not_recognised,117,23,qwen3,3.0024142,8.6705675
+Cash I did not get showed up in my account,cash_withdrawal_not_recognised,42,10,qwen3,1.5263338,11.137318
+My app says I withdraw funds from my account through an ATM.,cash_withdrawal_not_recognised,60,12,qwen3,0.6929526,11.090767
+"There has been an unusual withdrawal from my account, can you help?",cash_withdrawal_not_recognised,67,12,qwen3,1.9640431,10.471071
+Some cash I didn't get shows in my app,cash_withdrawal_not_recognised,38,10,qwen3,1.2249172,11.4862585
+Why is there a charge when I took out money?,cash_withdrawal_charge,44,10,qwen3,4.6112885,16.781574
+Why have I been charged a fee for cash withdrawal?,cash_withdrawal_charge,50,10,qwen3,5.179041,15.969068
+I made a cash withdrawl and there is a charge.  What is this?,cash_withdrawal_charge,61,13,qwen3,4.831657,16.781517
+I am inquiring about why there was an extra fee charged when I used an ATM.,cash_withdrawal_charge,75,16,qwen3,6.3752975,14.36767
+Why am I being charged extra when I withdrew money?,cash_withdrawal_charge,51,10,qwen3,4.7061954,17.353205
+Why am I charged to get money from the ATM?,cash_withdrawal_charge,43,10,qwen3,6.2896295,14.648413
+I saw I was charged extra for money I withdrew?,cash_withdrawal_charge,47,10,qwen3,4.6387305,17.40326
+Is there an extra fee for using an ATM?,cash_withdrawal_charge,39,9,qwen3,6.468364,14.454731
+Why did they take more money out then I withdrawed?,cash_withdrawal_charge,51,10,qwen3,4.6040783,17.379631
+I withdrew cash and was charged,cash_withdrawal_charge,31,6,qwen3,4.708172,16.594496
+why has a cash withdrawal charged me?,cash_withdrawal_charge,37,7,qwen3,4.889894,16.849066
+I was charged for getting cash.,cash_withdrawal_charge,31,6,qwen3,4.421729,16.178608
+"Hello, I have a question concerning an unfamiliar fee that I notice on my account. I see that you guys charge for ATM withdrawal. Never notice this fee until now. Can you please explain?",cash_withdrawal_charge,186,34,qwen3,6.002099,15.528213
+Why am I charged a fee for withdrawing cash?,cash_withdrawal_charge,44,9,qwen3,5.271571,16.063786
+Why was there a fee for my cash withdrawal?,cash_withdrawal_charge,43,9,qwen3,5.11369,15.941399
+I don't understand why I was charged extra for withdrawing money?,cash_withdrawal_charge,65,12,qwen3,4.643619,17.39792
+I made a transaction at an atm and was charged extra for it.,cash_withdrawal_charge,60,13,qwen3,6.3022027,14.163798
+"I was charged extra when I made a cash withdraw, why?",cash_withdrawal_charge,53,11,qwen3,4.698998,17.217762
+Why was I charged for cash withdrawal?,cash_withdrawal_charge,38,7,qwen3,4.804958,16.657837
+Why was there a fee on my cash withdrawal?,cash_withdrawal_charge,42,9,qwen3,5.158637,15.893574
+Why was I charged for a cash withdrawal at the ATM?,cash_withdrawal_charge,51,11,qwen3,4.89004,16.584097
+Since when do you charge to make a withdrawal? I've always done it for free. So how much is it now?,cash_withdrawal_charge,99,22,qwen3,5.86844,16.382944
+WHY IS THERE AN EXTRA FEE FOR USING THE ATM??!!!,cash_withdrawal_charge,48,10,qwen3,6.457161,14.331923
+Is the fee with my cash withdrawal a mistake?,cash_withdrawal_charge,45,9,qwen3,5.0693336,15.994462
+Why did using an ATM cause me to have an extra fee charged?,cash_withdrawal_charge,59,13,qwen3,6.4139147,14.360306
+"Why am I being charged for ATM cash withdrawals? The only reason I use it is because it's been free! Now you expect me to pay for them, and how much is that going to cost me?",cash_withdrawal_charge,174,38,qwen3,6.122065,16.136347
+Why was my account assessed a fee for an ATM transaction?,cash_withdrawal_charge,57,11,qwen3,6.3937,14.501339
+Why am I being charged for ATM fees?,cash_withdrawal_charge,36,8,qwen3,6.296608,14.6146965
+Why have I been charged for pulling cash out of my own account?,cash_withdrawal_charge,63,13,qwen3,4.7791257,16.8019
+Why was i charged for making a withdrawal? After i went grocery shopping i withdrew some money from my account and now there is another charge.,cash_withdrawal_charge,143,26,qwen3,5.1084156,16.84577
+Do you charge for making a withdrawal? I took some money out of my account earlier and I was charged for this.,cash_withdrawal_charge,110,22,qwen3,5.411523,16.529928
+"So, I was just charged for my recent ATM withdrawal and any withdrawal prior to this has been free. What is the issue here?",cash_withdrawal_charge,123,24,qwen3,6.215423,16.257002
+Why was I charged an extra fee when using an ATM?,cash_withdrawal_charge,49,11,qwen3,6.3717313,14.433832
+When I got cash I was charged an extra fee!  Explain!,cash_withdrawal_charge,53,11,qwen3,4.5431557,15.500864
+"I am not supposed to be charged a cash withdrawal fee, but I was.",cash_withdrawal_charge,65,14,qwen3,5.054689,15.795084
+I have a question about fee for cash withdraw.,cash_withdrawal_charge,46,9,qwen3,5.170774,16.208717
+Could you explain your rules for ATM fees?,cash_withdrawal_charge,42,8,qwen3,6.311958,14.458553
+How do I avoid a fee to use an ATM?,cash_withdrawal_charge,35,10,qwen3,6.289102,14.538846
+How much can I withdrawal in one month without incurring fees?,cash_withdrawal_charge,62,11,qwen3,5.387607,16.164644
+Am I charged more for using the ATM?,cash_withdrawal_charge,36,8,qwen3,6.4523993,14.461186
+"I just pulled money out of the ATM and was charged a fee, WHy?",cash_withdrawal_charge,62,14,qwen3,6.09997,14.962933
+Why was I charged for withdrawing cash?,cash_withdrawal_charge,39,7,qwen3,4.7731905,16.650675
+"When I withdrew my money, why was there an extra charge?",cash_withdrawal_charge,56,11,qwen3,4.688618,17.288994
+I took out money and there is a fee.  Why?,cash_withdrawal_charge,42,10,qwen3,5.15357,15.606056
+Is there a cash withdrawal fee? Because I just got charged?,cash_withdrawal_charge,59,11,qwen3,5.2936115,16.035288
+"Hello, I wanted to get some more information about ATM Withdraw Fee. I have been withdrawing money for years and notice this charge on my account. I always thought it was no fee since its you guys ATM company that I am withdrawing. Can you please explain?",cash_withdrawal_charge,255,47,qwen3,5.9659176,15.70045
+How much money can I withdraw before fees? I noticed a fee on my card but I didn't think I had hit the limit of how much I could withdraw in a month.,cash_withdrawal_charge,149,34,qwen3,5.4175186,15.976142
+"This is not right, I was told I could take out cash at the ATM for free?",cash_withdrawal_charge,72,17,qwen3,6.129648,16.154243
+How come I got to pay to get my money from the ATM?,cash_withdrawal_charge,51,13,qwen3,6.3073277,14.544247
+"I just saw a charge for a cash withdrawal that I made! ATM withdrawals have always been free in the past, so why is there suddenly a charge? What is it going to cost me now?",cash_withdrawal_charge,173,36,qwen3,6.0872703,16.254063
+"Why are you charging for cash withdrawals? I went to withdraw some money earlier today after getting my groceries, and it appears there is a fee that wasn't there before",cash_withdrawal_charge,169,31,qwen3,5.32524,15.956534
+What's up with the fee for getting cash?,cash_withdrawal_charge,40,9,qwen3,4.505882,15.980242
+"I was told that withdrawing cash from the ATM is free, but I'm charged a fee. Why is this?",cash_withdrawal_charge,90,20,qwen3,6.0066547,15.944406
+Why are fees charged for cash withdrawals? I went to withdraw some money earlier today after shopping. There's a new fee that there.,cash_withdrawal_charge,132,24,qwen3,5.405766,15.887597
+"When I withdrew money from my account the other day, I noticed that there was a fee.  I didn't think that there were any fees for withdrawals...?  How much will I be charged?",cash_withdrawal_charge,174,34,qwen3,5.4724436,15.866348
+I thought it was free to make a withdrawal. So how much does it cost now?,cash_withdrawal_charge,73,16,qwen3,5.85061,16.356285
+I just had a look at my statement. Why have I been changed for using the ATM?,cash_withdrawal_charge,77,17,qwen3,6.269882,14.229248
+Why are you charging me for ATM withdrawal? It has always been free before.,cash_withdrawal_charge,75,14,qwen3,6.1217585,16.105097
+Is there a reason I was charged an extra fee for using the ATM?,cash_withdrawal_charge,63,14,qwen3,6.4548836,14.464814
+There was an extra fee when I was at the ATM.  Why?,cash_withdrawal_charge,51,12,qwen3,6.3918495,14.356752
+"I hate this ATM, it charged me an extra fee, Why did it charge?",cash_withdrawal_charge,63,14,qwen3,6.3378806,14.265081
+Why is it I am charged an extra fee when I use the ATM?,cash_withdrawal_charge,55,14,qwen3,6.4702024,14.468463
+What's up with the extra fee I got?,cash_withdrawal_charge,35,9,qwen3,5.54281,14.813353
+Tell me why there is a charge on my cash withdrawl.,cash_withdrawal_charge,51,11,qwen3,4.815645,16.850452
+Why was I charged for getting cash?,cash_withdrawal_charge,35,7,qwen3,4.4668865,16.329828
+Why am I being charged to make cash withdrawals? I thought they were supposed to be free!,cash_withdrawal_charge,89,17,qwen3,5.823803,16.405472
+I should not have been charged a fee for cash withdrawal.,cash_withdrawal_charge,57,11,qwen3,4.8342514,15.666337
+I got charged a fee that shouldn't be there from my cash,cash_withdrawal_charge,56,13,qwen3,4.633819,15.428879
+I was charged a fee for withdrawing cash.,cash_withdrawal_charge,41,8,qwen3,4.843318,15.810146
+"I want to get some cash from the ATM using my card but I dont want to be charged any fees. Ive taken some money out before with no fees, but recently Ive been getting charged. Why?",cash_withdrawal_charge,180,37,qwen3,6.318497,14.664446
+"I got this stupid fee after taking cash out, why?",cash_withdrawal_charge,49,10,qwen3,4.7698507,15.620964
+"I was charged for a cash withdrawal, why?",cash_withdrawal_charge,41,8,qwen3,4.762485,16.68892
+I got cash and was charged a fee that shouldn't be there!,cash_withdrawal_charge,57,13,qwen3,4.62246,15.4061
+Please help!  There was an extra fee when I got cash.,cash_withdrawal_charge,53,11,qwen3,4.5706353,15.474943
+Why have I all of a sudden been charged for my ATM withdrawal? I thought the withdrawals were free because this is the first time I've ever had this problem.,cash_withdrawal_charge,157,31,qwen3,6.1989474,16.270245
+Can you tell me why I was charged to withdraw cash?,cash_withdrawal_charge,51,11,qwen3,4.791319,16.788847
+Why was I charged a fee when I withdrew money?,cash_withdrawal_charge,46,10,qwen3,5.300878,15.728453
+How come my cash withdrawal came with an unnecessary fee?!,cash_withdrawal_charge,58,10,qwen3,5.062138,16.059967
+A percentage fee was charged to my withdrawal.,cash_withdrawal_charge,46,8,qwen3,5.003545,15.7388115
+Will I be charged for a cash withdrawal?,cash_withdrawal_charge,40,8,qwen3,5.347837,16.550508
+Explain the extra ATM fees.,cash_withdrawal_charge,27,5,qwen3,6.4045434,14.291306
+"I just took some cash out of a cash machine in Heathrow airport because I wanted to buy some new sunglasses for my holiday but you've added a fee to the withdrawal, what is this?",cash_withdrawal_charge,178,36,qwen3,5.117834,15.897654
+The bank charged me fees for withdrawing cash!,cash_withdrawal_charge,46,8,qwen3,4.9009533,15.855302
+Why am I charged a fee for getting cash?,cash_withdrawal_charge,40,9,qwen3,4.49396,16.066826
+I used an ATM and wanted to know why I was charged an extra fee.,cash_withdrawal_charge,64,15,qwen3,6.3023915,14.281293
+Is there a fee for a cash withdrawal?,cash_withdrawal_charge,37,8,qwen3,5.2662525,16.318073
+"I was charged a fee when withdrawing cash, can you explain why?",cash_withdrawal_charge,63,12,qwen3,5.0977716,15.801705
+"I received a fee for obtaining cash, is this correct?",cash_withdrawal_charge,53,10,qwen3,4.4766326,15.991541
+Today I noticed a charge for an ATM withdrawal on my account. Can you please fix this? It's supposed to be no charge.,cash_withdrawal_charge,117,24,qwen3,6.2225795,16.20635
+Why are you charging fees on cash withdrawals? I went to withdraw some money earlier today after buying groceries. There's a fee that wasn't there before.,cash_withdrawal_charge,154,28,qwen3,5.4740076,15.864409
+Is there a charge for cash withdrawals? I always thought it was free.,cash_withdrawal_charge,69,13,qwen3,5.493238,16.517986
+Tell me why there is an extra charge when I used an ATM?,cash_withdrawal_charge,56,13,qwen3,6.3814425,14.013559
+Why did you charge me extra for withdrawing money?,cash_withdrawal_charge,50,9,qwen3,4.6464424,17.38643
+Is there always a charge when withdrawing money?,cash_withdrawal_charge,48,8,qwen3,5.261017,16.768902
+I have a fee for cash withdrawal,cash_withdrawal_charge,32,7,qwen3,5.05006,16.089252
+Make me understand why I am charged an extra fee when I use the ATM.,cash_withdrawal_charge,68,15,qwen3,6.298385,14.297223
+Why am I being charge a fee when using an ATM?,cash_withdrawal_charge,46,11,qwen3,6.325882,14.626741
+I was under the impression ATM cash withdrawals were free. Why was I suddenly charged for my most recent ATM transaction?,cash_withdrawal_charge,121,21,qwen3,6.1923647,16.188576
+I didn't realize that there were any fees for withdrawing money from my account--this has never happened to me before.  What exactly are the fees?,cash_withdrawal_charge,146,27,qwen3,5.4599996,15.77429
+Are there ATM fees?,cash_withdrawal_charge,19,4,qwen3,6.326014,14.513005
+"Do you charge for cash withdrawals?  I want to get my hands on my own money and you appear to be charging me for the pleasure! Why is this, you'd never get this with my high street bank!",cash_withdrawal_charge,186,39,qwen3,5.406942,16.49101
+"Is there a fee when I get cash from an ATM? Is there a limit I can take out? If there is a fee, what is it?",cash_withdrawal_charge,107,27,qwen3,5.4569135,16.023247
+Why was there a fee when I pulled cash?,cash_withdrawal_charge,39,9,qwen3,5.04104,15.871216
+"The ATM charged me an extra fee, Why?",cash_withdrawal_charge,37,8,qwen3,6.288672,14.2620325
+Why am I being charged for withdrawing cash but haven't in the past?,cash_withdrawal_charge,68,14,qwen3,4.9258175,16.856339
+Why did I get a fee for getting cash?,cash_withdrawal_charge,37,9,qwen3,4.46529,16.03931
+I have been charged a fee for getting cash,cash_withdrawal_charge,42,9,qwen3,4.4867864,15.844134
+Why did I get charged when getting cash?,cash_withdrawal_charge,40,8,qwen3,4.4664493,16.423819
+I made a cash withdrawal and was charged a fee incorrectly can you help with this?,cash_withdrawal_charge,82,16,qwen3,4.9630904,15.981953
+I got charged fees for withdrawing cash!,cash_withdrawal_charge,40,7,qwen3,4.93368,15.936011
+Since when were there charges for taking out cash from my account? It's always been free for me to do this before.  How much are the charges going to be?,cash_withdrawal_charge,153,31,qwen3,5.7953687,16.400248
+There was an unexpected fee for my cash withdrawal!,cash_withdrawal_charge,51,9,qwen3,4.9307084,15.874795
+There was an extra fee on my account when I got cash.,cash_withdrawal_charge,53,12,qwen3,4.5401716,15.489054
+"While getting cash, I was charged a fee.",cash_withdrawal_charge,40,8,qwen3,4.4479265,15.640843
+Why did I get charged for a withdrawal?,cash_withdrawal_charge,39,8,qwen3,4.9092917,16.796604
+How come I got charged extra for withdrawing cash?,cash_withdrawal_charge,50,9,qwen3,4.69312,17.332563
+Why am I being charged for getting cash?,cash_withdrawal_charge,40,8,qwen3,4.4461064,16.26708
+Why do I see extra charges for withdrawing my money?,cash_withdrawal_charge,52,10,qwen3,4.703628,17.37309
+Anytime I've made an ATM withdrawal before it has always been free. I now say that I have been charged for my most recent ATM withdrawal. What's going on here?,cash_withdrawal_charge,159,32,qwen3,6.1506734,16.236408
+What's going on? I was just recently charged for an ATM withdrawal. I've never seen this charge before and before it's always been free.,cash_withdrawal_charge,136,27,qwen3,6.1699243,16.248898
+I saw a fee on my receipt from withdrawing money while shopping earlier.  Is there supposed to be a fee for this type of transaction?,cash_withdrawal_charge,133,25,qwen3,5.446271,15.789438
+Why was I charged an extra fee from the ATM?,cash_withdrawal_charge,44,10,qwen3,6.359536,14.447545
+"extra fees on a cash withdrawal, not cool.",cash_withdrawal_charge,42,8,qwen3,5.0250883,16.303484
+Why am I being charged certain fees? I noticed a fee after I withdrew some money for groceries earlier today.,cash_withdrawal_charge,109,20,qwen3,5.411452,15.73082
+Have you started charging for cash withdrawals? I always thought it was free until I noticed this fee. How much is the fee?,cash_withdrawal_charge,123,23,qwen3,5.5004,16.214148
+Can you tell me why I was charged extra when I withdrew money?,cash_withdrawal_charge,62,13,qwen3,4.685414,17.345339
+"It seems I've suddenly been charged for my recent ATM cash withdrawal. What's up with that? I though withdrawals are free, you never charged me so far!",cash_withdrawal_charge,151,29,qwen3,6.172551,16.293346
+I believe i was charged for making a withdrawal after i went grocery shopping. Are you guys charging for this now?,cash_withdrawal_charge,114,21,qwen3,5.1795506,16.82926
+Why was I charged when taking out money?,cash_withdrawal_charge,40,8,qwen3,4.600667,16.573483
+is there a charge on withdrawals?,cash_withdrawal_charge,33,6,qwen3,5.3621836,16.659967
+Are there charges for cash withdrawals?,cash_withdrawal_charge,39,6,qwen3,5.3545065,16.498466
+Do I get charged for withdrawals?,cash_withdrawal_charge,33,6,qwen3,5.383126,16.56994
+I was recently charged for withdrawing money from my bank ATM. How can that be possible when I haven't been charged for using it before?,cash_withdrawal_charge,136,26,qwen3,6.1728773,16.242586
+Why did I get charged for withdrawing cash?,cash_withdrawal_charge,43,8,qwen3,4.7167816,16.75368
+When did you start charging to make a withdrawal? How much is it now? I always thought it was free.,cash_withdrawal_charge,99,20,qwen3,5.9391713,16.370096
+What was the extra charge for withdrawing money?,cash_withdrawal_charge,48,8,qwen3,4.6234217,17.3735
+I was charged a fee with my cash withdrawal that I shouldn't have been charged.,cash_withdrawal_charge,79,16,qwen3,4.6895323,15.519604
+Why is there a fee for cash withdrawal?,cash_withdrawal_charge,39,8,qwen3,5.078135,16.029716
+Why did using an ATM cause me to be charged an additional fee?,cash_withdrawal_charge,62,13,qwen3,6.3668485,14.39958
+Why did I get a fee from the ATM?,cash_withdrawal_charge,33,9,qwen3,6.3220344,14.585311
+to cash withdrawals charge me?,cash_withdrawal_charge,30,5,qwen3,5.070198,16.712452
+Why was I charged a fee on a cash withdrawal?,cash_withdrawal_charge,45,10,qwen3,5.017436,15.847079
+i withdraw cash from the ATM and was charged a fee,cash_withdrawal_charge,50,11,qwen3,5.432736,15.615721
+"Why did I get charged a fee, I thought it was free?",cash_withdrawal_charge,51,12,qwen3,4.954173,15.274951
+"I have never been charged for making an ATM cash withdrawal before, but I am now being charged a fee to withdraw cash. What happened?",cash_withdrawal_charge,133,25,qwen3,5.8264165,15.958602
+I withdrew cash and was charged. Why?,cash_withdrawal_charge,37,7,qwen3,4.7082887,16.690203
+Why do I have a charge for an ATM withdrawal? I thought these were free?,cash_withdrawal_charge,72,15,qwen3,6.168026,16.165087
+I got a strange fee when I used the ATM.,cash_withdrawal_charge,40,10,qwen3,6.3038864,14.237307
+I used my card the other day to get cash from an ATM and was charged an extra fee. I don't understand why I am being charged a fee all of a sudden. I thought it was free to withdraw from an ATM?,cash_withdrawal_charge,194,44,qwen3,6.479383,14.407167
+Why was there a fee with my cash withdrawal?,cash_withdrawal_charge,44,9,qwen3,5.0805936,15.869498
+what is this extra charge for a withdrawal?,cash_withdrawal_charge,43,8,qwen3,4.7729287,17.238152
+Is there a charge for getting cash?,cash_withdrawal_charge,35,7,qwen3,4.686248,16.232534
+"Hello, I have noticed a problem on my recent withdrawal at the banks atm machine.  I made a transaction and upon receiving my funds from the machine, a fee was assessed to my withdrawal.  Are these types of transactions free of charge?",cash_withdrawal_charge,235,42,qwen3,5.93124,15.747344
+I have a strange transaction on my account which appears to pertain to a cash withdrawal I made outside Nandos in Leeds.  What is that for?  Is it fraud?,cash_withdrawal_charge,153,29,qwen3,2.2809477,10.167261
+Why did you charge me for taking out cash?,cash_withdrawal_charge,42,9,qwen3,4.493386,16.548544
+"The past few times I've been to the ATM, I was charged a withdrawal fee. Have your policies changed regarding fees?",cash_withdrawal_charge,115,22,qwen3,5.9698954,15.504715
+Why am i being charged for withdrawing cash funds?,cash_withdrawal_charge,50,9,qwen3,5.0594916,16.803722
+What is your policy on withdrawing cash from an ATM? There is a fee on my account that wasn't there before I paid for my groceries.,cash_withdrawal_charge,131,27,qwen3,5.845746,15.612932
+What is the extra fee I was charged when using an ATM?,cash_withdrawal_charge,54,12,qwen3,6.5009413,14.428407
+Why am I charged whenever I withdraw cash?,cash_withdrawal_charge,42,8,qwen3,4.948393,16.809679
+Why did you charge me extra when I withdrew cash?,cash_withdrawal_charge,49,10,qwen3,4.641253,17.359972
+I used an ATM and there was an extra charge.,cash_withdrawal_charge,44,10,qwen3,6.293289,14.050681
+"that fee should not be there, you charged my cash for an unnecessary thing.",cash_withdrawal_charge,75,14,qwen3,4.6100135,15.428349
+Why was there an extra charge with the withdrawal of my money?,cash_withdrawal_charge,62,12,qwen3,4.7178335,17.290838
+Why did you charge a fee when I withdrew from an ATM?,cash_withdrawal_charge,53,12,qwen3,5.8010354,15.572494
+"Why is there now a charge for making cash withdrawals? I wanted some cash after I went to the grocery store, and there's a new fee!",cash_withdrawal_charge,131,27,qwen3,5.4078417,15.9685545
+Why am I being charged to withdrawal money?,cash_withdrawal_charge,43,8,qwen3,5.0068874,16.959658
+Why was I charged a fee for my withdrawal?,cash_withdrawal_charge,42,9,qwen3,5.2019696,15.755149
+Why did withdrawing money cost me extra?,cash_withdrawal_charge,40,7,qwen3,4.633184,17.446152
+Why was I charged a fee for withdrawing money off my card?,cash_withdrawal_charge,58,12,qwen3,5.2870073,15.645066
+What is the fee for a cash withdrawal?,cash_withdrawal_charge,38,8,qwen3,5.2122087,16.245607
+"I withdrew money and got a fee, please explain",cash_withdrawal_charge,46,9,qwen3,5.1893835,15.631395
+I used my card to get cash then I was charged a fee that I shouldn't have been charged.,cash_withdrawal_charge,87,20,qwen3,4.6219363,15.405681
+I noticed a different charge while I was taking my money out.,cash_withdrawal_charge,61,12,qwen3,6.104938,14.14621
+Why was I charged a fee for withdrawing money?,cash_withdrawal_charge,46,9,qwen3,5.2937393,15.736237
+Do cash withdrawals cost anything?,cash_withdrawal_charge,34,5,qwen3,5.3999395,16.468287
+Why is there a fee for getting cash?,cash_withdrawal_charge,36,8,qwen3,4.5430374,16.031317

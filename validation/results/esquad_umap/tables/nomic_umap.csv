@@ -1,0 +1,501 @@
+text,char_len,tok_len,representation,umap_1,umap_2
+"En Estados Unidos, ¿cuál es la velocidad habitual de una turbina con 60 Hertz de potencia?",90,16,nomic,11.430585,5.781217
+¿Cuándo visitó Obama a Kenia finalmente?,40,6,nomic,15.000139,6.6396217
+¿Como qué libro fueron publicadas las siete conferencias en inglés de Iqbal?,76,12,nomic,13.836601,5.531572
+¿Qué porcentaje de la población de Varsovia era protestante en 1901?,68,11,nomic,13.376834,8.402564
+¿Qué sucedió cuando se asimilaron las cianobacterias?,53,7,nomic,14.238374,5.5617547
+¿Cuánto pueden comer los ctenóforos en un día?,46,8,nomic,13.935548,6.700634
+¿Cómo se llama la zona cerca de la garganta del Rin con castillos de la Edad Media?,83,17,nomic,14.021573,4.549226
+¿Qué puesto ocupa Kenia en la escala en 2012?,45,9,nomic,14.06448,6.8231072
+¿Qué investigador usó por primera vez la palabra oxígeno?,57,9,nomic,15.283193,5.24309
+¿Qué coche más grande inventó Toyota cuando los compradores se lamentaron de los compactos de tamaño pequeño?,109,17,nomic,13.563985,7.1902905
+¿En qué año tuvo lugar la expulsión temporal de uno de los dos equipos de fútbol?,81,16,nomic,14.841675,4.7053986
+¿De quién era Iqbal crítico?,28,5,nomic,13.827877,8.558687
+"Históricamente, ¿qué movimiento ha apoyado la Iglesia Metodista?",64,8,nomic,15.0537815,5.439483
+¿Cuáles son dos ejemplos de vertebrados primitivos sin mandíbula?,65,9,nomic,13.883946,5.081351
+¿Cuáles eran las tarifas anuales de transporte para los canales?,64,10,nomic,14.338826,4.4964604
+¿Cómo se llama un maestro en el budismo tibetano?,49,9,nomic,15.062379,3.5353386
+¿Qué clase de francés emitió esta declaración?,46,7,nomic,15.930312,6.833342
+¿A qué se limita el compromiso de un gobierno incompetente con la justicia social?,82,14,nomic,12.1940365,5.0239425
+¿Quién cuestiona la noción de la hipótesis de la curva de Kuznets?,66,12,nomic,14.801715,5.7864738
+¿Qué descendiente de Genghis Khan saqueó Bagdad?,48,7,nomic,15.275463,6.4569345
+¿Cómo se abrevia el ADN del cloroplasto?,40,7,nomic,17.160032,6.0343895
+¿Qué ancho de vía de ferrocarril utilizan dos líneas turísticas?,64,10,nomic,14.0593195,4.655999
+"La desobediencia civil revolucionaria hacia la cultura se pone de relieve con el ejemplo de, ¿quién?",100,16,nomic,11.887921,4.1631675
+"Aunque California del Sur consta de un entorno urbano muy desarrollado, ¿qué parte de este estado se ha dejado sin desarrollar?",127,21,nomic,14.003034,5.6622815
+¿Cuáles son los medicamentos antiinflamatorios más potentes?,60,7,nomic,13.939519,6.5365233
+¿Cuál es la fuente de calor habitual para hacer hervir el agua en la máquina de vapor?,86,17,nomic,11.29047,6.1406183
+¿Quién fue contratado para ser el subdirector de la Oficina de Vuelo Espacial Tripulado?,88,14,nomic,14.572423,6.3668246
+"Desde 2005, ¿cuál es el sexo del principal compañero de viaje de Doctor Who?",76,14,nomic,13.107066,7.9168534
+¿A quién controlan los gurús?,29,5,nomic,14.940248,8.272315
+¿Quién era el segundo mayor productor de petróleo del mundo?,60,10,nomic,12.338582,6.9496365
+"¿Cuánto más alta fue la tasa de deforestación de 2000 a 2005, en comparación con 1995 a 2000?",93,18,nomic,12.695159,8.2721405
+¿En qué línea de yarda empezó Carolina con 4 min 51 s de tiempo restante en el marcador?,88,18,nomic,16.526722,5.0550528
+¿Quién supervisa a un técnico farmacéutico en el Reino Unido?,61,10,nomic,14.9170885,6.1837654
+¿Cuánto más pesado es el oxígeno 18 que el oxígeno 16?,54,11,nomic,15.359845,7.9990225
+¿Cómo controla Kenia la corrupción?,35,5,nomic,15.1777525,8.403596
+¿A quiénes derrotaron los Broncos en el partido divisional?,59,9,nomic,14.601222,6.84733
+¿Quién dirigió el ataque de la colonia francesa en 1565?,56,10,nomic,12.739052,7.1624765
+¿Qué tienen los ctenóforos actuales que los fósiles encontrados no tenían?,74,11,nomic,14.03585,6.141883
+¿Cómo se llamaba la creación de Du Pont sobre la pólvora?,57,11,nomic,14.827187,3.9026642
+¿Cuántas naciones controlan esta región en total?,49,7,nomic,13.932385,6.2230144
+¿Con qué estado inesperado había muchos chinos?,47,7,nomic,14.306378,6.0919356
+¿Qué presentó Stiglitz en 2009 con respecto a la desigualdad mundial?,69,11,nomic,12.300765,4.541441
+¿Cuál fue la fuente del error?,30,6,nomic,15.969265,5.945857
+¿Qué comparte el ser Miembro del Parlamento de Escocia con la Cámara de los Comunes?,84,15,nomic,14.300896,6.7431026
+¿Qué carece el Estado islámico de la comunidad internacional?,61,9,nomic,14.276834,6.9465613
+¿Qué tradujo Marlee Matlin?,27,4,nomic,15.20499,3.8410385
+¿Cuántas veces se produjo la peste en Venecia?,46,8,nomic,13.221701,9.932864
+¿Qué trató de abordar el Protocolo de Kyoto?,44,8,nomic,14.828014,6.1470633
+"¿Cuál es el apellido del jugador que, en el último cuarto de partido, recuperó finalmente el balón perdido por Newton?",118,20,nomic,16.34305,4.945489
+¿En qué año fue lanzada la canción Fog on the Tyne?,51,11,nomic,16.039251,6.815466
+¿Quién recibió una propuesta en 1915?,37,6,nomic,13.000577,7.8588905
+¿Qué tipo de seres se lleva el Doctor Who en sus viajes?,56,12,nomic,14.261448,4.1162066
+¿Cuándo anunció Holden que cerraría su planta de Victoria?,58,9,nomic,15.734371,7.079646
+¿Cuándo alcanzaron su máximo los ataques a docentes?,52,8,nomic,15.133353,2.936313
+¿Cuál es el segundo aeropuerto más concurrido de Estados Unidos?,64,10,nomic,13.780323,5.0222955
+¿Qué financiaron Lane y Vail?,29,5,nomic,15.332778,6.443243
+¿Qué porcentaje votó a favor de una Asamblea escocesa?,54,9,nomic,13.25194,6.172873
+¿En qué dirección se encuentra el barrio West Side de Fresno en la autopista 99?,80,15,nomic,13.901601,7.2652235
+¿Qué estrella de cine reprodujo la lengua de signos para el himno nacional estadounidense en la Super Bowl 50?,110,19,nomic,16.356682,7.5949078
+"¿Dónde se encuentran las Facultades de Medicina, Odontología y Salud Pública de Harvard?",88,13,nomic,14.293957,6.1744347
+¿Cuál es generalmente la meta de aceptar un acuerdo de culpabilidad?,68,11,nomic,15.118641,5.3825917
+"De acuerdo con lo que dice el texto, ¿cuántos premios Grammy ha ganado Lady Gaga?",81,15,nomic,13.673485,5.5025234
+¿Cuántas juntas de examen existen en la India?,46,8,nomic,14.853453,3.042111
+"DEC originalmente tenía tres capas, pero ¿a cuántas capas evolucionó?",69,10,nomic,15.152822,6.0269647
+¿Qué dos órganos rectores tienen poder de veto legislativo?,59,9,nomic,12.507707,4.998649
+¿Cuánto duró la lucha en la Guerra de los Siete Años?,53,11,nomic,14.528813,7.1162066
+¿Cuál es el proceso de construcción de un edificio o infraestructura?,69,11,nomic,13.938367,5.2733583
+¿Qué evidencia hay de que los cloroplastos descienden de las cianobacterias endosimbióticas?,92,12,nomic,17.128746,6.0848517
+¿Cuál es un ejemplo de un virus que utiliza variación antigénica?,65,11,nomic,13.520031,9.478263
+¿Cuántas especies de árboles se pueden encontrar en la selva amazónica?,71,11,nomic,11.838026,6.8539133
+¿Cuántos invitados asistieron a la cena de inauguración del Mercado del Grainger?,81,12,nomic,14.540255,6.0232954
+¿En qué grupo pueden inscribirse los docentes en Gales?,55,9,nomic,15.017563,3.0629094
+"¿A qué le dio el nombre de Tesla, la Conferencia General de Pesos y Medidas en 1960?",84,17,nomic,13.389508,8.318151
+¿A quién se considera el primer geólogo moderno?,48,8,nomic,15.8897505,4.173708
+¿A quién se debe el nombre de Kearney Boulevard?,48,9,nomic,13.79671,7.7024975
+¿Qué pasó durante la prueba de desconexión durante el retraso del olor del traje espacial?,90,15,nomic,14.081778,4.0225363
+¿Cómo se documenta la apertura del Mercado del Grainger en la Galería de Arte Laing?,84,15,nomic,15.401393,5.365071
+¿Qué tipo de atmósfera ayudó a alimentar el fuego en toda la cabina?,68,13,nomic,15.819297,5.6286244
+¿En qué se convirtió la fase II de DECnet?,42,9,nomic,15.059953,8.544387
+¿Cuál era la reputación de Tesla en la cultura popular?,55,10,nomic,13.758334,8.372585
+¿Cuál es el único divisor además de 1 que puede tener un número primo?,70,14,nomic,14.856363,5.191961
+¿Cuál fue el nombre dado a una sección de Kearney Boulevard en un esfuerzo por cambiar la imagen de la zona?,108,21,nomic,13.756088,7.6346464
+¿Qué principio se basa en la aparición de fósiles en las rocas sedimentarias?,77,13,nomic,14.702136,5.570613
+¿Dónde se encuentra la sede del Polonia?,40,7,nomic,13.683926,6.052506
+¿En qué zona de esta colonia británica se encontraban las concesiones de tierras de los hugonotes?,98,16,nomic,12.115788,3.0740733
+¿Cuándo se construyó el Centro de Atletismo Gerald Ratner?,58,9,nomic,15.34725,8.078616
+Diga el nombre de un extra que se añadió a la producción de los compactos.,74,15,nomic,13.740465,7.698042
+¿En qué año publicó James Hutton una versión de dos volúmenes de sus teorías?,77,14,nomic,15.732511,7.478571
+¿Como producto de qué se puede representar cualquier número mayor que 1?,72,12,nomic,12.301276,7.0442133
+"El hecho de que no todos los fósiles puedan encontrarse globalmente al mismo tiempo hace que el principio se convierta en, ¿qué?",128,22,nomic,13.197358,6.125971
+¿Qué provoca el castigo físico en un estudiante?,48,8,nomic,15.097781,2.6821954
+¿Por qué se disculpó el IPCC?,29,6,nomic,15.6440935,8.51959
+¿En qué tipo de clima tiene mayores niveles de oxígeno 18 el agua de mar?,73,15,nomic,11.363055,6.29172
+¿Cuánto come un ctenóforo en un día?,36,7,nomic,14.675082,8.504483
+¿Qué ayudó al lama a decidir renacer?,37,7,nomic,15.200791,6.0054097
+¿La proclamación de qué chamán ayudó al ascenso de Temujin?,59,10,nomic,14.6585455,6.0904417
+¿Qué porcentaje del producto interior bruto comprende la construcción?,70,9,nomic,15.606312,4.984145
+¿Cuál es un sinónimo de cloroplasto de ADN?,43,8,nomic,17.12305,6.0952597
+¿A quién no beneficia la construcción de un proyecto que no se ajuste a los códigos?,84,16,nomic,14.402692,5.21206
+¿Cuándo se reflexionó sobre el complejo político-militar en el ámbito de la comprensión del imperialismo?,105,16,nomic,12.956308,6.45823
+¿Quién era el líder cuando los francos se adentraron en el valle del Éufrates?,78,14,nomic,13.987154,8.180479
+¿Cuál fue el spin-off de Happy Days que debutó en la década de 1980 en ABC?,75,17,nomic,13.426313,8.585138
+¿Qué dos compuestos diferenció Al-Muwaffaq?,43,6,nomic,14.270563,6.518369
+¿Cómo se llamaba la obra representada en los años 70?,53,10,nomic,14.604022,3.8981361
+¿Cuándo renunció Pachauri como presidente del IPCC?,51,7,nomic,14.390448,8.023349
+¿Qué edad tenía Manning cuando jugó la Super Bowl 50?,53,10,nomic,16.463486,7.50399
+¿Qué selva tropical cubre la mayor parte de la cuenca del Amazonas en Sudamérica?,81,14,nomic,11.83295,6.6632886
+¿Cómo se llama cuando hay un intento activo de derrocar un gobierno o un sistema de creencias?,94,17,nomic,12.841528,4.8287916
+¿Dónde gobernó la dinastía Tran?,32,5,nomic,15.42731,8.803225
+¿Cuándo anunció BSkyB su intención de reemplazar sus canales digitales de emisión en abierto?,93,14,nomic,14.935371,5.5711927
+"La desigualdad en presencia de las imperfecciones del mercado crediticio, ¿qué tipo de efecto tiene sobre la formación de capital humano?",137,21,nomic,12.655248,4.6983085
+¿Qué tipo de cloroplastos tienen las diatomeas?,47,7,nomic,17.196936,6.0359206
+¿Qué antiguo alumno de Harvard fue primer ministro palestino?,61,9,nomic,15.938124,4.0877028
+¿De qué parte del sistema inmunológico se produjo la evolución en el antepasado evolutivo de los vertebrados maxilares?,119,18,nomic,13.478618,4.760463
+¿Qué tipo de oxígeno adquieren los animales marinos en mayor cantidad durante las condiciones climáticas más frías?,115,17,nomic,13.724133,5.607849
+¿Quién cantó el himno nacional estadounidense?,46,6,nomic,16.034613,7.678683
+¿En qué sentido se debe estar observando la curvatura del espacio-tiempo?,73,12,nomic,13.463382,4.1254473
+¿Qué programa estadounidense cambió la visión de los rumanos durante la guerra fría?,84,13,nomic,15.587276,5.2283797
+¿Cómo se llama el puente que une partes del campus del río Charles?,67,13,nomic,15.462815,3.3392694
+¿Cuántos canales de radio y televisión podía tener el nuevo servicio digital?,77,12,nomic,14.90979,5.2644396
+¿Qué cantidad de carbono del mundo se almacena en la selva amazónica?,69,12,nomic,11.747398,6.68876
+¿Qué lugar ocupa el Aeropuerto Internacional de Los Ángeles en la clasificación de los aeropuertos más concurridos en volumen de pasajeros internacionales?,155,22,nomic,13.9966345,5.1889496
+¿De qué manera se pueden codificar los gráficos?,48,8,nomic,14.361423,5.2865252
+¿Cuándo se firmó el Tratado de Maastrich?,41,7,nomic,15.240362,8.034881
+¿Por qué los Hermanos Musulmanes han facilitado ceremonias de matrimonio en masa de bajo coste?,95,15,nomic,14.0791,6.849252
+¿En qué año recibió el V&A la colección Talbot Hughes?,54,11,nomic,15.684777,8.429939
+¿Cómo construyó Turabi una base económica sólida?,49,7,nomic,15.769789,7.7845945
+¿Cuál es la medida que se usa para determinar lo concurridos que son los aeropuertos?,85,15,nomic,13.672113,5.0249453
+¿Cuál es otro nombre para la autopista Yosemite?,48,8,nomic,13.857512,7.5164022
+¿Qué es para los comités obtener pruebas de los testigos?,57,10,nomic,14.082035,3.8330872
+"¿Cuál es la temperatura de entrada de la turbina de vapor, en grados centígrados?",81,14,nomic,11.332908,6.030516
+¿Cómo se enrutan los paquetes?,30,5,nomic,14.043919,5.8968945
+¿Qué asesor del primer ministro británico también es miembro de la universidad?,79,12,nomic,15.926342,3.9165325
+¿Dónde se sitúa la megalópolis de California del Sur en términos de población a escala nacional?,96,16,nomic,15.9534645,7.680184
+¿Dónde está ubicada la Hyde Park Day School?,44,8,nomic,16.063742,7.680008
+¿Durante cuánto tiempo los hugonotes siguieron usando nombres franceses?,72,9,nomic,11.981446,2.9847445
+"En China, ¿cómo se llamaba la persona que infirió que la tierra estaba formada por la erosión de las montañas y por la deposición de limo?",138,26,nomic,14.600574,4.101971
+¿Qué fue lo que se hizo para simular en el LC-34?,49,12,nomic,13.273233,6.8064003
+¿Qué director general de Goldman Sachs también es alumno de la Universidad de Chicago?,86,14,nomic,14.752405,7.9364676
+¿Qué informe tenía la fecha correcta?,37,6,nomic,16.095432,6.0779157
+¿Qué equipo se expulsó temporalmente de la MLS?,47,8,nomic,15.069722,4.769467
+¿En qué año experimentó la Amazonia una sequía que puede haber sido más extrema que en 2005?,92,17,nomic,12.834153,8.041248
+¿De qué colores fue el logotipo de ABC de 2001?,47,10,nomic,12.647587,8.254677
+¿Qué debe tener un docente de la escuela pública como mínimo?,61,11,nomic,15.344023,2.9198263
+¿Quién es el nuevo compañero para la 10.ª serie del resurgimiento?,66,12,nomic,15.474497,5.284733
+¿De qué dependen cada vez más los técnicos farmacéuticos?,57,9,nomic,14.636131,6.457447
+¿Qué es Internet2?,18,3,nomic,15.644856,8.889545
+"¿Por qué al grupo de estudiantes se le llamaba ""los metodistas""?",64,11,nomic,15.025479,2.8192103
+¿Qué porcentaje de la población con derecho a voto de Escocia no votó realmente?,80,14,nomic,13.537082,6.413092
+"¿Quién, a su llegada, proporcionó una identidad común a los primeros colonos vikingos?",86,13,nomic,14.378696,4.1782136
+¿Cuál es la ciudad importante de EE. UU. en la que se encuentra la universidad?,79,15,nomic,15.732415,3.015197
+¿Cuántos años tenía John Elway cuando jugó la Super Bowl XXXIII?,64,11,nomic,16.300362,7.5927095
+¿El nuevo acuerdo incluye el vídeo bajo demanda y la alta definición?,69,12,nomic,15.2582245,5.633179
+¿Hacia o desde qué pueden transferirse los campos globales generales?,69,10,nomic,13.18369,6.113461
+¿Cuál es la temperatura aproximada del condensador en una turbina?,66,10,nomic,11.342525,5.941254
+¿Cuál fue la primera batalla en 1754?,37,7,nomic,15.399607,4.331554
+"Aproximadamente, ¿cuántos nombres fueron firmados en una petición en línea en el sitio web del Parlamento en respuesta al cierre de la galería de instrumentos musicales?",169,26,nomic,14.245692,7.4226375
+¿Quién fue el último Primer Ministro de Alemania del Este?,58,10,nomic,16.08572,6.315125
+"En el año 2000, ¿cuántos kilómetros cuadrados de la selva amazónica se habían perdido?",86,14,nomic,11.887188,7.4078865
+¿Qué nombre también se usa para describir la selva amazónica en inglés?,71,12,nomic,11.7645645,6.9770093
+¿Cuál es la unidad básica de división territorial en Polonia?,61,10,nomic,16.029224,7.435571
+¿Qué tipo de grupo es el Estado Islámico?,41,8,nomic,14.90244,7.571827
+¿Qué himno escribió Lutero después del martirio de Esch y Voes?,63,11,nomic,15.052478,6.343134
+¿Qué escuchó el Parlamento del Reino Unido que era una suscripción a BSkyB?,75,13,nomic,13.878856,8.297229
+¿Qué organismo de la India proporciona directrices de política a las escuelas?,78,12,nomic,15.5558195,2.8064125
+¿Qué significa que un nudo se considere indescomponible?,56,8,nomic,13.371513,3.4862597
+¿Cómo evolucionaron las creencias religiosas de los hugonotes en el Nuevo Mundo?,80,12,nomic,12.018254,2.97044
+¿Cuándo se desarrolló el oxígeno líquido para uso comercial?,60,9,nomic,13.285806,7.096033
+¿Por qué los ctenóforos son extremadamente raros como fósiles?,62,9,nomic,14.439434,6.1730075
+¿Cuántos años tiene una persona para solicitar ser Miembro del Parlamento de Escocia?,85,13,nomic,13.308497,5.7040477
+¿Quién escribió sobre la destilación del agua potable del agua de mar?,70,12,nomic,11.418859,6.30235
+¿Para qué nación reclamó Ribault inicialmente lo que ahora es Jacksonville?,75,11,nomic,14.819768,5.842797
+¿Qué director general de Microsoft es también un exalumno de la Universidad de Chicago?,87,14,nomic,14.832763,7.915752
+¿Qué ayuda a ejecutar el Urban Education Institute?,51,8,nomic,13.990115,5.991209
+"En la temporada 2015, ¿cuántas intercepciones consiguió la defensa de los Panthers?",83,12,nomic,13.4022455,6.483704
+¿Cómo se llaman los tentáculos que han llamado los cidípidos?,61,10,nomic,14.823724,3.8906465
+¿En qué otro lugar hizo pruebas el Apolo 1 además del Centro Espacial Kennedy?,78,14,nomic,14.066502,3.7544749
+"De acuerdo con una revisión de 1955, ¿cuáles eran los ahorros que los ricos pensaban compensar?",95,16,nomic,12.639769,7.570691
+¿Quién perdió el balón en el tercer down a 9 yardas?,52,11,nomic,16.55312,5.0765347
+¿Cuál es un ejemplo de un parásito que utiliza la estrategia de variación antigénica para evadir la destrucción?,112,18,nomic,13.199372,5.613609
+¿Qué poeta alemán era descendiente de hugonotes?,48,7,nomic,12.037385,2.9981637
+¿Cuántos pasajeros al año transporta la red ferroviaria de Newcastle?,69,10,nomic,14.356265,4.260925
+¿Qué directiva mencionada se creó en 1994?,42,7,nomic,12.338031,7.84016
+¿Dónde se centraban las poblaciones en las colonias?,52,8,nomic,12.364705,6.384276
+¿Cuándo se sometió Renania al Tratado de Versalles?,51,8,nomic,15.380547,8.552571
+¿Cómo se llamaba el episodio de la primera partitura de Doctor Who de Simpson?,78,14,nomic,15.425867,4.272466
+¿Qué nombre le pusieron a la mitad occidental de la colonia?,60,11,nomic,12.53293,6.788439
+"La tendencia moderna en el diseño es hacia la integración, ¿de qué?",67,12,nomic,13.025152,7.1931357
+¿Qué son Branko Milanovic y Joseph Stiglitz?,44,7,nomic,15.541339,9.148676
+¿Qué proceso de soldadura se demostró en 1901?,46,8,nomic,13.024072,8.056404
+¿Por qué razón los anarquistas no quieren aceptar el castigo?,61,10,nomic,12.806794,4.081395
+¿Cómo apoyaban las sociedades geográficas de Europa a determinados viajeros?,76,10,nomic,12.877828,4.18605
+¿Cuántos kilómetros cuadrados de selva tropical están cubiertos en la cuenca?,77,11,nomic,11.810583,7.0282626
+¿Qué nos muestran los cloroplastos perdidos?,44,6,nomic,17.25867,5.9503684
+"En 2005, ¿cuál era la condición de su planeta natal?",52,10,nomic,13.110795,8.137113
+¿Cuál es la eficiencia teórica de Carnot de una turbina?,56,10,nomic,11.377597,5.6496687
+¿Cuántas especies se encontraron en el esquisto de Burgess?,59,9,nomic,13.95483,6.086871
+"Aproximadamente, ¿cuántos instrumentos musicales fueron prestados al Museo Horniman?",84,9,nomic,14.672493,7.5534315
+¿Para quién fue escrito el informe médico?,42,7,nomic,16.068798,5.9429965
+¿Cuál es el nombre de un algoritmo útil para probar adecuadamente la primalidad de los números grandes?,103,17,nomic,13.706609,7.5350127
+¿Quién detuvo el avance de Hulagu Khan a través del Medio Oriente?,66,12,nomic,14.925916,6.6554956
+¿Quién era el hijo de Ayurbarwada?,34,6,nomic,13.765083,8.265704
+¿Qué prueban los genes donados?,31,5,nomic,14.01617,3.684906
+¿Por qué se creó esta organización a corto plazo?,49,9,nomic,15.853437,6.548245
+¿Qué entidades han tenido que desarrollar principios dedicados a la resolución de conflictos entre leyes de diferentes sistemas?,128,18,nomic,13.040413,4.965159
+¿Quién fue contratado para producir la identidad 2001-02 de ABC?,64,11,nomic,12.620587,8.205
+¿Cómo se conoce al conjunto de receptores de los primitivos vertebrados sin mandíbula?,86,13,nomic,13.903917,5.1252036
+¿Qué tipo de ciudad ha sido siempre Varsovia desde su existencia?,65,11,nomic,14.620518,3.1868076
+¿Cómo se llama el grupo que no está de acuerdo con el gobierno en absoluto?,75,15,nomic,14.752604,4.812064
+¿Qué son las comisiones del Parlamento escocés en comparación con otros sistemas?,81,12,nomic,13.741648,6.229969
+¿Cuáles son dos ejemplos de medicamentos citotóxicos o inmunosupresores?,72,9,nomic,14.012528,6.5460615
+¿En qué año Tesla recibió una propuesta para el premio Nobel?,61,11,nomic,13.502763,5.354662
+¿Cómo se llama la primera serie de Doctor Who?,46,9,nomic,15.48028,4.288771
+¿Qué herramienta utilizan los estratigrafistas para ver sus datos en tres dimensiones?,86,12,nomic,13.0036545,4.4297676
+¿En qué años se incorporaron España y Portugal a la Unión Europea?,66,12,nomic,14.903861,6.727526
+"¿Qué había originalmente en los trajes espaciales antes del casco transparente ""pecera""?",88,12,nomic,13.864922,4.174219
+"Inspirada por Shelley, ¿cómo se llamaba la doctrina de Gandhi?",62,10,nomic,14.99454,3.5336244
+¿Por qué se necesita la segunda línea de tiempo?,48,9,nomic,13.407201,4.0410085
+¿Qué drama de Aaron Spelling debutó en ABC en los años 80?,58,12,nomic,13.532333,8.756585
+¿Qué tienden a ser las sociedades extremadamente desiguales?,60,8,nomic,12.370657,4.24348
+¿En qué año reconoció Joseph Priestley el oxígeno?,50,8,nomic,15.678748,8.532265
+¿Cuál fue el primer cabaret literario de Varsovia?,50,8,nomic,15.899556,4.4916296
+¿De qué tipo de protesta se considera su poema pionero?,55,10,nomic,12.318192,3.735206
+¿De qué otra manera se puede llamar a la cadena de una instancia?,65,13,nomic,14.607246,4.243892
+¿Cuál es el término para un sistema inmunológico hiperactivo que ataca los tejidos normales?,92,14,nomic,13.293506,4.644863
+¿Qué mar bordeaba el imperio de Genghis Khan al este cuando murió?,66,12,nomic,14.365363,4.9156084
+¿Durante qué década el campus comenzó a parecer más moderno?,60,10,nomic,15.778291,3.3402665
+¿Quién sustrajo el balón a Newton en el tercer down a nueve yardas?,67,13,nomic,16.628834,5.1300154
+¿Cómo puede ser reformulado un problema de función?,51,8,nomic,13.283815,5.114069
+¿Cuál es la teoría más reciente y más ampliamente aceptada para la propagación de la plaga?,91,16,nomic,15.276582,5.6515756
+¿Cuáles son ejemplos de células efectoras diferenciadas que alcanzan su punto máximo durante los períodos de vigilia?,117,17,nomic,13.390093,5.903887
+¿Cuánto tiempo tardan las nuevas zonas en tener una producción de petróleo significativa?,89,13,nomic,13.245317,4.0791917
+"En cuanto a la codificación de objetos matemáticos, ¿De qué manera se expresan normalmente los números enteros?",111,17,nomic,13.65195,5.5918455
+¿Cuándo terminó el último glaciar?,34,5,nomic,15.41639,8.144625
+¿Qué significa rodófito?,24,3,nomic,13.295728,3.4401777
+¿Qué bandas sonoras opcionales incluyen también Sky Movies y Sky Box Office?,76,12,nomic,14.875895,7.469184
+¿Qué autor famoso usó la similitud y semejanza de Percy Shelly en sus escritos?,79,14,nomic,14.42441,6.3580155
+¿Quién es el presidente del IPCC?,33,6,nomic,14.458887,8.129137
+"Junto con el calor residual de la energía nuclear, geotérmica y de los motores de combustión interna, ¿qué tipo de energía podría suministrar el calor para una máquina de vapor?",177,30,nomic,11.33939,6.014587
+¿De qué puede contrarrestar la melatonina activamente su producción?,68,9,nomic,15.085757,5.0725036
+¿Qué batalla perdió Temujin contra Jamukha poco después de su elección como khan?,81,13,nomic,14.533534,5.6677065
+¿Cuántos hugonotes habían huido de Francia a principios del siglo XVIII?,72,11,nomic,12.067122,3.001165
+¿Qué ganó la Universidad de Newcastle en 2000?,46,8,nomic,13.799215,8.701529
+¿Quién fue el primer mariscal de campo en llevar a dos equipos a más de una Super Bowl?,87,18,nomic,15.620611,4.4098883
+¿Qué indican las pruebas que no son los cidípidos?,50,9,nomic,13.979249,3.7927327
+¿Qué tipo de papel busca el islamismo para convertirlo en un concepto algo controvertido?,89,14,nomic,12.991104,5.4949083
+¿Qué ocurre después de una inmersión en la que un buzo se descomprime demasiado rápido?,87,15,nomic,14.715629,6.4318113
+¿Qué término se utiliza para definir una tarea que puede ser resuelta por un ordenador?,87,15,nomic,13.019542,5.7291203
+¿Durante qué periodo tiene lugar el Pleistoceno?,48,7,nomic,14.943225,4.851629
+¿Quién ganó la Ekstraklasa en el año 2000?,42,8,nomic,13.059639,8.555444
+¿Qué religión difundieron los franceses junto con su imperialismo?,66,9,nomic,12.93115,6.335006
+¿Qué les dijo Lutero a los monjes y las monjas sobre sus votos?,63,13,nomic,13.573841,6.244391
+¿De qué manera argumenta Brownlee que las personas se comportan a veces para que se escuche su problema?,104,18,nomic,13.05318,5.599039
+¿Cuándo se publicaron algunas de las obras más conocidas de Lutero?,67,11,nomic,13.773753,5.5070033
+¿Qué sucede cuando el sistema inmunológico está menos activo de lo normal?,74,12,nomic,13.291383,4.5394654
+¿Por qué motivo se estaban celebrando actuaciones judiciales ante el tribunal superior?,87,12,nomic,13.271391,5.0349903
+¿Cuál es una forma simple de desobediencia civil?,49,8,nomic,11.974401,4.122625
+¿Qué tema suelen tener las proposiciones de ley?,48,8,nomic,12.949842,4.7005424
+¿Quién diseñó el nuevo diseño gráfico de ABC para 1998?,55,10,nomic,12.9994335,8.412112
+¿Como suma de qué se escribe la fuerza electrostática y magnética?,66,11,nomic,15.931679,5.9334474
+¿Qué tipo de bosque es la selva amazónica?,42,8,nomic,11.709222,6.9542093
+¿En qué batalla fueron derrotados los mongoles por los Tran?,60,10,nomic,14.416451,5.9471555
+¿Cuál fue el último episodio de Doctor Who para el que Dudley Simpson escribió música?,86,15,nomic,16.061573,5.7557116
+¿En qué año John Sheepshanks donó una gran colección de pinturas?,65,11,nomic,15.501212,7.060813
+¿Qué significa 'plástido'?,26,3,nomic,13.336819,3.48084
+¿Qué hay que hacer para asegurar que los miembros más pobres de la sociedad puedan participar en el crecimiento económico?,122,20,nomic,14.350213,5.0375957
+¿A cuántos equipos diferentes llevo Peyton Manning a la Super Bowl?,67,11,nomic,15.109513,4.4800835
+¿Quién tenía el récord anterior de ser el mariscal de campo más longevo en jugar la Super Bowl?,95,18,nomic,16.115551,4.712181
+¿Qué pensaba la agencia de prestaciones que significaban los canales de deportes en la factura de la suscripción a la televisión?,129,21,nomic,14.875765,5.5801096
+¿Cuándo se estableció el Convenio Europeo de Derechos Humanos?,62,9,nomic,15.460956,8.188563
+"En un problema computacional, ¿qué es lo que se describe como un cadena de elementos de un alfabeto?",100,18,nomic,13.869401,4.582484
+¿Cuál fue el resultado de las elecciones de 2007?,49,9,nomic,16.273422,5.858816
+¿Cuáles fueron los años en que se originaron dos Reglamentos que entraron en conflicto con una ley italiana en el caso Simmenthal SpA?,134,23,nomic,14.094782,5.8849187
+¿Cuántos balones interceptó Josh Norman?,40,5,nomic,15.757287,9.061216
+¿Qué porcentaje de tierra despejada en la Amazonía se utiliza para el cultivo de ganado?,88,15,nomic,12.707796,5.7381372
+¿De qué grupo es exguitarrista principal el oriundo de Newcastle Andy Taylor?,77,12,nomic,14.85265,7.446113
+"¿Qué es un ""primo gemelo""?",26,5,nomic,14.675574,4.9604144
+¿Qué río corre a lo largo de Jacksonville?,42,8,nomic,15.080995,5.893811
+"La desagregación escolar en Estados Unidos condujo a un aumento en el número de estudiantes en las escuelas públicas, ¿de qué etnia?",132,22,nomic,15.396061,2.6907363
+¿Quién influyó en la promoción del uso de compuestos químicos como medicamentos?,80,12,nomic,13.914446,6.272827
+¿Cuál es la palabra holandesa para referirse a la selva amazónica?,66,11,nomic,11.66912,7.010435
+¿Cuándo fue elegido por Nixon?,30,5,nomic,16.18,6.074028
+¿Qué tipo de modelos autoconsistentes están tratando de hacer los físicos para crear una teoría de todo?,104,17,nomic,13.510049,6.577243
+¿Qué barrio se encuentra al oeste de la autopista 41?,53,10,nomic,13.754086,7.1775856
+¿Cuál era el nombre del castillo normando?,42,7,nomic,13.668885,7.8773346
+¿Quién es el autor de Liber Servitoris?,39,7,nomic,14.291817,7.657309
+¿Para qué se usan los cilios?,29,6,nomic,12.410023,5.8383036
+¿Qué tribus temían los romanos que invadieran desde el Norte?,61,10,nomic,14.654561,4.5084453
+¿En qué año se aprobó la Ley de Escuelas de Sudáfrica?,54,11,nomic,15.357374,8.474917
+¿Qué nombre se le daría al fuerte que se estaba construyendo?,61,11,nomic,13.776186,7.631764
+¿Qué significa cloroplástida?,29,3,nomic,13.305435,3.464884
+¿Qué fuerza magnética y eléctrica actúan sobre una carga?,57,9,nomic,15.67112,5.877646
+¿Qué estándar usa la mayor parte del material en alta definición?,65,11,nomic,11.795053,7.1994963
+¿Qué presidente de Columbia fue a Harvard?,42,7,nomic,14.51928,8.214097
+¿Qué se incluye con cada etiqueta de paquete?,45,8,nomic,14.231266,5.7020645
+¿De qué nacionalidad eran los artistas de las pinturas donadas por John Sheepshanks?,84,13,nomic,15.626005,7.219522
+Nombre una división de lujo de Toyota.,38,7,nomic,14.938893,5.058812
+¿Qué jugador de los Panthers cometió un penalti que dio a los Broncos una nueva serie de downs?,95,18,nomic,16.349804,4.9615707
+¿Cuánto tiempo quedaba de partido cuando Denver puso el resultado en 24-10?,75,13,nomic,16.127651,5.1507025
+¿Quién es el vicepresidente del IPCC?,37,6,nomic,14.538256,8.012328
+¿Qué aeropuerto alberga la pista única más concurrida del mundo?,64,10,nomic,13.912005,4.880924
+¿Quién fue el líder en derribos de los Panthers en 2015?,56,11,nomic,14.620321,7.007413
+¿Cómo se llaman los pelos de los ctenóforos?,44,8,nomic,14.78315,4.2437673
+¿Dónde está la sintonía de cuatro notas de ABC todavía en uso?,62,12,nomic,13.945352,6.343775
+¿Qué tipo de elemento calefactor se utiliza a menudo en las máquinas de vapor de juguete?,89,16,nomic,11.2714205,6.140393
+¿Cuántas naciones hay en la cuenca del Amazonas?,48,8,nomic,13.691727,6.1586018
+Nombre una forma en la que la organización de Plowshares cerró temporalmente GCSB Waihopai.,91,14,nomic,15.128053,5.0943656
+¿Cómo fue en 1979 el intento de establecer una Asamblea escocesa descentralizada?,81,12,nomic,15.561835,5.98241
+¿Qué tipo de castigo se ofrece a veces a los desobedientes civiles?,67,12,nomic,12.04434,4.090353
+¿Cómo se llamaba la primera red de Internet2?,45,8,nomic,15.2152,4.095997
+¿Qué significa ctenóforo en griego?,35,5,nomic,13.263724,3.6138039
+¿Cuándo se celebraron las primeras elecciones directas?,55,7,nomic,15.34816,4.2230463
+¿Quién no puede tratar los temas que se tratan en Westminster?,62,11,nomic,13.700842,6.303802
+¿En qué país se encuentra la mayor parte de la selva amazónica?,63,12,nomic,11.694052,6.9797306
+¿Dónde nació Friedrich Ratzel?,30,4,nomic,15.617747,9.024866
+¿Quién ayudó a diseñar los cuadrángulos principales?,52,7,nomic,13.743788,7.089486
+¿Qué porcentaje representa el Amazonas en las selvas tropicales del planeta?,76,11,nomic,12.06324,6.5018435
+¿Cuándo fue declarado este edicto?,34,5,nomic,15.453818,5.708893
+¿Quién dirige el Estado Islámico?,33,5,nomic,15.521155,8.372656
+¿Qué incluye la cartera de deporte de BSkyB?,44,8,nomic,15.529579,6.889175
+¿Cuál es el proceso por el cual se evade el sistema inmunológico adaptativo mediante el encadenamiento de los llamados epítopos no esenciales?,142,22,nomic,13.407702,4.662888
+¿Cuántos derribos se anotó Luke Kuechly?,40,6,nomic,14.616465,7.394557
+¿Quién lideró a los Panthers en capturas?,41,7,nomic,14.299163,6.3554316
+¿Dónde tiene su sede Energiprojekt AB?,38,6,nomic,15.222167,8.728473
+¿Qué teorema define el papel principal de los primos en la teoría de números?,77,14,nomic,14.533975,5.166385
+¿Cuál es el tiempo de cambio de carga eléctrica?,48,9,nomic,13.424337,4.0934772
+¿Cuántas escuelas públicas chárter lleva la universidad?,56,7,nomic,15.62699,2.8541207
+¿A qué deporte se dedican Los Angeles Angels of Anaheim?,56,10,nomic,15.578901,7.406562
+"Se critica que las políticas energéticas son soluciones rápidas y costosas que ignoran, ¿qué hechos?",100,15,nomic,13.238569,5.5617833
+¿A quiénes derrotaron los Broncos para convertirse en los campeones de la AFC?,78,13,nomic,13.824883,6.4909673
+"La Iglesia apoya a las personas que se oponen concienzudamente, ¿a qué?",71,12,nomic,13.16825,6.030671
+¿Qué término se refiere a los ciudadanos de clase media que abandonan los suburbios?,84,14,nomic,12.448872,6.234456
+¿Con qué se asocian los períodos de crecimiento más prolongados?,64,10,nomic,14.420825,5.7539716
+¿Qué compila y presenta datos sobre el tamaño de las empresas de diseño y construcción?,87,15,nomic,13.649123,6.7360845
+"¿Cuántas personas, como mucho, han muerto de peste en Bagdad?",61,10,nomic,13.0947,9.872849
+¿Cuántos kilómetros cuadrados de la selva amazónica se perdieron en 1991?,73,11,nomic,11.882659,7.427579
+"Después de la masacre de Peterloo, ¿qué poeta escribió La masacre de la anarquía?",81,14,nomic,15.436615,6.5682735
+¿Cuándo fue el último brote de la plaga?,40,8,nomic,16.016752,6.102509
+¿Por qué es conocida la garganta del Rin?,41,8,nomic,13.917564,5.0815043
+¿Cuál era la población blanca de Jacksonville en 2010?,54,9,nomic,13.467531,8.23035
+¿Cuáles son las excepciones de la Constitución que requieren consideraciones especiales para ser enmendadas?,108,14,nomic,13.862713,5.959189
+¿Qué gobernante alemán invitó a la inmigración hugonote?,56,8,nomic,11.926143,2.8818512
+¿A quiénes derrotaron los Broncos en el Campeonato de la AFC?,61,11,nomic,14.544621,6.976099
+¿Desde dónde les gustaría a los científicos medir el resplandor de la vegetación?,81,13,nomic,14.713161,6.1582804
+¿Qué tipo de profesional se considera un técnico de farmacia?,61,10,nomic,15.093137,3.4224322
+¿Qué cantó Lady Gaga?,21,4,nomic,15.591721,9.058078
+¿A qué se conectan los estatores?,33,6,nomic,13.62361,6.2067003
+¿Dónde vivió Tesla la mayor parte de su vida?,45,9,nomic,11.752646,7.187548
+¿Quién interpretó el himno nacional de Estados Unidos en la Super Bowl 50?,74,13,nomic,16.327324,7.6185403
+¿Cuántas personas murieron de peste en París en 1466?,53,9,nomic,13.15008,9.8263235
+¿De qué tipo de equipo deportivo son un ejemplo Los Angeles Rams?,65,12,nomic,15.163198,4.686551
+¿Qué hacia Tesla Electric Light & Manufacturing?,48,6,nomic,15.841893,7.5053296
+¿Cuántas personas fallecieron en Argel entre 1620 y 1621?,57,9,nomic,13.109761,9.418884
+¿Quién fue el primer estadounidense en ganar el Premio Nobel de Ciencias Económicas?,84,13,nomic,15.752673,4.6885624
+¿Quién es el presidente de TUMAS?,33,6,nomic,14.5269785,8.072618
+¿Cuál es el apellido del jugador que anotó un touchdown de 2 yardas en el último cuarto?,88,17,nomic,16.51298,4.816254
+¿Cuántas fases abrió el Metro entre 1980 y 1984?,48,9,nomic,13.325474,8.734632
+¿Bajo la dirección de qué persona los húngaros llevaron a cabo esta desobediencia civil?,88,14,nomic,12.0614195,4.160753
+"Antes de la llegada de los franceses, la zona ahora conocida como Jacksonville estaba habitada anteriormente por ¿qué pueblo?",125,19,nomic,14.067032,4.400646
+¿Cuánto duró la peste en el imperio otomano?,44,8,nomic,13.23866,9.926063
+¿Qué enemigo del Doctor Who también es un Señor del Tiempo?,59,11,nomic,15.106052,7.1803465
+¿Qué tipo de modelo de física no logró hacer Einstein?,54,10,nomic,13.402515,6.6613913
+¿Cuál era la teoría de Norman Cantor sobre la peste?,52,10,nomic,13.335482,9.850831
+¿Cómo se llamaba el trabajo de Ghandi?,38,7,nomic,14.960517,3.761358
+¿Cuándo tuvo lugar Costa contra ENEL?,37,6,nomic,14.822427,4.7712183
+¿Qué grupo de personas cometió desobediencia civil revolucionaria contra el gobierno austriaco?,95,12,nomic,11.951613,4.2106776
+¿Cómo se llaman los números mayores de 1 que se pueden dividir por 3 o más números?,83,17,nomic,14.819952,4.321957
+¿Qué escuela de política pública encontró su hogar en el edificio que diseñó Ludwig Mies van der Rohe?,102,18,nomic,15.504053,2.9510095
+"En una turbina de vapor, ¿en qué se montan los rotores?",55,11,nomic,11.291313,5.8773646
+¿En qué episodio Dudley Simpson interpretó a un director musical?,65,10,nomic,15.169003,7.564098
+¿De qué vicecónsul sudafricano bloquearon los estudiantes de Harvard el discurso?,81,11,nomic,15.1404295,2.511011
+"¿Cómo se llamaba la esposa de Temujin, el primer hijo de Börte?",63,12,nomic,15.345873,4.159496
+¿Con qué organismo debe registrarse un técnico farmacéutico?,60,8,nomic,15.447578,7.3604097
+¿Cuántos tratados originales por los que se estableció la UE protegían los derechos fundamentales?,98,14,nomic,14.177462,6.2555356
+¿Qué son los clades?,20,4,nomic,14.544622,7.0943036
+¿Qué jugador de los Panthers fue amonestado por agarrón en el tercer down?,74,13,nomic,16.495771,4.875583
+"Además del Mar del Norte y el Canal de Irlanda, ¿qué más se redujo en la última fase fría?",90,19,nomic,14.924257,6.721366
+¿Qué sucedió para que la Bolsa de Valores de Varsovia parara su actividad?,74,13,nomic,13.457177,5.247531
+¿Quién fue responsable de los nuevos proyectos de construcción en Jacksonville?,79,11,nomic,14.543302,5.3600965
+¿Qué pasó con la tripulación a bordo durante la prueba de desconexión?,70,12,nomic,14.157149,3.9243717
+"La crisis del petróleo hizo que las compañías petroleras aumentaran el suministro de petróleo, ¿en qué zona?",108,17,nomic,12.929116,5.576319
+¿Qué tipo de división de poder tenía el gobierno de Kublai?,59,11,nomic,12.261939,5.206077
+¿Cuándo se naturalizaron estos colonos como colonos ingleses?,61,8,nomic,12.54215,6.3258905
+¿Cómo y cuándo entró en Europa la primera variante de y. pestis?,64,12,nomic,13.327971,9.989664
+¿Quién apoyó las políticas que tienen soluciones que suenan bien pero que tienen malas perspectivas?,100,15,nomic,13.275578,5.624199
+¿Qué cepas de y. pestis se encontraron en las fosas comunes?,60,11,nomic,13.24819,9.957634
+¿Adónde fue transferido el V&A desde su ubicación original en Marlborough House?,80,13,nomic,15.221939,6.075963
+¿Cuánta comida toma un ctenóforo en un día?,43,8,nomic,14.657076,5.914846
+¿Qué moléculas del sistema inmunológico adaptativo solo existen en los vertebrados maxilares?,93,12,nomic,13.467841,4.6900277
+¿Cómo llamó Lutero a la misa en vez de sacrificio?,50,10,nomic,15.074905,6.4305124
+¿Cuál es el apodo del logotipo de la campaña de 2000 de ABC?,60,13,nomic,12.69085,8.326747
+¿De dónde nombró el presidente a los miembros del gabinete?,59,10,nomic,14.331921,8.156834
+¿Cuándo volvió la gente a interesarse otra vez por Tesla?,57,10,nomic,14.603805,6.496245
+¿Qué llevaban los astronautas durante la misión dual AS-278?,60,10,nomic,14.536861,4.0076737
+¿Qué podría comprarse con el Programa suplementario de asistencia nutricional?,78,10,nomic,14.356603,6.4931755
+¿Qué puede derivarse de los trastornos del sistema inmunológico?,64,9,nomic,13.286605,4.849001
+¿Qué miembro del Parlamento explicó cómo el museo preservaría la colección y la mantendría a disposición del público?,117,18,nomic,14.342099,7.698383
+¿Qué mercado anterior sustituyó el Mercado del Grainger?,56,8,nomic,15.987607,4.987526
+¿Qué enfermedades creen muchos científicos que contribuyeron a la pandemia de peste?,84,12,nomic,13.177362,9.982963
+¿Adónde fue la descarga de los glaciares en Europa en la última Edad de Hielo?,78,15,nomic,14.903852,6.060943
+¿Cuándo cerrarán las plantas de fabricación de Ford?,52,8,nomic,15.725902,7.1292663
+¿Por qué la colección está dominada por ropa de moda hecha para ocasiones especiales?,85,14,nomic,13.706524,5.79077
+¿Qué tipo de súplica se toma a veces como un acto de desobediencia?,67,13,nomic,12.005566,4.1203804
+¿Qué dispositivo se utiliza para tratar diversas afecciones como la intoxicación por monóxido de carbono?,105,15,nomic,12.632975,5.667957
+¿Cómo se financian las ergänzungsschulen?,41,5,nomic,15.485709,6.488374
+¿Cuántos de los electores escoceses tendrían que votar a favor en el referéndum?,80,13,nomic,13.389369,6.2264066
+¿Cuál es el secreto del crecimiento económico?,46,7,nomic,13.356827,4.8537345
+"Tras rechazar la confesión obligatoria, ¿qué propugnó Lutero?",61,8,nomic,15.451027,5.6549535
+¿Cómo se llama el alfabeto usado normalmente en una instancia?,62,10,nomic,14.279001,4.373537
+¿De qué son miembros los ancianos en conexión plena?,52,9,nomic,14.515299,4.8315864
+¿Qué proporción de médicos se estima que administran medicamentos por su cuenta?,80,12,nomic,13.759089,6.0080357
+¿Cuántos linajes de cloroplastos hay?,37,5,nomic,17.089102,6.076308
+¿Cuántas veces ganó la copa el Polonia?,39,7,nomic,15.22165,7.874109
+¿Cuándo se fundó la Oficina de Medicina Occidental?,51,8,nomic,15.142158,8.607083
+¿A qué se opone la UMC por ser incompatible con la enseñanza de las Escrituras?,79,15,nomic,14.7123575,6.5167227
+¿Qué efecto secundario de este tipo de protestas es desafortunado?,66,10,nomic,12.166959,4.230649
+¿Cuántos años tenía Peyton Manning cuando jugó la Super Bowl 50?,64,11,nomic,16.40045,7.5876536
+¿Qué exigía la Directiva sobre el comité de empresa?,52,9,nomic,13.747581,6.8251934
+¿Qué normas puede exigir un colegio subvencionado que cumplan los docentes para tener una elevada cualificación?,112,16,nomic,15.046421,3.2143028
+¿Qué partido político tiene más apoyo en la periferia de clase trabajadora de Melbourne?,88,14,nomic,16.009203,4.827233
+¿Cuál es el límite de fluencia de 565 °C?,41,9,nomic,12.896665,7.105278
+¿Qué productor de petróleo es un aliado cercano de los Estados Unidos?,70,12,nomic,12.933178,6.9992194
+¿A qué longitud de onda llegan las bandas espectrofotométricas?,63,9,nomic,14.92054,3.9852314
+¿Qué otro líder protestante europeo fue educado en la Universidad de París?,75,12,nomic,15.564285,3.0830855
+¿Qué culturas formaron parte de la administración de Kublai?,60,9,nomic,14.777047,7.3483396
+¿Cuántas universidades tiene Newcastle?,39,4,nomic,15.749221,2.9591408
+¿Cuál ha sido la razón principal del cambio a la opinión de que la desigualdad de ingresos perjudica el crecimiento?,116,20,nomic,12.61909,4.5789804
+"Para un campo F que contenga 0 y 1, ¿cuál sería el campo primario?",66,14,nomic,15.683025,4.3841853
+¿Qué Doctor Who fue escrito sin el Doctor Who en él?,52,11,nomic,16.129044,6.1011643
+¿Qué banda se considera a menudo como el primer grupo de folk metal?,68,13,nomic,14.789372,7.522084
+¿En qué año el nieto de Genghis Khan invadió Kievan Rus'?,57,11,nomic,15.459667,8.047704
+¿En qué exposición mundial tiene su origen el V&A?,50,10,nomic,12.720553,6.321117
+¿Cuál es el término para una escuela privada india?,51,9,nomic,15.531274,2.7194219
+¿Cuáles fueron los desarrollos en los que los científicos influyeron en la creación de la farmacología en el Islam medieval?,124,20,nomic,14.429068,5.7936716
+¿Qué jugador fue criticado por no saltar a la pila para recuperar el balón?,75,14,nomic,16.457384,4.902003
+¿Cuándo empezó a calentarse lentamente Europa desde la última Edad de Hielo?,76,12,nomic,15.907434,6.893977
+¿Qué aspecto de la medicina occidental no les gustaba a los chinos?,67,12,nomic,12.74439,6.685909
+"Después de 1935, ¿a quién se le prohibiría entrar en Renania?",61,11,nomic,14.338976,8.800898
+¿Quién decide cómo se permite el uso de la tierra o de la propiedad?,68,14,nomic,12.657288,5.039426
+¿Qué tratan de separar los progresistas moderados del Islam?,60,9,nomic,14.379456,5.730328
+¿Qué compañía desarrolló el indicador de motor de vapor más exitoso?,68,11,nomic,11.529449,5.825293
+¿En qué se basa la Constitución de Victoria?,44,8,nomic,15.922562,7.587758
+¿Qué filosofías subyacen a la medicina china?,45,7,nomic,14.637552,9.169791
+¿Quién fue el fundador de Oracle Corporation?,45,7,nomic,16.055727,6.1751747
+¿Cuántos cilindros tiene el motor Energiprojekt AB?,51,7,nomic,11.873894,5.7841387
+¿Qué tipo de red utiliza la X.25?,33,8,nomic,13.122294,6.999071
+¿Cómo se llamaba el estadio en el que jugaron los equipos?,58,11,nomic,15.450218,4.476407
+¿Cómo surgieron los principales tratados que conforman la Unión Europea?,72,10,nomic,13.712776,6.345026
+¿Qué plataforma planeaba lanzar Setanta Sports?,47,6,nomic,16.136827,6.5575314
+¿En qué siglo establecieron los misioneros escuelas eclesiásticas en Sudáfrica?,79,10,nomic,15.36412,2.5932093
+¿Qué usan los beroides como dientes?,36,6,nomic,14.129135,5.6525908
+¿Cuál es el trabajo de Thomas Piketty?,38,7,nomic,15.230356,3.974349
+¿Qué limita la eficiencia del ciclo Rankine?,44,7,nomic,11.762121,5.447287
+¿Quién era el líder del régimen islamista en Sudán?,51,9,nomic,13.998622,8.2347
+¿Qué les faltaba a los fósiles encontrados en el esquisto de Burgess?,69,12,nomic,14.325793,6.0753655
+"Cuando se detiene a mucha gente, ¿cuál es una táctica común de negociación?",75,13,nomic,15.258029,6.8274655
+¿Cuál fue el nombre del famoso sermón de Wesley en el que advirtió contra los peligros de la bebida?,100,19,nomic,13.827562,7.561365
+¿Cómo argumentaba Hobson para librar al mundo del imperialismo?,63,9,nomic,12.722583,6.117674
+¿Qué partido tiene más apoyo en las zonas acomodadas de Melbourne?,66,11,nomic,15.776017,4.920068
+¿Qué tarda más tiempo en lograr un país con alta desigualdad?,61,11,nomic,12.596859,4.2045746
+¿Cuándo abrió el primer mercado interior de Newcastle?,54,8,nomic,15.956836,4.7120814
+¿Cuántas jugadas se mantuvo Denver fuera de la zona de anotación tras recibir el balón perdido por Newton?,106,18,nomic,16.357437,4.8997564
+¿Cuántas sociedades cotizaban en la Bolsa de Valores de Varsovia en agosto de 2009?,83,14,nomic,12.220602,4.6743546
+¿Cómo se conoce oficialmente la teoría del aire viciado?,56,9,nomic,14.01796,5.1267548
+¿Para quién jugaba John Elway en la Super Bowl XXXIII?,54,10,nomic,15.860127,7.9464855
+¿Con qué velocidad soplaron los vientos alrededor de San Agustín en el huracán de 1964?,87,15,nomic,12.532911,7.605083
+¿Para qué tipos de extracción intentan localizar zonas los estratigrafistas?,76,10,nomic,13.101041,4.106924
+¿Qué preocupa perder a los ambientalistas en la selva amazónica?,64,10,nomic,11.636804,6.7739453
+¿De cuántas millas cuadradas por año fue la tasa de tala de bosques entre 2000 y 2005?,86,17,nomic,12.456807,8.038107
+¿Cuándo ha dicho Toyota que cerrará su planta de Victoria?,58,10,nomic,15.637747,7.1735816
+¿Cuántas áreas metropolitanas extendidas hay?,45,5,nomic,12.414905,6.153013
+¿La presencia o ausencia de qué se puede utilizar para determinar la edad relativa de las formaciones en las que se encuentra?,126,22,nomic,13.305482,5.484135
+¿Dónde se encuentra el estadio de Harvard?,42,7,nomic,15.592366,4.7792907
+¿Qué es lo que la incapacidad de separar el Islam del islamismo lleva a muchos en Occidente a apoyar?,101,19,nomic,13.206071,5.393887
+¿Cuándo estableció Seaman este comité?,38,5,nomic,15.72973,8.70277
+¿En qué año la consolidación hizo que Jacksonville se integrara en el Condado de Duval?,87,15,nomic,14.585166,6.351062
+¿Qué teatro fue el mejor ejemplo de «teatro monumental polaco»?,63,10,nomic,15.378689,4.6536107
+¿Cuál era la población de Varsovia en 1901?,43,8,nomic,13.593251,8.644993
+¿Con quién se asoció Internet2?,31,5,nomic,15.505475,8.797883
+¿Por qué el Polonia fue relegado de la máxima categoría del país en 2013?,73,14,nomic,14.969662,7.0811796
+¿Cuántas toneladas de carbono se absorben en la Amazonía en un año normal?,74,13,nomic,13.442969,4.6454635
+¿Cómo se llama la derivada del impulso cambiante de un objeto?,62,11,nomic,12.834529,4.7054276
+¿Qué son los directores de construcción?,40,6,nomic,14.25795,7.2185903
+¿Qué ley sudafricana reconoce dos tipos de escuelas?,52,8,nomic,15.350737,2.569098
+"Gandhi a menudo hacía referencia al poema de Shelley en sus esfuerzos por hacer, ¿qué?",86,15,nomic,15.391688,6.2370677
+¿Qué nación contiene la mayor parte de la selva amazónica?,58,10,nomic,11.690227,7.1144547
+¿Qué es la septicemia?,22,4,nomic,13.544192,9.743958
+¿Cuándo llegó Y. pestis a Inglaterra?,37,6,nomic,13.323494,9.980188
+¿En qué año se cerró la galería de instrumentos musicales?,58,10,nomic,15.008046,7.63832
+¿Qué problema tiene efectos tanto inflacionarios como deflacionarios?,69,8,nomic,13.03856,5.1358476
+¿En qué idioma estaba escrita la mayor parte de esta declaración?,65,11,nomic,11.715928,7.2115664
+¿Qué usan los beroides costeros como dientes?,45,7,nomic,14.1424465,5.7412076
+¿Por qué tipo de ayuda a los estudiantes de fuera de la ciudad son conocidos los Hermanos Musulmanes?,101,18,nomic,15.014113,2.703195
+¿Cuántas intercepciones se le atribuyen a la defensa de los Panthers en 2015?,77,13,nomic,13.883696,6.69803
+¿Qué empresa moderna lleva trabajando notablemente en una máquina de vapor con materiales modernos?,99,14,nomic,11.793822,6.345683
+¿Qué entidades tienen poderes de enmienda y veto durante el proceso legislativo?,80,12,nomic,12.481467,4.971574
+¿Qué fluye entre Bingen y Bonn?,31,6,nomic,14.920919,8.68722
+"¿En octubre de 1954, Goldenson propuso una fusión entre UPT y qué red?",70,13,nomic,12.730632,7.6678863
+¿En qué año murió Tesla?,24,5,nomic,15.62269,9.049174
+¿Cómo se llamaba el líder a quien Enrique III concedió un título nobiliario?,76,13,nomic,14.791009,4.0714865

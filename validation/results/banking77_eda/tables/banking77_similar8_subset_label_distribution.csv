@@ -1,0 +1,9 @@
+label,count
+cash_withdrawal_charge,177
+card_payment_not_recognised,168
+cash_withdrawal_not_recognised,160
+beneficiary_not_allowed,156
+card_arrival,153
+card_linking,139
+card_delivery_estimate,112
+card_not_working,111

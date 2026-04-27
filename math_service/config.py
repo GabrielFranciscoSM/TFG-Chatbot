@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # Ollama configuration
     ollama_host: str = "ollama"
     ollama_port: int = 11434
-    ollama_model: str = "nomic-embed-text"
+    ollama_model: str = "qwen3-embedding:0.6b"
     ollama_generation_model: str = "qwen3.5:0.8b"
 
     # Mistral configuration

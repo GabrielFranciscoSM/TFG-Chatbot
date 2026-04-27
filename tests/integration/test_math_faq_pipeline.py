@@ -88,7 +88,9 @@ class TestFAQPipelineIntegration(unittest.TestCase):
 
         # 4. Run the pipeline
         with (
-            patch("math_service.services.faq_service.get_optimal_k", return_value=2),
+            patch(
+                "math_service.services.faq_service.get_optimal_k_fcm", return_value=2
+            ),
             patch(
                 "math_service.services.faq_service.SphericalFuzzyCMeans"
             ) as mock_fcm_cls,
@@ -137,7 +139,9 @@ class TestFAQPipelineIntegration(unittest.TestCase):
         self.mock_faqs.insert_many.return_value = MagicMock(inserted_ids=["id1"])
 
         with (
-            patch("math_service.services.faq_service.get_optimal_k", return_value=2),
+            patch(
+                "math_service.services.faq_service.get_optimal_k_fcm", return_value=2
+            ),
             patch(
                 "math_service.services.faq_service.SphericalFuzzyCMeans"
             ) as mock_fcm_cls,
@@ -216,7 +220,9 @@ class TestFAQPipelineIntegration(unittest.TestCase):
         self.mock_faqs.insert_many.side_effect = Exception("MongoDB write error")
 
         with (
-            patch("math_service.services.faq_service.get_optimal_k", return_value=1),
+            patch(
+                "math_service.services.faq_service.get_optimal_k_fcm", return_value=1
+            ),
             patch(
                 "math_service.services.faq_service.SphericalFuzzyCMeans"
             ) as mock_fcm_cls,

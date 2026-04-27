@@ -86,9 +86,11 @@ class TestFAQService(unittest.TestCase):
         mock_embeddings = np.array([[1.0, 0.0], [1.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
         self.mock_ollama.get_embeddings_batch.return_value = mock_embeddings
 
-        # Need to mock get_optimal_k and SphericalFuzzyCMeans
+        # Need to mock get_optimal_k_fcm and SphericalFuzzyCMeans
         with (
-            patch("math_service.services.faq_service.get_optimal_k") as mock_optimal_k,
+            patch(
+                "math_service.services.faq_service.get_optimal_k_fcm"
+            ) as mock_optimal_k,
             patch(
                 "math_service.services.faq_service.SphericalFuzzyCMeans"
             ) as mock_fcm_class,

@@ -12,8 +12,8 @@ import numpy as np
 from pymongo import MongoClient
 
 from math_service.config import settings
-from math_service.services.clustering import get_closest_to_centroid, get_optimal_k
-from math_service.services.fcm import SphericalFuzzyCMeans
+from math_service.services.clustering import get_closest_to_centroid
+from math_service.services.fcm import SphericalFuzzyCMeans, get_optimal_k_fcm
 from math_service.services.nlp_client import OllamaClient
 
 logger = logging.getLogger(__name__)
@@ -133,7 +133,7 @@ class FAQService:
             return {"status": "error", "message": "Failed to get embeddings"}
 
         # 2. Determine optimal k
-        optimal_k = get_optimal_k(embeddings, max_k=min(15, len(questions) - 1))
+        optimal_k = get_optimal_k_fcm(embeddings, max_k=min(15, len(questions) - 1))
         logger.info(f"Optimal number of clusters determined: {optimal_k}")
 
         # 3. Cluster the questions. Try SphericalFuzzyCMeans.

@@ -248,3 +248,57 @@ def analyze_fuzzy_documents(
             )
 
     return fuzzy_docs
+
+
+def get_optimal_k_fcm(
+    X: np.ndarray, max_k: int = 15, random_state: int | None = None, m: float = 2.0
+) -> int:
+    """Find optimal k using a simplified Elbow method with Spherical FCM.
+
+    Uses the same elbow heuristic as get_optimal_k in clustering.py,
+    but fits SphericalFuzzyCMeans for each k instead of SphericalKMeans.
+
+    Args:
+        X: Data matrix
+        max_k: Maximum number of clusters to try
+        random_state: Random seed
+        m: Fuzziness parameter for FCM
+
+    Returns:
+        Optimal number of clusters
+    """
+    n_samples = X.shape[0]
+    if n_samples <= 3:
+        return max(1, n_samples - 1)
+
+    max_k = min(max_k, n_samples - 1)
+    if max_k < 2:
+        return 1
+
+    inertias = []
+    k_values = list(range(1, max_k + 1))
+
+    for k in k_values:
+        sfcm = SphericalFuzzyCMeans(n_clusters=k, m=m, random_state=random_state)
+        sfcm.fit(X)
+        inertias.append(sfcm.jm_)
+
+    # If J_m drops to 0 quickly, pick that k
+    for i, jm in enumerate(inertias):
+        if jm < 1e-5:
+            return k_values[i]
+
+    # Simple elbow calculation using distance to the line connecting first and last point
+    p1 = np.array([k_values[0], inertias[0]])
+    p2 = np.array([k_values[-1], inertias[-1]])
+
+    distances = []
+    for i in range(len(k_values)):
+        p = np.array([k_values[i], inertias[i]])
+        # Distance from point p to line segment p1-p2
+        d = np.abs(np.cross(p2 - p1, p1 - p)) / np.linalg.norm(p2 - p1)
+        distances.append(d)
+
+    # The elbow is the point with the maximum distance to the line
+    optimal_k_idx = np.argmax(distances)
+    return k_values[optimal_k_idx]

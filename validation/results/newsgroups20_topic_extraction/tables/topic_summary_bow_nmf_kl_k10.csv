@@ -1,0 +1,11 @@
+Topico,# Documentos,Purity (etiqueta dominante),Etiqueta dominante,Mix etiquetas (n),Ratio documentos puros,Entropia topico,Top 8 términos
+0,624,47.28%,comp.graphics,8,47.28%,0.168,"ftp, file, edu, available, jpeg, pub, files, mail"
+1,728,64.01%,comp.os.ms-windows.misc,8,64.01%,0.269,"windows, dos, driver, file, mouse, microsoft, drivers, use"
+2,660,86.82%,comp.windows.x,8,86.82%,0.030,"window, server, use, motif, application, widget, display, set"
+3,130,23.85%,sci.electronics,8,23.85%,0.114,"file, output, program, entry, build, info, line, check"
+4,1488,19.15%,sci.space,8,19.15%,0.197,"just, like, don, know, think, good, want, time"
+5,737,90.64%,sci.crypt,8,90.64%,0.063,"key, government, encryption, chip, clipper, use, keys, security"
+6,594,89.39%,sci.space,7,89.39%,0.214,"space, nasa, earth, launch, orbit, shuttle, moon, mission"
+7,1566,41.51%,comp.sys.ibm.pc.hardware,8,41.51%,0.000,"drive, card, scsi, mac, disk, does, apple, bus"
+8,629,74.72%,sci.electronics,8,74.72%,0.166,"power, use, used, ground, wire, circuit, current, radio"
+9,458,56.11%,comp.graphics,8,56.11%,0.256,"image, data, graphics, software, bit, color, images, code"

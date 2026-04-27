@@ -5,6 +5,19 @@ Todos los cambios relevantes entre versiones se verán reflejados en este archiv
 El formato del documento se basa en [keep a changelog](https://keepachangelog.com/en/1.1.0/) y se adiere al [versionado semántico](https://semver.org/).
 
 
+## [0.9.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.8.0...v0.9.0) (2026-04-27)
+
+
+### Features
+
+* update embedding model in math service ([2093932](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/2093932110c92ca905fab859a66c2b42ca0a0c0b))
+* updated clustering method to FCM Spherical ([ad2e837](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/ad2e837b35731fced511f973c3c6aa3124e49c88))
+
+
+### Bug Fixes
+
+* **observability:** updated and fixed graphana dashboard ([514bb9c](https://github.com/GabrielFranciscoSM/TFG-Chatbot/commit/514bb9c938ade78d0300021907ef0f79cee43a59))
+
 ## [0.8.0](https://github.com/GabrielFranciscoSM/TFG-Chatbot/compare/v0.7.0...v0.8.0) (2026-03-12)
 
 

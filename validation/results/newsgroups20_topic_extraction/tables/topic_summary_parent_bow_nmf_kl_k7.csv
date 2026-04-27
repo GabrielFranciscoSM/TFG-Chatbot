@@ -1,0 +1,8 @@
+Topico,# Documentos,Purity (etiqueta padre dominante),Etiqueta padre dominante,Mix etiquetas padre (n),Ratio documentos puros,Entropia topico,Top 8 términos
+0,3183,50.30%,sci,7,50.30%,0.114,"use, like, key, just, don, used, car, good"
+1,3674,67.42%,comp,7,67.42%,0.174,"drive, dos, windows, card, thanks, know, disk, scsi"
+2,4557,50.87%,rec,7,50.87%,0.331,"don, just, think, know, like, people, time, did"
+3,1431,93.08%,comp,7,93.08%,0.031,"file, program, use, files, window, display, windows, image"
+4,1290,48.76%,sci,7,48.76%,0.133,"space, mail, information, available, data, list, ftp, send"
+5,2850,34.39%,talk,7,34.39%,0.113,"god, people, does, think, don, believe, say, jesus"
+6,1277,65.94%,talk,7,65.94%,0.128,"government, new, people, gun, armenian, state, states, war"

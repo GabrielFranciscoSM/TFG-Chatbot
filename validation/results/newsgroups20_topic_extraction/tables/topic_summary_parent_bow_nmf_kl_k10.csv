@@ -1,0 +1,11 @@
+Topico,# Documentos,Purity (etiqueta padre dominante),Etiqueta padre dominante,Mix etiquetas padre (n),Ratio documentos puros,Entropia topico,Top 8 términos
+0,2209,43.87%,sci,7,43.87%,0.104,"car, used, use, power, high, good, like, time"
+1,3079,70.90%,comp,7,70.90%,0.165,"drive, dos, windows, card, disk, scsi, thanks, use"
+2,3596,32.04%,rec,7,32.04%,0.298,"don, just, like, know, think, people, good, time"
+3,1116,92.74%,comp,6,92.74%,0.027,"file, program, window, use, windows, using, display, files"
+4,1353,60.61%,comp,7,60.61%,0.118,"available, mail, image, ftp, information, software, graphics, edu"
+5,2126,37.96%,soc,7,37.96%,0.101,"god, jesus, people, does, believe, bible, say, christian"
+6,1338,60.99%,sci,7,60.99%,0.098,"government, key, use, gun, law, public, encryption, people"
+7,1049,31.17%,talk,7,31.17%,0.201,"president, think, new, going, said, money, stephanopoulos, year"
+8,837,84.71%,talk,7,84.71%,0.040,"people, armenian, israel, armenians, said, war, jews, turkish"
+9,1559,83.96%,rec,7,83.96%,0.201,"game, team, year, games, space, play, season, new"

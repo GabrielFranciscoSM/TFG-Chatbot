@@ -22,7 +22,7 @@ dependencies = [
   "pydantic-settings>=2.0.0,<3.0.0",
   "python-dotenv>=1.0.0",
   "python-json-logger>=2.0.0",
-  "prometheus-fastapi-instrumentator>=7.0.0"
+  "prometheus-fastapi-instrumentator>=7.1.0"
 ]
 
 [project.optional-dependencies]
